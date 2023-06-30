@@ -7,6 +7,7 @@ export interface INftCardDayMonth {
   id?: number;
   day?: number;
   month?: number;
+  image?: string;
   owner_id?: number;
 }
 
@@ -17,6 +18,7 @@ export class NftCardDayMonth {
   id?: number;
   day?: number;
   month?: number;
+  image?: string;
   owner_id?: number;
 
   constructor(data: INftCardDayMonth) {
@@ -26,6 +28,7 @@ export class NftCardDayMonth {
     this.id = data.id;
     this.day = data.day;
     this.month = data.month;
+    this.image = data.image;
     this.owner_id = data.owner_id;
   }
 }

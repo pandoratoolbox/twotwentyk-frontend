@@ -71,6 +71,7 @@ export const CraftingIdentitesPage: React.FC = () => {
       nft_card_year_id: Number(selectedCards.year),
       nft_card_crafting_id: Number(selectedCards.crafting),
       celebrity_id: Number(selectedCards.crafting),
+      nft_card_category_id: Number(selectedCards.category),
     };
     const res = await craftingIdentity(newCraft);
     if (res.success) {

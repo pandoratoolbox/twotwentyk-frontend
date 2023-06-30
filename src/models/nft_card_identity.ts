@@ -11,6 +11,8 @@ export interface INftCardIdentity {
   id?: number;
   month?: number;
   year?: number;
+  image?: string;
+
 }
 
 export class NftCardIdentity {
@@ -24,6 +26,8 @@ export class NftCardIdentity {
   id?: number;
   month?: number;
   year?: number;
+  image?: string;
+
 
   constructor(data: INftCardIdentity) {
     this.day = data.day;
@@ -36,5 +40,7 @@ export class NftCardIdentity {
     this.id = data.id;
     this.month = data.month;
     this.year = data.year;
+    this.image = data.image;
+
   }
 }

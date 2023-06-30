@@ -12,12 +12,16 @@ import {
 } from "./styles";
 import { IconInfo } from "../../components";
 import { matchList, triggerList } from "./data";
+import { useCelebritiesContext } from "../../context";
+import { IconCardAthlete } from "../../components";
 
 export const MatchListSection: React.FC<{
   page: "identity" | "prediction";
   clickedCard: string | number | null;
 }> = ({ page, clickedCard }) => {
   const [collapsed, setCollapsed] = useState<number>(-1);
+  const { celebritiesContext } = useCelebritiesContext();
+
   return (
     <MatchListSectionWrapper>
       <h2>{page === "identity" ? "Identity Matches" : "Eligible Triggers"}</h2>
@@ -39,15 +43,18 @@ export const MatchListSection: React.FC<{
             ? triggerList.map((item, key) => (
                 <TriggerListItem key={key} {...item} />
               ))
-            : matchList.map((item, key) => (
-                <MatchListItem
-                  {...item}
-                  key={key}
-                  id={key}
-                  onCollapsed={setCollapsed}
-                  collapsed={collapsed === key}
-                />
-              ))}
+            : celebritiesContext &&
+              Array.from<[number, any]>(celebritiesContext).map(
+                ([key, value]) => (
+                  <MatchListItem
+                    name={value.name}
+                    key={key}
+                    id={key}
+                    onCollapsed={setCollapsed}
+                    collapsed={collapsed === key}
+                  />
+                )
+              )}
         </MatchListGroup>
       )}
     </MatchListSectionWrapper>
@@ -56,17 +63,20 @@ export const MatchListSection: React.FC<{
 
 const MatchListItem: React.FC<{
   id: number;
-  icon: React.ReactNode;
+
   name: string;
   onCollapsed: (id: number) => void;
   collapsed: boolean;
-}> = ({ icon, name, id, onCollapsed, collapsed }) => {
+}> = ({ name, id, onCollapsed, collapsed }) => {
   const [selected, setSelected] = useState<string>("");
   return (
     <MatchListItemWrapper>
       <ItemHeader onClick={() => onCollapsed(id)}>
         <MatchListInfoWrapper>
-          <ItemIconWrapper>{icon}</ItemIconWrapper>
+          <ItemIconWrapper>
+            {" "}
+            <IconCardAthlete />
+          </ItemIconWrapper>
           <p>{name}</p>
         </MatchListInfoWrapper>
         <IconInfo />

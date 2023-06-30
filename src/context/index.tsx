@@ -158,7 +158,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
             celebrities.set(v.id, v);
           }
         });
-        setTriggersContext(celebrities);
+        setCelebritiesContext(celebrities);
       }
 
       const categoriesData = await getCategories();

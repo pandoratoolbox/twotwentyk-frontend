@@ -6,6 +6,8 @@ export interface INftCardCrafting {
   owner_id?: number;
   rarity?: number;
   owner?: IUser;
+  image?: string;
+  name?: string | number;
 }
 
 export class NftCardCrafting {
@@ -14,6 +16,8 @@ export class NftCardCrafting {
   owner_id?: number;
   rarity?: number;
   owner?: User;
+  image?: string;
+  name?: string | number;
 
   constructor(data: INftCardCrafting) {
     this.id = data.id;
@@ -21,5 +25,7 @@ export class NftCardCrafting {
     this.owner_id = data.owner_id;
     this.rarity = data.rarity;
     this.owner = data.owner ? new User(data.owner) : undefined;
+    this.image = data.image;
+    this.name = data.name;
   }
 }

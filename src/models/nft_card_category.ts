@@ -7,6 +7,8 @@ export interface INftCardCategory {
   is_crafted?: boolean;
   rarity?: number;
   owner?: IUser;
+  image?: string;
+
 }
 
 export class NftCardCategory {
@@ -16,6 +18,8 @@ export class NftCardCategory {
   is_crafted?: boolean;
   rarity?: number;
   owner?: User;
+  image?: string;
+
 
   constructor(data: INftCardCategory) {
     this.id = data.id;
@@ -24,5 +28,7 @@ export class NftCardCategory {
     this.is_crafted = data.is_crafted;
     this.rarity = data.rarity;
     this.owner = data.owner ? new User(data.owner) : undefined;
+    this.image = data.image;
+
   }
 }

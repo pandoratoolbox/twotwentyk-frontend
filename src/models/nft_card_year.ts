@@ -7,6 +7,8 @@ export interface INftCardYear {
   is_crafted?: boolean;
   rarity?: number;
   owner?: IUser;
+  image?: string;
+  name?: string | number;
 }
 
 export class NftCardYear {
@@ -16,6 +18,8 @@ export class NftCardYear {
   is_crafted?: boolean;
   rarity?: number;
   owner?: User;
+  image?: string;
+  name?: string | number;
 
   constructor(data: INftCardYear) {
     this.id = data.id;
@@ -24,5 +28,7 @@ export class NftCardYear {
     this.is_crafted = data.is_crafted;
     this.rarity = data.rarity;
     this.owner = data.owner ? new User(data.owner) : undefined;
+    this.image = data.image;
+    this.name = data.name;
   }
 }

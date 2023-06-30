@@ -8,6 +8,8 @@ export interface INftCardTrigger {
   rarity?: number;
   tier?: string;
   owner?: IUser;
+  image?: string;
+
 }
 
 export class NftCardTrigger {
@@ -18,6 +20,8 @@ export class NftCardTrigger {
   rarity?: number;
   tier?: string;
   owner?: User;
+  image?: string;
+
 
   constructor(data: INftCardTrigger) {
     this.id = data.id;
@@ -27,5 +31,7 @@ export class NftCardTrigger {
     this.rarity = data.rarity;
     this.tier = data.tier;
     this.owner = data.owner ? new User(data.owner) : undefined;
+    this.image = data.image;
+
   }
 }

@@ -25,6 +25,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
+  const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -45,6 +46,20 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   const handleFilterClick = () => {
     setIsOption(false);
+  };
+
+  const handleCheckboxChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    value: string
+  ) => {
+    const isChecked = e.target.checked;
+    if (isChecked) {
+      setSelectedOptions((prevOptions) => [...prevOptions, value]);
+    } else {
+      setSelectedOptions((prevOptions) =>
+        prevOptions.filter((option) => option !== value)
+      );
+    }
   };
 
   return (
@@ -79,7 +94,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                 <OptionItem htmlFor={item.value + key} key={key}>
                   <span>{item.label}</span>
                   <CheckboxWrapper>
-                    <input id={item.value + key} type="checkbox" />
+                    <input
+                      id={item.value + key}
+                      type="checkbox"
+                      value={item.value} // Set checkbox value
+                      checked={selectedOptions.includes(item.value as string)}
+                      onChange={(e) => handleCheckboxChange(e, item.value)}
+                    />
                     <label htmlFor={item.value + key}></label>
                   </CheckboxWrapper>
                 </OptionItem>

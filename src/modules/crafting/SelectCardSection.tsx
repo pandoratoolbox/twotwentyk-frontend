@@ -24,6 +24,13 @@ import {
   nft_card_year_data,
 } from "../../data/nfts";
 
+import { getMyNftCardCrafting } from "../../actions/nft_card_crafting";
+import { getMyNftCardDayMonth } from "../../actions/nft_card_day_month";
+import { getMyNftCardCategory } from "../../actions/nft_card_category";
+import { getMyNftCardYear } from "../../actions/nft_card_year";
+import { getMyNftCardIdentity } from "../../actions/nft_card_identity";
+import { getMyNftCardTrigger } from "../../actions/nft_card_trigger";
+
 export const SelectCardSection: React.FC<{
   page: "identity" | "prediction";
   selectedCraft: string;
@@ -50,81 +57,127 @@ export const SelectCardSection: React.FC<{
     }[]
   >([]);
 
-  useEffect(() => {
+  const getNFTCrafting = async () => {
+    const token = localStorage.auth;
     let tempData: {
       id: number;
       rarity: number;
       image: string;
       name: string | number;
+      is_crafted: boolean;
+      day: number;
+      month: number;
+      year: number;
     }[] = [];
+
     if (selectedCraft === "crafting") {
-      tempData = nft_card_crafting_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: "Crafting",
-          };
-        });
+      const response = await getMyNftCardCrafting(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              name: item.name || "",
+              is_crafted: Boolean(item.is_crafted),
+              day: 0,
+              month: 0,
+              year: 0,
+            };
+          }) ?? [];
     } else if (selectedCraft === "dayMonth") {
-      tempData = nft_card_day_month_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: item.day + "/" + item.month,
-          };
-        });
+      const response = await getMyNftCardDayMonth(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              is_crafted: Boolean(item.is_crafted),
+              name: item.day + "/" + item.month || 0,
+              day: item.day || 0,
+              month: item.month || 0,
+              year: 0,
+            };
+          }) ?? [];
     } else if (selectedCraft === "year") {
-      tempData = nft_card_year_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: item.year,
-          };
-        });
+      const response = await getMyNftCardYear(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              is_crafted: Boolean(item.is_crafted),
+              name: item.year || "",
+              year: item.year || 0,
+              day: 0,
+              month: 0,
+            };
+          }) ?? [];
     } else if (selectedCraft === "category") {
-      tempData = nft_card_category_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: item.category,
-          };
-        });
+      const response = await getMyNftCardCategory(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              is_crafted: Boolean(item.is_crafted),
+              name: item.category || "",
+              year: 0,
+              day: 0,
+              month: 0,
+            };
+          }) ?? [];
     } else if (selectedCraft === "identity") {
-      tempData = nft_card_identity_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: item.category,
-          };
-        });
+      const response = await getMyNftCardIdentity(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              is_crafted: Boolean(item.is_crafted),
+              name: item.category || "",
+              year: 0,
+              day: 0,
+              month: 0,
+            };
+          }) ?? [];
     } else if (selectedCraft === "trigger") {
-      tempData = nft_card_trigger_data
-        .filter((f) => !f.is_crafted)
-        .map((item) => {
-          return {
-            id: item.id,
-            rarity: item.rarity,
-            image: item.image,
-            name: item.trigger,
-          };
-        });
+      const response = await getMyNftCardTrigger(token);
+      tempData =
+        response?.data
+          ?.filter((f) => !f.is_crafted)
+          ?.map((item) => {
+            return {
+              id: item.id || 0,
+              rarity: item.rarity || 0,
+              image: item.image || "",
+              is_crafted: Boolean(item.is_crafted),
+              name: "",
+              year: 0,
+              day: 0,
+              month: 0,
+            };
+          }) ?? [];
     }
     setNftData(tempData);
+  };
+
+  useEffect(() => {
+    getNFTCrafting();
   }, [selectedCraft]);
 
   return (
