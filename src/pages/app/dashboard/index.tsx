@@ -18,13 +18,13 @@ import { ToastContainer } from "react-toastify";
 import {
   useFeedContext,
   useMarketplaceListContext,
+  useMonthContext,
   useMyFeedContext,
   useMyNFTsContext,
 } from "../../../context";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
-
   const { feedContext } = useFeedContext();
   const { myFeedContext } = useMyFeedContext();
   const { myNFTsContext } = useMyNFTsContext();

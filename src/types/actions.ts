@@ -87,3 +87,24 @@ export interface IArticleSource {
   name?: string;
   article?: IArticle[];
 }
+
+export interface ITrigger {
+  name?: string;
+  tier?: string;
+  id?: number;
+}
+
+export interface ICelebrity {
+  name?: string;
+  birth_day?: number;
+  birth_month?: number;
+  birth_year?: number;
+  category?: string;
+  eligible_triggers?: string[];
+  id?: number;
+}
+
+export interface ICategory {
+  id?: number;
+  name?: string;
+}

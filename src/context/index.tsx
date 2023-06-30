@@ -13,8 +13,18 @@ import {
   getMyInfo,
   getMyNFTs,
   getMarketplaceList,
+  getTriggers,
+  getCelebrities,
+  getCategories,
 } from "../actions";
-import { IArticle, IMarketplaceListing, IUser } from "../types/actions";
+import {
+  IArticle,
+  IMarketplaceListing,
+  IUser,
+  ITrigger,
+  ICelebrity,
+  ICategory,
+} from "../types/actions";
 
 const AuthContext = createContext<any>({});
 const FeedContext = createContext<any>([]);
@@ -22,6 +32,10 @@ const MyFeedContext = createContext<any>([]);
 const MyInfoContext = createContext<any>(null);
 const MyNFTsContext = createContext<any>(null);
 const MarketplaceListContext = createContext<any>([]);
+const MonthContext = createContext<any>([]);
+const CategoriesContext = createContext<any>([]);
+const CelebritiesContext = createContext<any>([]);
+const TriggersContext = createContext<any>([]);
 
 export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
@@ -36,7 +50,34 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [myFeedContext, setMyFeedContext] = useState<IArticle[]>([]);
   const [myInfoContext, setMyInfoContext] = useState<IUser>();
   const [myNFTsContext, setMyNFTsContext] = useState<any>();
+  const [categoriesContext, setCategoriesContext] =
+    useState<Map<number, ICategory>>();
+  const [triggersContext, setTriggersContext] =
+    useState<Map<number, ITrigger>>();
+  const [celebritiesContext, setCelebritiesContext] =
+    useState<Map<number, ICelebrity>>();
   const [marketplaceListContext, setMarketplaceListContext] = useState<any>([]);
+  const [monthContext, setMonthContext] = useState<Map<number, string>>();
+
+  const celebritiesValue = useMemo(
+    () => ({ celebritiesContext, setCelebritiesContext }),
+    [celebritiesContext]
+  );
+
+  const triggersValue = useMemo(
+    () => ({ triggersContext, setTriggersContext }),
+    [triggersContext]
+  );
+
+  const categoriesValue = useMemo(
+    () => ({ categoriesContext, setCategoriesContext }),
+    [categoriesContext]
+  );
+
+  const monthValue = useMemo(
+    () => ({ monthContext, setMonthContext }),
+    [monthContext]
+  );
 
   const authValue = useMemo(
     () => ({ authContext, setAuthContext }),
@@ -85,14 +126,68 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         isAuthenticated: true,
         user: localStorage.getItem("auth"),
       });
+
       const myinfo = await getMyInfo(token);
       if (myinfo.data) setMyInfoContext(myinfo.data);
+
       const allFeedData = await getFeed();
       if (allFeedData.data) setFeedContext(allFeedData.data);
+
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
+
       const myNFTsData = await getMyNFTs();
       if (myNFTsData.data) setMyNFTsContext(myNFTsData.data);
+
+      const triggersData = await getTriggers();
+      if (triggersData.data) {
+        let triggers = new Map<number, ITrigger>();
+        triggersData.data.forEach((v) => {
+          if (v.id) {
+            triggers.set(v.id, v);
+          }
+        });
+        setTriggersContext(triggers);
+      }
+
+      const celebritiesData = await getCelebrities();
+      if (celebritiesData.data) {
+        let celebrities = new Map<number, ICelebrity>();
+        celebritiesData.data.forEach((v) => {
+          if (v.id) {
+            celebrities.set(v.id, v);
+          }
+        });
+        setTriggersContext(celebrities);
+      }
+
+      const categoriesData = await getCategories();
+      if (categoriesData.data) {
+        let categories = new Map<number, ICategory>();
+        categoriesData.data.forEach((v) => {
+          if (v.id) {
+            categories.set(v.id, v);
+          }
+        });
+        setTriggersContext(categories);
+      }
+
+      setMonthContext(
+        new Map<number, string>([
+          [1, "January"],
+          [2, "February"],
+          [3, "March"],
+          [4, "April"],
+          [5, "May"],
+          [6, "June"],
+          [7, "July"],
+          [8, "August"],
+          [9, "September"],
+          [10, "October"],
+          [11, "November"],
+          [12, "December"],
+        ])
+      );
       // const marketplaceListingData = await getMarketplaceList();
       // if (marketplaceListingData.data)
       //   setMarketplaceListContext(marketplaceListingData.data);
@@ -119,17 +214,27 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   return (
     <AuthContext.Provider value={authValue}>
-      <FeedContext.Provider value={feedValue}>
-        <MyFeedContext.Provider value={myFeedValue}>
-          <MyInfoContext.Provider value={myInfoValue}>
-            <MyNFTsContext.Provider value={myNFTsValue}>
-              <MarketplaceListContext.Provider value={marketplaceListValue}>
-                {children}
-              </MarketplaceListContext.Provider>
-            </MyNFTsContext.Provider>
-          </MyInfoContext.Provider>
-        </MyFeedContext.Provider>
-      </FeedContext.Provider>
+      <CategoriesContext.Provider value={categoriesValue}>
+        <TriggersContext.Provider value={triggersValue}>
+          <CelebritiesContext.Provider value={celebritiesValue}>
+            <MonthContext.Provider value={monthValue}>
+              <FeedContext.Provider value={feedValue}>
+                <MyFeedContext.Provider value={myFeedValue}>
+                  <MyInfoContext.Provider value={myInfoValue}>
+                    <MyNFTsContext.Provider value={myNFTsValue}>
+                      <MarketplaceListContext.Provider
+                        value={marketplaceListValue}
+                      >
+                        {children}
+                      </MarketplaceListContext.Provider>
+                    </MyNFTsContext.Provider>
+                  </MyInfoContext.Provider>
+                </MyFeedContext.Provider>
+              </FeedContext.Provider>
+            </MonthContext.Provider>
+          </CelebritiesContext.Provider>
+        </TriggersContext.Provider>
+      </CategoriesContext.Provider>
     </AuthContext.Provider>
   );
 };
@@ -157,3 +262,20 @@ export const useMyNFTsContext = () => {
 export const useMarketplaceListContext = () => {
   return useContext(MarketplaceListContext);
 };
+
+export const useMonthContext = () => {
+  return useContext(MonthContext);
+};
+
+export const useTriggersContext = () => {
+  return useContext(TriggersContext);
+};
+
+export const useCelebritiesContext = () => {
+  return useContext(CelebritiesContext);
+};
+
+export const useCategoriesContext = () => {
+  return useContext(CategoriesContext);
+};
+

@@ -69,6 +69,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             />
           ) : (
             <DateCard
+              day={2}
+              month={12}
               image="/assets/nfts/1.png"
               category="2005"
               rarity={0}

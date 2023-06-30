@@ -15,6 +15,9 @@ import {
   CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconUserAdd } from "../Icons";
+import { useMonthContext } from "../../context";
+
+
 
 export const DateCard: React.FC<DateCardProps> = ({
   image,
@@ -30,6 +33,9 @@ export const DateCard: React.FC<DateCardProps> = ({
   onSell,
   onView,
 }) => {
+  const {monthContext} = useMonthContext()
+  console.log(monthContext as Map<number,string>)
+  
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>
@@ -38,7 +44,7 @@ export const DateCard: React.FC<DateCardProps> = ({
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
       </CardTopWrapper>
-      <CardBottomWrapper>{day + " " + month}</CardBottomWrapper>
+      {monthContext && <CardBottomWrapper>{day} {(monthContext as Map<number,string>).get(month)}</CardBottomWrapper>}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           <CardTooltip>

@@ -61,7 +61,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           ) : (
             <DateCard
               image="/assets/nfts/1.png"
-              category="2005"
+              category="dfd"
+              month={12}
+              day={2}
               rarity={0}
               isNotHover={true}
             />

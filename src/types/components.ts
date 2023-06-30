@@ -80,8 +80,8 @@ export type DateCardProps = {
   id?: number;
   category: string;
   owner_id?: number;
-  day?: number;
-  month?: number;
+  day: number;
+  month: number;
   rarity: number;
   is_crafted?: boolean;
   image: string;
