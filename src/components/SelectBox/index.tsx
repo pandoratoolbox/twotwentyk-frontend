@@ -13,9 +13,17 @@ import {
 import { IconArrowDown } from "../Icons";
 import { SelectBoxProps } from "../../types";
 import { Button } from "../Button";
-import { getFilter } from "../../actions/filtering";
+import {
+  getFilterCardType,
+  getFilterRarities,
+  getFilterStatus,
+  getFilterCollection,
+  getFilterCategory,
+  getFilterPackType,
+  getFilterTriggerType,
+} from "../../actions/filtering";
 import { ToastContainer, toast } from "react-toastify";
-import { useCategoriesContext } from "../../context";
+import { useCategoriesContext, useMyNFTsContext } from "../../context";
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder,
@@ -31,6 +39,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
   const { categoriesContext } = useCategoriesContext();
+  const { setMyNFTsContext } = useMyNFTsContext();
 
   console.log(categoriesContext);
   useEffect(() => {
@@ -46,17 +55,37 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     };
   }, []);
 
-  const handleOptionClick = (value: string) => {
-    onChange && onChange(value);
+  const handleOptionClick = async (value: string) => {
+    const token = localStorage.auth;
+
+    let res = await getFilterCollection(value, token);
+    // console.log(res);
+    setMyNFTsContext(res?.data);
+    // onChange && onChange(value);
     setIsOption(false);
   };
 
-  const handleFilterClick = async () => {
+  const handleFilterClick = async (filterType: string) => {
     const token = localStorage.auth;
 
     if (selectedOptions.length !== 0) {
-      const res = await getFilter("category", selectedOptions, token);
-      console.log(res);
+      let res;
+      if (filterType === "Card Types") {
+        res = await getFilterCardType(selectedOptions, token);
+      } else if (filterType === "All Rarities") {
+        res = await getFilterRarities(selectedOptions, token);
+      } else if (filterType === "Status") {
+        res = await getFilterStatus(selectedOptions, token);
+      } else if (filterType === "Category") {
+        res = await getFilterCategory(selectedOptions, token);
+      } else if (filterType === "Pack Types") {
+        res = await getFilterPackType(selectedOptions, token);
+      } else if (filterType === "Triggers Type") {
+        res = await getFilterTriggerType(selectedOptions, token);
+      }
+      setMyNFTsContext(res?.data);
+
+      // console.log(res);
       setIsOption(false);
     } else {
       toast.warn("Please checked some value");
@@ -77,7 +106,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     }
   };
 
-  console.log(selectedOptions);
+  // console.log(selectedOptions);
 
   return (
     <SelectBoxWrapper ref={optionRef}>
@@ -146,7 +175,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
               </ClearAll>
               <Button
                 className="filter-apply-button"
-                onClick={handleFilterClick}
+                onClick={() => handleFilterClick(placeholder as string)}
               >
                 Apply Selection
               </Button>
@@ -154,7 +183,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
           </>
         ) : (
           <OptionGroup>
-            {/* {options &&
+            {options &&
               options.map((item, key) => (
                 <OptionItem
                   key={key}
@@ -165,7 +194,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                     {item.label}
                   </div>
                 </OptionItem>
-              ))} */}
+              ))}
           </OptionGroup>
         )}
       </SelectOptionsWrapper>

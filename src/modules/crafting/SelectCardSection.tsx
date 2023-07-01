@@ -12,7 +12,12 @@ import {
 import { Button, IconSort, SelectBox } from "../../components";
 import { craftingCardData, raritiesOption, statusOption } from "./data";
 import { SortButton } from "../app/dates/styles";
-// import { useMarketplaceListContext, useMyNFTsContext } from "../../context";
+import {
+  useMarketplaceListContext,
+  useMyNFTsContext,
+  useStatusContext,
+  useAllRaritiesContext,
+} from "../../context";
 import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
 import {
@@ -46,6 +51,10 @@ export const SelectCardSection: React.FC<{
   onCardClicked,
   onCardSelected,
 }) => {
+  const { statusContext } = useStatusContext();
+  const { allRaritiesContext } = useAllRaritiesContext();
+  const { myNFTsContext, setMyNFTsContext } = useMyNFTsContext();
+
   const navigate = useNavigate();
   // const { marketplaceListContext } = useMarketplaceListContext();
   const [nftData, setNftData] = useState<
@@ -180,6 +189,12 @@ export const SelectCardSection: React.FC<{
     getNFTCrafting();
   }, [selectedCraft]);
 
+  useEffect(() => {
+    if (Array.isArray(myNFTsContext)) {
+      setNftData(myNFTsContext);
+    }
+  }, [myNFTsContext]);
+
   return (
     <SelectCardSectionWrapper>
       <SelectCardSectionContainer>
@@ -192,14 +207,14 @@ export const SelectCardSection: React.FC<{
               <SelectBoxWrapper>
                 <SelectBox
                   isFilter
-                  options={raritiesOption}
+                  newData={allRaritiesContext}
                   placeholder="All Rarities"
                 />
               </SelectBoxWrapper>
               <SelectBoxWrapper>
                 <SelectBox
                   isFilter
-                  options={statusOption}
+                  newData={statusContext}
                   placeholder="Status"
                 />
               </SelectBoxWrapper>
