@@ -10,7 +10,7 @@ import {
 import { Button, SellConfirmModal } from "../../../components";
 import {
   CardGridSection,
-  FilterSection,
+  DateCategoryFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
@@ -72,7 +72,7 @@ export const IdentitiesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <FilterSection />
+              <DateCategoryFilterSection />
               <CardGridSection
                 identityData={myNFTsContext?.nft_card_identity_data}
                 onCraft={handleCraft}

@@ -111,3 +111,8 @@ export interface ICategory {
   id?: number;
   name?: string;
 }
+
+export interface IFilters {
+  rarities?: [];
+  status?: [];
+}

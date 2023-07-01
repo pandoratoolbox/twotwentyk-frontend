@@ -10,7 +10,7 @@ import {
 import { Button, SellConfirmModal } from "../../../components";
 import {
   CardGridSection,
-  FilterSection,
+  TriggerFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
@@ -70,7 +70,7 @@ export const TriggersPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <FilterSection />
+              <TriggerFilterSection />
               <CardGridSection
                 data={myNFTsContext?.nft_card_trigger_data}
                 cardType={"trigger"}

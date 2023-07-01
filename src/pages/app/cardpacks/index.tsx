@@ -10,7 +10,7 @@ import {
 import { Button, SellConfirmModal } from "../../../components";
 import {
   CardGridSection,
-  FilterSection,
+  CardPackFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
@@ -64,7 +64,7 @@ export const CardPackPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <FilterSection />
+              <CardPackFilterSection />
               <CardGridSection
                 data={dateCardData}
                 onCraft={handleCraft}

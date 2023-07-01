@@ -34,7 +34,6 @@ export const DateCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const {monthContext} = useMonthContext()
-  console.log(monthContext as Map<number,string>)
   
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>

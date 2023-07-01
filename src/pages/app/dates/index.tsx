@@ -10,7 +10,7 @@ import {
 import { Button, SellConfirmModal } from "../../../components";
 import {
   CardGridSection,
-  FilterSection,
+  DateCategoryFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
@@ -66,7 +66,7 @@ export const DatesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <FilterSection />
+              <DateCategoryFilterSection />
               <CardGridSection
                 cardType="date"
                 data={myNFTsContext?.nft_card_day_month_data}

@@ -13,6 +13,9 @@ import {
 import { IconArrowDown } from "../Icons";
 import { SelectBoxProps } from "../../types";
 import { Button } from "../Button";
+import { getFilter } from "../../actions/filtering";
+import { ToastContainer, toast } from "react-toastify";
+import { useCategoriesContext } from "../../context";
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder,
@@ -22,15 +25,19 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   border,
   isFilter,
   onChange,
+  newData,
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
+  const { categoriesContext } = useCategoriesContext();
 
+  console.log(categoriesContext);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {
         setIsOption(false);
+        setSelectedOptions([]);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -44,8 +51,16 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     setIsOption(false);
   };
 
-  const handleFilterClick = () => {
-    setIsOption(false);
+  const handleFilterClick = async () => {
+    const token = localStorage.auth;
+
+    if (selectedOptions.length !== 0) {
+      const res = await getFilter("category", selectedOptions, token);
+      console.log(res);
+      setIsOption(false);
+    } else {
+      toast.warn("Please checked some value");
+    }
   };
 
   const handleCheckboxChange = (
@@ -62,8 +77,22 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     }
   };
 
+  console.log(selectedOptions);
+
   return (
     <SelectBoxWrapper ref={optionRef}>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       {label && <p>{label}</p>}
       <SelectBoxContainer
         border={border ? "true" : undefined}
@@ -72,13 +101,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
         <SelectBoxTextWrapper>
           {value ? (
             <>
-              {options.filter((f) => f.value === value)[0].image && (
+              {options && options.filter((f) => f.value === value)[0].image && (
                 <img
                   src={options.filter((f) => f.value === value)[0].image}
                   alt=""
                 />
               )}{" "}
-              {options.filter((f) => f.value === value)[0].label}
+              {options && options.filter((f) => f.value === value)[0].label}
             </>
           ) : (
             <span>{placeholder}</span>
@@ -90,24 +119,31 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
         {isFilter ? (
           <>
             <OptionGroup>
-              {options.map((item, key) => (
-                <OptionItem htmlFor={item.value + key} key={key}>
-                  <span>{item.label}</span>
-                  <CheckboxWrapper>
-                    <input
-                      id={item.value + key}
-                      type="checkbox"
-                      value={item.value} // Set checkbox value
-                      checked={selectedOptions.includes(item.value as string)}
-                      onChange={(e) => handleCheckboxChange(e, item.value)}
-                    />
-                    <label htmlFor={item.value + key}></label>
-                  </CheckboxWrapper>
-                </OptionItem>
-              ))}
+              {newData &&
+                Array.from<[number, any]>(newData).map(([key, value]) => (
+                  <OptionItem htmlFor={value.name + key} key={key}>
+                    <span>{value.name}</span>
+                    <CheckboxWrapper>
+                      <input
+                        id={value.name + key}
+                        type="checkbox"
+                        value={value.id}
+                        checked={selectedOptions.includes(value.id as string)}
+                        onChange={(e) => handleCheckboxChange(e, value.id)}
+                      />
+                      <label htmlFor={value.name + key}></label>
+                    </CheckboxWrapper>
+                  </OptionItem>
+                ))}
             </OptionGroup>
             <SelectAction>
-              <ClearAll>Clear All</ClearAll>
+              <ClearAll
+                onClick={() => {
+                  setSelectedOptions([]);
+                }}
+              >
+                Clear All
+              </ClearAll>
               <Button
                 className="filter-apply-button"
                 onClick={handleFilterClick}
@@ -118,17 +154,18 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
           </>
         ) : (
           <OptionGroup>
-            {options.map((item, key) => (
-              <OptionItem
-                key={key}
-                onClick={() => handleOptionClick(item.value)}
-              >
-                <div>
-                  {item.image ? <img src={item.image} alt="" /> : ""}
-                  {item.label}
-                </div>
-              </OptionItem>
-            ))}
+            {/* {options &&
+              options.map((item, key) => (
+                <OptionItem
+                  key={key}
+                  onClick={() => handleOptionClick(item.value)}
+                >
+                  <div>
+                    {item.image ? <img src={item.image} alt="" /> : ""}
+                    {item.label}
+                  </div>
+                </OptionItem>
+              ))} */}
           </OptionGroup>
         )}
       </SelectOptionsWrapper>
