@@ -14,7 +14,7 @@ export const TriggerFilterSection: React.FC = () => {
   const { statusContext } = useStatusContext();
   const { triggersContext } = useTriggersContext();
   const { categoriesContext } = useCategoriesContext();
-
+  
   return (
     <FilterSectionWrapper>
       <p>Filter traits</p>
@@ -24,7 +24,7 @@ export const TriggerFilterSection: React.FC = () => {
           placeholder="Triggers Type"
           newData={triggersContext}
         />
-        <SelectBox options={categoriesContext} placeholder="Categories" />
+        <SelectBox isFilter newData={categoriesContext} placeholder="Categories" />
         <SelectBox
           isFilter
           newData={allRaritiesContext}

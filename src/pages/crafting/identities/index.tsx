@@ -66,6 +66,8 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   const craftIdentity = async () => {
+    const token = localStorage.auth;
+
     const newCraft = {
       nft_card_day_month_id: Number(selectedCards.dayMonth),
       nft_card_year_id: Number(selectedCards.year),
@@ -76,7 +78,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     const res = await craftingIdentity(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
-      const myNFTs = await getMyNFTs();
+      const myNFTs = await getMyNFTs(token);
       setMyNFTsContext(myNFTs.data);
     } else {
       toast.error(res.message);

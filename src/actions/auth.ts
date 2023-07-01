@@ -54,7 +54,7 @@ export const updateMyInfo = async (arg: { [key: string]: string }) => {
   }
 };
 
-export const getMyNFTs = async () => {
+export const getMyNFTs = async (token: string) => {
   const myNFTsData = {
     nft_card_category_data: nft_card_category_data.filter(
       (f) => f.owner_id === 3
@@ -76,12 +76,17 @@ export const getMyNFTs = async () => {
     ),
     nft_card_year_data: nft_card_year_data.filter((f) => f.owner_id === 3),
   };
-  // try {
-  //   const res = await api.get("/me/nft");
 
-  // return { success: true, data: res.data };
   console.log(myNFTsData);
   return { success: true, data: myNFTsData };
+
+  // try {
+  //   const res = await api.get("/me/nft", {
+  //     headers: {
+  //       Authorization: "Bearer " + token,
+  //     },
+  //   });
+  //   return { success: true, data: res.data };
   // } catch (error) {
   //   return { success: false, message: "Server Error!" };
   // }

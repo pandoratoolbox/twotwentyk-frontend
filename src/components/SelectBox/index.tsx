@@ -41,7 +41,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const { categoriesContext } = useCategoriesContext();
   const { setMyNFTsContext } = useMyNFTsContext();
 
-  console.log(categoriesContext);
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {

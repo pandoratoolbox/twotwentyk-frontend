@@ -1,7 +1,7 @@
 import api from "../config/api";
 import { MarketplaceListObjectParams } from "../types/actions";
 
-export const getMarketplaceList = async () => {
+export const getMarketplaceList = async (token: string) => {
   try {
     const res = await api.get("/marketplace_listing");
     return { success: true, data: res.data };

@@ -46,7 +46,7 @@ export const DatesPage: React.FC = () => {
   const handleSell = (id: string | number) => {
     setIsView("sell");
   };
-  console.log(myNFTsContext);
+  // console.log(myNFTsContext);
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />

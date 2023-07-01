@@ -157,7 +157,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
 
-      const myNFTsData = await getMyNFTs();
+      const myNFTsData = await getMyNFTs(token);
       if (myNFTsData.data) setMyNFTsContext(myNFTsData.data);
 
       const triggersData = await getTriggers();
@@ -209,6 +209,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           [12, "December"],
         ])
       );
+
       setCardTypesContext(
         new Map<number, ICategory>([
           [1, { id: 1, name: "Day/Month" }],
@@ -230,10 +231,10 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         ])
       );
 
-      // const marketplaceListingData = await getMarketplaceList();
-      // if (marketplaceListingData.data)
-      //   setMarketplaceListContext(marketplaceListingData.data);
-      // //   }
+      const marketplaceListingData = await getMarketplaceList(token);
+      if (marketplaceListingData.data)
+        setMarketplaceListContext(marketplaceListingData.data);
+      // }
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
