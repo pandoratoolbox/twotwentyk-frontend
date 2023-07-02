@@ -5,6 +5,7 @@ export const PredictionCardWrapper = styled.div<{
   height?: number;
   isnothover?: string;
 }>`
+  text-transform: capitalize;
   cursor: pointer;
   position: relative;
   width: 100%;
@@ -59,6 +60,7 @@ export const CardTopWrapper = styled.div`
 `;
 
 export const CardBottomWrapper = styled.div`
+  text-transform: capitalize;
   background-color: #e4e4e4;
   position: relative;
   display: flex;

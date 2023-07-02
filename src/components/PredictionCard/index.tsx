@@ -35,6 +35,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
 }) => {
+  image = "/assets/nfts/1.png"
   return (
     <PredictionCardWrapper
       onClick={onClick}

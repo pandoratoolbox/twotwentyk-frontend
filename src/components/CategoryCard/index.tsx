@@ -30,6 +30,7 @@ export const CategoryCard: React.FC<DateCardProps> = ({
   onSell,
   onView,
 }) => {
+  image = "/assets/nfts/1.png"
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>

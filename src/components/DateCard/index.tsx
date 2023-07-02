@@ -34,6 +34,7 @@ export const DateCard: React.FC<DateCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   // console.log(item)
+  image = "/assets/nfts/1.png"
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>
