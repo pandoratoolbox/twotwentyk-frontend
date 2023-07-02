@@ -77,7 +77,7 @@ export const getMyNFTs = async (token: string) => {
     nft_card_year_data: nft_card_year_data.filter((f) => f.owner_id === 3),
   };
 
-  console.log(myNFTsData);
+  // console.log(myNFTsData);
   return { success: true, data: myNFTsData };
 
   // try {

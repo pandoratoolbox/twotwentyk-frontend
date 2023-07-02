@@ -38,6 +38,7 @@ export type AppHeaderMenuItemProps = {
 };
 
 export type PredictionCardProps = {
+  item?: any;
   id?: number;
   month?: number;
   year?: number;
@@ -89,9 +90,11 @@ export type DateCardProps = {
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
+  item?: any;
 };
 
 export type TriggerCardProps = {
+  item?: any;
   id?: number;
   trigger: string;
   owner_id?: number;
@@ -118,11 +121,13 @@ export type ViewDateCardProps = {
 
   onClose: () => void;
   cardType?: string;
-  id: string | number;
+  item: any;
 };
 
 export type SellDateCardProps = {
-  onSellConfirm: () => void;
+  item: any;
+
+  onSellConfirm: (id: string | number, nftCollectionId: string | number, totalPrice: string | number) => Promise<void>;
 } & ViewDateCardProps;
 
 export type ModalProps = {

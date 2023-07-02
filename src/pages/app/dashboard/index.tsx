@@ -12,7 +12,12 @@ import {
   SeeMoreButton,
 } from "./styles";
 import { identitiesData, predictionData } from "./data";
-import { Button, FeedItem, PredictionCard } from "../../../components";
+import {
+  Button,
+  FeedItem,
+  PredictionCard,
+  SellConfirmModal,
+} from "../../../components";
 import { IArticle, IMarketplaceListing } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
 import {
@@ -22,6 +27,8 @@ import {
   useMyFeedContext,
   useMyNFTsContext,
 } from "../../../context";
+import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
+import { newMarketplaceList } from "../../../actions/marketplace_listing";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,6 +41,9 @@ export const DashboardPage: React.FC = () => {
   const [afCurrentPage, setAFCurrentPage] = useState(1);
   const [pageMyFeeds, setPageMyFeeds] = useState<IArticle[]>([]);
   const [myCurrentPage, setMYCurrentPage] = useState(1);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [isView, setIsView] = useState<"view" | "sell" | "">("");
+  const [modal, setModal] = useState(false);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -61,8 +71,38 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
+  const handleSellConfirm = async (
+    id: number | string,
+    collection_id: string | number,
+    price: string | number
+  ) => {
+    const token = localStorage.auth;
+    const newMarketplace = {
+      nft_collection_id: collection_id,
+      nft_id: id,
+      price: price,
+    };
+    const response = await newMarketplaceList(newMarketplace, token);
+    console.log(response);
+
+    setModal(true);
+    setIsView("");
+  };
+
+  const handleView = (item: any) => {
+    setSelectedItem(item);
+    setIsView("view");
+  };
+
+  const handleSell = (item: any) => {
+    setSelectedItem(item);
+    setIsView("sell");
+  };
+
   return (
     <AppLayout>
+      <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -85,14 +125,36 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
+                      isNotHover={true}
                       {...item}
-                      onClick={() =>
-                        navigate("/dashboard/identities?id=" + item.nft_id)
-                      }
+                      // onClick={() =>
+                      //   navigate("/dashboard/identities?id=" + item.nft_id)
+                      // }
                       key={key}
+                      onSell={handleSell}
+                      cardType="identity"
+                      onView={handleView}
                     />
                   ))}
               </DashboardCardGrid>
+
+              <ViewDateCardSection
+                isView={isView === "view"}
+                cardType="identity"
+                item={selectedItem}
+                onClose={() => {
+                  setIsView("");
+                }}
+              />
+              <SellDateCardSection
+                onSellConfirm={handleSellConfirm}
+                cardType="identity"
+                isView={isView === "sell"}
+                item={selectedItem}
+                onClose={() => {
+                  setIsView("");
+                }}
+              />
               <SeeMoreButton onClick={() => navigate("/dashboard/identities")}>
                 See More
               </SeeMoreButton>
@@ -124,11 +186,15 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
-                      onClick={() =>
-                        navigate("/dashboard/predictions?id=" + item.nft_id)
-                      }
+                      // onClick={() =>
+                      //   navigate("/dashboard/predictions?id=" + item.nft_id)
+                      // }
+                      isNotHover={true}
                       {...item}
                       key={key}
+                      onSell={handleSell}
+                      cardType="prediction"
+                      onView={handleView}
                     />
                   ))}
               </DashboardCardGrid>

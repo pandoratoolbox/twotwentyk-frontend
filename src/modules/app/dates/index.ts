@@ -1,5 +1,6 @@
 export * from "./CardGridSection";
-export * from "./DatesCategoryFilterSection";
+export * from "./DatesFilterSection";
+export * from "./CategoryFilterSection";
 export * from "./SellDateCardSection";
 export * from "./ViewDateCardSection";
 export * from "./TriggersFilterSection";

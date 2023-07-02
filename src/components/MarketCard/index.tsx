@@ -19,6 +19,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
   status,
   onCard,
 }) => {
+  console.log(type)
   return (
     <CardWrapper bg={image}>
       <CardTopSection>

@@ -16,7 +16,7 @@ import {
 import { PredictionCardProps } from "../../types";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
-  ///////////////////////////////////
+  item,
   id = 0,
   image,
   category,
@@ -66,14 +66,14 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       )}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
-          {onView && <CardButton onClick={() => onView(id)}>View</CardButton>}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(id)}>
+            <CardButton onClick={() => onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(id)}>Sell</CardButton>}
-          {onBuy && <CardButton onClick={() => onBuy(id)}>Buy</CardButton>}
+          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

@@ -28,6 +28,7 @@ export const MarketplacePage: React.FC = () => {
     setSide("");
   };
 
+
   return (
     <AppLayout>
       <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>

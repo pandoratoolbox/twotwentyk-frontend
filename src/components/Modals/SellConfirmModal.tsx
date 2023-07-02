@@ -4,6 +4,7 @@ import { Modal as ModalWrapper } from "./Modal";
 import { ButtonGroup, IconWrapper, SellConfirmModalWrapper } from "./styles";
 import { IconConfirm } from "../Icons";
 import { Button } from "../Button";
+import { useNavigate } from "react-router-dom";
 
 export const SellConfirmModal: React.FC<SellModalProps> = ({
   open,
@@ -11,6 +12,8 @@ export const SellConfirmModal: React.FC<SellModalProps> = ({
   isMarket,
   isOffer,
 }) => {
+  const navigate = useNavigate();
+
   return (
     <ModalWrapper open={open} onClose={onClose} width={365}>
       <SellConfirmModalWrapper>
@@ -24,7 +27,11 @@ export const SellConfirmModal: React.FC<SellModalProps> = ({
         </p>
         <ButtonGroup>
           <Button onClick={onClose}>Done</Button>
-          {!isMarket && <Button onClick={() => {}}>View In Marketplace</Button>}
+          {!isMarket && (
+            <Button onClick={() => navigate("/marketplace")}>
+              View In Marketplace
+            </Button>
+          )}
         </ButtonGroup>
       </SellConfirmModalWrapper>
     </ModalWrapper>

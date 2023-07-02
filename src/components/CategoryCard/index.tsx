@@ -17,6 +17,7 @@ import {
 import { IconUserAdd } from "../Icons";
 
 export const CategoryCard: React.FC<DateCardProps> = ({
+  item,
   image,
   category,
   id = 0,
@@ -62,11 +63,11 @@ export const CategoryCard: React.FC<DateCardProps> = ({
               </div>
             </TooltipContent>
           </CardTooltip>
-          {onView && <CardButton onClick={() => onView(id)}>View</CardButton>}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(id)}>Craft Identity</CardButton>
+            <CardButton onClick={() => onCraft(item)}>Craft Identity</CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(id)}>Sell</CardButton>}
+          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>

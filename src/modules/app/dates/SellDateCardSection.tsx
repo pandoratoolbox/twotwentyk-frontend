@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   CloseButton,
   PreviewCardWrapper,
@@ -21,14 +21,65 @@ import {
   PredictionCard,
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
+import { CategoryCard } from "../../../components/CategoryCard";
+
+import { useMonthContext } from "../../../context";
+
+const addMarketPlaceFee = (priceValue: string) => {
+  const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
+  const priceNumber = parseFloat(amountWithoutDollarSign);
+  const fee = (priceNumber * 0.03).toFixed(2);
+  return fee;
+};
 
 export const SellDateCardSection: React.FC<SellDateCardProps> = ({
-  id,
+  item,
   cardType,
   isView,
   onClose,
   onSellConfirm,
 }) => {
+  const { monthContext } = useMonthContext();
+
+  // console.log(item);
+  const [priceValue, setPriceValue] = useState<string>("$1,000");
+  const [totalPrice, setTotalPrice] = useState<string | number>("");
+  const [nftCollectionId, setNftCollectionID] = useState<string | number>("");
+
+  const handlePriceChange = (price: string) => {
+    setPriceValue(price);
+  };
+
+  //get price
+  useEffect(() => {
+    const fee = addMarketPlaceFee(priceValue);
+    const totalPrice =
+      parseFloat(priceValue.replace("$", "").replace(",", "")) +
+      parseFloat(fee);
+    setTotalPrice(totalPrice);
+  }, [priceValue]);
+
+  //get collection id
+  useEffect(() => {
+    if (item) {
+      if (item.day || item.month) {
+        setNftCollectionID(3);
+      } else if (item.year) {
+        setNftCollectionID(4);
+      } else if (item.category) {
+        setNftCollectionID(2);
+      } else if (item.crafting) {
+        setNftCollectionID(1);
+      } else if (item.trigger) {
+        setNftCollectionID(5);
+      } else if (item.identity) {
+        setNftCollectionID(6);
+      } else if (item.prediction) {
+        setNftCollectionID(7);
+      }
+    }
+  }, [item]);
+
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -36,13 +87,19 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
         <h2>Sell {cardType === "trigger" ? "Trigger" : "Date Card"}</h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
-            <TriggerCard image="" trigger="2005" rarity={2} isNotHover={true} />
+            <TriggerCard
+              image={item?.image}
+              trigger="2005"
+              rarity={item?.rarity}
+              isNotHover={true}
+            />
           ) : cardType === "identity" ? (
             <PredictionCard
-              day={6}
-              month={6}
+              item={item}
+              day={item?.day}
+              month={item?.month}
               category="Athlete"
-              rarity={2}
+              rarity={item?.rarity}
               height={293}
               year={2023}
               icon={<IconCardAthlete />}
@@ -50,21 +107,31 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             />
           ) : cardType === "prediction" ? (
             <PredictionCard
-              day={6}
-              month={6}
+              item={item}
+              day={item?.day}
+              month={item?.month}
               category="Tom Brady"
-              rarity={2}
+              rarity={item?.rarity}
               height={293}
               year={2023}
-              image="/assets/nfts/1.png"
+              image={item?.image}
+            />
+          ) : cardType === "category" ? (
+            <CategoryCard
+              item={item}
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
+              image={item?.image}
             />
           ) : (
             <DateCard
-              image="/assets/nfts/1.png"
-              category="dfd"
-              month={12}
-              day={2}
-              rarity={0}
+              day={item?.day}
+              month={item?.month}
+              image={item?.image}
+              category={item?.category}
+              rarity={item?.rarity}
               isNotHover={true}
             />
           )}
@@ -83,7 +150,11 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             )}
             <PropertyItem>
               <p>Rarity</p>
-              <span>Rare</span>
+              <span>
+                {item?.rarity === 0 && "Common"}
+                {item?.rarity === 1 && "Uncommon"}
+                {item?.rarity === 2 && "Rare"}
+              </span>
             </PropertyItem>
 
             <PropertyItem>
@@ -94,11 +165,44 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? "Day/Month"
                   : "Type"}
               </p>
-              <span>Year</span>
+              <span>
+                {cardType === "date"
+                  ? item?.day
+                    ? "Day/Month"
+                    : "Year"
+                  : cardType === "category"
+                  ? "Category"
+                  : cardType === "trigger"
+                  ? item?.category
+                  : ""} 
+              </span>
             </PropertyItem>
             <PropertyItem>
-              <p>{cardType === "trigger" ? "Trigger Type" : "Year"}</p>
-              <span>2023</span>
+              <p>
+                {cardType === "trigger"
+                  ? "Trigger Type"
+                  : cardType === "date"
+                  ? item?.day
+                    ? "Day/Month"
+                    : "Year"
+                  : cardType === "category"
+                  ? "Category"
+                  : ""}
+              </p>
+              <span>
+                {cardType === "date"
+                  ? item?.day
+                    ? `${item?.day} ${
+                        monthContext &&
+                        (monthContext as Map<number, string>).get(item?.month)
+                      }`
+                    : item?.year
+                  : cardType === "category"
+                  ? item?.category
+                  : cardType === "trigger"
+                  ? item?.tier
+                  : ""}
+              </span>
             </PropertyItem>
             <PropertyItem>
               <p>
@@ -108,7 +212,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? "Category"
                   : "Collection"}
               </p>
-              <span>Sports Series</span>
+              <span>{cardType === "trigger" ? item?.trigger : ""}</span>
             </PropertyItem>
             {cardType === "identity" && (
               <PropertyItem>
@@ -120,7 +224,10 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
         </PropertiesWrapper>
         <SetPriceWrapper>
           <p>Enter the listing price for your card</p>
-          <Input value={"$1,000"} onChange={() => {}} />
+          <Input
+            value={priceValue}
+            onChange={(e) => handlePriceChange(e.target.value)}
+          />
         </SetPriceWrapper>
         <PropertiesWrapper>
           <PropertiesHeader>
@@ -130,17 +237,19 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           <PropertiesContent>
             <PriceItem>
               <p>Asking price</p>
-              <span>$1,000 USD</span>
+              <span>{priceValue} USD</span>
             </PriceItem>
             <PriceItem>
               <p>Marketplace fee (3%)</p>
-              <span className="weak">$140 USD</span>
+              <span className="weak">{`$${addMarketPlaceFee(
+                priceValue
+              )} USD`}</span>
             </PriceItem>
           </PropertiesContent>
           <PropertiesContent>
             <PriceItem>
               <p>Net amount to seller</p>
-              <span>$1,140 USD</span>
+              <span>{`$${totalPrice && totalPrice} USD`}</span>
             </PriceItem>
             <PriceItem>
               <p>Prize Pool Replenishment Fee</p>
@@ -148,7 +257,10 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             </PriceItem>
           </PropertiesContent>
         </PropertiesWrapper>
-        <Button className="sell-confirm-button" onClick={onSellConfirm}>
+        <Button
+          className="sell-confirm-button"
+          onClick={() => onSellConfirm(item.id, nftCollectionId, totalPrice)}
+        >
           Confirm
         </Button>
       </ViewDateCardContainer>

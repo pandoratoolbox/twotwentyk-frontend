@@ -10,11 +10,11 @@ export type RegisterParams = {
 };
 
 export type MarketplaceListObjectParams = {
-  nft_collection_id?: number;
-  nft_id?: number;
+  nft_collection_id?: number | string;
+  nft_id?: number | string;
   id?: number;
   owner_id?: number;
-  price?: number;
+  price?: number | string;
   created_at?: number | string | Date;
   is_listed?: boolean;
 };

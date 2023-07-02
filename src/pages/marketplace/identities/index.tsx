@@ -6,7 +6,7 @@ import {
   MarketplacePageWrapper,
 } from "../cards/styles";
 import {
-  DateCategoryFilterSection,
+  DatesFilterSection,
   MBuyCardSection,
   MCardGridSection,
   MSellCardSection,
@@ -35,7 +35,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         {marketplaceListContext?.length > 0 ? (
           <MarketplacePageContainer>
             <h2>Identities</h2>
-            <DateCategoryFilterSection />
+            <DatesFilterSection />
             <MCardGridSection onCardClick={handleCardClick} page="identities" />
           </MarketplacePageContainer>
         ) : (

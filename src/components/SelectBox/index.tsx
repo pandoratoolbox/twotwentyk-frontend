@@ -23,7 +23,7 @@ import {
   getFilterTriggerType,
 } from "../../actions/filtering";
 import { ToastContainer, toast } from "react-toastify";
-import { useCategoriesContext, useMyNFTsContext } from "../../context";
+import { useInventoryNFTsContext } from "../../context";
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder,
@@ -38,8 +38,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const { categoriesContext } = useCategoriesContext();
-  const { setMyNFTsContext } = useMyNFTsContext();
+  const { setInventoryNftsContext } = useInventoryNFTsContext();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -58,8 +57,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     const token = localStorage.auth;
 
     let res = await getFilterCollection(value, token);
-    // console.log(res);
-    setMyNFTsContext(res?.data);
+    setInventoryNftsContext(res?.data);
     // onChange && onChange(value);
     setIsOption(false);
   };
@@ -82,9 +80,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       } else if (filterType === "Triggers Type") {
         res = await getFilterTriggerType(selectedOptions, token);
       }
-      setMyNFTsContext(res?.data);
-
-      // console.log(res);
+      setInventoryNftsContext(res?.data);
       setIsOption(false);
     } else {
       toast.warn("Please checked some value");
@@ -104,8 +100,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       );
     }
   };
-
-  // console.log(selectedOptions);
 
   return (
     <SelectBoxWrapper ref={optionRef}>

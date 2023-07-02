@@ -29,11 +29,14 @@ export const getMarketplaceListById = async (id: number) => {
 };
 
 export const newMarketplaceList = async (
-  newMarketplace: MarketplaceListObjectParams
+  newMarketplace: MarketplaceListObjectParams,
+  token: string
 ) => {
   try {
-    const res = await api.post("/marketplace_listing/", {
-      ...newMarketplace,
+    const res = await api.post("/marketplace_listing/", newMarketplace, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     });
     return { success: true, data: res.data };
   } catch (error) {

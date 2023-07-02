@@ -14,9 +14,10 @@ import {
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
-import { predictionData } from "./data";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useMyNFTsContext } from "../../../context";
+import { useInventoryNFTsContext } from "../../../context";
+import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
+import { newMarketplaceList } from "../../../actions/marketplace_listing";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -24,7 +25,10 @@ export const PredictionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
-  const { myNFTsContext } = useMyNFTsContext();
+  const { inventoryNFTsContext, setInventoryNftsContext } =
+    useInventoryNFTsContext();
+  const [selectedItem, setSelectedItem] = useState(null);
+
 
   useEffect(() => {
     if (params.get("id")) {
@@ -36,13 +40,38 @@ export const PredictionsPage: React.FC = () => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
+  const getPageData = async () => {
+    const token = localStorage.auth;
+    const response = await getMyNftCardPrediction(token);
+    setInventoryNftsContext(response?.data);
+  };
+
+  useEffect(() => {
+    getPageData();
+  }, []);
+
   const [modal, setModal] = useState(false);
-  const handleSellConfirm = () => {
+
+  const handleSellConfirm = async (
+    id: number | string,
+    collection_id: string | number,
+    price: string | number
+  ) => {
+    const token = localStorage.auth;
+    const newMarketplace = {
+      nft_collection_id: collection_id,
+      nft_id: id,
+      price: price,
+    };
+    const response = await newMarketplaceList(newMarketplace, token);
+    console.log(response);
+
     setModal(true);
     setIsView("");
   };
 
-  const handleView = (id: string | number) => {
+  const handleView = (item: any) => {
+    setSelectedItem(item);
     setIsView("view");
   };
 
@@ -50,7 +79,8 @@ export const PredictionsPage: React.FC = () => {
     navigate("/crafting/predictions?id=" + id);
   };
 
-  const handleSell = (id: string | number) => {
+  const handleSell = (item: any) => {
+    setSelectedItem(item);
     setIsView("sell");
   };
 
@@ -58,7 +88,7 @@ export const PredictionsPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        myNFTsContext?.nft_card_prediction_data?.length > 0 ? (
+        inventoryNFTsContext?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -74,7 +104,7 @@ export const PredictionsPage: React.FC = () => {
               </DatePageTitleWrapper>
               <PredictionsFilterSection />
               <CardGridSection
-                identityData={myNFTsContext?.nft_card_prediction_data}
+                identityData={inventoryNFTsContext}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 cardType="identity"
@@ -83,7 +113,7 @@ export const PredictionsPage: React.FC = () => {
               <ViewDateCardSection
                 isView={isView === "view"}
                 cardType="prediction"
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => {
                   setIsView("");
                   navigate("/dashboard/predictions");
@@ -93,7 +123,7 @@ export const PredictionsPage: React.FC = () => {
                 onSellConfirm={handleSellConfirm}
                 cardType="prediction"
                 isView={isView === "sell"}
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => {
                   setIsView("");
                   navigate("/dashboard/predictions");

@@ -65,7 +65,7 @@ export const CardGridWrapper = styled.div`
 export const ViewDateCardWrapper = styled.div<{ isview?: string }>`
   max-width: 405px;
   width: 100%;
-
+  z-index: 1;
   height: calc(100% - 125px);
   background-color: #fff;
   position: fixed;

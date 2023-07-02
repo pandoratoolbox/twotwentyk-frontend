@@ -17,6 +17,7 @@ import {
 import { dateCardData } from "./data";
 import { useNavigate } from "react-router-dom";
 import { useMarketplaceListContext } from "../../../context";
+import { newMarketplaceList } from "../../../actions/marketplace_listing";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -24,27 +25,44 @@ export const CardPackPage: React.FC = () => {
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const { marketplaceListContext } = useMarketplaceListContext();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
-  const handleSellConfirm = () => {
+  const handleSellConfirm = async (
+    id: number | string,
+    collection_id: string | number,
+    price: string | number
+  ) => {
+    const token = localStorage.auth;
+    const newMarketplace = {
+      nft_collection_id: collection_id,
+      nft_id: id,
+      price: price,
+    };
+    const response = await newMarketplaceList(newMarketplace, token);
+    console.log(response);
+
     setModal(true);
     setIsView("");
   };
 
-  const handleView = (id: string | number) => {
+  const handleView = (item: any) => {
+    setSelectedItem(item);
     setIsView("view");
   };
 
   const handleCraft = (id: string | number) => {
     navigate("/crafting/identities");
   };
-
-  const handleSell = (id: string | number) => {
+  
+  const handleSell = (item: any) => {
+    setSelectedItem(item);
     setIsView("sell");
   };
+
 
   return (
     <AppLayout>
@@ -73,13 +91,13 @@ export const CardPackPage: React.FC = () => {
               />
               <ViewDateCardSection
                 isView={isView === "view"}
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
               <SellDateCardSection
                 onSellConfirm={handleSellConfirm}
                 isView={isView === "sell"}
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
             </DatePageContainer>

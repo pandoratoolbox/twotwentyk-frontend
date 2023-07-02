@@ -15,6 +15,7 @@ import {
 import { IconBag } from "../Icons";
 
 export const TriggerCard: React.FC<TriggerCardProps> = ({
+  item,
   image,
   id = 0,
   is_crafted,
@@ -40,13 +41,13 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
           <CardTooltip className="left">
             <IconBag />
           </CardTooltip>
-          {onView && <CardButton onClick={() => onView(id)}>View</CardButton>}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(id)}>
+            <CardButton onClick={() => onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(id)}>Sell</CardButton>}
+          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>

@@ -17,13 +17,17 @@ import {
   PredictionCard,
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
+import { CategoryCard } from "../../../components/CategoryCard";
+import { useMonthContext } from "../../../context";
 
 export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
-  id,
+  item,
   cardType,
   isView,
   onClose,
 }) => {
+  const { monthContext } = useMonthContext();
+  console.log(item);
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -36,22 +40,24 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             ? "Identity"
             : cardType === "prediction"
             ? "Prediction"
+            : cardType === "category"
+            ? "Category"
             : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
             <TriggerCard
-              image="/assets/nft/1.png"
-              trigger="2005"
-              rarity={0}
+              image={item?.image}
+              trigger={item?.trigger}
+              rarity={item?.rarity}
               isNotHover={true}
             />
           ) : cardType === "identity" ? (
             <PredictionCard
-              day={6}
-              month={6}
-              category="Athlete"
-              rarity={2}
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
               height={293}
               year={2023}
               icon={<IconCardAthlete />}
@@ -59,21 +65,30 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             />
           ) : cardType === "prediction" ? (
             <PredictionCard
-              day={6}
-              month={6}
-              category="Tom Brady"
-              rarity={2}
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
               height={293}
               year={2023}
-              image="/assets/nfts/1.png"
+              image={item?.image}
+            />
+          ) : cardType === "category" ? (
+            <CategoryCard
+              item={item}
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
+              image={item?.image}
             />
           ) : (
             <DateCard
-              day={2}
-              month={12}
-              image="/assets/nfts/1.png"
-              category="2005"
-              rarity={0}
+              day={item?.day}
+              month={item?.month}
+              image={item?.image}
+              category={item?.category}
+              rarity={item?.rarity}
               isNotHover={true}
             />
           )}
@@ -86,7 +101,11 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
           <PropertiesContent>
             <PropertyItem>
               <p>Rarity</p>
-              <span>Rare</span>
+              <span>
+                {item?.rarity === 0 && "Common"}
+                {item?.rarity === 1 && "Uncommon"}
+                {item?.rarity === 2 && "Rare"}
+              </span>
             </PropertyItem>
             <PropertyItem>
               <p>
@@ -96,11 +115,44 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? "Day/Month"
                   : "Type"}
               </p>
-              <span>Year</span>
+              <span>
+                {cardType === "date"
+                  ? item?.day
+                    ? "Day/Month"
+                    : "Year"
+                  : cardType === "category"
+                  ? "Category"
+                  : cardType === "trigger"
+                  ? item?.category
+                  : ""}
+              </span>
             </PropertyItem>
             <PropertyItem>
-              <p>{cardType === "trigger" ? "Trigger Type" : "Year"}</p>
-              <span>2023</span>
+              <p>
+                {cardType === "trigger"
+                  ? "Trigger Type"
+                  : cardType === "date"
+                  ? item?.day
+                    ? "Day/Month"
+                    : "Year"
+                  : cardType === "category"
+                  ? "Category"
+                  : ""}
+              </p>
+              <span>
+                {cardType === "date"
+                  ? item?.day
+                    ? `${item?.day} ${
+                        monthContext &&
+                        (monthContext as Map<number, string>).get(item?.month)
+                      }`
+                    : item?.year
+                  : cardType === "category"
+                  ? item?.category
+                  : cardType === "trigger"
+                  ? item?.tier
+                  : ""}
+              </span>
             </PropertyItem>
             <PropertyItem>
               <p>
@@ -110,7 +162,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? "Category"
                   : "Collection"}
               </p>
-              <span>Sports Series</span>
+              <span> {cardType === "trigger" ? item?.trigger : ""}</span>
             </PropertyItem>
           </PropertiesContent>
         </PropertiesWrapper>

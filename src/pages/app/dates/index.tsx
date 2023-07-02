@@ -10,48 +10,77 @@ import {
 import { Button, SellConfirmModal } from "../../../components";
 import {
   CardGridSection,
-  DateCategoryFilterSection,
+  DatesFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
-import { dateCardData } from "./data";
 import { useNavigate } from "react-router-dom";
-import { useMyNFTsContext } from "../../../context";
+import { useInventoryNFTsContext } from "../../../context";
+import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
+import { newMarketplaceList } from "../../../actions/marketplace_listing";
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
-  const { myNFTsContext } = useMyNFTsContext();
+  const { inventoryNFTsContext, setInventoryNftsContext } =
+    useInventoryNFTsContext();
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
-  const handleSellConfirm = () => {
-    setModal(true);
-    setIsView("");
+  const getPageData = async () => {
+    const token = localStorage.auth;
+    const response = await getMyNftCardDayMonth(token);
+    setInventoryNftsContext(response?.data);
   };
 
-  const handleView = (id: string | number) => {
+  useEffect(() => {
+    getPageData();
+  }, []);
+
+  const handleSellConfirm = async (
+    id: number | string,
+    collection_id: string | number,
+    price: string | number
+  ) => {
+    const token = localStorage.auth;
+    const newMarketplace = {
+      nft_collection_id: collection_id,
+      nft_id: id,
+      price: price,
+    };
+    const response = await newMarketplaceList(newMarketplace, token);
+
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
+  };
+
+  const handleView = (item: any) => {
+    setSelectedItem(item);
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/identities?id=" + id);
+  const handleCraft = (item: any) => {
+    navigate("/crafting/identities?id=" + item.id);
   };
 
-  const handleSell = (id: string | number) => {
+  const handleSell = (item: any) => {
+    setSelectedItem(item);
     setIsView("sell");
   };
-  // console.log(myNFTsContext);
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        myNFTsContext?.nft_card_day_month_data?.length > 0 ? (
+        inventoryNFTsContext?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -66,23 +95,25 @@ export const DatesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <DateCategoryFilterSection />
+              <DatesFilterSection />
               <CardGridSection
                 cardType="date"
-                data={myNFTsContext?.nft_card_day_month_data}
+                data={inventoryNFTsContext}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 onView={handleView}
               />
               <ViewDateCardSection
+                cardType="date"
                 isView={isView === "view"}
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
               <SellDateCardSection
+                cardType="date"
                 onSellConfirm={handleSellConfirm}
                 isView={isView === "sell"}
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
             </DatePageContainer>

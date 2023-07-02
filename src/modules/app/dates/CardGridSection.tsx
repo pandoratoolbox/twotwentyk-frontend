@@ -4,8 +4,6 @@ import { DateCardGridProps } from "../../../types";
 import { DateCard, PredictionCard } from "../../../components";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { TriggerCard } from "../../../components/TriggerCard";
-import { useMarketplaceListContext } from "../../../context";
-import { IMarketplaceListing } from "../../../types/actions";
 
 export const CardGridSection: React.FC<DateCardGridProps> = ({
   data,
@@ -15,25 +13,25 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onSell,
   onView,
 }) => {
-  const { marketplaceListContext } = useMarketplaceListContext();
+  // console.log(data);
   return (
     <CardGridWrapper>
-      {(cardType === "category") &&
+      {cardType === "category" &&
         data?.map((item, key) => (
           <CategoryCard
-            // {...data[key]}
             key={key}
+            item={item}
             {...item}
             onCraft={onCraft}
             onView={onView}
             onSell={onSell}
           />
         ))}
-      {(cardType === "date") &&
+      {cardType === "date" &&
         data?.map((item, key) => (
           <DateCard
-            // {...data[key]}
             key={key}
+            item={item}
             {...item}
             onCraft={onCraft}
             onView={onView}
@@ -44,6 +42,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
         data?.map((item, key) => (
           <TriggerCard
             key={key}
+            item={item}
             {...item}
             onCraft={onCraft}
             onView={onView}
@@ -57,7 +56,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             cardType === "trigger" ? (
               <TriggerCard
                 key={key}
-                // {...data[key]}
+               
                 {...item}
                 onCraft={onCraft}
                 onView={onView}
@@ -65,7 +64,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
               />
             ) : (
               <DateCard
-                // {...data[key]}
+               
                 key={key}
                 {...item}
                 onCraft={onCraft}
@@ -80,6 +79,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             height={293}
             isNotHover={true}
             key={key}
+            item={item}
             {...item}
             // onCraft={onCraft}
             onView={onView}

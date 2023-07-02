@@ -12,7 +12,8 @@ export const MCardGridSection: React.FC<{
   onCardClick: (id: string | number, action: CardActionTypes) => void;
   page?: string;
 }> = ({ onCardClick, page }) => {
-  const marketplaceListContext = useMarketplaceListContext();
+  const { marketplaceListContext } = useMarketplaceListContext();
+
   return (
     <CardGridWrapper>
       {!page &&

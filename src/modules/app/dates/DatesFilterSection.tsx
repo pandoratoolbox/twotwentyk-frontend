@@ -3,15 +3,15 @@ import { FilterGroupWrapper, FilterSectionWrapper, SortButton } from "./styles";
 import { IconSort, SelectBox } from "../../../components";
 import { collectionOption } from "./data";
 import {
+  useCardTypesContext,
   useAllRaritiesContext,
   useStatusContext,
-  useCategoriesContext,
 } from "../../../context";
 
-export const IdentitiesFilterSection: React.FC = () => {
+export const DatesFilterSection: React.FC = () => {
+  const { cardTypesContext } = useCardTypesContext();
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
-  const { categoriesContext } = useCategoriesContext();
 
   return (
     <FilterSectionWrapper>
@@ -19,17 +19,15 @@ export const IdentitiesFilterSection: React.FC = () => {
       <FilterGroupWrapper>
         <SelectBox
           isFilter
-          newData={allRaritiesContext}
-          placeholder="All Rarities"
+          placeholder="Card Types"
+          newData={cardTypesContext}
         />
-
         <SelectBox options={collectionOption} placeholder="Collections" />
         <SelectBox
           isFilter
-          placeholder="Category"
-          newData={categoriesContext}
+          newData={allRaritiesContext}
+          placeholder="All Rarities"
         />
-
         <SelectBox isFilter newData={statusContext} placeholder="Status" />
         <SortButton>
           <IconSort />

@@ -14,35 +14,64 @@ import {
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
-import { triggerCardData } from "./data";
 import { useNavigate } from "react-router-dom";
-import { useMyNFTsContext } from "../../../context";
+import { useInventoryNFTsContext } from "../../../context";
+import { getMyNftCardTrigger } from "../../../actions/nft_card_trigger";
+import { newMarketplaceList } from "../../../actions/marketplace_listing";
 
 export const TriggersPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
-  const { myNFTsContext } = useMyNFTsContext();
+  const { inventoryNFTsContext, setInventoryNftsContext } =
+    useInventoryNFTsContext();
+  const [selectedItem, setSelectedItem] = useState(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
+  const getPageData = async () => {
+    const token = localStorage.auth;
+    const response = await getMyNftCardTrigger(token);
+    setInventoryNftsContext(response?.data);
+  };
+
+  useEffect(() => {
+    getPageData();
+  }, []);
+
   const [modal, setModal] = useState(false);
-  const handleSellConfirm = () => {
+
+  const handleSellConfirm = async (
+    id: number | string,
+    collection_id: string | number,
+    price: string | number
+  ) => {
+    const token = localStorage.auth;
+    const newMarketplace = {
+      nft_collection_id: collection_id,
+      nft_id: id,
+      price: price,
+    };
+    const response = await newMarketplaceList(newMarketplace, token);
+    console.log(response);
+
     setModal(true);
     setIsView("");
   };
 
-  const handleView = (id: string | number) => {
+  const handleView = (item: any) => {
+    setSelectedItem(item);
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/predictions?id=" + id);
+  const handleCraft = (item: any) => {
+    navigate("/crafting/predictions?id=" + item?.id);
   };
 
-  const handleSell = (id: string | number) => {
+  const handleSell = (item: any) => {
+    setSelectedItem(item);
     setIsView("sell");
   };
 
@@ -50,7 +79,7 @@ export const TriggersPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        myNFTsContext?.nft_card_trigger_data?.length > 0 ? (
+        inventoryNFTsContext?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -72,7 +101,7 @@ export const TriggersPage: React.FC = () => {
               </DatePageTitleWrapper>
               <TriggerFilterSection />
               <CardGridSection
-                data={myNFTsContext?.nft_card_trigger_data}
+                data={inventoryNFTsContext}
                 cardType={"trigger"}
                 onCraft={handleCraft}
                 onSell={handleSell}
@@ -81,14 +110,14 @@ export const TriggersPage: React.FC = () => {
               <ViewDateCardSection
                 isView={isView === "view"}
                 cardType="trigger"
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
               <SellDateCardSection
                 onSellConfirm={handleSellConfirm}
                 isView={isView === "sell"}
                 cardType="trigger"
-                id={"asdfa"}
+                item={selectedItem}
                 onClose={() => setIsView("")}
               />
             </DatePageContainer>

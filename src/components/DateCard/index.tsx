@@ -17,9 +17,8 @@ import {
 import { IconUserAdd } from "../Icons";
 import { useMonthContext } from "../../context";
 
-
-
 export const DateCard: React.FC<DateCardProps> = ({
+  item,
   image,
   day,
   month,
@@ -33,8 +32,8 @@ export const DateCard: React.FC<DateCardProps> = ({
   onSell,
   onView,
 }) => {
-  const {monthContext} = useMonthContext()
-  
+  const { monthContext } = useMonthContext();
+  // console.log(item)
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>
@@ -43,7 +42,11 @@ export const DateCard: React.FC<DateCardProps> = ({
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
       </CardTopWrapper>
-      {monthContext && <CardBottomWrapper>{day} {(monthContext as Map<number,string>).get(month)}</CardBottomWrapper>}
+      {monthContext && (
+        <CardBottomWrapper>
+          {day} {(monthContext as Map<number, string>).get(month)}
+        </CardBottomWrapper>
+      )}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           <CardTooltip>
@@ -68,11 +71,13 @@ export const DateCard: React.FC<DateCardProps> = ({
               </div>
             </TooltipContent>
           </CardTooltip>
-          {onView && <CardButton onClick={() => onView(id)}>View</CardButton>}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(id)}>Craft Identity</CardButton>
+            <CardButton onClick={() => onCraft(item)}>
+              Craft Identity
+            </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(id)}>Sell</CardButton>}
+          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>
