@@ -14,18 +14,33 @@ import { IconInfo } from "../../components";
 import { matchList, triggerList } from "./data";
 import { useCelebritiesContext } from "../../context";
 import { IconCardAthlete } from "../../components";
+import { ICelebrity } from "../../models/celebrity";
+import { INftCardDayMonth } from "../../models/nft_card_day_month";
+import { INftCardYear } from "../../models/nft_card_year";
+import { INftCardCategory } from "../../models/nft_card_category";
+import { INftCardIdentity } from "../../models/nft_card_identity";
+import { INftCardTrigger } from "../../models/nft_card_trigger";
+import { INftCardCrafting } from "../../models/nft_card_crafting";
 
-export const MatchListSection: React.FC<{
+export const IdentityMatchListSection: React.FC<{
   page: "identity" | "prediction";
-  clickedCard: string | number | null;
-}> = ({ page, clickedCard }) => {
+  selectedCards: {
+  crafting: INftCardCrafting | null;
+  year: INftCardYear | null;
+  dayMonth: INftCardDayMonth | null;
+  category: INftCardCategory | null;
+  identity: INftCardIdentity | null;
+  trigger: Array<INftCardTrigger> | null;
+  };
+  chooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
+}> = ({ page, selectedCards, chooseCelebrity }) => {
   const [collapsed, setCollapsed] = useState<number>(-1);
   const { celebritiesContext } = useCelebritiesContext();
 
   return (
     <MatchListSectionWrapper>
       <h2>{page === "identity" ? "Identity Matches" : "Eligible Triggers"}</h2>
-      {Number(clickedCard) > -1 ? (
+      {selectedCards.crafting != null && selectedCards.category != null && selectedCards.dayMonth != null && selectedCards.year != null ? (
         <p>
           {page === "identity"
             ? "Click for recipe"
@@ -37,19 +52,15 @@ export const MatchListSection: React.FC<{
           Identity matches.
         </div>
       )}
-      {Number(clickedCard) > -1 && (
+      {selectedCards.crafting != null && selectedCards.category != null && selectedCards.dayMonth != null && selectedCards.year != null && (
         <MatchListGroup>
-          {page === "prediction"
-            ? triggerList.map((item, key) => (
-                <TriggerListItem key={key} {...item} />
-              ))
-            : celebritiesContext &&
-              Array.from<[number, any]>(celebritiesContext).map(
+          {celebritiesContext &&
+              Array.from<[number, ICelebrity]>(celebritiesContext).map(
                 ([key, value]) => (
                   <MatchListItem
-                    name={value.name}
+                  chooseCelebrity={chooseCelebrity}
+                    celebrity={value}
                     key={key}
-                    id={key}
                     onCollapsed={setCollapsed}
                     collapsed={collapsed === key}
                   />
@@ -62,22 +73,29 @@ export const MatchListSection: React.FC<{
 };
 
 const MatchListItem: React.FC<{
-  id: number;
+  celebrity: ICelebrity;
+  chooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
+  // id: number;
 
-  name: string;
+  // name: string;
   onCollapsed: (id: number) => void;
   collapsed: boolean;
-}> = ({ name, id, onCollapsed, collapsed }) => {
+}> = ({ celebrity, onCollapsed, collapsed, chooseCelebrity }) => {
   const [selected, setSelected] = useState<string>("");
+  let clicked = () => {
+    onCollapsed(celebrity.id);
+    chooseCelebrity(celebrity);
+    // console.log(celebrity)
+  }
   return (
     <MatchListItemWrapper>
-      <ItemHeader onClick={() => onCollapsed(id)}>
+      <ItemHeader onClick={() => clicked()}>
         <MatchListInfoWrapper>
           <ItemIconWrapper>
             {" "}
             <IconCardAthlete />
           </ItemIconWrapper>
-          <p>{name}</p>
+          <p>{celebrity.name}</p>
         </MatchListInfoWrapper>
         <IconInfo />
       </ItemHeader>

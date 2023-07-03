@@ -5,10 +5,10 @@ import {
   CraftRightWrapper,
   CraftingWrapper,
 } from "../identities/styles";
+import { PredictionMatchListSection } from "../../../modules/crafting/PredictionMatchListSection";
 import {
   CardPreviewSection,
   CraftSection,
-  MatchListSection,
   SelectCardSection,
 } from "../../../modules";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -17,6 +17,12 @@ import { ToastContainer, toast } from "react-toastify";
 import { craftingPrediction, getMyNFTs } from "../../../actions";
 import { useMyNFTsContext } from "../../../context";
 import { myNFTsData } from "../../../data/nfts";
+import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import { INftCardYear } from "../../../models/nft_card_year";
+import { INftCardCategory } from "../../../models/nft_card_category";
+import { INftCardIdentity } from "../../../models/nft_card_identity";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
+import { INftCardCrafting } from "../../../models/nft_card_crafting";
 
 export const CraftingPredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -28,19 +34,19 @@ export const CraftingPredictionsPage: React.FC = () => {
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
   const [selectedCard, setSelectedCard] = useState<number | string | null>(-1);
   const [selectedCards, setSelectedCards] = useState<{
-    crafting: number | string | null;
-    year: number | string | null;
-    dayMonth: number | string | null;
-    category: number | string | null;
-    identity: number | string | null;
-    trigger: Array<number | string | null>;
+    crafting: INftCardCrafting | null;
+    year: INftCardYear | null;
+    dayMonth: INftCardDayMonth | null;
+    category: INftCardCategory | null;
+    identity: INftCardIdentity | null;
+    trigger: Array<INftCardTrigger> | null;
   }>({
-    crafting: -1,
-    category: -1,
-    dayMonth: -1,
-    year: -1,
-    identity: -1,
-    trigger: [],
+    crafting: null,
+    category: null,
+    dayMonth: null,
+    year: null,
+    identity: null,
+    trigger: null,
   });
 
   useEffect(() => {
@@ -62,12 +68,12 @@ export const CraftingPredictionsPage: React.FC = () => {
   };
 
   const handleCardSelected = (id: string | number | null, craft: string) => {
-    if (craft === "trigger") {
-      setSelectedCards((prev) => ({ ...prev, trigger: [...prev.trigger, id] }));
-    } else {
-      setSelectedCards((prev) => ({ ...prev, [craft]: id }));
-    }
-    setSelectedCard(id);
+    // if (craft === "trigger" && selectedCards.trigger != null) {
+    //   setSelectedCards((prev) => ({ ...prev, trigger: [...prev.trigger, id] }));
+    // } else {
+    //   setSelectedCards((prev) => ({ ...prev, [craft]: id }));
+    // }
+    // setSelectedCard(id);
   };
   const handleCraft = (page: "identity" | "prediction") => {
     page === "prediction" && craftPrediction();
@@ -88,27 +94,6 @@ export const CraftingPredictionsPage: React.FC = () => {
     //   toast.error(res.message);
     // }
 
-    let card_crafting = myNFTsData.nft_card_crafting_data.find(v => v.id == selectedCards.crafting)
-    let card_identity = myNFTsData.nft_card_identity_data.find(v => v.id == selectedCards.identity)
-    let card_triggers = myNFTsData.nft_card_trigger_data.map(v => {
-      if (selectedCards.trigger.includes(Number(v))) { return v}
-    })
-
-    if (!card_crafting) {
-      toast.error("Error crafting");
-      return
-    }
-
-    if (!card_identity) {
-      toast.error("Error crafting");
-      return
-    }
-
-    if (!card_triggers) {
-      toast.error("Error crafting");
-      return
-    }
-
 
     // let triggers = card_triggers.map(v => {
     //   if (v !== undefined) {
@@ -116,15 +101,32 @@ export const CraftingPredictionsPage: React.FC = () => {
     //   }
     // })
 
-    myNFTsData.nft_card_prediction_data.push({
-      id: 0,
-      rarity: 0,
-      is_claimed: false,
-      triggers: ["test"],
-      owner_id: 0,
-      celebrity_name: card_identity.celebrity_name,
-      image: ""
-    })
+    if (selectedCards.identity === null) {
+      toast.error("Error crafting")
+      return
+    }
+
+    
+    if (selectedCards.crafting === null) {
+      toast.error("Error crafting")
+      return
+    }
+
+    
+    if (selectedCards.trigger === null) {
+      toast.error("Error crafting")
+      return
+    }
+
+    // myNFTsData.nft_card_prediction_data.push({
+    //   id: 0,
+    //   rarity: 0,
+    //   is_claimed: false,
+    //   triggers: selectedCards.trigger.map(v => { return v.id }),
+    //   owner_id: 0,
+    //   celebrity_name: selectedCards.identity.celebrity_name,
+    //   image: ""
+    // })
 
     toast.success("Crafted Successfully.");
   };
@@ -164,7 +166,7 @@ export const CraftingPredictionsPage: React.FC = () => {
               />
             </CraftLeftWrapper>
             <CraftRightWrapper>
-              <MatchListSection page="prediction" clickedCard={clickedCard} />
+              <PredictionMatchListSection page="prediction" clickedCard={clickedCard} />
               <CardPreviewSection
                 page="prediction"
                 clickedCard={clickedCard}
