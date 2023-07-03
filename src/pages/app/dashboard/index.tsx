@@ -119,7 +119,7 @@ export const DashboardPage: React.FC = () => {
     }
   };
 
-  loadNfts()
+  useEffect(() => {loadNfts()}, [])
 
   return (
     <AppLayout>
@@ -240,7 +240,7 @@ export const DashboardPage: React.FC = () => {
                   className="dashboard-card-button"
                   onClick={() => navigate("/crafting/predictions")}
                 >
-                  Craft an Identity Now
+                  Craft a Prediction Now
                 </Button>
               )}
             </EmptyCardWrapper>

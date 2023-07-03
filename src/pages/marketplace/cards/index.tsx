@@ -34,7 +34,7 @@ export const MarketplacePage: React.FC = () => {
       <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
         {marketplaceListContext?.length > 0 ? (
           <MarketplacePageContainer>
-            <h2>Cards</h2>
+            <h2>Dates</h2>
             <MFilterSection />
             <MCardGridSection onCardClick={handleCardClick} />
           </MarketplacePageContainer>
