@@ -3,7 +3,7 @@ import { MarketplaceListObjectParams } from "../types/actions";
 
 export const getMarketplaceList = async (token: string) => {
   try {
-    const res = await api.get("/marketplace_listing");
+    const res = await api.get("/marketplace_listing?nft_collection_id=1&limit=20");
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: "Server Error!" };

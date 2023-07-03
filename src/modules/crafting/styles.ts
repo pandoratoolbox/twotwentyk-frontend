@@ -130,6 +130,7 @@ export const CraftingCardWrapper = styled.div<{ active?: string }>`
 `;
 
 export const CraftCard = styled.div<{ bg: string }>`
+  text-transform: capitalize;
   position: relative;
   width: 100%;
   height: 220px;

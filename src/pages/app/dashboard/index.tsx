@@ -29,6 +29,10 @@ import {
 } from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
+import { INftCardIdentity } from "../../../models/nft_card_identity";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -44,6 +48,8 @@ export const DashboardPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
+  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([])
+  const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>([])
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -99,6 +105,22 @@ export const DashboardPage: React.FC = () => {
     setIsView("sell");
   };
 
+
+  const loadNfts = async () => {
+    const token = localStorage.auth;
+    const p_resp = await getMyNftCardPrediction(token);
+    if (p_resp?.data) {
+      setPredictionNfts(p_resp.data)
+    }
+
+    const i_resp = await getMyNftCardIdentity(token);
+    if (i_resp?.data) {
+      setIdentityNfts(i_resp.data)
+    }
+  };
+
+  useEffect(() => {loadNfts()}, [])
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -118,14 +140,18 @@ export const DashboardPage: React.FC = () => {
       <DashboardPageWrapper>
         <DashboardCardWrapper>
           <CardTitle>My Identities</CardTitle>
-          {myNFTsContext?.nft_card_identity_data?.length > 0 && currentUser ? (
+          {identityNfts?.length > 0 && currentUser ? (
             <React.Fragment>
               <DashboardCardGrid>
-                {myNFTsContext?.nft_card_identity_data
+                {identityNfts
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
                       isNotHover={true}
+                      day={item.day}
+                      month={item.month}
+                      year={item.year}
+                      rarity={item.rarity}
                       {...item}
                       // onClick={() =>
                       //   navigate("/dashboard/identities?id=" + item.nft_id)
@@ -179,10 +205,10 @@ export const DashboardPage: React.FC = () => {
         </DashboardCardWrapper>
         <DashboardCardWrapper>
           <CardTitle>My Predictions</CardTitle>
-          {myNFTsContext?.nft_card_prediction_data.length > 0 && currentUser ? (
+          {predictionNfts.length > 0 && currentUser ? (
             <React.Fragment>
               <DashboardCardGrid>
-                {myNFTsContext?.nft_card_prediction_data
+                {predictionNfts
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
@@ -191,6 +217,7 @@ export const DashboardPage: React.FC = () => {
                       // }
                       isNotHover={true}
                       {...item}
+                      rarity={item.rarity}
                       key={key}
                       onSell={handleSell}
                       cardType="prediction"
@@ -213,7 +240,7 @@ export const DashboardPage: React.FC = () => {
                   className="dashboard-card-button"
                   onClick={() => navigate("/crafting/predictions")}
                 >
-                  Craft an Identity Now
+                  Craft a Prediction Now
                 </Button>
               )}
             </EmptyCardWrapper>

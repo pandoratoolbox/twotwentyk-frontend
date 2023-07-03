@@ -27,6 +27,7 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
   onSell,
   onView,
 }) => {
+  image = "/assets/nfts/1.png"
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>

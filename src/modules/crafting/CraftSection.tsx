@@ -196,6 +196,7 @@ export const CraftSection: React.FC<{
                     nftData[item.key].filter(
                       (f: any) => f.id === Number(selectedCards[item.key])
                     )[0]?.image
+                    || "/assets/nfts/1.png"
                   }
                   className="crafting-card"
                 >
@@ -210,9 +211,7 @@ export const CraftSection: React.FC<{
                   )[0]?.rarity === 2 && <span>Rare</span>}
                   <p>
                     {
-                      nftData[item.key].filter(
-                        (f: any) => f.id === Number(selectedCards[item.key])
-                      )[0]?.name
+                      item.key
                     }
                   </p>
                 </CraftCard>
@@ -237,7 +236,7 @@ export const CraftSection: React.FC<{
                           nftData[item.key].filter(
                             (f: any) => f.id === Number(selectedCards[item.key])
                           )[0]?.image
-                        }
+                        || "/assets/nfts/1.png"}
                         className="crafting-card"
                       >
                         {nftData[item.key].filter(

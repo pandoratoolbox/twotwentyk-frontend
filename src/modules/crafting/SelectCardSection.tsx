@@ -88,7 +88,7 @@ export const SelectCardSection: React.FC<{
               id: item.id || 0,
               rarity: item.rarity || 0,
               image: item.image || "",
-              name: item.name || "",
+              name: item.name || "Crafting",
               is_crafted: Boolean(item.is_crafted),
               day: 0,
               month: 0,
@@ -174,7 +174,7 @@ export const SelectCardSection: React.FC<{
               rarity: item.rarity || 0,
               image: item.image || "",
               is_crafted: Boolean(item.is_crafted),
-              name: "",
+              name: item.trigger || "",
               year: 0,
               day: 0,
               month: 0,
@@ -229,7 +229,7 @@ export const SelectCardSection: React.FC<{
                 >
                   <CraftCard
                     onClick={() => onCardClicked(item.id)}
-                    bg={item.image}
+                    bg="/assets/nfts/1.png"
                   >
                     {item?.rarity === 0 && <span>Common</span>}
                     {item?.rarity === 1 && <span>Uncommon</span>}
