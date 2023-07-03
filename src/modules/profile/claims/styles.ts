@@ -68,7 +68,7 @@ export const Status = styled.div<{ color: string; bg: string }>`
 `;
 
 export const PaginatonWrapper = styled.div`
-  margin-top: 26px;
+  /* margin-top: 26px; */
   padding: 12px 0;
   display: flex;
   width: 100%;

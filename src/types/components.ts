@@ -129,7 +129,11 @@ export type ViewDateCardProps = {
 export type SellDateCardProps = {
   item: any;
 
-  onSellConfirm: (id: string | number, nftCollectionId: string | number, totalPrice: string | number) => Promise<void>;
+  onSellConfirm: (
+    id: string | number,
+    nftCollectionId: string | number,
+    totalPrice: string | number
+  ) => Promise<void>;
 } & ViewDateCardProps;
 
 export type ModalProps = {
@@ -243,3 +247,7 @@ export type MarketCardProps = {
   owned?: string | number;
   onCard?: (id: string | number, action: CardActionTypes) => void;
 } & IMarketplaceListing;
+
+export type CraftPredictionModalProps = {
+  onBurn?: () => void;
+} & ModalProps;

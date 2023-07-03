@@ -2,18 +2,39 @@ import React, { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { ClaimsTableWrapper, PaginatonWrapper, Status } from "./styles";
 import { claimsData } from "./data";
+import { getClaim } from "../../../actions";
 
 export const ClaimsTable: React.FC = () => {
-  const [tableData, setTableData] = useState(claimsData);
+  const [allData, setAllData] = useState([]);
+  const [tableData, setTableData] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setTableData(claimsData.slice(0, 8));
+    getData();
   }, []);
+
+  const getData = async () => {
+    const resData = await getClaim();
+    if (resData.success) {
+      const tempData = resData.data.map((item: any) => {
+        return {
+          id: item.id,
+          created: item.nft_card_prediction.created_at,
+          event: item.event_date,
+          submitted: item.created_at,
+          identity: item.claimer.username,
+          trigger: item.trigger,
+          status: item.status,
+        };
+      });
+      setTableData(tempData.slice(0, 8));
+      setAllData(tempData);
+    }
+  };
 
   const handlePagination = (number: number) => {
     setCurrentPage(number);
-    setTableData(claimsData.slice(8 * (number - 1), 8 * (number - 1) + 8));
+    setTableData(allData.slice(8 * (number - 1), 8 * (number - 1) + 8));
   };
 
   const renderStatus = (status: number) => {
@@ -61,26 +82,34 @@ export const ClaimsTable: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {tableData.map((item, key) => (
-            <tr key={key}>
-              <td>{item.created}</td>
-              <td>{item.event}</td>
-              <td>{item.submitted}</td>
-              <td>{item.identity}</td>
-              <td>{item.trigger}</td>
-              <td>{renderStatus(item.status)}</td>
+          {tableData.length > 0 ? (
+            tableData.map((item: any, key) => (
+              <tr key={key}>
+                <td>{item.created}</td>
+                <td>{item.event}</td>
+                <td>{item.submitted}</td>
+                <td>{item.identity}</td>
+                <td>{item.trigger}</td>
+                <td>{renderStatus(item.status)}</td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={6} style={{ textAlign: "center" }}>
+                No Data
+              </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </ClaimsTableWrapper>
       <PaginatonWrapper>
         <p>
-          Showing {currentPage} to 8 of {claimsData.length} results
+          Showing {currentPage} to 8 of {allData.length} results
         </p>{" "}
         <ResponsivePagination
           maxWidth={272}
           current={currentPage}
-          total={Math.round(Number(claimsData.length / 8))}
+          total={Math.round(Number(allData.length / 8))}
           onPageChange={handlePagination}
         />
       </PaginatonWrapper>

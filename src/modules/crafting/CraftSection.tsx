@@ -8,7 +8,7 @@ import {
   CraftCard,
   AddTrigger,
 } from "./styles";
-import { Button } from "../../components";
+import { Button, CraftPredictionModal } from "../../components";
 import { identityCraft, predictionCraft } from "./data";
 import {
   nft_card_category_data,
@@ -35,6 +35,7 @@ export const CraftSection: React.FC<{
   selectedCraft: string;
 }> = ({ page, onCraftChanged, selectedCraft, selectedCards, onCraft }) => {
   const [isAdd, setIsAdd] = useState(false);
+  const [confirm, setConfirm] = useState(false);
 
   type CardProps = {
     id: number;
@@ -143,6 +144,14 @@ export const CraftSection: React.FC<{
 
   return (
     <CraftSectionWrapper>
+      <CraftPredictionModal
+        open={confirm}
+        onClose={() => setConfirm(false)}
+        onBurn={() => {
+          setConfirm(false);
+          onCraft(page);
+        }}
+      />
       <TitleWrapper>
         <h3>
           {page === "identity" ? "Craft an Identity" : "Craft a Prediction"}
@@ -173,7 +182,7 @@ export const CraftSection: React.FC<{
                 selectedCards.trigger.length > 0
               )
             }
-            onClick={() => onCraft(page)}
+            onClick={() => setConfirm(true)}
           >
             Craft Prediction
           </Button>
@@ -195,8 +204,7 @@ export const CraftSection: React.FC<{
                   bg={
                     nftData[item.key].filter(
                       (f: any) => f.id === Number(selectedCards[item.key])
-                    )[0]?.image
-                    || "/assets/nfts/1.png"
+                    )[0]?.image || "/assets/nfts/1.png"
                   }
                   className="crafting-card"
                 >
@@ -209,11 +217,7 @@ export const CraftSection: React.FC<{
                   {nftData[item.key].filter(
                     (f: any) => f.id === Number(selectedCards[item.key])
                   )[0]?.rarity === 2 && <span>Rare</span>}
-                  <p>
-                    {
-                      item.key
-                    }
-                  </p>
+                  <p>{item.key}</p>
                 </CraftCard>
               ) : (
                 <EmptyCraftCard
@@ -235,8 +239,8 @@ export const CraftSection: React.FC<{
                         bg={
                           nftData[item.key].filter(
                             (f: any) => f.id === Number(selectedCards[item.key])
-                          )[0]?.image
-                        || "/assets/nfts/1.png"}
+                          )[0]?.image || "/assets/nfts/1.png"
+                        }
                         className="crafting-card"
                       >
                         {nftData[item.key].filter(
@@ -347,6 +351,7 @@ export const CraftSection: React.FC<{
               //   </CraftCardWrapper>
               // );
             })}
+
             {selectedCards.trigger.length > 0 && (
               <AddTrigger onClick={() => setIsAdd(true)}>
                 <span>+</span>

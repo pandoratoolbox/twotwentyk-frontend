@@ -21,14 +21,15 @@ export const ProfileSection: React.FC = () => {
   const [notify, setNotify] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [data, setData] = useState<any>({
-    username: "Moulee",
+    username: "",
     name: "",
-    phone: "352 285 4769",
-    email: "moulee@example.com",
-    password: "123456789",
+    phone: "",
+    email: "",
+    password: "",
   });
 
   useEffect(() => {
+    console.log(myInfoContext);
     if (myInfoContext)
       setData((prev: any) => ({
         username: myInfoContext?.username,
