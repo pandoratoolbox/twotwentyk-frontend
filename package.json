@@ -52,6 +52,5 @@
   },
   "devDependencies": {
     "@types/react-facebook-login": "^4.1.5"
-  },
-  "proxy": "http://194.5.152.57:3333"
+  }
 }
