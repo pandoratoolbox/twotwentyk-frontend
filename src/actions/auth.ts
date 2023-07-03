@@ -91,3 +91,21 @@ export const getMyNFTs = async (token: string) => {
   //   return { success: false, message: "Server Error!" };
   // }
 };
+
+export const getClaim = async () => {
+  try {
+    const res = await api.get("/me/claim");
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, message: "Server Error!" };
+  }
+};
+
+export const getTransactions = async () => {
+  try {
+    const res = await api.get("/me/transaction");
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, message: "Server Error!" };
+  }
+};

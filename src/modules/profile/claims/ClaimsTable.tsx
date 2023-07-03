@@ -2,14 +2,27 @@ import React, { useEffect, useState } from "react";
 import ResponsivePagination from "react-responsive-pagination";
 import { ClaimsTableWrapper, PaginatonWrapper, Status } from "./styles";
 import { claimsData } from "./data";
+import { getClaim } from "../../../actions";
 
 export const ClaimsTable: React.FC = () => {
   const [tableData, setTableData] = useState(claimsData);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    setTableData(claimsData.slice(0, 8));
+    getData();
   }, []);
+
+  const getData = async () => {
+    const resData = await getClaim();
+    // if (resData.success) {
+    //   const tempData = resData.data.map(item => {
+    //     return {
+    //       id: item.id
+    //     }
+    //   });
+    setTableData(claimsData.slice(0, 8));
+    // }
+  };
 
   const handlePagination = (number: number) => {
     setCurrentPage(number);

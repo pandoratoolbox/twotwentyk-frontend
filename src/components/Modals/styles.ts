@@ -468,3 +468,14 @@ export const Checkbox = styled.div`
     opacity: 1;
   }
 `;
+
+export const CraftPredictionModalWrapper = styled.div`
+  padding-top: 20px;
+  h3 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 24px;
+  }
+`;
