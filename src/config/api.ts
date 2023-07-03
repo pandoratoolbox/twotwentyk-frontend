@@ -2,7 +2,7 @@ import axios from "axios";
 
 // Create an instance of axios
 const api = axios.create({
-  baseURL: "http://194.5.152.57:3333",
+  baseURL: "https://twotwentyk-api.pandoratoolbox.com",
   headers: {
     "Content-Type": "application/json",
   },
