@@ -23,7 +23,6 @@ export const Modal: React.FC<ModalProps> = ({
       document.documentElement.style.overflow = "auto";
     }
   }, [open]);
-  console.log(modalHeader);
   return (
     <ModalWrapper open={open}>
       <ModalContainer width={width} className={paddingClass}>

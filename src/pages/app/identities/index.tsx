@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "../dates/styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   IdentitiesFilterSection,
@@ -15,20 +15,23 @@ import {
   ViewDateCardSection,
 } from "../../../modules";
 import { useNavigate, useLocation } from "react-router-dom";
-import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { INftCardIdentity } from "../../../models/nft_card_identity";
+
+import { identitiesData } from "./data";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { inventoryNFTsContext, setInventoryNftsContext } =
-    useInventoryNFTsContext();
+
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (params.get("id")) {
@@ -41,9 +44,14 @@ export const IdentitiesPage: React.FC = () => {
   }, []);
 
   const getPageData = async () => {
+    setIsLoading(true);
+
     const token = localStorage.auth;
     const response = await getMyNftCardIdentity(token);
-    setInventoryNftsContext(response?.data);
+    if (response?.data) {
+      setIdentityNfts(response.data);
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -62,10 +70,10 @@ export const IdentitiesPage: React.FC = () => {
       price: price,
     };
     const response = await newMarketplaceList(newMarketplace, token);
-    console.log(response);
-
-    setModal(true);
-    setIsView("");
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
   };
 
   const handleView = (item: any) => {
@@ -81,12 +89,11 @@ export const IdentitiesPage: React.FC = () => {
     setSelectedItem(item);
     setIsView("sell");
   };
-
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        inventoryNFTsContext?.length > 0 ? (
+        identityNfts && identityNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -102,7 +109,7 @@ export const IdentitiesPage: React.FC = () => {
               </DatePageTitleWrapper>
               <IdentitiesFilterSection />
               <CardGridSection
-                identityData={inventoryNFTsContext}
+                identityData={identityNfts}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 cardType="identity"
@@ -129,7 +136,7 @@ export const IdentitiesPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Identities Yet</h3>
             <p>
@@ -144,6 +151,8 @@ export const IdentitiesPage: React.FC = () => {
               Craft Identity
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">

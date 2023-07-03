@@ -7,6 +7,9 @@ import {
   CardTopWrapper,
   CardTypeWrapper,
   PredictionCardWrapper,
+  CardTooltip,
+  TooltipContent,
+  TooltipItem,
 } from "./styles";
 import {
   CardButton,
@@ -14,8 +17,11 @@ import {
   CardOverlayWrapper,
 } from "../DateCard/styles";
 import { PredictionCardProps } from "../../types";
+import { useMonthContext } from "../../context";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
+  name,
+  cardType,
   item,
   id = 0,
   image,
@@ -35,19 +41,29 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
 }) => {
-  image = "/assets/nfts/1.png"
+  const { monthContext } = useMonthContext();
+
+  image = "/assets/nfts/1.png";
+
   return (
     <PredictionCardWrapper
+      cardType={cardType}
       onClick={onClick}
-      bg={image}
+      bg={cardType === "prediction" ? image : ""}
       height={height}
       isnothover={isNotHover ? "true" : undefined}
     >
       <CardTopWrapper>
         <CardDateWrapper>
-          {day && <div className="date">{day}</div>}
-          {month && <div className="month">{month}</div>}
-          {year && <div className="year">{year}</div>}
+          {monthContext && (
+            <span className="date">
+              {day && month
+                ? `${day}/${(monthContext as Map<number, string>).get(month)}`
+                : "Month/Day"}
+            </span>
+          )}
+
+          {year && <span className="year">{year}</span>}
         </CardDateWrapper>
         {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
@@ -59,12 +75,14 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           <p>{iconText}</p>
         </CardBodyWrapper>
       )}
-      {category && (
-        <CardBottomWrapper>
-          {/* {amount && <AmountWrapper>{amount}</AmountWrapper>} */}
-          {category}
+      {/* {category && (
+        <CardBottomWrapper> */}
+      {/* {amount && <AmountWrapper>{amount}</AmountWrapper>} */}
+      {/* {category}
         </CardBottomWrapper>
-      )}
+      )} */}
+
+      {name && <CardBottomWrapper>{name}</CardBottomWrapper>}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
@@ -75,6 +93,19 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           )}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {cardType === "prediction" && (
+            <CardTooltip>
+              <span>3T</span>
+              <TooltipContent className="tooltip-content">
+                <div>
+                  <h3>Triggers</h3>
+                  <TooltipItem>Wins Superbowl - Major</TooltipItem>
+                  <TooltipItem>Trigger Name - Minor 1</TooltipItem>
+                  <TooltipItem>Trigger Name - Minor 2</TooltipItem>
+                </div>
+              </TooltipContent>
+            </CardTooltip>
+          )}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

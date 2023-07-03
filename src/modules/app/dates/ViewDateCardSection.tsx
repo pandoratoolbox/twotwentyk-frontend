@@ -10,12 +10,7 @@ import {
   ViewDateCardContainer,
   ViewDateCardWrapper,
 } from "./styles";
-import {
-  DateCard,
-  IconArrowDown,
-  IconCardAthlete,
-  PredictionCard,
-} from "../../../components";
+import { DateCard, IconArrowDown, PredictionCard } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { useMonthContext } from "../../../context";
@@ -52,26 +47,18 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               rarity={item?.rarity}
               isNotHover={true}
             />
-          ) : cardType === "identity" ? (
+          ) : cardType === "identity" || cardType === "prediction" ? (
             <PredictionCard
               day={item?.day}
               month={item?.month}
               category={item?.category}
               rarity={item?.rarity}
-              height={293}
-              year={2023}
-              icon={<IconCardAthlete />}
-              iconText="Athlete"
-            />
-          ) : cardType === "prediction" ? (
-            <PredictionCard
-              day={item?.day}
-              month={item?.month}
-              category={item?.category}
-              rarity={item?.rarity}
-              height={293}
-              year={2023}
+              year={item?.year}
+              icon={item?.icon}
+              iconText={item?.iconText}
+              name={item?.name}
               image={item?.image}
+              cardType={cardType}
             />
           ) : cardType === "category" ? (
             <CategoryCard
@@ -111,7 +98,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               <p>
                 {cardType === "trigger"
                   ? "Category"
-                  : cardType === "identity"
+                  : cardType === "identity" || cardType === "prediction"
                   ? "Day/Month"
                   : "Type"}
               </p>
@@ -124,6 +111,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? "Category"
                   : cardType === "trigger"
                   ? item?.category
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.date
                   : ""}
               </span>
             </PropertyItem>
@@ -137,6 +126,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                     : "Year"
                   : cardType === "category"
                   ? "Category"
+                  : cardType === "identity" || cardType === "prediction"
+                  ? "Year"
                   : ""}
               </p>
               <span>
@@ -151,6 +142,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? item?.category
                   : cardType === "trigger"
                   ? item?.tier
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.year
                   : ""}
               </span>
             </PropertyItem>
@@ -158,11 +151,17 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               <p>
                 {cardType === "trigger"
                   ? "Trigger"
-                  : cardType === "identity"
+                  : cardType === "identity" || cardType === "prediction"
                   ? "Category"
                   : "Collection"}
               </p>
-              <span> {cardType === "trigger" ? item?.trigger : ""}</span>
+              <span>
+                {cardType === "trigger"
+                  ? item?.trigger
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.iconText
+                  : ""}
+              </span>
             </PropertyItem>
           </PropertiesContent>
         </PropertiesWrapper>

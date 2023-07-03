@@ -16,7 +16,6 @@ import {
   Button,
   DateCard,
   IconArrowDown,
-  IconCardAthlete,
   Input,
   PredictionCard,
 } from "../../../components";
@@ -93,28 +92,18 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               rarity={item?.rarity}
               isNotHover={true}
             />
-          ) : cardType === "identity" ? (
+          ) : cardType === "identity" || cardType === "prediction" ? (
             <PredictionCard
               item={item}
               day={item?.day}
               month={item?.month}
-              category="Athlete"
+              category={item?.iconText}
               rarity={item?.rarity}
-              height={293}
-              year={2023}
-              icon={<IconCardAthlete />}
-              iconText="Athlete"
-            />
-          ) : cardType === "prediction" ? (
-            <PredictionCard
-              item={item}
-              day={item?.day}
-              month={item?.month}
-              category="Tom Brady"
-              rarity={item?.rarity}
-              height={293}
-              year={2023}
-              image={item?.image}
+              year={item?.year}
+              icon={item?.icon}
+              iconText={item?.iconText}
+              name={item?.name}
+              cardType={cardType}
             />
           ) : cardType === "category" ? (
             <CategoryCard
@@ -161,7 +150,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               <p>
                 {cardType === "trigger"
                   ? "Category"
-                  : cardType === "identity"
+                  : cardType === "identity" || cardType === "prediction"
                   ? "Day/Month"
                   : "Type"}
               </p>
@@ -174,7 +163,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? "Category"
                   : cardType === "trigger"
                   ? item?.category
-                  : ""} 
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.date
+                  : ""}
               </span>
             </PropertyItem>
             <PropertyItem>
@@ -187,6 +178,8 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                     : "Year"
                   : cardType === "category"
                   ? "Category"
+                  : cardType === "identity" || cardType === "prediction"
+                  ? "Year"
                   : ""}
               </p>
               <span>
@@ -201,6 +194,8 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? item?.category
                   : cardType === "trigger"
                   ? item?.tier
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.year
                   : ""}
               </span>
             </PropertyItem>
@@ -208,11 +203,17 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               <p>
                 {cardType === "trigger"
                   ? "Trigger"
-                  : cardType === "identity"
+                  : cardType === "identity" || cardType === "prediction"
                   ? "Category"
                   : "Collection"}
               </p>
-              <span>{cardType === "trigger" ? item?.trigger : ""}</span>
+              <span>
+                {cardType === "trigger"
+                  ? item?.trigger
+                  : cardType === "identity" || cardType === "prediction"
+                  ? item?.iconText
+                  : ""}
+              </span>
             </PropertyItem>
             {cardType === "identity" && (
               <PropertyItem>

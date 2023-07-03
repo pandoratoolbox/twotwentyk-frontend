@@ -6,6 +6,8 @@ export const predictionData = [
     image: "/assets/nfts/1.png",
     amount: "1",
     name: "Barack Obama",
+    rarity: 0,
+
   },
   {
     date: "03/06",
