@@ -6,12 +6,15 @@ import {
   ModalOverlay,
   ModalWrapper,
 } from "./styles";
+import { ModalHeader } from "./ModalHeader";
 
 export const Modal: React.FC<ModalProps> = ({
   onClose,
   open,
   children,
   width,
+  modalHeader,
+  paddingClass
 }) => {
   useEffect(() => {
     if (open) {
@@ -20,11 +23,15 @@ export const Modal: React.FC<ModalProps> = ({
       document.documentElement.style.overflow = "auto";
     }
   }, [open]);
-
+  console.log(modalHeader);
   return (
     <ModalWrapper open={open}>
-      <ModalContainer width={width}>
-        <CloseButton onClick={onClose}>&times;</CloseButton>
+      <ModalContainer width={width} className={paddingClass}>
+        {modalHeader ? (
+          <ModalHeader onClose={onClose} />
+        ) : (
+          <CloseButton onClick={onClose}>&times;</CloseButton>
+        )}
         {children}
       </ModalContainer>
       <ModalOverlay onClick={onClose} />

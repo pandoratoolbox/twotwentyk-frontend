@@ -21,7 +21,8 @@ export const MatchListSection: React.FC<{
 }> = ({ page, clickedCard }) => {
   const [collapsed, setCollapsed] = useState<number>(-1);
   const { celebritiesContext } = useCelebritiesContext();
-
+  //identity_matches = celebritiesContext.map(v => { if (v.birth_day == nft_card_day_month.day && v.birth_month == nft_card_day_month.month && v.birth_year == nft_card_year.year && v.category == nft_card_category.category) return v }
+  
   return (
     <MatchListSectionWrapper>
       <h2>{page === "identity" ? "Identity Matches" : "Eligible Triggers"}</h2>

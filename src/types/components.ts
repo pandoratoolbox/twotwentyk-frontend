@@ -131,9 +131,16 @@ export type SellDateCardProps = {
 } & ViewDateCardProps;
 
 export type ModalProps = {
+  paddingClass?: string;
+  modalHeader?: boolean;
   width?: number;
   onClose: () => void;
   open: boolean;
+} & React.HTMLAttributes<HTMLElement>;
+
+export type ModalHeaderProps = {
+  bg?: string;
+  onClose?: () => void;
 } & React.HTMLAttributes<HTMLElement>;
 
 export type SellModalProps = {

@@ -6,3 +6,5 @@ export * from "./SellConfirmModal";
 export * from "./UseBalanceBuyModal";
 export * from "./WithdrawModal";
 export * from "./WithdrawConfirmModal";
+export * from "./CraftIdentityModal";
+

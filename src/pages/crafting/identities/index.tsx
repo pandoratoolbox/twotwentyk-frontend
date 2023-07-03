@@ -7,7 +7,7 @@ import {
   MatchListSection,
   SelectCardSection,
 } from "../../../modules";
-import { Button } from "../../../components";
+import { Button, CraftIdentityModal } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { craftingIdentity, getMyNFTs } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
@@ -37,6 +37,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     identity: -1,
     trigger: [],
   });
+  const [confirm, setConfirm] = useState(false);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -66,23 +67,24 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   const craftIdentity = async () => {
-    const token = localStorage.auth;
+    setConfirm(true);
+    // const token = localStorage.auth;
 
-    const newCraft = {
-      nft_card_day_month_id: Number(selectedCards.dayMonth),
-      nft_card_year_id: Number(selectedCards.year),
-      nft_card_crafting_id: Number(selectedCards.crafting),
-      celebrity_id: Number(selectedCards.crafting),
-      nft_card_category_id: Number(selectedCards.category),
-    };
-    const res = await craftingIdentity(newCraft);
-    if (res.success) {
-      toast.success("Crafted Successfully.");
-      const myNFTs = await getMyNFTs(token);
-      setMyNFTsContext(myNFTs.data);
-    } else {
-      toast.error(res.message);
-    }
+    // const newCraft = {
+    //   nft_card_day_month_id: Number(selectedCards.dayMonth),
+    //   nft_card_year_id: Number(selectedCards.year),
+    //   nft_card_crafting_id: Number(selectedCards.crafting),
+    //   celebrity_id: Number(selectedCards.crafting),
+    //   nft_card_category_id: Number(selectedCards.category),
+    // };
+    // const res = await craftingIdentity(newCraft);
+    // if (res.success) {
+    //   toast.success("Crafted Successfully.");
+    //   const myNFTs = await getMyNFTs(token);
+    //   setMyNFTsContext(myNFTs.data);
+    // } else {
+    //   toast.error(res.message);
+    // }
   };
 
   return (
@@ -99,6 +101,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
+      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
       <CraftingWrapper>
         {currentUser ? (
           <>

@@ -13,7 +13,6 @@ import { Button, IconSort, SelectBox } from "../../components";
 import { craftingCardData, raritiesOption, statusOption } from "./data";
 import { SortButton } from "../app/dates/styles";
 import {
-  useMarketplaceListContext,
   useMyNFTsContext,
   useStatusContext,
   useAllRaritiesContext,
@@ -56,7 +55,7 @@ export const SelectCardSection: React.FC<{
   const { myNFTsContext, setMyNFTsContext } = useMyNFTsContext();
 
   const navigate = useNavigate();
-  // const { marketplaceListContext } = useMarketplaceListContext();
+
   const [nftData, setNftData] = useState<
     {
       id: number;
@@ -232,10 +231,10 @@ export const SelectCardSection: React.FC<{
                     onClick={() => onCardClicked(item.id)}
                     bg={item.image}
                   >
-                    {item.rarity === 0 && <span>Common</span>}
-                    {item.rarity === 1 && <span>Uncommon</span>}
-                    {item.rarity === 2 && <span>Rare</span>}
-                    <p>{item.name}</p>
+                    {item?.rarity === 0 && <span>Common</span>}
+                    {item?.rarity === 1 && <span>Uncommon</span>}
+                    {item?.rarity === 2 && <span>Rare</span>}
+                    <p>{item?.name ? item?.name : "Crafting"}</p>
                   </CraftCard>
                   <SelectButton
                     className="select-button"
