@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "../dates/styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   TriggerFilterSection,
@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardTrigger } from "../../../actions/nft_card_trigger";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
 
 export const TriggersPage: React.FC = () => {
   const navigate = useNavigate();
@@ -26,15 +27,24 @@ export const TriggersPage: React.FC = () => {
   const { inventoryNFTsContext, setInventoryNftsContext } =
     useInventoryNFTsContext();
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
+  const [nftCardTriggerData, setNftCardTriggerData] = useState<
+    INftCardTrigger[] | null
+  >(null);
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
   const getPageData = async () => {
+    setIsLoading(true);
+
     const token = localStorage.auth;
     const response = await getMyNftCardTrigger(token);
-    setInventoryNftsContext(response?.data);
+
+    if (response?.data) {
+      setNftCardTriggerData(response?.data);
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -55,10 +65,10 @@ export const TriggersPage: React.FC = () => {
       price: price,
     };
     const response = await newMarketplaceList(newMarketplace, token);
-    console.log(response);
-
-    setModal(true);
-    setIsView("");
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
   };
 
   const handleView = (item: any) => {
@@ -79,7 +89,7 @@ export const TriggersPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        inventoryNFTsContext?.length > 0 ? (
+        nftCardTriggerData && nftCardTriggerData?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -101,7 +111,7 @@ export const TriggersPage: React.FC = () => {
               </DatePageTitleWrapper>
               <TriggerFilterSection />
               <CardGridSection
-                data={inventoryNFTsContext}
+                data={nftCardTriggerData}
                 cardType={"trigger"}
                 onCraft={handleCraft}
                 onSell={handleSell}
@@ -122,7 +132,7 @@ export const TriggersPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Triggers</h3>
             <p>It looks like you don’t have any triggers yet.   </p>
@@ -131,6 +141,8 @@ export const TriggersPage: React.FC = () => {
               Buy Packs
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">

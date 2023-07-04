@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "./styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   DatesFilterSection,
@@ -15,28 +15,35 @@ import {
   ViewDateCardSection,
 } from "../../../modules";
 import { useNavigate } from "react-router-dom";
-import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { INftCardDayMonth } from "../../../models/nft_card_day_month";
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
-  const { inventoryNFTsContext, setInventoryNftsContext } =
-    useInventoryNFTsContext();
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+
+  const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
+    INftCardDayMonth[] | null
+  >(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
   const getPageData = async () => {
+    setIsLoading(true);
     const token = localStorage.auth;
     const response = await getMyNftCardDayMonth(token);
-    setInventoryNftsContext(response?.data);
+    if (response?.data) {
+      setNftCardDayMonthData(response?.data);
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -79,8 +86,9 @@ export const DatesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+
       {currentUser ? (
-        inventoryNFTsContext?.length > 0 ? (
+        nftCardDayMonthData && nftCardDayMonthData?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -98,7 +106,7 @@ export const DatesPage: React.FC = () => {
               <DatesFilterSection />
               <CardGridSection
                 cardType="date"
-                data={inventoryNFTsContext}
+                data={nftCardDayMonthData}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 onView={handleView}
@@ -118,7 +126,7 @@ export const DatesPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Date Cards</h3>
             <p>It looks like you don’t have any date cards yet. </p>
@@ -132,6 +140,8 @@ export const DatesPage: React.FC = () => {
               Buy Packs
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">

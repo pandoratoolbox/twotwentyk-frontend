@@ -38,6 +38,8 @@ export type AppHeaderMenuItemProps = {
 };
 
 export type PredictionCardProps = {
+  cardType?: string;
+  name?: string;
   item?: any;
   id?: number;
   month?: number;
@@ -109,7 +111,7 @@ export type TriggerCardProps = {
 
 export type DateCardGridProps = {
   data?: Array<any>;
-  identityData?: Array<PredictionCardProps>;
+  identityData?: Array<any> ;
   cardType?: string;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;

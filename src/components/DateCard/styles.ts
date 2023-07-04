@@ -8,7 +8,7 @@ export const DateCardWrapper = styled.div<{ bg: string; isnothover?: string }>`
   position: relative;
   background: ${({ bg }) =>
     bg
-      ? `url(${bg}) no-repeat, #fff`
+      ? `url(${bg}) no-repeat, #CDCDCD`
       : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
   background-blend-mode: luminosity, normal;
   background-position: center;
