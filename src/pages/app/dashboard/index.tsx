@@ -22,8 +22,6 @@ import { IArticle, IMarketplaceListing } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
 import {
   useFeedContext,
-  useMarketplaceListContext,
-  useMonthContext,
   useMyFeedContext,
   useMyNFTsContext,
 } from "../../../context";
