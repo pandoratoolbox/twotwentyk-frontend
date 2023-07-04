@@ -22,7 +22,6 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
   onClose,
 }) => {
   const { monthContext } = useMonthContext();
-  console.log(item);
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>

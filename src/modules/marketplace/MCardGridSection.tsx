@@ -18,7 +18,7 @@ export const MCardGridSection: React.FC<{
       {!page &&
         data?.map((item, key) => (
           <MarketCard
-            // {...cardData[key]}
+            {...cardData[key]}
             key={key}
             {...item}
             onCard={onCardClick}
@@ -27,7 +27,7 @@ export const MCardGridSection: React.FC<{
       {page === "packs" &&
         data?.map((item, key) => (
           <MarketCard
-            // {...packData[key]}
+            {...packData[key]}
             key={key}
             {...item}
             onCard={onCardClick}

@@ -48,8 +48,10 @@ export const DashboardPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
-  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([])
-  const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>([])
+  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
+  const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
+    []
+  );
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -105,21 +107,22 @@ export const DashboardPage: React.FC = () => {
     setIsView("sell");
   };
 
-
   const loadNfts = async () => {
     const token = localStorage.auth;
     const p_resp = await getMyNftCardPrediction(token);
     if (p_resp?.data) {
-      setPredictionNfts(p_resp.data)
+      setPredictionNfts(p_resp.data);
     }
 
     const i_resp = await getMyNftCardIdentity(token);
     if (i_resp?.data) {
-      setIdentityNfts(i_resp.data)
+      setIdentityNfts(i_resp.data);
     }
   };
 
-  useEffect(() => {loadNfts()}, [])
+  useEffect(() => {
+    loadNfts();
+  }, []);
 
   return (
     <AppLayout>
@@ -147,6 +150,7 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
+                      height={"225"}
                       isNotHover={true}
                       day={item.day}
                       month={item.month}
@@ -215,6 +219,7 @@ export const DashboardPage: React.FC = () => {
                       // onClick={() =>
                       //   navigate("/dashboard/predictions?id=" + item.nft_id)
                       // }
+                      height={"225"}
                       isNotHover={true}
                       {...item}
                       rarity={item.rarity}
