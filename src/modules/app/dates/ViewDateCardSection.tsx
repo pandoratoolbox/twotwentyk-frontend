@@ -42,6 +42,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
             <TriggerCard
+              tier={item?.tier}
               image={item?.image}
               trigger={item?.trigger}
               rarity={item?.rarity}
@@ -56,7 +57,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               year={item?.year}
               icon={item?.icon}
               iconText={item?.iconText}
-              name={item?.name}
+              celebrity_name={item?.celebrity_name}
               image={item?.image}
               cardType={cardType}
             />
@@ -112,7 +113,9 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   : cardType === "trigger"
                   ? item?.category
                   : cardType === "identity" || cardType === "prediction"
-                  ? item?.date
+                  ? item?.day
+                    ? `${item?.day}/${item?.month}`
+                    : null
                   : ""}
               </span>
             </PropertyItem>
@@ -159,7 +162,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                 {cardType === "trigger"
                   ? item?.trigger
                   : cardType === "identity" || cardType === "prediction"
-                  ? item?.iconText
+                  ? item?.category
                   : ""}
               </span>
             </PropertyItem>
