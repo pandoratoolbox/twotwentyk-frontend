@@ -33,7 +33,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       />
       <FacebookLogin
         appId="1088597931155576"
-        autoLoad={true}
+        // autoLoad={true}
         fields="name,email,picture"
         callback={(res) => onFacebookAuthClicked(res, authType)}
         render={(renderProps) => (
