@@ -39,7 +39,6 @@ export type AppHeaderMenuItemProps = {
 
 export type PredictionCardProps = {
   cardType?: string;
-  name?: string;
   item?: any;
   id?: number;
   month?: number;
@@ -96,6 +95,7 @@ export type DateCardProps = {
 };
 
 export type TriggerCardProps = {
+  tier: string;
   item?: any;
   id?: number;
   trigger: string;

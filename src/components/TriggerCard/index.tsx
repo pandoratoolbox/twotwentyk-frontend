@@ -23,15 +23,16 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
   rarity,
   trigger,
   isNotHover,
+  tier,
   onCraft,
   onSell,
   onView,
 }) => {
-  image = "/assets/nfts/1.png"
+  image = "/assets/nfts/1.png";
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>
-        <div className="trigger">{"Minor 2"}</div>
+        <div className="trigger">{tier}</div>
         {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}

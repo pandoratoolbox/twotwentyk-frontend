@@ -20,7 +20,7 @@ import { PredictionCardProps } from "../../types";
 import { useMonthContext } from "../../context";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
-  name,
+  celebrity_name,
   cardType,
   item,
   id = 0,
@@ -31,10 +31,10 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   rarity,
   year,
   icon,
-  iconText,
   is_crafted,
   height,
   isNotHover,
+  triggers,
   onClick,
   onCraft,
   onSell,
@@ -55,7 +55,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     >
       <CardTopWrapper>
         <CardDateWrapper>
-          {monthContext && (
+          {monthContext && day && (
             <span className="date">
               {day && month
                 ? `${day}/${(monthContext as Map<number, string>).get(month)}`
@@ -69,20 +69,16 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
       </CardTopWrapper>
-      {icon && (
+      {category && (
         <CardBodyWrapper>
-          <span>{icon}</span>
-          <p>{iconText}</p>
+          <span></span>
+          <p>{category}</p>
         </CardBodyWrapper>
       )}
-      {/* {category && (
-        <CardBottomWrapper> */}
-      {/* {amount && <AmountWrapper>{amount}</AmountWrapper>} */}
-      {/* {category}
-        </CardBottomWrapper>
-      )} */}
 
-      {name && <CardBottomWrapper>{name}</CardBottomWrapper>}
+      {celebrity_name && (
+        <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+      )}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
@@ -95,13 +91,18 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
           {cardType === "prediction" && (
             <CardTooltip>
-              <span>3T</span>
+              <span>
+                {triggers && triggers?.length > 0
+                  ? `${triggers.length}T`
+                  : "#T"}
+              </span>
               <TooltipContent className="tooltip-content">
                 <div>
                   <h3>Triggers</h3>
-                  <TooltipItem>Wins Superbowl - Major</TooltipItem>
-                  <TooltipItem>Trigger Name - Minor 1</TooltipItem>
-                  <TooltipItem>Trigger Name - Minor 2</TooltipItem>
+                  {triggers &&
+                    triggers?.map((item: string, key: number) => (
+                      <TooltipItem>{item}</TooltipItem>
+                    ))}
                 </div>
               </TooltipContent>
             </CardTooltip>

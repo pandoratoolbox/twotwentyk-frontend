@@ -37,7 +37,7 @@ export const CardPackPage: React.FC = () => {
     const response = await dateCardData;
 
     if (response) {
-      setNftCardYearData(response);
+      setNftCardYearData(null);
     }
     setIsLoading(false);
   };

@@ -87,8 +87,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
             <TriggerCard
+              tier={item?.tier}
               image={item?.image}
-              trigger="2005"
+              trigger={item?.trigger}
               rarity={item?.rarity}
               isNotHover={true}
             />
@@ -97,12 +98,11 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               item={item}
               day={item?.day}
               month={item?.month}
-              category={item?.iconText}
+              category={item?.category}
               rarity={item?.rarity}
               year={item?.year}
               icon={item?.icon}
-              iconText={item?.iconText}
-              name={item?.name}
+              celebrity_name={item?.celebrity_name}
               cardType={cardType}
             />
           ) : cardType === "category" ? (
@@ -164,7 +164,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   : cardType === "trigger"
                   ? item?.category
                   : cardType === "identity" || cardType === "prediction"
-                  ? item?.date
+                  ? item?.day
+                    ? `${item?.day}/${item?.month}`
+                    : null
                   : ""}
               </span>
             </PropertyItem>
@@ -196,6 +198,8 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? item?.tier
                   : cardType === "identity" || cardType === "prediction"
                   ? item?.year
+                    ? item?.year
+                    : null
                   : ""}
               </span>
             </PropertyItem>
@@ -211,7 +215,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 {cardType === "trigger"
                   ? item?.trigger
                   : cardType === "identity" || cardType === "prediction"
-                  ? item?.iconText
+                  ? item?.category
                   : ""}
               </span>
             </PropertyItem>
@@ -220,6 +224,21 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 <p>Collection</p>
                 <span>Sports Series</span>
               </PropertyItem>
+            )}
+            {cardType === "prediction" && item?.triggers && (
+              <>
+                <PropertiesHeader>
+                  <span>Triggers</span>
+                  <span>{item?.triggers?.length}</span>
+                </PropertiesHeader>
+                {item?.triggers.map((item: string, key: number) => (
+                  <PropertyItem>
+                    <p>Marriage</p>
+
+                    <span key={key}>{item}</span>
+                  </PropertyItem>
+                ))}
+              </>
             )}
           </PropertiesContent>
         </PropertiesWrapper>

@@ -40,6 +40,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
       {cardType === "trigger" &&
         data?.map((item, key) => (
           <TriggerCard
+            tier={item?.tier}
             key={key}
             item={item}
             {...item}
