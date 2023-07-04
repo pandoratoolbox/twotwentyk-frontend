@@ -5,8 +5,8 @@ import { claimsData } from "./data";
 import { getClaim } from "../../../actions";
 
 export const ClaimsTable: React.FC = () => {
-  const [allData, setAllData] = useState([]);
-  const [tableData, setTableData] = useState([]);
+  const [allData, setAllData] = useState<any>([]);
+  const [tableData, setTableData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ export const ClaimsTable: React.FC = () => {
           created: item.nft_card_prediction.created_at,
           event: item.event_date,
           submitted: item.created_at,
-          identity: item.claimer.username,
+          identity: item.nft_card_prediction.celebrity_name,
           trigger: item.trigger,
           status: item.status,
         };
@@ -39,25 +39,25 @@ export const ClaimsTable: React.FC = () => {
 
   const renderStatus = (status: number) => {
     switch (status) {
-      case 0:
+      case 2:
         return (
           <Status color="#B01212" bg="#FFEBEB">
             Denied
           </Status>
         );
-      case 1:
+      case 3:
         return (
           <Status color="#1D74A5" bg="#D3EFFF">
             Paid
           </Status>
         );
-      case 2:
+      case 1:
         return (
           <Status color="#00632B" bg="#E8FCF1">
             Approved
           </Status>
         );
-      case 3:
+      case 0:
         return (
           <Status color="#976400" bg="#FFF5D5">
             Pending ...
@@ -83,7 +83,7 @@ export const ClaimsTable: React.FC = () => {
         </thead>
         <tbody>
           {tableData.length > 0 ? (
-            tableData.map((item: any, key) => (
+            tableData.map((item: any, key: number) => (
               <tr key={key}>
                 <td>{item.created}</td>
                 <td>{item.event}</td>
