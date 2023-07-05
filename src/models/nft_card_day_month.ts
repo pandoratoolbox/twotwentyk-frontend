@@ -1,12 +1,12 @@
 import { IUser, User } from "./user";
 
 export interface INftCardDayMonth {
-  rarity?: number;
+  rarity: number;
   is_crafted?: boolean;
   owner?: IUser;
   id?: number;
-  day?: number;
-  month?: number;
+  day: number;
+  month: number;
   image?: string;
   owner_id?: number;
 }

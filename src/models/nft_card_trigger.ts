@@ -4,9 +4,9 @@ export interface INftCardTrigger {
   id?: number;
   is_crafted?: boolean;
   owner_id?: number;
-  trigger?: string;
-  rarity?: number;
-  tier?: string;
+  trigger: string;
+  rarity: number;
+  tier: string;
   owner?: IUser;
   image?: string;
 
