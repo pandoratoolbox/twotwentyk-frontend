@@ -1,5 +1,5 @@
-import React from "react";
-import { SellModalProps } from "../../types";
+import React, { useEffect, useState } from "react";
+import { CraftIdentityModalProps, SellModalProps } from "../../types";
 import { Modal as ModalWrapper } from "./Modal";
 import { ModalHeader } from "./ModalHeader";
 
@@ -17,6 +17,8 @@ import {
 import { SelectBox } from "../SelectBox";
 import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
+import { useCelebritiesContext, useMonthContext } from "../../context";
+import { ICelebrity } from "../../models/celebrity";
 
 const matchingIdentityOptions = [
   {
@@ -25,47 +27,44 @@ const matchingIdentityOptions = [
   },
 ];
 
-const nftData = [
-  {
-    id: 12,
-    rarity: 0,
-    image: "",
-    name: "",
-    is_crafted: false,
-    day: 0,
-    month: 0,
-    year: 0,
-  },
-  {
-    id: 13,
-    rarity: 0,
-    image: "",
-    name: "",
-    is_crafted: false,
-    day: 0,
-    month: 0,
-    year: 0,
-  },
-  {
-    id: 14,
-    rarity: 0,
-    image: "",
-    name: "",
-    is_crafted: false,
-    day: 0,
-    month: 0,
-    year: 0,
-  },
-];
-
-export const CraftIdentityModal: React.FC<SellModalProps> = ({
+export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
   open,
   onClose,
-  isMarket,
-  isOffer,
+  onCraft,
+  selectedCards,
+  selectCelebrity
 }) => {
+  const { monthContext } = useMonthContext();
+  const { celebritiesContext } = useCelebritiesContext();
+
   const navigate = useNavigate();
 
+  const [checked, setChecked] = useState<boolean>(false);
+  const [matches, setMatches] = useState<ICelebrity[]>([]);
+
+  const chooseCelebrity = (v: string | string[]) => {
+    let c = (celebritiesContext as Map<number,ICelebrity>).get(Number(v))
+    if (c) {
+      selectCelebrity(c);
+    }
+  }
+
+  useEffect(() => {
+    setChecked(false);
+    let celebrities: ICelebrity[] = [];
+    if (celebritiesContext) {
+      Array.from<[number, ICelebrity]>(celebritiesContext).map(([key, value]) => {
+        if (
+          value.birth_year === selectedCards.year?.year &&
+          value.birth_day === selectedCards.dayMonth?.day &&
+          value.birth_month === selectedCards.dayMonth?.month &&
+          value.category === selectedCards.category?.category
+        )
+          celebrities.push(value);
+      });
+    }
+    setMatches(celebrities);
+  }, [open]);
   return (
     <ModalWrapper
       open={open}
@@ -78,32 +77,60 @@ export const CraftIdentityModal: React.FC<SellModalProps> = ({
         <CraftIdentifyModalHeader>
           <p>Would you like to assign a name to your Identity?</p>
           <SelectBox
-            options={matchingIdentityOptions}
+            options={matches.map(v => {return {label: v.name, value: String(v.id)}})}
             placeholder="Select matching Identity"
+            onChange={chooseCelebrity}
           />
         </CraftIdentifyModalHeader>
       </ModalHeader>
-      <CardsWrapper>
-        <CardGridWrapper>
-          {nftData &&
-            nftData.map((item, key) => (
-              <CraftingCardWrapper key={key}>
-                <CraftCard onClick={() => {}} bg={item.image}>
-                  {item?.rarity === 0 && <span>Common</span>}
-                  {item?.rarity === 1 && <span>Uncommon</span>}
-                  {item?.rarity === 2 && <span>Rare</span>}
-                  <p>{item?.name ? item?.name : "Crafting"}</p>
-                </CraftCard>
-              </CraftingCardWrapper>
-            ))}
-        </CardGridWrapper>
-        <h3>Your cards will be sliced and diced to create this Identity.</h3>
-      </CardsWrapper>
+      {monthContext && (
+        <CardsWrapper>
+          <CardGridWrapper>
+            <CraftingCardWrapper key={"dayMonth"}>
+              <CraftCard onClick={() => {}} bg={"/assets/nfts/2.png"}>
+                {selectedCards.crafting?.rarity === 0 && <span>Common</span>}
+                {selectedCards.crafting?.rarity === 1 && <span>Uncommon</span>}
+                {selectedCards.crafting?.rarity === 2 && <span>Rare</span>}
+                <p>
+                  {selectedCards.dayMonth?.day}{" "}
+                  {(monthContext as Map<number, string>).get(
+                    selectedCards.dayMonth?.month
+                      ? selectedCards.dayMonth?.month
+                      : 1
+                  )}
+                </p>
+              </CraftCard>
+            </CraftingCardWrapper>
+            <CraftingCardWrapper key={"year"}>
+              <CraftCard onClick={() => {}} bg={"/assets/nfts/2.png"}>
+                {selectedCards.year?.rarity === 0 && <span>Common</span>}
+                {selectedCards.year?.rarity === 1 && <span>Uncommon</span>}
+                {selectedCards.year?.rarity === 2 && <span>Rare</span>}
+                <p>{selectedCards.year?.year}</p>
+              </CraftCard>
+            </CraftingCardWrapper>
+            <CraftingCardWrapper key={"category"}>
+              <CraftCard onClick={() => {}} bg={"/assets/nfts/2.png"}>
+                {selectedCards.category?.rarity === 0 && <span>Common</span>}
+                {selectedCards.category?.rarity === 1 && <span>Uncommon</span>}
+                {selectedCards.category?.rarity === 2 && <span>Rare</span>}
+                <p>{selectedCards.category?.category}</p>
+              </CraftCard>
+            </CraftingCardWrapper>
+          </CardGridWrapper>
+          <h3>Your cards will be sliced and diced to create this Identity.</h3>
+        </CardsWrapper>
+      )}
       <CraftIdentifyModalWrapper>
         <ButtonGroup>
           <CheckboxWrapper>
             <Checkbox>
-              <input id={"crafting"} type="checkbox" value={"crafting"} />
+              <input
+                id={"crafting"}
+                type="checkbox"
+                value={"crafting"}
+                onChange={(e) => setChecked(e.target.checked)}
+              />
               <label htmlFor={"crafting"}></label>
             </Checkbox>
             <span>
@@ -112,8 +139,12 @@ export const CraftIdentityModal: React.FC<SellModalProps> = ({
             </span>
           </CheckboxWrapper>
 
-          <Button disabled={true}>Craft Identify</Button>
-          <Button variant={"outlined"}>No Thanks</Button>
+          <Button disabled={!checked} onClick={onCraft}>
+            Craft Identity
+          </Button>
+          <Button variant={"outlined"} onClick={onClose}>
+            No Thanks
+          </Button>
         </ButtonGroup>
       </CraftIdentifyModalWrapper>
     </ModalWrapper>
