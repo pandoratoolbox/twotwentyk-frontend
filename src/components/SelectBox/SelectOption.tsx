@@ -33,7 +33,8 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
   isFilter,
   onChange,
   newData,
-  onSelect
+  onSelect,
+  clear
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
@@ -55,10 +56,14 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
   }
 
   useEffect(() => {
+    setValue(null);
+  }, [clear])
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {
         setIsOption(false);
-        setSelectedOptions([]);
+        setValue(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);

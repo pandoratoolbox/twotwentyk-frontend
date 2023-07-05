@@ -190,6 +190,7 @@ export type BalanceBuyConfirmModalProps = {
 } & ModalProps;
 
 export type SelectBoxProps = {
+  clear?: boolean;
   placeholder?: string;
   border?: boolean;
   label?: string;

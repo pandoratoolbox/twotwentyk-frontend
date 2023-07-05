@@ -44,16 +44,22 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
 
   const [checked, setChecked] = useState<boolean>(false);
   const [matches, setMatches] = useState<ICelebrity[]>([]);
+const [optionSelected, setOptionSelected] = useState<boolean>(false)
+const [clearSelect, setClearSelect] = useState<boolean>(false);
 
   const chooseCelebrity = (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number,ICelebrity>).get(Number(v.value))
     if (c) {
       selectCelebrity(c);
+      setOptionSelected(true);
     }
   }
 
+
   useEffect(() => {
     setChecked(false);
+    setOptionSelected(false);
+    // setClearSelect(!clearSelect);
     let celebrities: ICelebrity[] = [];
     if (celebritiesContext) {
       Array.from<[number, ICelebrity]>(celebritiesContext).map(([key, value]) => {
@@ -67,7 +73,7 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
       });
     }
     setMatches(celebrities);
-  }, [open]);
+  }, [open, clearSelect, celebritiesContext, selectedCards]);
   console.log(celebritiesContext, selectedCards)
   return (
     <ModalWrapper
@@ -84,6 +90,7 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
             options={matches.map(v => {return {label: v.name, value: String(v.id)}})}
             placeholder="Select matching Identity"
             onSelect={chooseCelebrity}
+            clear={clearSelect}
           />
         </CraftIdentifyModalHeader>
       </ModalHeader>
@@ -122,7 +129,9 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
               </CraftCard>
             </CraftingCardWrapper>
           </CardGridWrapper>
-          <h3>Your cards will be sliced and diced to create this Identity.</h3>
+          {matches.length > 0 && !optionSelected && <h3>Please select a matching Identity from the list.</h3>}
+          {matches.length > 0 && optionSelected && <h3>Your cards will be sliced and diced to create this Identity.</h3>}
+          {matches.length === 0 && <h3>There are no matching identities for the selected combination of cards.</h3>}
         </CardsWrapper>
       )}
       <CraftIdentifyModalWrapper>
@@ -143,7 +152,7 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
             </span>
           </CheckboxWrapper>
 
-          <Button disabled={!checked} onClick={onCraft}>
+          <Button disabled={!checked || !optionSelected} onClick={onCraft}>
             Craft Identity
           </Button>
           <Button variant={"outlined"} onClick={onClose}>

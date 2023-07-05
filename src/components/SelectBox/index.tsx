@@ -30,6 +30,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
 
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {
