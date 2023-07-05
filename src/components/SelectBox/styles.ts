@@ -24,6 +24,7 @@ export const SelectBoxContainer = styled.div<{ border?: string }>`
 `;
 
 export const SelectBoxTextWrapper = styled.div`
+text-transform: capitalize;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;

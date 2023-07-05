@@ -198,6 +198,7 @@ export type SelectBoxProps = {
   options?: SelectOptionProps[];
   newData?: any;
   onChange?: (value: string | Array<string>) => void;
+  onSelect?: (v: SelectOptionProps) => void;
 };
 
 export type WithdrawModalProps = {
