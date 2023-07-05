@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "./styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   CardPackFilterSection,
@@ -16,16 +16,35 @@ import {
 } from "../../../modules";
 import { dateCardData } from "./data";
 import { useNavigate } from "react-router-dom";
-import { useMarketplaceListContext } from "../../../context";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { ICardPackSeries } from "../../../models/card_pack_series";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
-  const { marketplaceListContext } = useMarketplaceListContext();
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [nftCardYearData, setNftCardYearData] = useState<
+    ICardPackSeries[] | null
+  >(null);
+
+  const getPageData = async () => {
+    setIsLoading(true);
+
+    //const token = localStorage.auth;
+    const response = await dateCardData;
+
+    if (response) {
+      setNftCardYearData(null);
+    }
+    setIsLoading(false);
+  };
+
+  useEffect(() => {
+    getPageData();
+  }, []);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -43,10 +62,10 @@ export const CardPackPage: React.FC = () => {
       price: price,
     };
     const response = await newMarketplaceList(newMarketplace, token);
-    console.log(response);
-
-    setModal(true);
-    setIsView("");
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
   };
 
   const handleView = (item: any) => {
@@ -57,18 +76,17 @@ export const CardPackPage: React.FC = () => {
   const handleCraft = (id: string | number) => {
     navigate("/crafting/identities");
   };
-  
+
   const handleSell = (item: any) => {
     setSelectedItem(item);
     setIsView("sell");
   };
 
-
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        marketplaceListContext?.length > 0 ? (
+        nftCardYearData && nftCardYearData?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -84,7 +102,7 @@ export const CardPackPage: React.FC = () => {
               </DatePageTitleWrapper>
               <CardPackFilterSection />
               <CardGridSection
-                data={dateCardData}
+                data={nftCardYearData}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 onView={handleView}
@@ -102,7 +120,7 @@ export const CardPackPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Card Packs</h3>
             <p>It looks like you don’t have any cards packs to open.  </p>
@@ -110,6 +128,8 @@ export const CardPackPage: React.FC = () => {
               Buy Packs
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">

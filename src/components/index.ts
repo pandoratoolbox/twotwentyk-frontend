@@ -15,3 +15,5 @@ export * from "./PredictionCard";
 export * from "./SelectBox";
 export * from "./SocialAuthButton";
 export * from "./SocialButtonsGroup";
+export * from "./Loader";
+

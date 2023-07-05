@@ -13,7 +13,6 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onSell,
   onView,
 }) => {
-  // console.log(data);
   return (
     <CardGridWrapper>
       {cardType === "category" &&
@@ -41,6 +40,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
       {cardType === "trigger" &&
         data?.map((item, key) => (
           <TriggerCard
+            tier={item?.tier}
             key={key}
             item={item}
             {...item}
@@ -49,33 +49,10 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onSell={onSell}
           />
         ))}
-      {/* {data &&
-        data?.map(
-          ///////// add some filter
-          (item, key: number) =>
-            cardType === "trigger" ? (
-              <TriggerCard
-                key={key}
-               
-                {...item}
-                onCraft={onCraft}
-                onView={onView}
-                onSell={onSell}
-              />
-            ) : (
-              <DateCard
-               
-                key={key}
-                {...item}
-                onCraft={onCraft}
-                onView={onView}
-                onSell={onSell}
-              />
-            )
-        )} */}
       {identityData &&
         identityData?.map((item, key) => (
           <PredictionCard
+            cardType={cardType}
             height={293}
             isNotHover={true}
             key={key}

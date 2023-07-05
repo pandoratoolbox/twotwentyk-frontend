@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "../dates/styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   PredictionsFilterSection,
@@ -15,9 +15,11 @@ import {
   ViewDateCardSection,
 } from "../../../modules";
 import { useLocation, useNavigate } from "react-router-dom";
-import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+
+import { predictionData } from "./data";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -25,10 +27,11 @@ export const PredictionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
-  const { inventoryNFTsContext, setInventoryNftsContext } =
-    useInventoryNFTsContext();
+  const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
+    []
+  );
   const [selectedItem, setSelectedItem] = useState(null);
-
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (params.get("id")) {
@@ -41,9 +44,15 @@ export const PredictionsPage: React.FC = () => {
   }, []);
 
   const getPageData = async () => {
+    setIsLoading(true);
+
     const token = localStorage.auth;
     const response = await getMyNftCardPrediction(token);
-    setInventoryNftsContext(response?.data);
+    if (response?.data) {
+      setPredictionNfts(response.data);
+    }
+
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -64,10 +73,10 @@ export const PredictionsPage: React.FC = () => {
       price: price,
     };
     const response = await newMarketplaceList(newMarketplace, token);
-    console.log(response);
-
-    setModal(true);
-    setIsView("");
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
   };
 
   const handleView = (item: any) => {
@@ -88,7 +97,7 @@ export const PredictionsPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        inventoryNFTsContext?.length > 0 ? (
+        predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -104,10 +113,10 @@ export const PredictionsPage: React.FC = () => {
               </DatePageTitleWrapper>
               <PredictionsFilterSection />
               <CardGridSection
-                identityData={inventoryNFTsContext}
+                identityData={predictionNfts}
                 onCraft={handleCraft}
                 onSell={handleSell}
-                cardType="identity"
+                cardType="prediction"
                 onView={handleView}
               />
               <ViewDateCardSection
@@ -131,7 +140,7 @@ export const PredictionsPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Predictions Yet</h3>
             <p>
@@ -145,6 +154,8 @@ export const PredictionsPage: React.FC = () => {
               Craft Prediction
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">

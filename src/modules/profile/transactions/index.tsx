@@ -1,10 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { TransactionActionWrapper, TransactionsWrapper } from "./styles";
 import { ClaimsTableWrapper } from "../claims/styles";
 import { transactionsData } from "./data";
-import { Button } from "../../../components";
+import {
+  WithdrawConfirmModal,
+  BalanceForWithdrawModal,
+  Button,
+  WithdrawModal,
+} from "../../../components";
+import { getTransactions } from "../../../actions";
 
 export const TransactionsSection: React.FC = () => {
+  const [balanceModal, setBalanceModal] = useState(false);
+  const [withdrawModal, setWithdrawModal] = useState(false);
+  const [confirmModal, setConfirmModal] = useState(false);
+  const [withdrawStatus, setWithdrawStatus] = useState<"success" | "failed">(
+    "failed"
+  );
+  const [tableData, setTableData] = useState([]);
+  useEffect(() => {
+    getData();
+  }, []);
+
+  const getData = async () => {
+    const resData = await getTransactions();
+    if (resData.success) {
+      setTableData(resData.data);
+    } else {
+      setTableData([]);
+    }
+  };
+
+  const handleWithdraw = () => {
+    setBalanceModal(false);
+    setWithdrawModal(true);
+  };
+
+  const handleWithdrawClick = () => {
+    setBalanceModal(true);
+  };
+
+  const handleConfirmWithdraw = (status?: boolean) => {
+    setWithdrawStatus(status ? "success" : "failed");
+    setWithdrawModal(false);
+    setConfirmModal(true);
+  };
+
   return (
     <TransactionsWrapper>
       <h2>Transactions</h2>
@@ -17,25 +58,50 @@ export const TransactionsSection: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {transactionsData.map((item, key) => (
-            <tr key={key}>
-              <td>{item.date}</td>
-              <td>
-                <span className={item.amount < 0 ? "amount-cell" : ""}>
-                  {item.amount < 0 && "-"}$
-                  {item.amount >= 0 ? item.amount : item.amount * -1}
-                </span>
-              </td>
-              <td>
-                <span>{item.type}</span>
+          {tableData.length > 0 ? (
+            tableData.map((item: any, key: number) => (
+              <tr key={key}>
+                <td>{new Date(item.created_at).toDateString()}</td>
+                <td>
+                  <span className={item.amount < 0 ? "amount-cell" : ""}>
+                    {item.amount < 0 && "-"}$
+                    {item.amount >= 0 ? item.amount : item.amount * -1}
+                  </span>
+                </td>
+                <td>
+                  <span>{item.description}</span>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td colSpan={3} style={{ textAlign: "center" }}>
+                No Data
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </ClaimsTableWrapper>
       <TransactionActionWrapper>
-        <Button className="withdraw-button">Withdraw Funds</Button>
+        <Button className="withdraw-button" onClick={handleWithdrawClick}>
+          Withdraw Funds
+        </Button>
       </TransactionActionWrapper>
+      <BalanceForWithdrawModal
+        onClose={() => setBalanceModal(false)}
+        open={balanceModal}
+        onWithdraw={handleWithdraw}
+      />
+      <WithdrawModal
+        onClose={() => setWithdrawModal(false)}
+        open={withdrawModal}
+        onWithdraw={handleConfirmWithdraw}
+      />
+      <WithdrawConfirmModal
+        status={withdrawStatus}
+        onClose={() => setConfirmModal(false)}
+        open={confirmModal}
+      />
     </TransactionsWrapper>
   );
 };

@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const CraftSectionWrapper = styled.div`
   width: 100%;
-  padding: 24px 0 45px;
+  padding: 24px 0;
   max-width: 825px;
   margin: auto;
   height: 414px;
@@ -33,7 +33,7 @@ export const TitleWrapper = styled.div`
 `;
 
 export const CraftCardWrapper = styled.div`
-  width: 146px;
+  min-width: 146px;
   h6 {
     font-weight: 600;
     font-size: 16px;
@@ -71,8 +71,11 @@ export const EmptyCraftCard = styled.div<{ active?: string }>`
 `;
 
 export const CraftCardGroup = styled.div`
+  padding: 0 10px 20px;
   padding-top: 30px;
   display: flex;
+
+  overflow: auto;
   align-items: flex-end;
   & > :not(:first-child) {
     margin-left: 28px;

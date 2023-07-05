@@ -8,6 +8,7 @@ import {
   nft_card_trigger_data,
   nft_card_year_data,
 } from "../data/nfts";
+import { IClaim } from "../models/claim";
 import type { LoginParams, RegisterParams } from "../types/actions";
 
 export const signin = async ({ username, password }: LoginParams) => {
@@ -90,4 +91,22 @@ export const getMyNFTs = async (token: string) => {
   // } catch (error) {
   //   return { success: false, message: "Server Error!" };
   // }
+};
+
+export const getClaim = async () => {
+  try {
+    const res = await api.get<IClaim[]>("/me/claim");
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, message: "Server Error!", data: [] };
+  }
+};
+
+export const getTransactions = async () => {
+  try {
+    const res = await api.get("/me/transaction");
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, message: "Server Error!" };
+  }
 };

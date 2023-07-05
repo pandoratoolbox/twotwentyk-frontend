@@ -5,7 +5,7 @@ import {
   CardPreviewSection,
   IdentityMatchListSection,
 } from "../../../modules";
-import { Button } from "../../../components";
+import { Button, CraftIdentityModal } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { craftingIdentity, getMyNFTs } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
@@ -40,6 +40,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     dayMonth: null,
     year: null,
   });
+  const [confirm, setConfirm] = useState(false);
 
   const [selectedCelebrity, setSelectedCelebrity] = useState<ICelebrity | null>(null);
 
@@ -95,7 +96,8 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   const craftIdentity = async () => {
-    const token = localStorage.auth;
+    setConfirm(true);
+    // const token = localStorage.auth;
 
     if (selectedCards.dayMonth === null) {
       toast.error("Select a Day-Month card");
@@ -132,8 +134,6 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   };
 
-  const [confirm, setConfirm] = useState(false);
-
   return (
     <AppLayout noFooter>
       <ToastContainer
@@ -148,6 +148,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
+      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
       <CraftingWrapper>
         {currentUser ? (
           <>

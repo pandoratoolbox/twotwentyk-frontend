@@ -238,10 +238,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         ])
       );
 
-      const marketplaceListingData = await getMarketplaceList(token);
-      if (marketplaceListingData.data)
-        setMarketplaceListContext(marketplaceListingData.data);
-      // }
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
@@ -276,11 +272,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                         <MyInfoContext.Provider value={myInfoValue}>
                           <MyNFTsContext.Provider value={myNFTsValue}>
                             <InventoryNftsContext.Provider value={inventoryNFTsValue}>
-                              <MarketplaceListContext.Provider
-                                value={marketplaceListValue}
-                              >
                                 {children}
-                              </MarketplaceListContext.Provider>
                             </InventoryNftsContext.Provider>
                           </MyNFTsContext.Provider>
                         </MyInfoContext.Provider>
@@ -321,9 +313,6 @@ export const useInventoryNFTsContext = () => {
   return useContext(InventoryNftsContext);
 };
 
-export const useMarketplaceListContext = () => {
-  return useContext(MarketplaceListContext);
-};
 
 export const useMonthContext = () => {
   return useContext(MonthContext);

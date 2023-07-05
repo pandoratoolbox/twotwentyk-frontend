@@ -38,6 +38,7 @@ export type AppHeaderMenuItemProps = {
 };
 
 export type PredictionCardProps = {
+  cardType?: string;
   item?: any;
   id?: number;
   month?: number;
@@ -94,6 +95,7 @@ export type DateCardProps = {
 };
 
 export type TriggerCardProps = {
+  tier: string;
   item?: any;
   id?: number;
   trigger: string;
@@ -109,7 +111,7 @@ export type TriggerCardProps = {
 
 export type DateCardGridProps = {
   data?: Array<any>;
-  identityData?: Array<PredictionCardProps>;
+  identityData?: Array<any> ;
   cardType?: string;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
@@ -127,13 +129,24 @@ export type ViewDateCardProps = {
 export type SellDateCardProps = {
   item: any;
 
-  onSellConfirm: (id: string | number, nftCollectionId: string | number, totalPrice: string | number) => Promise<void>;
+  onSellConfirm: (
+    id: string | number,
+    nftCollectionId: string | number,
+    totalPrice: string | number
+  ) => Promise<void>;
 } & ViewDateCardProps;
 
 export type ModalProps = {
+  paddingClass?: string;
+  modalHeader?: boolean;
   width?: number;
   onClose: () => void;
   open: boolean;
+} & React.HTMLAttributes<HTMLElement>;
+
+export type ModalHeaderProps = {
+  bg?: string;
+  onClose?: () => void;
 } & React.HTMLAttributes<HTMLElement>;
 
 export type SellModalProps = {
@@ -234,3 +247,7 @@ export type MarketCardProps = {
   owned?: string | number;
   onCard?: (id: string | number, action: CardActionTypes) => void;
 } & IMarketplaceListing;
+
+export type CraftPredictionModalProps = {
+  onBurn?: () => void;
+} & ModalProps;

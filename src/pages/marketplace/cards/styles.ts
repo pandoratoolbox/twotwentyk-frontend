@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 export const MarketplacePageWrapper = styled.div<{ sidebar?: string }>`
+  margin-bottom: auto;
   width: 100%;
   position: relative;
   padding-top: 30px;

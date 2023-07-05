@@ -1,9 +1,16 @@
 import api from "../config/api";
 import { MarketplaceListObjectParams } from "../types/actions";
 
-export const getMarketplaceList = async (token: string) => {
+export const getMarketplaceList = async (nft_collection_id: number, limit: number, token: string) => {
   try {
-    const res = await api.get("/marketplace_listing?nft_collection_id=1&limit=20");
+    const res = await api.get(
+      `/marketplace_listing?nft_collection_id=${nft_collection_id}&limit=${limit}`,
+      {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      }
+    );
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: "Server Error!" };

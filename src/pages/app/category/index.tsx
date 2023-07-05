@@ -7,7 +7,7 @@ import {
   DatesPageWrapper,
   EmptyCards,
 } from "./styles";
-import { Button, SellConfirmModal } from "../../../components";
+import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
   CategoryFilterSection,
@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardCategory } from "../../../actions/nft_card_category";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
+import { INftCardCategory } from "../../../models/nft_card_category";
 
 export const CategoriesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,15 +28,24 @@ export const CategoriesPage: React.FC = () => {
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [nftCardCategoryData, setNftCardCategoryData] = useState<
+    INftCardCategory[] | null
+  >(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
   const getPageData = async () => {
+    setIsLoading(true);
+
     const token = localStorage.auth;
     const response = await getMyNftCardCategory(token);
-    setInventoryNftsContext(response?.data);
+    if (response?.data) {
+      setNftCardCategoryData(response?.data);
+    }
+    setIsLoading(false);
   };
 
   useEffect(() => {
@@ -54,10 +64,10 @@ export const CategoriesPage: React.FC = () => {
       price: price,
     };
     const response = await newMarketplaceList(newMarketplace, token);
-    console.log(response);
-
-    setModal(true);
-    setIsView("");
+    if (response.success) {
+      setModal(true);
+      setIsView("");
+    }
   };
 
   const handleView = (item: any) => {
@@ -78,7 +88,7 @@ export const CategoriesPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        inventoryNFTsContext?.length > 0 ? (
+        nftCardCategoryData && nftCardCategoryData?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -96,7 +106,7 @@ export const CategoriesPage: React.FC = () => {
               <CategoryFilterSection />
               <CardGridSection
                 cardType="category"
-                data={inventoryNFTsContext}
+                data={nftCardCategoryData}
                 onCraft={handleCraft}
                 onSell={handleSell}
                 onView={handleView}
@@ -116,7 +126,7 @@ export const CategoriesPage: React.FC = () => {
               />
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : (
+        ) : !isLoading ? (
           <EmptyCards>
             <h3>No Category Cards</h3>
             <p>It looks like you don’t have any category cards yet.  </p>
@@ -130,6 +140,8 @@ export const CategoriesPage: React.FC = () => {
               Buy Packs
             </Button>
           </EmptyCards>
+        ) : (
+          <Loader />
         )
       ) : (
         <EmptyCards className="login">
