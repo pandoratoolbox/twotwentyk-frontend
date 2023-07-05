@@ -59,7 +59,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
   useEffect(() => {
     setChecked(false);
     setOptionSelected(false);
-    // setClearSelect(!clearSelect);
+
     let celebrities: ICelebrity[] = [];
     if (celebritiesContext) {
       Array.from<[number, ICelebrity]>(celebritiesContext).map(([key, value]) => {
@@ -73,7 +73,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
       });
     }
     setMatches(celebrities);
-  }, [open, clearSelect, celebritiesContext, selectedCards]);
+  }, [open]);
   console.log(celebritiesContext, selectedCards)
   return (
     <ModalWrapper
@@ -141,7 +141,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
               <input
                 id={"crafting"}
                 type="checkbox"
-                value={"crafting"}
+                checked={checked}
                 onChange={(e) => setChecked(e.target.checked)}
               />
               <label htmlFor={"crafting"}></label>
