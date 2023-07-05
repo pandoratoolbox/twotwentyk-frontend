@@ -53,29 +53,34 @@ export const MarketplacePacksPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
-        {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+      {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+        <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Card Packs</h2>
-            <MFilterSection />
-            <MCardGridSection data={nftMarketplaceData} onCardClick={handleCardClick} page="packs" />
+            <MFilterSection page="packs" />
+            <MCardGridSection
+              data={nftMarketplaceData}
+              onCardClick={handleCardClick}
+              page="packs"
+            />
           </MarketplacePageContainer>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <p style={{ maxWidth: "253px" }}>
-              Wow, can you believe no one wants to sell even a single card?
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Sell Card
-            </Button>
-          </EmptyCards>
-        ): (
-          <Loader />
-        )}
-      </MarketplacePageWrapper>
+        </MarketplacePageWrapper>
+      ) : !isLoading ? (
+        <EmptyCards>
+          <p style={{ maxWidth: "253px" }}>
+            Wow, can you believe no one wants to sell even a single card?
+          </p>
+          <Button
+            className="buy-button"
+            onClick={() => navigate("/marketplace")}
+          >
+            Sell Card
+          </Button>
+        </EmptyCards>
+      ) : (
+        <Loader />
+      )}
+
       <MViewCardSection
         open={side === "view"}
         onClose={handleSideClose}

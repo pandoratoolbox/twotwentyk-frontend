@@ -6,7 +6,7 @@ import {
   MarketplacePageWrapper,
 } from "../cards/styles";
 import {
-  DatesFilterSection,
+  MFilterSection,
   MBuyCardSection,
   MCardGridSection,
   MSellCardSection,
@@ -56,7 +56,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Identities</h2>
-            <DatesFilterSection />
+            <MFilterSection page="identities" />
             <MCardGridSection
               data={nftMarketplaceData}
               onCardClick={handleCardClick}

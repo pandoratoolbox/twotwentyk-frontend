@@ -58,10 +58,11 @@ export const OptionItem = styled.label`
   justify-content: space-between;
   align-items: center;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 17px;
   padding: 12px 0;
   cursor: pointer;
+  text-transform: capitalize;
   div {
     display: flex;
     align-items: center;
