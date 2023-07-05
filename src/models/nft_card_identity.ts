@@ -1,16 +1,16 @@
 import { IUser, User } from "./user";
 
 export interface INftCardIdentity {
-  day?: number;
-  rarity?: number;
+  day: number;
+  rarity: number;
   owner?: IUser;
-  is_crafted?: boolean;
+  is_crafted: boolean;
   owner_id?: number;
-  celebrity_name?: string;
-  category?: string;
+  celebrity_name: string;
+  category: string;
   id?: number;
-  month?: number;
-  year?: number;
+  month: number;
+  year: number;
   image?: string;
 
 }
