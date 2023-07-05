@@ -121,7 +121,7 @@ export const CardTypeWrapper = styled.div<{
   width: 100%;
   background-color: #615e5e;
   padding: ${({ forDashboard }) =>
-    forDashboard ? "4.618px 15.099px 5.471px 15.24px" : "6px 25px 7px 25px"};
+    forDashboard ? "4.618px 15.099px 5.471px 15.24px" : "6px 15px 7px 15px"};
   display: flex;
   border-radius: ${({ forDashboard }) =>
     forDashboard ? "0px 4.618px" : "0 5px"};
