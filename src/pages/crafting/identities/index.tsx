@@ -3,7 +3,6 @@ import { AppLayout } from "../../../layout/AppLayout";
 import { CraftLeftWrapper, CraftRightWrapper, CraftingWrapper } from "./styles";
 import {
   CardPreviewSection,
-  CraftSection,
   IdentityMatchListSection,
 } from "../../../modules";
 import { Button } from "../../../components";
@@ -19,6 +18,7 @@ import { INftCardIdentity } from "../../../models/nft_card_identity";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../../models/nft_card_crafting";
 import { IdentitySelectCardSection } from "../../../modules/crafting/IdentitySelectCardSection";
+import { IdentityCraftSection } from "../../../modules/crafting/IdentityCraftSection";
 
 export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -34,15 +34,11 @@ export const CraftingIdentitesPage: React.FC = () => {
     year: INftCardYear | null;
     dayMonth: INftCardDayMonth | null;
     category: INftCardCategory | null;
-    identity: INftCardIdentity | null;
-    trigger: Array<INftCardTrigger> | null;
   }>({
     crafting: null,
     category: null,
     dayMonth: null,
     year: null,
-    identity: null,
-    trigger: null,
   });
 
   const [selectedCelebrity, setSelectedCelebrity] = useState<ICelebrity | null>(null);
@@ -75,13 +71,13 @@ export const CraftingIdentitesPage: React.FC = () => {
 
 
   const handleSelectCardCategory = (card: INftCardCategory) => {
-    setSelectedCards((prev) => ({...prev, category: card}))
+    setSelectedCards((prev) => ({category: card, dayMonth: prev.dayMonth, year: prev.year, crafting: prev.crafting}))
     if (card.id) setSelectedCard(card.id);
   };
 
   const handleSelectCardCrafting = (card: INftCardCrafting) => {
     setSelectedCards((prev) => ({...prev, crafting: card}))
-    if (card.id) setSelectedCard(card.id);
+    // if (card.id) setSelectedCard(card.id);
   };
 
   const handleSelectCardDayMonth = (card: INftCardDayMonth) => {
@@ -94,29 +90,49 @@ export const CraftingIdentitesPage: React.FC = () => {
     if (card.id) setSelectedCard(card.id);
   };
 
-  const handleCraft = (page: "identity" | "prediction") => {
-    page === "identity" && craftIdentity();
+  const handleCraft = () => {
+    craftIdentity();
   };
 
   const craftIdentity = async () => {
     const token = localStorage.auth;
 
+    if (selectedCards.dayMonth === null) {
+      toast.error("Select a Day-Month card");
+      return
+    }
+
+    if (selectedCards.year === null) {
+      toast.error("Select a Year card");
+      return
+    }
+
+    if (selectedCards.category === null) {
+      toast.error("Select a Category card");
+      return
+    }
+
+    if (selectedCards.crafting === null) {
+      toast.error("Select a Crafting card");
+      return
+    }
+
     const newCraft = {
-      nft_card_day_month_id: Number(selectedCards.dayMonth),
-      nft_card_year_id: Number(selectedCards.year),
-      nft_card_crafting_id: Number(selectedCards.crafting),
+      nft_card_day_month_id: Number(selectedCards.dayMonth.id),
+      nft_card_year_id: Number(selectedCards.year.id),
+      nft_card_crafting_id: Number(selectedCards.crafting?.id),
       celebrity_id: Number(selectedCelebrity?.id),
-      nft_card_category_id: Number(selectedCards.category),
+      nft_card_category_id: Number(selectedCards.category?.id),
     };
     const res = await craftingIdentity(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
-      const myNFTs = await getMyNFTs(token);
-      setMyNFTsContext(myNFTs.data);
     } else {
       toast.error(res.message);
     }
   };
+
+  const [confirm, setConfirm] = useState(false);
 
   return (
     <AppLayout noFooter>
@@ -136,20 +152,17 @@ export const CraftingIdentitesPage: React.FC = () => {
         {currentUser ? (
           <>
             <CraftLeftWrapper>
-              <CraftSection
+              <IdentityCraftSection
                 onCraft={handleCraft}
-                page="identity"
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
               />
               <IdentitySelectCardSection
-                page="identity"
                 clickedCard={clickedCard}
                 selectedCard={selectedCard}
                 selectedCraft={selectedCraft}
                 onCardClicked={handleCardClick}
-                onCardSelected={handleCardSelected}
                 onSelectCardCrafting={handleSelectCardCrafting}
                 onSelectCardCategory={handleSelectCardCategory}
                 onSelectCardDayMonth={handleSelectCardDayMonth}

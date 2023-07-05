@@ -29,8 +29,6 @@ export const IdentityMatchListSection: React.FC<{
   year: INftCardYear | null;
   dayMonth: INftCardDayMonth | null;
   category: INftCardCategory | null;
-  identity: INftCardIdentity | null;
-  trigger: Array<INftCardTrigger> | null;
   };
   chooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
 }> = ({ page, selectedCards, chooseCelebrity }) => {
@@ -56,7 +54,7 @@ export const IdentityMatchListSection: React.FC<{
         <MatchListGroup>
           {celebritiesContext &&
               Array.from<[number, ICelebrity]>(celebritiesContext).map(
-                ([key, value]) => (
+                ([key, value]) => value.birth_year === selectedCards.year?.year && value.birth_day === selectedCards.dayMonth?.day && value.birth_month === selectedCards.dayMonth?.month && value.category === selectedCards.category?.category && (
                   <MatchListItem
                   chooseCelebrity={chooseCelebrity}
                     celebrity={value}

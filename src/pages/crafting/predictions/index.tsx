@@ -7,9 +7,7 @@ import {
 } from "../identities/styles";
 import { PredictionMatchListSection } from "../../../modules/crafting/PredictionMatchListSection";
 import {
-  CardPreviewSection,
-  CraftSection,
-  SelectCardSection,
+  CardPreviewSection
 } from "../../../modules";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "../../../components";
@@ -23,6 +21,9 @@ import { INftCardCategory } from "../../../models/nft_card_category";
 import { INftCardIdentity } from "../../../models/nft_card_identity";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../../models/nft_card_crafting";
+import { PredictionCraftSection } from "../../../modules/crafting/PredictionCraftSection";
+import { PredictionSelectCardSection } from "../../../modules/crafting/PredictionSelectCardSection";
+
 
 export const CraftingPredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -35,18 +36,12 @@ export const CraftingPredictionsPage: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<number | string | null>(-1);
   const [selectedCards, setSelectedCards] = useState<{
     crafting: INftCardCrafting | null;
-    year: INftCardYear | null;
-    dayMonth: INftCardDayMonth | null;
-    category: INftCardCategory | null;
     identity: INftCardIdentity | null;
-    trigger: Array<INftCardTrigger> | null;
+    triggers: Array<INftCardTrigger> | null;
   }>({
     crafting: null,
-    category: null,
-    dayMonth: null,
-    year: null,
     identity: null,
-    trigger: null,
+    triggers: null,
   });
 
   useEffect(() => {
@@ -75,61 +70,72 @@ export const CraftingPredictionsPage: React.FC = () => {
     // }
     // setSelectedCard(id);
   };
-  const handleCraft = (page: "identity" | "prediction") => {
-    page === "prediction" && craftPrediction();
+
+  const handleSelectCardCrafting = (card: INftCardCrafting) => {
+    setSelectedCards((prev) => ({triggers: prev.triggers, crafting: card, identity: prev.identity}))
+    if (card.id) setSelectedCard(card.id);
+  }
+
+  const handleSelectCardIdentity = (card: INftCardIdentity) => {
+    setSelectedCards((prev) => ({triggers: prev.triggers, crafting: prev.crafting, identity: card}))
+    if (card.id) setSelectedCard(card.id);
+  }
+
+  const handleSelectCardTrigger = (card: INftCardTrigger) => {
+    let tr = selectedCards.triggers
+    if (tr) {
+      tr.push(card)
+    } else {
+      tr = [card]
+    }
+    
+    setSelectedCards((prev) => ({triggers: tr, crafting: prev.crafting, identity: prev.identity}))
+    if (card.id) setSelectedCard(card.id);
+  }
+
+  const handleCraft = () => {
+    craftPrediction();
   };
 
   const craftPrediction = async () => {
-    // const newCraft = {
-    //   nft_card_crafting_id: Number(selectedCards.crafting),
-    //   nft_card_identity_id: Number(selectedCards.identity),
-    //   nft_card_trigger_ids: [Number(selectedCards.trigger)],
-    // };
-    // const res = await craftingPrediction(newCraft);
-    // if (res.success) {
-    //   toast.success("Crafted Successfully.");
-    //   const myNFTs = await getMyNFTs();
-    //   setMyNFTsContext(myNFTs.data);
-    // } else {
-    //   toast.error(res.message);
-    // }
-
-
-    // let triggers = card_triggers.map(v => {
-    //   if (v !== undefined) {
-    //   if (v.trigger !== undefined) {return v?.trigger }
-    //   }
-    // })
+    const token = localStorage.auth;
 
     if (selectedCards.identity === null) {
-      toast.error("Error crafting")
+      toast.error("Select an Identity card");
       return
     }
 
-    
+    if (selectedCards.triggers === null || selectedCards.triggers.length < 1) {
+      toast.error("Select atleast one Trigger card");
+      return
+    }
+
     if (selectedCards.crafting === null) {
-      toast.error("Error crafting")
+      toast.error("Select a Crafting card");
       return
     }
 
-    
-    if (selectedCards.trigger === null) {
-      toast.error("Error crafting")
-      return
+    let trigger_ids: number[] = []
+
+    selectedCards.triggers.forEach(v => {
+      if (v.id) {
+        trigger_ids.push(v.id)
+      }
+    })
+
+    const newCraft = {
+      nft_card_trigger_ids: trigger_ids,
+      nft_card_identity_id: Number(selectedCards.identity.id),
+      nft_card_crafting_id: Number(selectedCards.crafting?.id),
+    };
+    const res = await craftingPrediction(newCraft);
+    if (res.success) {
+      toast.success("Crafted Successfully.");
+    } else {
+      toast.error(res.message);
     }
-
-    // myNFTsData.nft_card_prediction_data.push({
-    //   id: 0,
-    //   rarity: 0,
-    //   is_claimed: false,
-    //   triggers: selectedCards.trigger.map(v => { return v.id }),
-    //   owner_id: 0,
-    //   celebrity_name: selectedCards.identity.celebrity_name,
-    //   image: ""
-    // })
-
-    toast.success("Crafted Successfully.");
   };
+
 
   return (
     <AppLayout noFooter>
@@ -149,24 +155,24 @@ export const CraftingPredictionsPage: React.FC = () => {
         {currentUser ? (
           <>
             <CraftLeftWrapper>
-              <CraftSection
+              <PredictionCraftSection
                 onCraft={handleCraft}
-                page="prediction"
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
               />
-              <SelectCardSection
-                page="prediction"
+              <PredictionSelectCardSection
                 selectedCard={selectedCard}
                 clickedCard={clickedCard}
                 selectedCraft={selectedCraft}
                 onCardClicked={handleCardClick}
-                onCardSelected={handleCardSelected}
+                onSelectCardCrafting={handleSelectCardCrafting}
+                onSelectCardIdentity={handleSelectCardIdentity}
+                onSelectCardTrigger={handleSelectCardTrigger}
               />
             </CraftLeftWrapper>
             <CraftRightWrapper>
-              <PredictionMatchListSection page="prediction" clickedCard={clickedCard} />
+              <PredictionMatchListSection selectedCards={selectedCards} />
               <CardPreviewSection
                 page="prediction"
                 clickedCard={clickedCard}

@@ -15,6 +15,13 @@ export const ModalWrapper = styled.div<{ open?: boolean }>`
   visibility: ${({ open }) => (open ? "visible" : "hidden")};
 `;
 
+export const ModalHeaderWrapper = styled.div<{ bg?: string }>`
+  width: 100%;
+  background: ${({ bg }) => (bg ? bg : "#ffffff")};
+  border-top-right-radius: 30px;
+  border-top-left-radius: 30px;
+`;
+
 export const ModalOverlay = styled.div`
   background: rgba(36, 36, 36, 0.5);
   backdrop-filter: blur(2px);
@@ -34,6 +41,10 @@ export const ModalContainer = styled.div<{ width?: number }>`
   border-radius: 20px;
   width: 95%;
   max-width: ${({ width }) => (width ? width + "px" : "768px")};
+
+  &.removePadding {
+    padding: 0;
+  }
 `;
 
 export const CloseButton = styled.div`
@@ -61,12 +72,47 @@ export const SellConfirmModalWrapper = styled.div`
   }
 `;
 
+export const CraftIdentifyModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 35px;
+
+  p {
+    padding-top: 14px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+`;
+
+export const CraftIdentifyModalHeader = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 30px 35px;
+  p {
+    padding-top: 14px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  > div {
+    max-width: 230px;
+  }
+`;
+
 export const IconWrapper = styled.div`
   padding: 24px 0 0;
 `;
 
 export const ButtonGroup = styled.div`
   width: 100%;
+  max-width: 342px;
   & > :not(:first-child) {
     margin-top: 16px;
   }
@@ -269,5 +315,167 @@ export const WithdrawConfirmModalWrapper = styled.div`
     a {
       color: 000;
     }
+  }
+`;
+export const CardsWrapper = styled.div`
+  h3 {
+    width: 280px;
+    margin: 0 auto;
+    color: #000;
+    text-align: center;
+    font-size: 14px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 600;
+    line-height: 22px;
+  }
+`;
+
+export const CardGridWrapper = styled.div`
+  padding-top: 30px;
+  max-width: 400px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+`;
+
+export const CraftingCardWrapper = styled.div<{ active?: string }>`
+  padding: 10px;
+  border-radius: 16px;
+  background: ${({ active }) => (active ? "#dbdee8" : "transparent")};
+  box-shadow: ${({ active }) =>
+    active ? "0px 0px 14.9405px rgba(0, 0, 0, 0.05)" : "none"};
+  /* .select-button {
+    opacity: ${({ active }) => (active ? 1 : 0.15)};
+  } */
+`;
+
+export const CraftCard = styled.div<{ bg: string }>`
+  position: relative;
+  width: 100%;
+  height: 137px;
+  border-radius: 5px;
+  contain: content;
+  background-blend-mode: luminosity, normal;
+  background: ${({ bg }) => `url(${bg}) no-repeat, #fff`};
+  background-size: cover;
+  background-position: center;
+  &.preview {
+    max-width: 230px;
+    height: 278px;
+    margin: auto;
+    margin-bottom: 28px;
+  }
+  &.crafting-card {
+    width: 100%;
+    height: 178px;
+    border: 1.61734px solid rgba(0, 0, 0, 0.25);
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.17);
+    border-radius: 5px;
+  }
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  span {
+    z-index: 1;
+    position: absolute;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 22px;
+    min-width: 60px;
+    background: #615e5e;
+    border-radius: 0px 5px;
+    font-weight: 500;
+    padding: 0 10px;
+    font-size: 10.4583px;
+    line-height: 13px;
+    right: 0;
+    color: #ffffff;
+    top: 0;
+  }
+  p {
+    position: absolute;
+    bottom: 0;
+    background: #d2d4dd;
+    font-weight: 400;
+    font-size: 11.9981px;
+    text-transform: capitalize;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    line-height: 15px;
+  }
+`;
+
+export const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
+
+  span {
+    color: rgba(0, 0, 0, 0.5);
+    text-align: justify;
+    font-size: 12px;
+    font-family: Inter;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 13.5px;
+  }
+`;
+
+export const Checkbox = styled.div`
+  height: 20px;
+  position: relative;
+  width: 20px;
+  margin-right: 10px;
+  label {
+    background-color: #fff;
+    border: 1.5px solid #000;
+    border-radius: 4px;
+    cursor: pointer;
+    height: 20px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 20px;
+    &::after {
+      border: 2px solid #000;
+      border-top: none;
+      border-right: none;
+      content: "";
+      height: 4px;
+      left: 3px;
+      opacity: 0;
+      position: absolute;
+      top: 4px;
+      transform: rotate(-45deg);
+      width: 10px;
+    }
+  }
+  input {
+    visibility: hidden;
+  }
+  input:checked + label {
+    background-color: #f0f0f0;
+    border-color: #f0f0f0;
+  }
+
+  input:checked + label:after {
+    opacity: 1;
+  }
+`;
+
+export const CraftPredictionModalWrapper = styled.div`
+  padding-top: 20px;
+  h3 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 24px;
   }
 `;

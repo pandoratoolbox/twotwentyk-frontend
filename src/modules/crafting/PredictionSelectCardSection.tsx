@@ -12,7 +12,6 @@ import {
 import { Button, IconSort, SelectBox } from "../../components";
 import { SortButton } from "../app/dates/styles";
 import {
-  useMyNFTsContext,
   useStatusContext,
   useAllRaritiesContext,
 } from "../../context";
@@ -20,55 +19,44 @@ import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
 
 import { getMyNftCardCrafting } from "../../actions/nft_card_crafting";
-import { getMyNftCardDayMonth } from "../../actions/nft_card_day_month";
-import { getMyNftCardCategory } from "../../actions/nft_card_category";
-import { getMyNftCardYear } from "../../actions/nft_card_year";
+import { getMyNftCardIdentity } from "../../actions/nft_card_identity";
+import { getMyNftCardTrigger } from "../../actions/nft_card_trigger";
+import { INftCardIdentity } from "../../models/nft_card_identity";
+import { INftCardTrigger } from "../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../models/nft_card_crafting";
-import { INftCardDayMonth } from "../../models/nft_card_day_month";
-import { INftCardYear } from "../../models/nft_card_year";
-import { INftCardCategory } from "../../models/nft_card_category";
-import { useMonthContext } from "../../context";
 
-export const IdentitySelectCardSection: React.FC<{
+export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
   onCardClicked: (key: number | string) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
-  onSelectCardCategory: (card: INftCardCategory) => void;
-  onSelectCardDayMonth: (card: INftCardDayMonth) => void;
-  onSelectCardYear: (card: INftCardYear) => void;
+  onSelectCardTrigger: (card: INftCardTrigger) => void;
+  onSelectCardIdentity: (card: INftCardIdentity) => void;
 }> = ({
   selectedCraft,
   clickedCard,
   selectedCard,
   onCardClicked,
-
-  onSelectCardCategory,
   onSelectCardCrafting,
-  onSelectCardDayMonth,
-  onSelectCardYear,
+  onSelectCardIdentity,
+  onSelectCardTrigger,
 }) => {
   const { statusContext } = useStatusContext();
   const { allRaritiesContext } = useAllRaritiesContext();
-  const { myNFTsContext, setMyNFTsContext } = useMyNFTsContext();
-
-  const { monthContext } = useMonthContext()
 
   const navigate = useNavigate();
 
+  
   const [nftCardCraftingData, setNftCardCraftingData] = useState<
     INftCardCrafting[] | null
   >(null);
-  const [nftCardCategoryData, setNftCardCategoryData] = useState<
-    INftCardCategory[] | null
+  const [nftCardIdentityData, setNftCardIdentityData] = useState<
+    INftCardIdentity[] | null
   >(null);
-  const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
-    INftCardDayMonth[] | null
+  const [nftCardTriggerData, setNftCardTriggerData] = useState<
+    INftCardTrigger[] | null
   >(null);
-  const [nftCardYearData, setNftCardYearData] = useState<INftCardYear[] | null>(
-    null
-  );
 
   const getNFTCrafting = async () => {
     const token = localStorage.auth;
@@ -78,20 +66,15 @@ export const IdentitySelectCardSection: React.FC<{
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
-    } else if (selectedCraft === "dayMonth") {
-      const response = await getMyNftCardDayMonth(token);
+    } else if (selectedCraft === "trigger") {
+      const response = await getMyNftCardTrigger(token);
       if (response.data) {
-        setNftCardDayMonthData(response.data);
+        setNftCardTriggerData(response.data);
       }
-    } else if (selectedCraft === "year") {
-      const response = await getMyNftCardYear(token);
+    } else if (selectedCraft === "identity") {
+      const response = await getMyNftCardIdentity(token);
       if (response.data) {
-        setNftCardYearData(response.data);
-      }
-    } else if (selectedCraft === "category") {
-      const response = await getMyNftCardCategory(token);
-      if (response.data) {
-        setNftCardCategoryData(response.data);
+        setNftCardIdentityData(response.data);
       }
     }
   };
@@ -99,6 +82,8 @@ export const IdentitySelectCardSection: React.FC<{
   useEffect(() => {
     getNFTCrafting();
   }, [selectedCraft]);
+
+
 
 
   return (
@@ -183,12 +168,11 @@ export const IdentitySelectCardSection: React.FC<{
           )}
         </SelectCardSectionContainer>
       )}
-
-{selectedCraft === "dayMonth" && (
+{selectedCraft === "identity" && (
         <SelectCardSectionContainer>
-          {nftCardDayMonthData != null ? (
+          {nftCardIdentityData != null ? (
             <>
-              <h2>Select a Day-Month card</h2>
+              <h2>Select an Identity card</h2>
               <FilterWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
@@ -209,7 +193,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {nftCardDayMonthData.map((item, key) => (
+                {nftCardIdentityData.map((item, key) => (
                   <CraftingCardWrapper
                     key={key}
                     active={clickedCard === item.id ? "true" : undefined}
@@ -221,7 +205,7 @@ export const IdentitySelectCardSection: React.FC<{
                       {item.rarity === 0 && <span>Common</span>}
                       {item.rarity === 1 && <span>Uncommon</span>}
                       {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.day} {(monthContext as Map<number, string>).get(item.month)}</p>
+                      <p>{item.celebrity_name}</p>
                     </CraftCard>
                     <SelectButton
                       className="select-button"
@@ -233,7 +217,7 @@ export const IdentitySelectCardSection: React.FC<{
                       onClick={
                         clickedCard !== item.id || selectedCard === item.id
                           ? () => {}
-                          : () => onSelectCardDayMonth(item)
+                          : () => onSelectCardIdentity(item)
                       }
                     >
                       Select
@@ -264,92 +248,12 @@ export const IdentitySelectCardSection: React.FC<{
           )}
         </SelectCardSectionContainer>
       )}
-{selectedCraft === "year" && (
+{selectedCraft === "trigger" && (
         <SelectCardSectionContainer>
-          {nftCardYearData != null ? (
-            <>
-              <h2>Select a Year card</h2>
-              <FilterWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    newData={allRaritiesContext}
-                    placeholder="All Rarities"
-                  />
-                </SelectBoxWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    newData={statusContext}
-                    placeholder="Status"
-                  />
-                </SelectBoxWrapper>
-                <SortButton>
-                  <IconSort />
-                </SortButton>
-              </FilterWrapper>
-              <CardGridWrapper>
-                {nftCardYearData.map((item, key) => (
-                  <CraftingCardWrapper
-                    key={key}
-                    active={clickedCard === item.id ? "true" : undefined}
-                  >
-                    <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
-                      bg="/assets/nfts/1.png"
-                    >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.year}</p>
-                    </CraftCard>
-                    <SelectButton
-                      className="select-button"
-                      disabled={
-                        clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
-                      }
-                      onClick={
-                        clickedCard !== item.id || selectedCard === item.id
-                          ? () => {}
-                          : () => onSelectCardYear(item)
-                      }
-                    >
-                      Select
-                    </SelectButton>
-                  </CraftingCardWrapper>
-                ))}
-              </CardGridWrapper>
-            </>
-          ) : (
-            <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
-              <p style={{ maxWidth: "243px" }}>
-                It looks like you don’t have any{" "}
-                <span className="capitalize">{selectedCraft}</span> cards yet.
-              </p>
-              <Button className="buy-button" onClick={() => navigate("/buy")}>
-                Buy Packs
-              </Button>
-              <Button
-                className="buy-button"
-                onClick={() => navigate("/marketplace")}
-              >
-                Go to Marketplace
-              </Button>
-            </EmptyCards>
-          )}
-        </SelectCardSectionContainer>
-      )}
-{selectedCraft === "category" && (
-        <SelectCardSectionContainer>
-          {nftCardCategoryData
+          {nftCardTriggerData
            != null ? (
             <>
-              <h2>Select a Category card</h2>
+              <h2>Select a Trigger card</h2>
               <FilterWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
@@ -370,7 +274,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {nftCardCategoryData.map((item, key) => (
+                {nftCardTriggerData.map((item, key) => (
                   <CraftingCardWrapper
                     key={key}
                     active={clickedCard === item.id ? "true" : undefined}
@@ -382,7 +286,7 @@ export const IdentitySelectCardSection: React.FC<{
                       {item.rarity === 0 && <span>Common</span>}
                       {item.rarity === 1 && <span>Uncommon</span>}
                       {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.category}</p>
+                      <p>{item.trigger}</p>
                     </CraftCard>
                     <SelectButton
                       className="select-button"
@@ -394,7 +298,7 @@ export const IdentitySelectCardSection: React.FC<{
                       onClick={
                         clickedCard !== item.id || selectedCard === item.id
                           ? () => {}
-                          : () => onSelectCardCategory(item)
+                          : () => onSelectCardTrigger(item)
                       }
                     >
                       Select

@@ -269,6 +269,7 @@ export const MatchListGroup = styled.div`
 export const MatchListItemWrapper = styled.div`
   padding: 9px 0;
   border-bottom: 0.5px solid rgba(0, 0, 0, 0.15);
+  text-transform: capitalize;
 `;
 
 export const ItemHeader = styled.div`
