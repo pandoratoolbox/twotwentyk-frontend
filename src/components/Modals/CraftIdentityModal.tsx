@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { CraftIdentityModalProps, SellModalProps } from "../../types";
+import { CraftIdentityModalProps, SelectBoxProps, SelectOptionProps, SellModalProps } from "../../types";
 import { Modal as ModalWrapper } from "./Modal";
 import { ModalHeader } from "./ModalHeader";
 
@@ -19,6 +19,7 @@ import { Button } from "../Button";
 import { useNavigate } from "react-router-dom";
 import { useCelebritiesContext, useMonthContext } from "../../context";
 import { ICelebrity } from "../../models/celebrity";
+import { SelectOption } from "../SelectBox/SelectOption";
 
 const matchingIdentityOptions = [
   {
@@ -44,8 +45,8 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
   const [checked, setChecked] = useState<boolean>(false);
   const [matches, setMatches] = useState<ICelebrity[]>([]);
 
-  const chooseCelebrity = (v: string | string[]) => {
-    let c = (celebritiesContext as Map<number,ICelebrity>).get(Number(v))
+  const chooseCelebrity = (v: SelectOptionProps) => {
+    let c = (celebritiesContext as Map<number,ICelebrity>).get(Number(v.value))
     if (c) {
       selectCelebrity(c);
     }
@@ -79,10 +80,10 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
       <ModalHeader bg={"#F2F5FF"} onClose={onClose}>
         <CraftIdentifyModalHeader>
           <p>Would you like to assign a name to your Identity?</p>
-          <SelectBox
+          <SelectOption
             options={matches.map(v => {return {label: v.name, value: String(v.id)}})}
             placeholder="Select matching Identity"
-            onChange={chooseCelebrity}
+            onSelect={chooseCelebrity}
           />
         </CraftIdentifyModalHeader>
       </ModalHeader>
