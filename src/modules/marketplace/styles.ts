@@ -120,3 +120,32 @@ export const BalanceInfo = styled.div`
     }
   }
 `;
+
+export const SummaryCard = styled.div<{ bg: string }>`
+  min-width: 97.03px;
+  height: 117px;
+  background: ${({ bg }) =>
+    bg
+      ? `url(${bg}) no-repeat, #CDCDCD`
+      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
+  background-blend-mode: luminosity, normal;
+  background-size: cover;
+  background-position: center;
+  border-radius: 5px;
+margin-right: 25px;
+  span {
+    max-width: fit-content;
+    height: 11.94px;
+    border-radius: 0 2px;
+    font-weight: 500;
+    font-size: 5.57px;
+    line-height: 6.75px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    background: #615e5e;
+    margin-left: auto;
+    padding: 3px 9px;
+  }
+`;

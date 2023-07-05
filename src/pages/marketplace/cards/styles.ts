@@ -5,7 +5,10 @@ export const MarketplacePageWrapper = styled.div<{ sidebar?: string }>`
   width: 100%;
   position: relative;
   padding-top: 30px;
-  margin-right: ${({ sidebar }) => (sidebar ? "405px" : "0")};
+  padding-right: ${({ sidebar }) => (sidebar ? "405px" : "0")};
+  @media screen and (max-width: 1300px) {
+    padding-right: 0;
+  }
 `;
 
 export const MarketplacePageContainer = styled.div`

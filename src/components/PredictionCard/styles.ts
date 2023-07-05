@@ -77,44 +77,54 @@ export const CardBottomWrapper = styled.div`
 `;
 
 export const CardDateWrapper = styled.div<{
+  forDashboard?: boolean;
   cardType?: string;
 }>`
   display: flex;
   span {
     font-weight: 600;
-    padding: 8px 13px 11px 12px;
+    padding: ${({ forDashboard }) =>
+      forDashboard ? "6.927px 6.476px 7.162px 6.157px" : "8px 13px 11px 12px"};
     color: ${({ cardType }) => (cardType === "identity" ? "#000" : "#fff")};
-    font-size: 11px;
+    font-size: ${({ forDashboard }) => (forDashboard ? "8.47px" : "11px")};
     font-family: Inter;
     font-style: normal;
-    line-height: 11px;
-    letter-spacing: 0.22px;
+    line-height: ${({ forDashboard }) => (forDashboard ? "8.466px" : "11px")};
+    letter-spacing: ${({ forDashboard }) =>
+      forDashboard ? "0.169px" : "0.22px"};
     background: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     opacity: ${({ cardType }) => (cardType === "identity" ? "0.5" : "1")};
   }
   .date {
-    border-radius: 6px 0px;
+    border-radius: ${({ forDashboard }) =>
+      forDashboard ? "4.618px 0px" : "6px 0px"};
   }
 
   .year {
-    border-radius: 0 0 5px 5px;
-    margin-left: 5px;
+    border-radius: ${({ forDashboard }) =>
+      forDashboard ? "0px 0px 4.618px 4.618px" : "0 0 5px 5px"};
+    margin-left: ${({ forDashboard }) => (forDashboard ? "3.85px" : "5px")};
   }
 `;
 
-export const CardTypeWrapper = styled.div`
+export const CardTypeWrapper = styled.div<{
+  forDashboard?: boolean;
+}>`
   height: 30px;
-  max-width: 62px;
+  max-width: fit-content;
+  min-width: 62px;
   font-weight: 400;
-  font-size: 10.7747px;
-  line-height: 13px;
+  font-size: ${({ forDashboard }) => (forDashboard ? "10.775px" : "10.7747px")};
+  line-height: normal;
   width: 100%;
   background-color: #615e5e;
-  padding: 0 10px;
+  padding: ${({ forDashboard }) =>
+    forDashboard ? "4.618px 15.099px 5.471px 15.24px" : "6px 25px 7px 25px"};
   display: flex;
-  border-radius: 0 5px;
+  border-radius: ${({ forDashboard }) =>
+    forDashboard ? "0px 4.618px" : "0 5px"};
   justify-content: center;
   align-items: center;
 `;
@@ -154,7 +164,9 @@ export const CardBodyWrapper = styled.div`
   }
 `;
 
-export const CardTooltip = styled.div`
+export const CardTooltip = styled.div<{
+  forDashboard?: string;
+}>`
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -182,7 +194,7 @@ export const CardTooltip = styled.div`
     border: 1px solid #fff;
     background: rgba(0, 0, 0, 0.2);
     color: #fff;
-    font-size: 11px;
+    font-size: ${({ forDashboard }) => (forDashboard ? "8.47px" : "11px")};
     font-family: Inter;
     font-style: normal;
     font-weight: 600;

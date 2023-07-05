@@ -1,6 +1,11 @@
 import React, { useState } from "react";
 import { CardSidebarProps } from "../../types";
-import { MSidebarContainer, MSidebarWrapper, ViewCardWrapper } from "./styles";
+import {
+  MSidebarContainer,
+  MSidebarWrapper,
+  ViewCardWrapper,
+  SummaryCard,
+} from "./styles";
 import {
   CloseButton,
   PropertiesContent,
@@ -27,8 +32,10 @@ import {
   SummaryContent,
   SummaryWrapper,
 } from "../buy/styles";
+import { buyMarketplaceById } from "../../actions/marketplace_listing";
 
 export const MBuyCardSection: React.FC<CardSidebarProps> = ({
+  selectedItem,
   onClose,
   open,
   page,
@@ -51,14 +58,91 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
     setUseBalance(false);
   };
 
-  const handleBuyConfirm = () => {
+  const handleBuyConfirm = async () => {
     setBalanceConfirm(false);
     setConfirm(true);
+
+    const token = localStorage.auth;
+    const id = selectedItem?.nft_collection_id;
+    const response = await buyMarketplaceById(id, token);
+    console.log(response);
   };
 
   const handleConfirmClose = () => {
     setConfirm(false);
     onClose();
+  };
+
+  // for check rarity
+  const checkRarity = (selectedItem: any) => {
+    if (
+      selectedItem?.nft_card_day_month?.rarity === 0 ||
+      selectedItem?.nft_card_trigger?.rarity === 0 ||
+      selectedItem?.nft_card_crafting?.rarity === 0 ||
+      selectedItem?.nft_card_identity?.rarity === 0 ||
+      selectedItem?.nft_card_prediction?.rarity === 0 ||
+      selectedItem?.nft_card_year?.rarity === 0
+    ) {
+      return "Common";
+    } else if (
+      selectedItem?.nft_card_day_month?.rarity === 1 ||
+      selectedItem?.nft_card_trigger?.rarity === 1 ||
+      selectedItem?.nft_card_crafting?.rarity === 1 ||
+      selectedItem?.nft_card_identity?.rarity === 1 ||
+      selectedItem?.nft_card_prediction?.rarity === 1 ||
+      selectedItem?.nft_card_year?.rarity === 1
+    ) {
+      return "Uncommon";
+    } else if (
+      selectedItem?.nft_card_day_month?.rarity === 2 ||
+      selectedItem?.nft_card_trigger?.rarity === 2 ||
+      selectedItem?.nft_card_crafting?.rarity === 2 ||
+      selectedItem?.nft_card_identity?.rarity === 2 ||
+      selectedItem?.nft_card_prediction?.rarity === 2 ||
+      selectedItem?.nft_card_year?.rarity === 2
+    ) {
+      return "Rare";
+    }
+
+    return undefined;
+  };
+
+  //for check type
+  const checkType = (selectedItem: any) => {
+    if (selectedItem?.nft_card_day_month) {
+      return "Day/Month";
+    } else if (selectedItem?.nft_card_trigger) {
+      return "Trigger";
+    } else if (selectedItem?.nft_card_crafting) {
+      return "Crafting";
+    } else if (selectedItem?.nft_card_identity) {
+      return "Identity";
+    } else if (selectedItem?.nft_card_prediction) {
+      return "Prediction";
+    } else if (selectedItem?.nft_card_year) {
+      return "Year";
+    }
+
+    return undefined;
+  };
+
+  //for check type value
+  const checkTypeValue = (selectedItem: any) => {
+    if (selectedItem?.nft_card_day_month) {
+      return `${selectedItem?.nft_card_day_month?.day}/${selectedItem?.nft_card_day_month?.month}`;
+    } else if (selectedItem?.nft_card_trigger) {
+      return selectedItem?.nft_card_trigger?.trigger;
+    } else if (selectedItem?.nft_card_crafting) {
+      return "Crafting";
+    } else if (selectedItem?.nft_card_identity) {
+      return selectedItem?.nft_card_identity?.celebrity_name;
+    } else if (selectedItem?.nft_card_prediction) {
+      return selectedItem?.nft_card_prediction?.celebrity_name;
+    } else if (selectedItem?.nft_card_year) {
+      return selectedItem?.nft_card_year?.year;
+    }
+
+    return undefined;
   };
 
   return (
@@ -69,38 +153,15 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
             <CloseButton onClick={onClose}>&times;</CloseButton>
             <h2>Buy Card</h2>
             <ViewCardWrapper>
-              {!page && (
-                <MarketCard
-                  image="/assets/nfts/1.png"
-                  name=""
-                  rarity="Rare"
-                  type=""
-                />
-              )}
+              {!page && <MarketCard item={selectedItem} {...selectedItem} />}
               {page === "packs" && (
-                <MarketCard
-                  image="/assets/buy.png"
-                  name=""
-                  rarity="Rare"
-                  type=""
-                />
+                <MarketCard item={selectedItem} {...selectedItem} />
               )}
               {page === "identities" && (
-                <PredictionCard
-                  icon={<IconCardAthlete />}
-                  iconText="Athlete"
-                  category=""
-                  rarity={2}
-                  height={298}
-                />
+                <PredictionCard item={selectedItem} {...selectedItem?.nft_card_identity} />
               )}
               {page === "predictions" && (
-                <PredictionCard
-                  image="/assets/nfts/2.png"
-                  category="Tom Brady"
-                  rarity={2}
-                  height={298}
-                />
+                <PredictionCard item={selectedItem} {...selectedItem?.nft_card_prediction} />
               )}
             </ViewCardWrapper>
             <PropertiesWrapper>
@@ -111,25 +172,25 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
               <PropertiesContent>
                 <PropertyItem>
                   <p>Rarity</p>
-                  <span>Rare</span>
+                  <span>{checkRarity(selectedItem)}</span>
                 </PropertyItem>
                 <PropertyItem>
                   <p>Type</p>
-                  <span>Year</span>
+                  <span>{checkType(selectedItem)}</span>
                 </PropertyItem>
                 <PropertyItem>
-                  <p>Year</p>
-                  <span>2023</span>
+                  <p>{checkType(selectedItem)}</p>
+                  {checkTypeValue(selectedItem)}
                 </PropertyItem>
                 <PropertyItem>
                   <p>Collection</p>
-                  <span>Sports Series</span>
+                  <span></span>
                 </PropertyItem>
               </PropertiesContent>
             </PropertiesWrapper>
             <SetPriceWrapper>
               <h5>Current Price</h5>
-              <h4>$1,140 USD</h4>
+              <h4>${selectedItem?.price}</h4>
               <Button
                 className="sell-confirm-button"
                 onClick={() => setStep(1)}
@@ -146,15 +207,17 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
             <SummaryWrapper>
               <h3>Summary</h3>
               <SummaryContent>
-                <img src="/assets/nfts/1.png" alt="" />
+                <SummaryCard bg={"/assets/nfts/1.png"}>
+                  <span>{checkRarity(selectedItem)}</span>
+                </SummaryCard>
                 <div>
                   <div>
-                    <p>2023</p>
-                    <span>Year Card</span>
+                    <p>{checkTypeValue(selectedItem)}</p>
+                    <span>{checkType(selectedItem)}</span>
                   </div>
                   <div>
                     <p>Total Price</p>
-                    <span>$250 USD</span>
+                    <span>${selectedItem?.price} USD</span>
                   </div>
                 </div>
               </SummaryContent>
@@ -179,11 +242,13 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
         onClose={handleConfirmClose}
       />
       <UseBalanceBuyModal
+        price={selectedItem?.price}
         onBuyClick={handleBalanceBuy}
         open={useBalance}
         onClose={() => setUseBalance(false)}
       />
       <BalanceBuyConfirmModal
+        price={selectedItem?.price}
         onConfirm={handleBuyConfirm}
         open={balanceConfirm}
         onClose={() => setBalanceConfirm(false)}

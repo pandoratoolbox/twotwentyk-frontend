@@ -22,11 +22,13 @@ export const MarketplacePredictionPage: React.FC = () => {
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
 
-  const handleCardClick = (id: string | number, action: CardActionTypes) => {
+  const handleCardClick = (item: any, action: CardActionTypes) => {
+    setSelectedItem(item);
     setSide(action);
   };
 
@@ -51,8 +53,8 @@ export const MarketplacePredictionPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
-        {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+      {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+        <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Predictions</h2>
             <MFilterSection page="predictions" />
@@ -62,28 +64,30 @@ export const MarketplacePredictionPage: React.FC = () => {
               page="predictions"
             />
           </MarketplacePageContainer>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <p style={{ maxWidth: "253px" }}>
-              Wow, can you believe no one wants to sell even a single card?
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Sell Card
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )}
-      </MarketplacePageWrapper>
+        </MarketplacePageWrapper>
+      ) : !isLoading ? (
+        <EmptyCards>
+          <p style={{ maxWidth: "253px" }}>
+            Wow, can you believe no one wants to sell even a single card?
+          </p>
+          <Button
+            className="buy-button"
+            onClick={() => navigate("/marketplace")}
+          >
+            Sell Card
+          </Button>
+        </EmptyCards>
+      ) : (
+        <Loader />
+      )}
       <MViewCardSection
+        selectedItem={selectedItem}
         open={side === "view"}
         onClose={handleSideClose}
         page="predictions"
       />
       <MBuyCardSection
+        selectedItem={selectedItem}
         open={side === "buy"}
         onClose={handleSideClose}
         page="predictions"

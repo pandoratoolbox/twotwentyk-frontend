@@ -26,7 +26,9 @@ export const MarketplacePacksPage: React.FC = () => {
     IMarketplaceListing[] | null
   >(null);
 
-  const handleCardClick = (id: string | number, action: CardActionTypes) => {
+  const handleCardClick = (item: any, action: CardActionTypes) => {
+    console.log(item);
+
     setSide(action);
   };
 

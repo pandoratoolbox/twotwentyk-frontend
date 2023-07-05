@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const DashboardPageWrapper = styled.div`
   padding-bottom: 28px;
-  max-width: 950px;
+  max-width: 900px;
   width: 95%;
   margin: auto;
   & > div {
@@ -36,7 +36,7 @@ export const DashboardCardGrid = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-bottom: 15px;
-  grid-gap: 20px;
+  grid-gap: 25px;
   @media screen and (max-width: 700px) {
     grid-template-columns: repeat(2, 1fr);
   }

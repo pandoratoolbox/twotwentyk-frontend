@@ -20,11 +20,13 @@ export const MarketplacePage: React.FC = () => {
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
 
-  const handleCardClick = (id: string | number, action: CardActionTypes) => {
+  const handleCardClick = (item: any, action: CardActionTypes) => {
+    setSelectedItem(item);
     setSide(action);
   };
 
@@ -49,8 +51,8 @@ export const MarketplacePage: React.FC = () => {
 
   return (
     <AppLayout>
-      <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
-        {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+      {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+        <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Dates</h2>
             <MFilterSection />
@@ -59,26 +61,38 @@ export const MarketplacePage: React.FC = () => {
               onCardClick={handleCardClick}
             />
           </MarketplacePageContainer>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <p style={{ maxWidth: "253px" }}>
-              Wow, can you believe no one wants to sell even a single card?
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/dashboard/dates")}
-            >
-              Sell Card
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )}
-      </MarketplacePageWrapper>
-      <MViewCardSection open={side === "view"} onClose={handleSideClose} />
-      <MBuyCardSection open={side === "buy"} onClose={handleSideClose} />
+        </MarketplacePageWrapper>
+      ) : !isLoading ? (
+        <EmptyCards>
+          <p style={{ maxWidth: "253px" }}>
+            Wow, can you believe no one wants to sell even a single card?
+          </p>
+          <Button
+            className="buy-button"
+            onClick={() => navigate("/dashboard/dates")}
+          >
+            Sell Card
+          </Button>
+        </EmptyCards>
+      ) : (
+        <Loader />
+      )}
+      <MViewCardSection
+        open={side === "view"}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
+      />
+      <MBuyCardSection
+        open={side === "buy"}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
+      />
       <MSellCardSection open={side === "sell"} onClose={handleSideClose} />
-      <MOfferCardSection open={side === "offer"} onClose={handleSideClose} />
+      <MOfferCardSection
+        open={side === "offer"}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
+      />
     </AppLayout>
   );
 };

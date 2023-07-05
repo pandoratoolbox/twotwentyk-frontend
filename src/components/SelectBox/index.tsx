@@ -137,7 +137,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
         </SelectBoxTextWrapper>
         <IconArrowDown />
       </SelectBoxContainer>
-      <SelectOptionsWrapper open={isOption ? "true" : undefined}>
+      <SelectOptionsWrapper open={isOption}>
         {isFilter ? (
           <>
             <OptionGroup>
