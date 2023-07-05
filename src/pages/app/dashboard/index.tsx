@@ -11,7 +11,6 @@ import {
   EmptyCardWrapper,
   SeeMoreButton,
 } from "./styles";
-import { identitiesData, predictionData } from "./data";
 import {
   Button,
   FeedItem,
@@ -24,7 +23,6 @@ import { ToastContainer } from "react-toastify";
 import {
   useFeedContext,
   useMyFeedContext,
-  useMyNFTsContext,
 } from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
@@ -37,7 +35,6 @@ export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { feedContext } = useFeedContext();
   const { myFeedContext } = useMyFeedContext();
-  const { myNFTsContext } = useMyNFTsContext();
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [pageAllFeeds, setPageAllFeeds] = useState<IArticle[]>([]);

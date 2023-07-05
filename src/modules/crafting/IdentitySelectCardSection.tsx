@@ -9,13 +9,9 @@ import {
   SelectCardSectionContainer,
   SelectCardSectionWrapper,
 } from "./styles";
-import { Button, IconSort, SelectBox } from "../../components";
+import { Button, IconSort, SelectBox, Loader } from "../../components";
 import { SortButton } from "../app/dates/styles";
-import {
-  useMyNFTsContext,
-  useStatusContext,
-  useAllRaritiesContext,
-} from "../../context";
+import { useStatusContext, useAllRaritiesContext } from "../../context";
 import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
 
@@ -51,9 +47,12 @@ export const IdentitySelectCardSection: React.FC<{
 }) => {
   const { statusContext } = useStatusContext();
   const { allRaritiesContext } = useAllRaritiesContext();
-  const { myNFTsContext, setMyNFTsContext } = useMyNFTsContext();
+  const [isLoadingCrating, setIsLoadingCrating] = useState(true);
+  const [isLoadingDayMonth, setIsLoadingDayMonth] = useState(true);
+  const [isLoadingYear, setIsLoadingYear] = useState(true);
+  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
 
-  const { monthContext } = useMonthContext()
+  const { monthContext } = useMonthContext();
 
   const navigate = useNavigate();
 
@@ -71,34 +70,41 @@ export const IdentitySelectCardSection: React.FC<{
   );
 
   const getNFTCrafting = async () => {
+    setIsLoadingCrating(true);
+    setIsLoadingDayMonth(true);
+    setIsLoadingYear(true);
+    setIsLoadingCategory(true);
 
     if (selectedCraft === "crafting") {
       const response = await getMyNftCardCrafting();
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
+      setIsLoadingCrating(false);
     } else if (selectedCraft === "dayMonth") {
       const response = await getMyNftCardDayMonth();
       if (response.data) {
         setNftCardDayMonthData(response.data);
       }
+      setIsLoadingDayMonth(false);
     } else if (selectedCraft === "year") {
       const response = await getMyNftCardYear();
       if (response.data) {
         setNftCardYearData(response.data);
       }
+      setIsLoadingYear(false);
     } else if (selectedCraft === "category") {
       const response = await getMyNftCardCategory();
       if (response.data) {
         setNftCardCategoryData(response.data);
       }
+      setIsLoadingCategory(false);
     }
   };
 
   useEffect(() => {
     getNFTCrafting();
   }, [selectedCraft]);
-
 
   return (
     <SelectCardSectionWrapper>
@@ -160,7 +166,7 @@ export const IdentitySelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingCrating ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -179,11 +185,13 @@ export const IdentitySelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
 
-{selectedCraft === "dayMonth" && (
+      {selectedCraft === "dayMonth" && (
         <SelectCardSectionContainer>
           {nftCardDayMonthData != null ? (
             <>
@@ -220,7 +228,10 @@ export const IdentitySelectCardSection: React.FC<{
                       {item.rarity === 0 && <span>Common</span>}
                       {item.rarity === 1 && <span>Uncommon</span>}
                       {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.day} {(monthContext as Map<number, string>).get(item.month)}</p>
+                      <p>
+                        {item.day}{" "}
+                        {(monthContext as Map<number, string>).get(item.month)}
+                      </p>
                     </CraftCard>
                     <SelectButton
                       className="select-button"
@@ -241,7 +252,7 @@ export const IdentitySelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingDayMonth ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -260,10 +271,12 @@ export const IdentitySelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
-{selectedCraft === "year" && (
+      {selectedCraft === "year" && (
         <SelectCardSectionContainer>
           {nftCardYearData != null ? (
             <>
@@ -321,7 +334,7 @@ export const IdentitySelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingYear ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -340,13 +353,14 @@ export const IdentitySelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
-{selectedCraft === "category" && (
+      {selectedCraft === "category" && (
         <SelectCardSectionContainer>
-          {nftCardCategoryData
-           != null ? (
+          {nftCardCategoryData != null ? (
             <>
               <h2>Select a Category card</h2>
               <FilterWrapper>
@@ -402,7 +416,7 @@ export const IdentitySelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingCategory ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -421,6 +435,8 @@ export const IdentitySelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
