@@ -45,14 +45,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   const handleOptionClick = async (value: string) => {
     onClick && onClick("Collections", [value]);
-    onChange && onChange(value);
+    // onChange && onChange(value);
     setIsOption(false);
   };
 
   const handleFilterClick = async (filterType: string) => {
     if (selectedOptions.length !== 0) {
       onClick && onClick(filterType, selectedOptions);
-      setSelectedOptions([]);
 
       setIsOption(false);
     } else {

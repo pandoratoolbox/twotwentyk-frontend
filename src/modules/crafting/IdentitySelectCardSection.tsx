@@ -71,25 +71,24 @@ export const IdentitySelectCardSection: React.FC<{
   );
 
   const getNFTCrafting = async () => {
-    const token = localStorage.auth;
 
     if (selectedCraft === "crafting") {
-      const response = await getMyNftCardCrafting(token);
+      const response = await getMyNftCardCrafting();
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
     } else if (selectedCraft === "dayMonth") {
-      const response = await getMyNftCardDayMonth(token);
+      const response = await getMyNftCardDayMonth();
       if (response.data) {
         setNftCardDayMonthData(response.data);
       }
     } else if (selectedCraft === "year") {
-      const response = await getMyNftCardYear(token);
+      const response = await getMyNftCardYear();
       if (response.data) {
         setNftCardYearData(response.data);
       }
     } else if (selectedCraft === "category") {
-      const response = await getMyNftCardCategory(token);
+      const response = await getMyNftCardCategory();
       if (response.data) {
         setNftCardCategoryData(response.data);
       }

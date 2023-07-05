@@ -39,7 +39,7 @@ export const DatesPage: React.FC = () => {
 
   const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
     INftCardDayMonth[] | null
-  >(null);
+  >([]);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -47,8 +47,7 @@ export const DatesPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-    const token = localStorage.auth;
-    const response = await getMyNftCardDayMonth(token);
+    const response = await getMyNftCardDayMonth();
     if (response?.data) {
       setNftCardDayMonthData(response?.data);
     }
@@ -64,13 +63,12 @@ export const DatesPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
 
     if (response.success) {
       setModal(true);
@@ -97,25 +95,24 @@ export const DatesPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
-    setNftCardDayMonthData(null);
+    setNftCardDayMonthData([]);
     setIsLoading(true);
-    const token = localStorage.auth;
 
     let res;
     if (filterType === "Card Types") {
-      res = await getFilterCardType(selectedOptions, token);
+      res = await getFilterCardType(selectedOptions);
     } else if (filterType === "All Rarities") {
-      res = await getFilterRarities(selectedOptions, token);
+      res = await getFilterRarities(selectedOptions);
     } else if (filterType === "Status") {
-      res = await getFilterStatus(selectedOptions, token);
+      res = await getFilterStatus(selectedOptions);
     } else if (filterType === "Category") {
-      res = await getFilterCategory(selectedOptions, token);
+      res = await getFilterCategory(selectedOptions);
     } else if (filterType === "Pack Types") {
-      res = await getFilterPackType(selectedOptions, token);
+      res = await getFilterPackType(selectedOptions);
     } else if (filterType === "Triggers Type") {
-      res = await getFilterTriggerType(selectedOptions, token);
+      res = await getFilterTriggerType(selectedOptions);
     } else if (filterType === "Collections") {
-      res = await getFilterTriggerType(selectedOptions, token);
+      res = await getFilterCollection(selectedOptions[0]);
     }
     if (res?.data) {
       setNftCardDayMonthData(res?.data as INftCardDayMonth[]);

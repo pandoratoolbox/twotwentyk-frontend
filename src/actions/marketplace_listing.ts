@@ -39,7 +39,7 @@ export const getMarketplaceListById = async (id: number) => {
   }
 };
 
-export const buyMarketplaceById = async ( token: string, id: number) => {
+export const buyMarketplaceById = async (token: string, id: number) => {
   try {
     const res = await api.post("/marketplace_listing/" + id + "/buy", {
       headers: {
@@ -53,15 +53,10 @@ export const buyMarketplaceById = async ( token: string, id: number) => {
 };
 
 export const newMarketplaceList = async (
-  newMarketplace: MarketplaceListObjectParams,
-  token: string
+  newMarketplace: MarketplaceListObjectParams
 ) => {
   try {
-    const res = await api.post("/marketplace_listing/", newMarketplace, {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
+    const res = await api.post("/marketplace_listing/", newMarketplace);
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: "Server Error!" };

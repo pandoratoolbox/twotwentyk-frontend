@@ -86,13 +86,12 @@ export const DashboardPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
     console.log(response);
 
     setModal(true);
@@ -113,14 +112,13 @@ export const DashboardPage: React.FC = () => {
     setIsLoadingPrediction(true);
     setIsLoadingIdentity(true);
 
-    const token = localStorage.auth;
-    const p_resp = await getMyNftCardPrediction(token);
+    const p_resp = await getMyNftCardPrediction();
     if (p_resp?.data) {
       setPredictionNfts(p_resp.data);
       setIsLoadingPrediction(false);
     }
 
-    const i_resp = await getMyNftCardIdentity(token);
+    const i_resp = await getMyNftCardIdentity();
     if (i_resp?.data) {
       setIdentityNfts(i_resp.data);
       setIsLoadingIdentity(false);

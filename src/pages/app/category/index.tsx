@@ -15,15 +15,21 @@ import {
   ViewDateCardSection,
 } from "../../../modules";
 import { useNavigate } from "react-router-dom";
-import { useInventoryNFTsContext } from "../../../context";
 import { getMyNftCardCategory } from "../../../actions/nft_card_category";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardCategory } from "../../../models/nft_card_category";
+import {
+  getFilterCardType,
+  getFilterRarities,
+  getFilterStatus,
+  getFilterCollection,
+  getFilterCategory,
+  getFilterPackType,
+  getFilterTriggerType,
+} from "../../../actions/filtering";
 
 export const CategoriesPage: React.FC = () => {
   const navigate = useNavigate();
-  const { inventoryNFTsContext, setInventoryNftsContext } =
-    useInventoryNFTsContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -40,8 +46,7 @@ export const CategoriesPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
 
-    const token = localStorage.auth;
-    const response = await getMyNftCardCategory(token);
+    const response = await getMyNftCardCategory();
     if (response?.data) {
       setNftCardCategoryData(response?.data);
     }
@@ -57,13 +62,12 @@ export const CategoriesPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
       setModal(true);
       setIsView("");
@@ -82,6 +86,36 @@ export const CategoriesPage: React.FC = () => {
   const handleSell = (item: any) => {
     setSelectedItem(item);
     setIsView("sell");
+  };
+
+  // filter option click
+  const handleOptionClick = async (
+    filterType: string,
+    selectedOptions: string[]
+  ) => {
+    setNftCardCategoryData([]);
+    setIsLoading(true);
+
+    let res;
+    if (filterType === "Card Types") {
+      res = await getFilterCardType(selectedOptions);
+    } else if (filterType === "All Rarities") {
+      res = await getFilterRarities(selectedOptions);
+    } else if (filterType === "Status") {
+      res = await getFilterStatus(selectedOptions);
+    } else if (filterType === "Category") {
+      res = await getFilterCategory(selectedOptions);
+    } else if (filterType === "Pack Types") {
+      res = await getFilterPackType(selectedOptions);
+    } else if (filterType === "Triggers Type") {
+      res = await getFilterTriggerType(selectedOptions);
+    } else if (filterType === "Collections") {
+      res = await getFilterCollection(selectedOptions[0]);
+    }
+    if (res?.data) {
+      setNftCardCategoryData(res?.data as INftCardCategory[]);
+    }
+    setIsLoading(false);
   };
 
   return (
@@ -103,7 +137,7 @@ export const CategoriesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <CategoryFilterSection />
+              <CategoryFilterSection onClick={handleOptionClick} />
               <CardGridSection
                 cardType="category"
                 data={nftCardCategoryData}

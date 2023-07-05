@@ -59,20 +59,19 @@ export const PredictionSelectCardSection: React.FC<{
   >(null);
 
   const getNFTCrafting = async () => {
-    const token = localStorage.auth;
 
     if (selectedCraft === "crafting") {
-      const response = await getMyNftCardCrafting(token);
+      const response = await getMyNftCardCrafting();
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
     } else if (selectedCraft === "trigger") {
-      const response = await getMyNftCardTrigger(token);
+      const response = await getMyNftCardTrigger();
       if (response.data) {
         setNftCardTriggerData(response.data);
       }
     } else if (selectedCraft === "identity") {
-      const response = await getMyNftCardIdentity(token);
+      const response = await getMyNftCardIdentity();
       if (response.data) {
         setNftCardIdentityData(response.data);
       }

@@ -29,7 +29,6 @@ export const CraftingPredictionsPage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const navigate = useNavigate();
-  const { setMyNFTsContext } = useMyNFTsContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [selectedCraft, setSelectedCraft] = useState("crafting");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
@@ -100,7 +99,6 @@ export const CraftingPredictionsPage: React.FC = () => {
   };
 
   const craftPrediction = async () => {
-    const token = localStorage.auth;
 
     if (selectedCards.identity === null) {
       toast.error("Select an Identity card");
