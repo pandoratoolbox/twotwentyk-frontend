@@ -1,3 +1,8 @@
+import { ICelebrity } from "../models/celebrity";
+import { INftCardCategory } from "../models/nft_card_category";
+import { INftCardCrafting } from "../models/nft_card_crafting";
+import { INftCardDayMonth } from "../models/nft_card_day_month";
+import { INftCardYear } from "../models/nft_card_year";
 import { IMarketplaceListing } from "./actions";
 import { CardActionTypes } from "./common";
 
@@ -154,6 +159,17 @@ export type ModalHeaderProps = {
 export type SellModalProps = {
   isMarket?: boolean;
   isOffer?: boolean;
+} & ModalProps;
+
+export type CraftIdentityModalProps = {
+  selectCelebrity: (c: ICelebrity) => void,
+  selectedCards: {
+    crafting: INftCardCrafting | null,
+    year: INftCardYear | null,
+    dayMonth: INftCardDayMonth | null,
+    category: INftCardCategory | null
+  },
+  onCraft: () => void;
 } & ModalProps;
 
 export type WithdrawConfirmModalProps = {

@@ -40,6 +40,7 @@ export const SelectBoxTextWrapper = styled.div`
 `;
 
 export const SelectOptionsWrapper = styled.div<{ open?: boolean }>`
+text-transform: capitalize;
   position: absolute;
   padding: 10px 24px;
   margin-top: 10px;

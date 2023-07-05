@@ -133,6 +133,11 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   };
 
+  const handleSelectCelebrity = (c: ICelebrity) => {
+    console.log(c)
+    setSelectedCelebrity(c);
+  }
+
   return (
     <AppLayout noFooter>
       <ToastContainer
@@ -147,7 +152,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
+      <CraftIdentityModal selectCelebrity={handleSelectCelebrity} open={confirm} onClose={() => setConfirm(false)} onCraft={craftIdentity} selectedCards={selectedCards} />
       <CraftingWrapper>
         {currentUser ? (
           <>
