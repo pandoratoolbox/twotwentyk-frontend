@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { cloneElement, useEffect, useState } from "react";
 import { AppLayout } from "../../../layout/AppLayout";
 import {
   CraftLeftWrapper,
@@ -10,7 +10,7 @@ import {
   CardPreviewSection
 } from "../../../modules";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Button } from "../../../components";
+import { Button, CraftPredictionModal } from "../../../components";
 import { ToastContainer, toast } from "react-toastify";
 import { craftingPrediction, getMyNFTs } from "../../../actions";
 import { useMyNFTsContext } from "../../../context";
@@ -61,6 +61,7 @@ export const CraftingPredictionsPage: React.FC = () => {
       setClickedCard(key);
     }
   };
+  
 
   const handleCardSelected = (id: string | number | null, craft: string) => {
     // if (craft === "trigger" && selectedCards.trigger != null) {
@@ -94,7 +95,8 @@ export const CraftingPredictionsPage: React.FC = () => {
   }
 
   const handleCraft = () => {
-    craftPrediction();
+    setCraftPopup(true);
+    // craftPrediction();
   };
 
   const craftPrediction = async () => {
@@ -131,11 +133,18 @@ export const CraftingPredictionsPage: React.FC = () => {
     const res = await craftingPrediction(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
+      closePopup()
     } else {
       toast.error(res.message);
     }
   };
 
+
+  const [craftPopup, setCraftPopup] = useState<boolean>(false);
+
+  const closePopup = () => {
+    setCraftPopup(false);
+  }
 
   return (
     <AppLayout noFooter>
@@ -151,6 +160,7 @@ export const CraftingPredictionsPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
+      <CraftPredictionModal open={craftPopup} onClose={closePopup} onBurn={craftPrediction}/>
       <CraftingWrapper>
         {currentUser ? (
           <>

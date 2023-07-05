@@ -12,6 +12,7 @@ import { Button } from "../Button";
 export const CraftPredictionModal: React.FC<CraftPredictionModalProps> = ({
   open,
   onClose,
+  onBurn
 }) => {
   useEffect(() => {
     setChecked(false);
@@ -42,7 +43,7 @@ export const CraftPredictionModal: React.FC<CraftPredictionModalProps> = ({
             </span>
           </CheckboxWrapper>
 
-          <Button disabled={!checked}>Burn</Button>
+          <Button disabled={!checked} onClick={onBurn}>Burn</Button>
           <Button variant={"outlined"}>Back</Button>
         </ButtonGroup>
       </CraftPredictionModalWrapper>
