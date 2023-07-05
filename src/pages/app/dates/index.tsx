@@ -18,6 +18,15 @@ import { useNavigate } from "react-router-dom";
 import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import {
+  getFilterCardType,
+  getFilterRarities,
+  getFilterStatus,
+  getFilterCollection,
+  getFilterCategory,
+  getFilterPackType,
+  getFilterTriggerType,
+} from "../../../actions/filtering";
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -83,6 +92,37 @@ export const DatesPage: React.FC = () => {
     setIsView("sell");
   };
 
+  // filter option click
+  const handleOptionClick = async (
+    filterType: string,
+    selectedOptions: string[]
+  ) => {
+    setNftCardDayMonthData(null);
+    setIsLoading(true);
+    const token = localStorage.auth;
+
+    let res;
+    if (filterType === "Card Types") {
+      res = await getFilterCardType(selectedOptions, token);
+    } else if (filterType === "All Rarities") {
+      res = await getFilterRarities(selectedOptions, token);
+    } else if (filterType === "Status") {
+      res = await getFilterStatus(selectedOptions, token);
+    } else if (filterType === "Category") {
+      res = await getFilterCategory(selectedOptions, token);
+    } else if (filterType === "Pack Types") {
+      res = await getFilterPackType(selectedOptions, token);
+    } else if (filterType === "Triggers Type") {
+      res = await getFilterTriggerType(selectedOptions, token);
+    } else if (filterType === "Collections") {
+      res = await getFilterTriggerType(selectedOptions, token);
+    }
+    if (res?.data) {
+      setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
+    }
+    setIsLoading(false);
+  };
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -103,7 +143,7 @@ export const DatesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <DatesFilterSection />
+              <DatesFilterSection onClick={handleOptionClick} />
               <CardGridSection
                 cardType="date"
                 data={nftCardDayMonthData}

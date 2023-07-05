@@ -13,17 +13,7 @@ import {
 import { IconArrowDown } from "../Icons";
 import { SelectBoxProps } from "../../types";
 import { Button } from "../Button";
-import {
-  getFilterCardType,
-  getFilterRarities,
-  getFilterStatus,
-  getFilterCollection,
-  getFilterCategory,
-  getFilterPackType,
-  getFilterTriggerType,
-} from "../../actions/filtering";
 import { ToastContainer, toast } from "react-toastify";
-import { useInventoryNFTsContext } from "../../context";
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder,
@@ -32,13 +22,13 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   options,
   border,
   isFilter,
+  onClick,
   onChange,
   newData,
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-  const { setInventoryNftsContext } = useInventoryNFTsContext();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -54,33 +44,16 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   }, []);
 
   const handleOptionClick = async (value: string) => {
-    const token = localStorage.auth;
-
-    let res = await getFilterCollection(value, token);
-    setInventoryNftsContext(res?.data);
-    // onChange && onChange(value);
+    onClick && onClick("Collections", [value]);
+    onChange && onChange(value);
     setIsOption(false);
   };
 
   const handleFilterClick = async (filterType: string) => {
-    const token = localStorage.auth;
-
     if (selectedOptions.length !== 0) {
-      let res;
-      if (filterType === "Card Types") {
-        res = await getFilterCardType(selectedOptions, token);
-      } else if (filterType === "All Rarities") {
-        res = await getFilterRarities(selectedOptions, token);
-      } else if (filterType === "Status") {
-        res = await getFilterStatus(selectedOptions, token);
-      } else if (filterType === "Category") {
-        res = await getFilterCategory(selectedOptions, token);
-      } else if (filterType === "Pack Types") {
-        res = await getFilterPackType(selectedOptions, token);
-      } else if (filterType === "Triggers Type") {
-        res = await getFilterTriggerType(selectedOptions, token);
-      }
-      setInventoryNftsContext(res?.data);
+      onClick && onClick(filterType, selectedOptions);
+      setSelectedOptions([]);
+
       setIsOption(false);
     } else {
       toast.warn("Please checked some value");

@@ -197,6 +197,7 @@ export type SelectBoxProps = {
   isFilter?: boolean;
   options?: SelectOptionProps[];
   newData?: any;
+  onClick?: (filterType: string, selectedOptions: string[]) => void;
   onChange?: (value: string | Array<string>) => void;
 };
 

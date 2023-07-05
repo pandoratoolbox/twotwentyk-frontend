@@ -8,7 +8,9 @@ import {
   useStatusContext,
 } from "../../../context";
 
-export const DatesFilterSection: React.FC = () => {
+export const DatesFilterSection: React.FC<{
+  onClick: (filterType: string, selectedOptions: string[]) => void;
+}> = ({ onClick }) => {
   const { cardTypesContext } = useCardTypesContext();
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
@@ -21,14 +23,25 @@ export const DatesFilterSection: React.FC = () => {
           isFilter
           placeholder="Card Types"
           newData={cardTypesContext}
+          onClick={onClick}
         />
-        <SelectBox options={collectionOption} placeholder="Collections" />
+        <SelectBox
+          onClick={onClick}
+          options={collectionOption}
+          placeholder="Collections"
+        />
         <SelectBox
           isFilter
           newData={allRaritiesContext}
           placeholder="All Rarities"
+          onClick={onClick}
         />
-        <SelectBox isFilter newData={statusContext} placeholder="Status" />
+        <SelectBox
+          isFilter
+          newData={statusContext}
+          placeholder="Status"
+          onClick={onClick}
+        />
         <SortButton>
           <IconSort />
         </SortButton>

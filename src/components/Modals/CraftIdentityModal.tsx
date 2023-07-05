@@ -27,6 +27,8 @@ const matchingIdentityOptions = [
   },
 ];
 
+
+
 export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
   open,
   onClose,
@@ -37,7 +39,7 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
   const { monthContext } = useMonthContext();
   const { celebritiesContext } = useCelebritiesContext();
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const [checked, setChecked] = useState<boolean>(false);
   const [matches, setMatches] = useState<ICelebrity[]>([]);
@@ -65,6 +67,7 @@ export const CraftIdentityModal: React.FC<CraftIdentityModalProps> = ({
     }
     setMatches(celebrities);
   }, [open]);
+  console.log(celebritiesContext, selectedCards)
   return (
     <ModalWrapper
       open={open}
