@@ -74,7 +74,7 @@ export const CraftIdentityModal: React.FC<SellModalProps> = ({
       modalHeader={true}
       paddingClass="removePadding"
     >
-      <ModalHeader bg={"#F2F5FF"}>
+      <ModalHeader bg={"#F2F5FF"} onClose={onClose}>
         <CraftIdentifyModalHeader>
           <p>Would you like to assign a name to your Identity?</p>
           <SelectBox
