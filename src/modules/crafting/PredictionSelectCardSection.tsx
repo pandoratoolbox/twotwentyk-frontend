@@ -9,12 +9,9 @@ import {
   SelectCardSectionContainer,
   SelectCardSectionWrapper,
 } from "./styles";
-import { Button, IconSort, SelectBox } from "../../components";
+import { Button, IconSort, SelectBox, Loader } from "../../components";
 import { SortButton } from "../app/dates/styles";
-import {
-  useStatusContext,
-  useAllRaritiesContext,
-} from "../../context";
+import { useStatusContext, useAllRaritiesContext } from "../../context";
 import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
 
@@ -45,9 +42,12 @@ export const PredictionSelectCardSection: React.FC<{
   const { statusContext } = useStatusContext();
   const { allRaritiesContext } = useAllRaritiesContext();
 
+  const [isLoadingCrafting, setIsLoadingCrafting] = useState(true);
+  const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
+  const [isLoadingTrigger, setIsLoadingTrigger] = useState(true);
+
   const navigate = useNavigate();
 
-  
   const [nftCardCraftingData, setNftCardCraftingData] = useState<
     INftCardCrafting[] | null
   >(null);
@@ -59,31 +59,34 @@ export const PredictionSelectCardSection: React.FC<{
   >(null);
 
   const getNFTCrafting = async () => {
+    setIsLoadingCrafting(true);
+    setIsLoadingIdentity(true);
+    setIsLoadingTrigger(true);
 
     if (selectedCraft === "crafting") {
       const response = await getMyNftCardCrafting();
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
+      setIsLoadingCrafting(false);
     } else if (selectedCraft === "trigger") {
       const response = await getMyNftCardTrigger();
       if (response.data) {
         setNftCardTriggerData(response.data);
       }
+      setIsLoadingIdentity(false);
     } else if (selectedCraft === "identity") {
       const response = await getMyNftCardIdentity();
       if (response.data) {
         setNftCardIdentityData(response.data);
       }
+      setIsLoadingTrigger(false);
     }
   };
 
   useEffect(() => {
     getNFTCrafting();
   }, [selectedCraft]);
-
-
-
 
   return (
     <SelectCardSectionWrapper>
@@ -145,7 +148,7 @@ export const PredictionSelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingCrafting ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -164,10 +167,12 @@ export const PredictionSelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
-{selectedCraft === "identity" && (
+      {selectedCraft === "identity" && (
         <SelectCardSectionContainer>
           {nftCardIdentityData != null ? (
             <>
@@ -225,7 +230,7 @@ export const PredictionSelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingIdentity ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -244,13 +249,14 @@ export const PredictionSelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
-{selectedCraft === "trigger" && (
+      {selectedCraft === "trigger" && (
         <SelectCardSectionContainer>
-          {nftCardTriggerData
-           != null ? (
+          {nftCardTriggerData != null ? (
             <>
               <h2>Select a Trigger card</h2>
               <FilterWrapper>
@@ -306,7 +312,7 @@ export const PredictionSelectCardSection: React.FC<{
                 ))}
               </CardGridWrapper>
             </>
-          ) : (
+          ) : !isLoadingTrigger ? (
             <EmptyCards>
               <h3>
                 No <span className="capitalize">{selectedCraft}</span> Cards
@@ -325,6 +331,8 @@ export const PredictionSelectCardSection: React.FC<{
                 Go to Marketplace
               </Button>
             </EmptyCards>
+          ) : (
+            <Loader />
           )}
         </SelectCardSectionContainer>
       )}
