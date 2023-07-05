@@ -69,6 +69,7 @@ export const PredictionCraftSection: React.FC<{
               <h6>Crafting</h6>
               {selectedCards.crafting != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("crafting")}
                   bg={
                     "/assets/nfts/1.png"
                   }
@@ -92,6 +93,7 @@ export const PredictionCraftSection: React.FC<{
               <h6>Identity</h6>
               {selectedCards.identity != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("identity")}
                   bg={
                     "/assets/nfts/1.png"
                   }
@@ -101,7 +103,7 @@ export const PredictionCraftSection: React.FC<{
                   {selectedCards.identity.rarity === 1 && <span>Uncommon</span>}
                   {selectedCards.identity.rarity === 2 && <span>Rare</span>}
                   <p>
-                  Identity
+                  {selectedCards.identity.celebrity_name}
                   </p>
                 </CraftCard>
               ) : (
@@ -116,6 +118,7 @@ export const PredictionCraftSection: React.FC<{
                         <CraftCardWrapper key={key}>
                           <h6>Trigger</h6>
                           <CraftCard
+                            onClick={() => onCraftChanged("trigger")}
                             bg={
                               "/assets/nfts/2.png"
                             }

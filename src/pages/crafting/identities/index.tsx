@@ -148,7 +148,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
+      {/* <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} /> */}
       <CraftingWrapper>
         {currentUser ? (
           <>

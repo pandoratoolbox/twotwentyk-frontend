@@ -179,6 +179,7 @@ export const IdentityCraftSection: React.FC<{
               <h6>Crafting</h6>
               {selectedCards.crafting != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("crafting")}
                   bg={
                     "/assets/nfts/1.png"
                   }
@@ -202,6 +203,7 @@ export const IdentityCraftSection: React.FC<{
               <h6>Day/Month</h6>
               {selectedCards.dayMonth != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("dayMonth")}
                   bg={
                     "/assets/nfts/1.png"
                   }
@@ -225,6 +227,7 @@ export const IdentityCraftSection: React.FC<{
               <h6>Year</h6>
               {selectedCards.year != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("year")}
                   bg={
                     "/assets/nfts/1.png"
                   }
@@ -248,6 +251,7 @@ export const IdentityCraftSection: React.FC<{
               <h6>Category</h6>
               {selectedCards.category != null ? (
                 <CraftCard
+                onClick={() => onCraftChanged("category")}
                   bg={
                     "/assets/nfts/1.png"
                   }
