@@ -92,13 +92,11 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   const handleCraft = () => {
-    craftIdentity();
+    // craftIdentity();
+    setConfirm(true);
   };
 
   const craftIdentity = async () => {
-    setConfirm(true);
-    // const token = localStorage.auth;
-
     if (selectedCards.dayMonth === null) {
       toast.error("Select a Day-Month card");
       return
@@ -129,6 +127,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     const res = await craftingIdentity(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
+      setConfirm(false);
     } else {
       toast.error(res.message);
     }
@@ -148,7 +147,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      {/* <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} /> */}
+      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
       <CraftingWrapper>
         {currentUser ? (
           <>
