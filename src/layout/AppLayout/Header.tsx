@@ -52,18 +52,6 @@ export const Header: React.FC = () => {
   });
 
   useEffect(() => {
-    if (myInfoContext)
-      setData((prev: any) => ({
-        username: myInfoContext?.username,
-        balance: myInfoContext?.balance ? myInfoContext?.balance : 0,
-      }));
-  }, [myInfoContext]);
-
-  // useEffect(() => {
-  //   setCurrentUser(localStorage.getItem("auth"));
-  // }, []);
-
-  useEffect(() => {
     setCurrentPath(
       headerData.filter(
         (f) => f.to === "/" + location.pathname.split("/")[1]
@@ -111,7 +99,7 @@ export const Header: React.FC = () => {
                   <IconCoins />
                   <span>
                     $
-                    {data.balance.toLocaleString("en-US", {
+                    {myInfoContext?.balance.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -123,7 +111,7 @@ export const Header: React.FC = () => {
                   onClick={() => navigate("/profile/")}
                 >
                   <IconProfile />
-                  <span>{data.username}</span>
+                  <span>{myInfoContext?.username}</span>
                 </HeaderButton>
                 <NotificationButtonWrapper>
                   <HeaderButton onClick={() => setNotification(true)}>
