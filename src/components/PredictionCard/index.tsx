@@ -20,7 +20,7 @@ import { PredictionCardProps } from "../../types";
 import { useMonthContext } from "../../context";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
-  forDashboard,
+  dashbordstyle,
   celebrity_name,
   cardType,
   item,
@@ -46,7 +46,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   const { monthContext } = useMonthContext();
 
   image = "/assets/nfts/1.png";
-  console.log(item);
+  // console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
@@ -56,7 +56,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover ? "true" : undefined}
     >
       <CardTopWrapper>
-        <CardDateWrapper forDashboard={forDashboard}>
+        <CardDateWrapper dashbordstyle={dashbordstyle}>
           {monthContext && day && (
             <span className="date">
               {day && month
@@ -67,9 +67,19 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 
           {year && <span className="year">{year}</span>}
         </CardDateWrapper>
-        {rarity === 0 && <CardTypeWrapper forDashboard={forDashboard}>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper forDashboard={forDashboard}>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper forDashboard={forDashboard}>Rare</CardTypeWrapper>}
+        {rarity === 0 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>
+            Common
+          </CardTypeWrapper>
+        )}
+        {rarity === 1 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>
+            Uncommon
+          </CardTypeWrapper>
+        )}
+        {rarity === 2 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>Rare</CardTypeWrapper>
+        )}
       </CardTopWrapper>
       {category && (
         <CardBodyWrapper>
@@ -115,7 +125,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
                   <h3>Triggers</h3>
                   {triggers &&
                     triggers?.map((item: string, key: number) => (
-                      <TooltipItem>{item}</TooltipItem>
+                      <TooltipItem key={key}>{item}</TooltipItem>
                     ))}
                 </div>
               </TooltipContent>

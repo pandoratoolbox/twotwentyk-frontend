@@ -43,7 +43,7 @@ export type AppHeaderMenuItemProps = {
 };
 
 export type PredictionCardProps = {
-  forDashboard?: boolean;
+  dashbordstyle?: boolean;
   cardType?: string;
   item?: any;
   id?: number;
@@ -118,7 +118,7 @@ export type TriggerCardProps = {
 
 export type DateCardGridProps = {
   data?: Array<any>;
-  identityData?: Array<any> ;
+  identityData?: Array<any>;
   cardType?: string;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
@@ -162,13 +162,13 @@ export type SellModalProps = {
 } & ModalProps;
 
 export type CraftIdentityModalProps = {
-  selectCelebrity: (c: ICelebrity) => void,
+  selectCelebrity: (c: ICelebrity) => void;
   selectedCards: {
-    crafting: INftCardCrafting | null,
-    year: INftCardYear | null,
-    dayMonth: INftCardDayMonth | null,
-    category: INftCardCategory | null
-  },
+    crafting: INftCardCrafting | null;
+    year: INftCardYear | null;
+    dayMonth: INftCardDayMonth | null;
+    category: INftCardCategory | null;
+  };
   onCraft: () => void;
 } & ModalProps;
 

@@ -20,10 +20,7 @@ import {
 } from "../../../components";
 import { IArticle, IMarketplaceListing } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
-import {
-  useFeedContext,
-  useMyFeedContext,
-} from "../../../context";
+import { useFeedContext, useMyFeedContext } from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
@@ -152,13 +149,14 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
-                      forDashboard={true}
+                      dashbordstyle={"true"}
                       height={"225"}
                       isNotHover={true}
                       day={item.day}
                       month={item.month}
                       year={item.year}
                       rarity={item.rarity}
+                      item={item}
                       {...item}
                       key={key}
                       onSell={handleSell}
@@ -218,9 +216,10 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
-                      forDashboard={true}
+                      dashbordstyle={"true"}
                       height={"225"}
                       isNotHover={true}
+                      item={item}
                       {...item}
                       rarity={item.rarity}
                       key={key}
@@ -230,6 +229,23 @@ export const DashboardPage: React.FC = () => {
                     />
                   ))}
               </DashboardCardGrid>
+              <ViewDateCardSection
+                isView={isView === "view"}
+                cardType="prediction"
+                item={selectedItem}
+                onClose={() => {
+                  setIsView("");
+                }}
+              />
+              <SellDateCardSection
+                onSellConfirm={handleSellConfirm}
+                cardType="prediction"
+                isView={isView === "sell"}
+                item={selectedItem}
+                onClose={() => {
+                  setIsView("");
+                }}
+              />
               <SeeMoreButton onClick={() => navigate("/dashboard/predictions")}>
                 See More
               </SeeMoreButton>
