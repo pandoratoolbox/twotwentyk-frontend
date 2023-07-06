@@ -172,7 +172,6 @@ export const DashboardPage: React.FC = () => {
 
               <ViewDateCardSection
                 isView={isView === "view"}
-                cardType="identity"
                 item={selectedItem}
                 onClose={() => {
                   setIsView("");
