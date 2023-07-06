@@ -28,6 +28,7 @@ import {
 
 export const MOfferCardSection: React.FC<CardSidebarProps> = ({
   onClose,
+  onConfirm,
   open,
 }) => {
   const [offerConfirm, setOfferConfirm] = useState(false);
@@ -113,6 +114,7 @@ export const MOfferCardSection: React.FC<CardSidebarProps> = ({
       <SellConfirmModal
         isMarket
         isOffer
+        onConfirm={onConfirm}
         open={confirm}
         onClose={() => setConfirm(false)}
       />

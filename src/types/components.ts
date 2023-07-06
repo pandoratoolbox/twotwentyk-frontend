@@ -111,7 +111,7 @@ export type TriggerCardProps = {
 
 export type DateCardGridProps = {
   data?: Array<any>;
-  identityData?: Array<any> ;
+  identityData?: Array<any>;
   cardType?: string;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
@@ -150,6 +150,7 @@ export type ModalHeaderProps = {
 } & React.HTMLAttributes<HTMLElement>;
 
 export type SellModalProps = {
+  onConfirm?: () => void;
   isMarket?: boolean;
   isOffer?: boolean;
 } & ModalProps;
@@ -242,10 +243,12 @@ export type MarketCardProps = {
   image: string;
   name: string;
   type?: string;
+  id?: number | string;
+  isOffer?: boolean;
   rarity: string;
   status?: string;
   owned?: string | number;
-  onCard?: (id: string | number, action: CardActionTypes) => void;
+  onCard?: (id?: string | number, action?: CardActionTypes) => void;
 } & IMarketplaceListing;
 
 export type CraftPredictionModalProps = {

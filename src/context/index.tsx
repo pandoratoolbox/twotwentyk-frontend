@@ -40,6 +40,7 @@ const CategoriesContext = createContext<any>([]);
 const CelebritiesContext = createContext<any>([]);
 const TriggersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
+const MyOfferContext = createContext<any>([]);
 
 export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
@@ -54,6 +55,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [myFeedContext, setMyFeedContext] = useState<IArticle[]>([]);
   const [myInfoContext, setMyInfoContext] = useState<IUser>();
   const [myNFTsContext, setMyNFTsContext] = useState<any>();
+  const [myOfferContext, setMyOfferContext] = useState<any>();
   const [categoriesContext, setCategoriesContext] =
     useState<Map<number, ICategory>>();
   const [triggersContext, setTriggersContext] =
@@ -120,6 +122,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const myInfoValue = useMemo(
     () => ({ myInfoContext, setMyInfoContext }),
     [myInfoContext]
+  );
+
+  const myOfferValue = useMemo(
+    () => ({ myOfferContext, setMyOfferContext }),
+    [myOfferContext]
   );
 
   const myNFTsValue = useMemo(
@@ -275,11 +282,15 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                       <MyFeedContext.Provider value={myFeedValue}>
                         <MyInfoContext.Provider value={myInfoValue}>
                           <MyNFTsContext.Provider value={myNFTsValue}>
-                            <InventoryNftsContext.Provider value={inventoryNFTsValue}>
+                            <InventoryNftsContext.Provider
+                              value={inventoryNFTsValue}
+                            >
                               <MarketplaceListContext.Provider
                                 value={marketplaceListValue}
                               >
-                                {children}
+                                <MyOfferContext.Provider value={myOfferValue}>
+                                  {children}
+                                </MyOfferContext.Provider>
                               </MarketplaceListContext.Provider>
                             </InventoryNftsContext.Provider>
                           </MyNFTsContext.Provider>
@@ -349,4 +360,8 @@ export const useCelebritiesContext = () => {
 
 export const useCategoriesContext = () => {
   return useContext(CategoriesContext);
+};
+
+export const useMyOfferContext = () => {
+  return useContext(MyOfferContext);
 };

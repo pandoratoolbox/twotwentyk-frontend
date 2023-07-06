@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 export const SellConfirmModal: React.FC<SellModalProps> = ({
   open,
   onClose,
+  onConfirm,
   isMarket,
   isOffer,
 }) => {
@@ -26,7 +27,7 @@ export const SellConfirmModal: React.FC<SellModalProps> = ({
             : "Congratulations! Your card is now listed for sale"}
         </p>
         <ButtonGroup>
-          <Button onClick={onClose}>Done</Button>
+          <Button onClick={onConfirm}>Done</Button>
           {!isMarket && (
             <Button onClick={() => navigate("/marketplace")}>
               View In Marketplace

@@ -9,6 +9,7 @@ import {
   DatesFilterSection,
   MBuyCardSection,
   MCardGridSection,
+  // MOfferCardSection,
   MSellCardSection,
   MViewCardSection,
 } from "../../../modules";
@@ -17,6 +18,8 @@ import { EmptyCards } from "../../app/category/styles";
 import { Button, Loader } from "../../../components";
 import { getMarketplaceList } from "../../../actions/marketplace_listing";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
+// import { useMyOfferContext } from "../../../context";
+// import { ToastContainer, toast } from "react-toastify";
 
 export const MarketplaceIdentitiesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -25,13 +28,18 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
+  // const { myOfferContext, setMyOfferContext } = useMyOfferContext();
+
+  // const [selectedId, setSelectedId] = useState<number | string>("");
 
   const handleCardClick = (id: string | number, action: CardActionTypes) => {
+    // setSelectedId(id);
     setSide(action);
   };
 
   const handleSideClose = () => {
     setSide("");
+    // setSelectedId("");
   };
 
   const getPageData = async () => {
@@ -45,11 +53,35 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
     setIsLoading(false);
   };
 
+  // const handleOfferConfirm = () => {
+  //   const offerCard = nftMarketplaceData?.filter(
+  //     (f) => f.id === Number(selectedId)
+  //   )[0];
+  //   if (offerCard) {
+  //     setMyOfferContext([...myOfferContext, offerCard]);
+  //     handleSideClose();
+  //   } else {
+  //     toast.error("Something went wrong!!!");
+  //   }
+  // };
+
   useEffect(() => {
     getPageData();
   }, []);
   return (
     <AppLayout>
+      {/* <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      /> */}
       <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
         {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
           <MarketplacePageContainer>
@@ -92,6 +124,11 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         onClose={handleSideClose}
         page="identities"
       />
+      {/* <MOfferCardSection
+        open={side === "offer"}
+        onClose={handleSideClose}
+        onConfirm={handleOfferConfirm}
+      /> */}
     </AppLayout>
   );
 };

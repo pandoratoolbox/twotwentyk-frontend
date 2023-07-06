@@ -5,5 +5,6 @@ export type CardActionTypes = "" | "view" | "sell" | "buy" | "offer";
 export type CardSidebarProps = {
   onClose: () => void;
   page?: string;
+  onConfirm?: () => void;
   open: boolean;
 };

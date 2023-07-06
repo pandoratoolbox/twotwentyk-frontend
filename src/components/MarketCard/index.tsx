@@ -11,15 +11,16 @@ import {
 import { CardButton } from "../DateCard/styles";
 
 export const MarketCard: React.FC<MarketCardProps> = ({
+  id,
   image,
   name,
   rarity,
   type,
+  isOffer,
   owned,
   status,
   onCard,
 }) => {
-  console.log(image);
   return (
     <CardWrapper bg={image}>
       <CardTopSection>
@@ -33,28 +34,34 @@ export const MarketCard: React.FC<MarketCardProps> = ({
         <h4>{name}</h4>
         <p>{type}</p>
       </CardBottomSection>
-      {onCard && (
-        <CardOverlay className="overlay">
-          <CardButton onClick={() => onCard(1, "view")}>View</CardButton>
-          {type === "Category" && (
-            <CardButton onClick={() => onCard(1, "buy")}>Buy</CardButton>
+      {!isOffer
+        ? onCard && (
+            <CardOverlay className="overlay">
+              <CardButton onClick={() => onCard(id, "view")}>View</CardButton>
+              {type === "Category" && (
+                <CardButton onClick={() => onCard(id, "buy")}>Buy</CardButton>
+              )}
+              {(type === "Day/Month" || type === "Year") && (
+                <CardButton onClick={() => onCard(id, "sell")}>Sell</CardButton>
+              )}
+              {(type === "Crafting" || type === "Trigger") && (
+                <CardButton onClick={() => onCard(id, "offer")}>
+                  Make an Offer
+                </CardButton>
+              )}
+              {!type && status === "For Sale" && (
+                <CardButton onClick={() => onCard(id, "sell")}>Sell</CardButton>
+              )}
+              {!type && !status && (
+                <CardButton onClick={() => onCard(id, "buy")}>Buy</CardButton>
+              )}
+            </CardOverlay>
+          )
+        : onCard && (
+            <CardOverlay className="overlay">
+              <CardButton onClick={() => onCard(id, "view")}>View</CardButton>
+            </CardOverlay>
           )}
-          {(type === "Day/Month" || type === "Year") && (
-            <CardButton onClick={() => onCard(1, "sell")}>Sell</CardButton>
-          )}
-          {(type === "Crafting" || type === "Trigger") && (
-            <CardButton onClick={() => onCard(1, "offer")}>
-              Make an Offer
-            </CardButton>
-          )}
-          {!type && status === "For Sale" && (
-            <CardButton onClick={() => onCard(1, "sell")}>Sell</CardButton>
-          )}
-          {!type && !status && (
-            <CardButton onClick={() => onCard(1, "buy")}>Buy</CardButton>
-          )}
-        </CardOverlay>
-      )}
     </CardWrapper>
   );
 };
