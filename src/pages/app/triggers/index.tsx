@@ -33,9 +33,12 @@ export const TriggersPage: React.FC = () => {
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+
   const [nftCardTriggerData, setNftCardTriggerData] = useState<
     INftCardTrigger[] | null
   >(null);
+
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
@@ -92,8 +95,7 @@ export const TriggersPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
-    setNftCardTriggerData([]);
-    setIsLoading(true);
+    setIsLoadingFilter(true);
 
     let res;
     if (filterType === "Card Types") {
@@ -114,7 +116,7 @@ export const TriggersPage: React.FC = () => {
     if (res?.data) {
       setNftCardTriggerData(res?.data as INftCardTrigger[]);
     }
-    setIsLoading(false);
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -142,13 +144,17 @@ export const TriggersPage: React.FC = () => {
                 </ButtonGroup>
               </DatePageTitleWrapper>
               <TriggerFilterSection onClick={handleOptionClick} />
-              <CardGridSection
-                data={nftCardTriggerData}
-                cardType={"trigger"}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                onView={handleView}
-              />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  data={nftCardTriggerData}
+                  cardType={"trigger"}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
               <ViewDateCardSection
                 isView={isView === "view"}
                 cardType="trigger"

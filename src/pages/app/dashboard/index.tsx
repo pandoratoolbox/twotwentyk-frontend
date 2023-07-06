@@ -40,6 +40,8 @@ export const DashboardPage: React.FC = () => {
   const [myCurrentPage, setMYCurrentPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
+  const [cardType, setCardType] = useState("");
+
   const [modal, setModal] = useState(false);
   const [isLoadingPrediction, setIsLoadingPrediction] = useState(true);
   const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
@@ -93,12 +95,15 @@ export const DashboardPage: React.FC = () => {
   };
 
   const handleView = (item: any) => {
+    console.log(item);
     setSelectedItem(item);
+    setCardType(item?.triggers ? "prediction" : "identity");
     setIsView("view");
   };
 
   const handleSell = (item: any) => {
     setSelectedItem(item);
+    setCardType(item?.triggers ? "prediction" : "identity");
     setIsView("sell");
   };
 
@@ -168,7 +173,7 @@ export const DashboardPage: React.FC = () => {
 
               <ViewDateCardSection
                 isView={isView === "view"}
-                cardType="identity"
+                cardType={cardType}
                 item={selectedItem}
                 onClose={() => {
                   setIsView("");
@@ -176,7 +181,7 @@ export const DashboardPage: React.FC = () => {
               />
               <SellDateCardSection
                 onSellConfirm={handleSellConfirm}
-                cardType="identity"
+                cardType={cardType}
                 isView={isView === "sell"}
                 item={selectedItem}
                 onClose={() => {
@@ -229,23 +234,7 @@ export const DashboardPage: React.FC = () => {
                     />
                   ))}
               </DashboardCardGrid>
-              <ViewDateCardSection
-                isView={isView === "view"}
-                cardType="prediction"
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                }}
-              />
-              <SellDateCardSection
-                onSellConfirm={handleSellConfirm}
-                cardType="prediction"
-                isView={isView === "sell"}
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                }}
-              />
+
               <SeeMoreButton onClick={() => navigate("/dashboard/predictions")}>
                 See More
               </SeeMoreButton>

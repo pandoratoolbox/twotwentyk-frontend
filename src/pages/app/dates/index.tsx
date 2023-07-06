@@ -36,6 +36,7 @@ export const DatesPage: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
   const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
     INftCardDayMonth[] | null
@@ -95,8 +96,7 @@ export const DatesPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
-    setNftCardDayMonthData([]);
-    setIsLoading(true);
+    setIsLoadingFilter(true);
 
     let res;
     if (filterType === "Card Types") {
@@ -117,7 +117,7 @@ export const DatesPage: React.FC = () => {
     if (res?.data) {
       setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
     }
-    setIsLoading(false);
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -141,13 +141,18 @@ export const DatesPage: React.FC = () => {
                 </ButtonGroup>
               </DatePageTitleWrapper>
               <DatesFilterSection onClick={handleOptionClick} />
-              <CardGridSection
-                cardType="date"
-                data={nftCardDayMonthData}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                onView={handleView}
-              />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  cardType="date"
+                  data={nftCardDayMonthData}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
+
               <ViewDateCardSection
                 cardType="date"
                 isView={isView === "view"}

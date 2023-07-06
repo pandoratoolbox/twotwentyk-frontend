@@ -14,8 +14,8 @@ import {
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
-import { dateCardData } from "./data";
 import { useNavigate } from "react-router-dom";
+import { getMyNftCardPack } from "../../../actions/nft_card_pack";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { ICardPackSeries } from "../../../models/card_pack_series";
 import {
@@ -35,6 +35,8 @@ export const CardPackPage: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+
   const [nftCardYearData, setNftCardYearData] = useState<
     ICardPackSeries[] | null
   >(null);
@@ -42,11 +44,9 @@ export const CardPackPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
 
-    //const token = localStorage.auth;
-    const response = await dateCardData;
-
-    if (response) {
-      setNftCardYearData(null);
+    const response = await getMyNftCardPack();
+    if (response?.data) {
+      setNftCardYearData(response?.data);
     }
     setIsLoading(false);
   };
@@ -95,8 +95,7 @@ export const CardPackPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
-    setNftCardYearData([]);
-    setIsLoading(true);
+    setIsLoadingFilter(true);
 
     let res;
     if (filterType === "Card Types") {
@@ -117,7 +116,7 @@ export const CardPackPage: React.FC = () => {
     if (res?.data) {
       setNftCardYearData(res?.data as ICardPackSeries[]);
     }
-    setIsLoading(false);
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -139,12 +138,16 @@ export const CardPackPage: React.FC = () => {
                 </ButtonGroup>
               </DatePageTitleWrapper>
               <CardPackFilterSection onClick={handleOptionClick} />
-              <CardGridSection
-                data={nftCardYearData}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                onView={handleView}
-              />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  data={nftCardYearData}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
               <ViewDateCardSection
                 isView={isView === "view"}
                 item={selectedItem}

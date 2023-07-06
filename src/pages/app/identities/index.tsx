@@ -41,6 +41,7 @@ export const IdentitiesPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
   useEffect(() => {
     if (params.get("id")) {
@@ -100,10 +101,9 @@ export const IdentitiesPage: React.FC = () => {
   // filter option click
   const handleOptionClick = async (
     filterType: string,
-    selectedOptions: string[] 
+    selectedOptions: string[]
   ) => {
-    setIdentityNfts([]);
-    setIsLoading(true);
+    setIsLoadingFilter(true);
 
     let res;
     if (filterType === "Card Types") {
@@ -124,7 +124,7 @@ export const IdentitiesPage: React.FC = () => {
     if (res?.data) {
       setIdentityNfts(res?.data as INftCardIdentity[]);
     }
-    setIsLoading(false);
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -146,13 +146,17 @@ export const IdentitiesPage: React.FC = () => {
                 </ButtonGroup>
               </DatePageTitleWrapper>
               <IdentitiesFilterSection onClick={handleOptionClick} />
-              <CardGridSection
-                identityData={identityNfts}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                cardType="identity"
-                onView={handleView}
-              />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  identityData={identityNfts}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  cardType="identity"
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
               <ViewDateCardSection
                 isView={isView === "view"}
                 cardType="identity"

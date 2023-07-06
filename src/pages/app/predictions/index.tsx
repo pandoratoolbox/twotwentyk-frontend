@@ -39,6 +39,7 @@ export const PredictionsPage: React.FC = () => {
   );
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
   useEffect(() => {
     if (params.get("id")) {
@@ -103,8 +104,7 @@ export const PredictionsPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
-    setPredictionNfts([]);
-    setIsLoading(true);
+    setIsLoadingFilter(true);
 
     let res;
     if (filterType === "Card Types") {
@@ -125,7 +125,7 @@ export const PredictionsPage: React.FC = () => {
     if (res?.data) {
       setPredictionNfts(res?.data as INftCardPrediction[]);
     }
-    setIsLoading(false);
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -147,13 +147,17 @@ export const PredictionsPage: React.FC = () => {
                 </ButtonGroup>
               </DatePageTitleWrapper>
               <PredictionsFilterSection onClick={handleOptionClick} />
-              <CardGridSection
-                identityData={predictionNfts}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                cardType="prediction"
-                onView={handleView}
-              />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  identityData={predictionNfts}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  cardType="prediction"
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
               <ViewDateCardSection
                 isView={isView === "view"}
                 cardType="prediction"
