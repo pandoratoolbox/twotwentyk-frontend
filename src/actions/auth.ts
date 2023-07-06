@@ -33,13 +33,9 @@ export const register = async ({
   }
 };
 
-export const getMyInfo = async (token: string) => {
+export const getMyInfo = async () => {
   try {
-    const res = await api.get("/me", {
-      headers: {
-        Authorization: "Bearer " + token,
-      },
-    });
+    const res = await api.get("/me");
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: "Server Error!" };
