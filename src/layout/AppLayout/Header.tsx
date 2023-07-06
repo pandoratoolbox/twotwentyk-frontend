@@ -47,7 +47,7 @@ export const Header: React.FC = () => {
   // const [currentUser, setCurrentUser] = useState<string | null>("");
 
   const [data, setData] = useState<any>({
-    username: "Moulee",
+    username: "...",
     balance: 0,
   });
 
@@ -93,7 +93,7 @@ export const Header: React.FC = () => {
                   </HeaderNavItem>
                 ))}
             </HeaderMenuWrapper>
-            {myInfoContext ? (
+            {localStorage.getItem("auth") ? (
               <HeaderButtonGroup>
                 <HeaderButton width={124} onClick={handleWithdrawClick}>
                   <IconCoins />
