@@ -20,7 +20,7 @@ import {
 } from "../../../components";
 import { IArticle, IMarketplaceListing } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
-import { useFeedContext, useMyFeedContext } from "../../../context";
+import { useFeedContext, useMonthContext, useMyFeedContext } from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
@@ -50,6 +50,8 @@ export const DashboardPage: React.FC = () => {
   const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
     []
   );
+
+  const { monthContext } = useMonthContext()
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -147,7 +149,7 @@ export const DashboardPage: React.FC = () => {
       <DashboardPageWrapper>
         <DashboardCardWrapper>
           <CardTitle>My Identities</CardTitle>
-          {identityNfts?.length > 0 && currentUser ? (
+          {identityNfts?.length > 0 && currentUser && monthContext ? (
             <React.Fragment>
               <DashboardCardGrid>
                 {identityNfts
