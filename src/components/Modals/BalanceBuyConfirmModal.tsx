@@ -5,6 +5,7 @@ import { BalanceBuyConfirmModalWrapper, ButtonGroup } from "./styles";
 import { Button } from "../Button";
 
 export const BalanceBuyConfirmModal: React.FC<BalanceBuyConfirmModalProps> = ({
+  price,
   onClose,
   onConfirm,
   isOffer,
@@ -20,7 +21,7 @@ export const BalanceBuyConfirmModal: React.FC<BalanceBuyConfirmModalProps> = ({
             : "This amount will be withdrawn from your TwoTwentyK account balance."}
         </p>
         <h4>
-          $1,140.00 <span>USD</span>
+          ${price} <span>USD</span>
         </h4>
         <ButtonGroup>
           <Button onClick={onConfirm}>Confirm</Button>

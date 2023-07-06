@@ -22,7 +22,6 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
   onClose,
 }) => {
   const { monthContext } = useMonthContext();
-  console.log(item);
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -166,6 +165,21 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   : ""}
               </span>
             </PropertyItem>
+            {cardType === "prediction" && item?.triggers && (
+              <>
+                <PropertiesHeader noborder={"true"}>
+                  <span>Triggers</span>
+                  <span>{item?.triggers?.length}</span>
+                </PropertiesHeader>
+                {item?.triggers.map((item: string, key: number) => (
+                  <PropertyItem key={key} nfttrigger={"true"}>
+                    <p>Marriage</p>
+
+                    <span>{item}</span>
+                  </PropertyItem>
+                ))}
+              </>
+            )}
           </PropertiesContent>
         </PropertiesWrapper>
       </ViewDateCardContainer>

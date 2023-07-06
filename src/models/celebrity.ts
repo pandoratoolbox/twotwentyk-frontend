@@ -1,11 +1,11 @@
 export interface ICelebrity {
-  name?: string;
-  birth_day?: number;
-  birth_month?: number;
-  birth_year?: number;
-  category?: string;
+  name: string;
+  birth_day: number;
+  birth_month: number;
+  birth_year: number;
+  category: string;
   eligible_triggers?: string[];
-  id?: number;
+  id: number;
 }
 
 export class Celebrity {

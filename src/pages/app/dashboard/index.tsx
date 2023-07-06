@@ -11,20 +11,20 @@ import {
   EmptyCardWrapper,
   SeeMoreButton,
 } from "./styles";
-// import { identitiesData, predictionData } from "./data";
 import {
   Button,
   FeedItem,
   MarketCard,
   PredictionCard,
   SellConfirmModal,
+  Loader,
 } from "../../../components";
 import { IArticle } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
 import {
   useFeedContext,
   // useMarketplaceListContext,
-  // useMonthContext,
+  useMonthContext,
   useMyFeedContext,
   useMyNFTsContext,
   useMyOfferContext,
@@ -50,11 +50,18 @@ export const DashboardPage: React.FC = () => {
   const [myCurrentPage, setMYCurrentPage] = useState(1);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
+  const [cardType, setCardType] = useState("");
+
   const [modal, setModal] = useState(false);
+  const [isLoadingPrediction, setIsLoadingPrediction] = useState(true);
+  const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
+
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
     []
   );
+
+  const { monthContext } = useMonthContext();
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -87,13 +94,12 @@ export const DashboardPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
     console.log(response);
 
     setModal(true);
@@ -101,25 +107,32 @@ export const DashboardPage: React.FC = () => {
   };
 
   const handleView = (item: any) => {
+    console.log(item);
     setSelectedItem(item);
+    setCardType(item?.triggers ? "prediction" : "identity");
     setIsView("view");
   };
 
   const handleSell = (item: any) => {
     setSelectedItem(item);
+    setCardType(item?.triggers ? "prediction" : "identity");
     setIsView("sell");
   };
 
   const loadNfts = async () => {
-    const token = localStorage.auth;
-    const p_resp = await getMyNftCardPrediction(token);
+    setIsLoadingPrediction(true);
+    setIsLoadingIdentity(true);
+
+    const p_resp = await getMyNftCardPrediction();
     if (p_resp?.data) {
       setPredictionNfts(p_resp.data);
+      setIsLoadingPrediction(false);
     }
 
-    const i_resp = await getMyNftCardIdentity(token);
+    const i_resp = await getMyNftCardIdentity();
     if (i_resp?.data) {
       setIdentityNfts(i_resp.data);
+      setIsLoadingIdentity(false);
     }
   };
 
@@ -146,22 +159,22 @@ export const DashboardPage: React.FC = () => {
       <DashboardPageWrapper>
         <DashboardCardWrapper>
           <CardTitle>My Identities</CardTitle>
-          {identityNfts?.length > 0 && currentUser ? (
+          {identityNfts?.length > 0 && currentUser && monthContext ? (
             <React.Fragment>
               <DashboardCardGrid>
                 {identityNfts
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
+                      dashbordstyle={"true"}
+                      height={"225"}
                       isNotHover={true}
                       day={item.day}
                       month={item.month}
                       year={item.year}
                       rarity={item.rarity}
+                      item={item}
                       {...item}
-                      // onClick={() =>
-                      //   navigate("/dashboard/identities?id=" + item.nft_id)
-                      // }
                       key={key}
                       onSell={handleSell}
                       cardType="identity"
@@ -172,6 +185,7 @@ export const DashboardPage: React.FC = () => {
 
               <ViewDateCardSection
                 isView={isView === "view"}
+                cardType={cardType}
                 item={selectedItem}
                 onClose={() => {
                   setIsView("");
@@ -179,7 +193,7 @@ export const DashboardPage: React.FC = () => {
               />
               <SellDateCardSection
                 onSellConfirm={handleSellConfirm}
-                cardType="identity"
+                cardType={cardType}
                 isView={isView === "sell"}
                 item={selectedItem}
                 onClose={() => {
@@ -190,7 +204,7 @@ export const DashboardPage: React.FC = () => {
                 See More
               </SeeMoreButton>
             </React.Fragment>
-          ) : (
+          ) : !isLoadingIdentity ? (
             <EmptyCardWrapper>
               <p>
                 Combine a Year card, a Day & Month, and a Category card to craft
@@ -206,6 +220,8 @@ export const DashboardPage: React.FC = () => {
                 </Button>
               )}
             </EmptyCardWrapper>
+          ) : (
+            <Loader />
           )}
         </DashboardCardWrapper>
         {myOfferContext?.length > 0 && (
@@ -243,10 +259,10 @@ export const DashboardPage: React.FC = () => {
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
                     <PredictionCard
-                      // onClick={() =>
-                      //   navigate("/dashboard/predictions?id=" + item.nft_id)
-                      // }
+                      dashbordstyle={"true"}
+                      height={"225"}
                       isNotHover={true}
+                      item={item}
                       {...item}
                       rarity={item.rarity}
                       key={key}
@@ -256,11 +272,12 @@ export const DashboardPage: React.FC = () => {
                     />
                   ))}
               </DashboardCardGrid>
+
               <SeeMoreButton onClick={() => navigate("/dashboard/predictions")}>
                 See More
               </SeeMoreButton>
             </React.Fragment>
-          ) : (
+          ) : !isLoadingPrediction ? (
             <EmptyCardWrapper>
               <p>
                 Add one or more Triggers to an Identity to craft a Prediction
@@ -275,6 +292,8 @@ export const DashboardPage: React.FC = () => {
                 </Button>
               )}
             </EmptyCardWrapper>
+          ) : (
+            <Loader />
           )}
         </DashboardCardWrapper>
         {currentUser && myFeedContext?.length > 0 && (

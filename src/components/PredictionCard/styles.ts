@@ -77,44 +77,55 @@ export const CardBottomWrapper = styled.div`
 `;
 
 export const CardDateWrapper = styled.div<{
+  dashbordstyle?: boolean;
   cardType?: string;
 }>`
   display: flex;
   span {
     font-weight: 600;
-    padding: 8px 13px 11px 12px;
+    padding: ${({ dashbordstyle }) =>
+      dashbordstyle ? "6.927px 6.476px 7.162px 6.157px" : "8px 13px 11px 12px"};
     color: ${({ cardType }) => (cardType === "identity" ? "#000" : "#fff")};
-    font-size: 11px;
+    font-size: ${({ dashbordstyle }) => (dashbordstyle ? "8.47px" : "11px")};
     font-family: Inter;
     font-style: normal;
-    line-height: 11px;
-    letter-spacing: 0.22px;
+    line-height: ${({ dashbordstyle }) => (dashbordstyle ? "8.466px" : "11px")};
+    letter-spacing: ${({ dashbordstyle }) =>
+      dashbordstyle ? "0.169px" : "0.22px"};
     background: rgba(0, 0, 0, 0.2);
     display: flex;
     align-items: center;
     opacity: ${({ cardType }) => (cardType === "identity" ? "0.5" : "1")};
   }
   .date {
-    border-radius: 6px 0px;
+    border-radius: ${({ dashbordstyle }) =>
+      dashbordstyle ? "4.618px 0px" : "6px 0px"};
   }
 
   .year {
-    border-radius: 0 0 5px 5px;
-    margin-left: 5px;
+    border-radius: ${({ dashbordstyle }) =>
+      dashbordstyle ? "0px 0px 4.618px 4.618px" : "0 0 5px 5px"};
+    margin-left: ${({ dashbordstyle }) => (dashbordstyle ? "3.85px" : "5px")};
   }
 `;
 
-export const CardTypeWrapper = styled.div`
+export const CardTypeWrapper = styled.div<{
+  dashbordstyle?: boolean;
+}>`
   height: 30px;
-  max-width: 62px;
+  max-width: fit-content;
+  min-width: 62px;
   font-weight: 400;
-  font-size: 10.7747px;
-  line-height: 13px;
+  font-size: ${({ dashbordstyle }) =>
+    dashbordstyle ? "10.775px" : "10.7747px"};
+  line-height: normal;
   width: 100%;
   background-color: #615e5e;
-  padding: 0 10px;
+  padding: ${({ dashbordstyle }) =>
+    dashbordstyle ? "4.618px 15.099px 5.471px 15.24px" : "6px 15px 7px 15px"};
   display: flex;
-  border-radius: 0 5px;
+  border-radius: ${({ dashbordstyle }) =>
+    dashbordstyle ? "0px 4.618px" : "0 5px"};
   justify-content: center;
   align-items: center;
 `;
@@ -154,7 +165,9 @@ export const CardBodyWrapper = styled.div`
   }
 `;
 
-export const CardTooltip = styled.div`
+export const CardTooltip = styled.div<{
+  dashbordstyle?: string;
+}>`
   position: absolute;
   bottom: 20px;
   right: 20px;
@@ -182,7 +195,7 @@ export const CardTooltip = styled.div`
     border: 1px solid #fff;
     background: rgba(0, 0, 0, 0.2);
     color: #fff;
-    font-size: 11px;
+    font-size: ${({ dashbordstyle }) => (dashbordstyle ? "8.47px" : "11px")};
     font-family: Inter;
     font-style: normal;
     font-weight: 600;

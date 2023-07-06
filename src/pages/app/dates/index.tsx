@@ -18,6 +18,15 @@ import { useNavigate } from "react-router-dom";
 import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import {
+  getFilterCardType,
+  getFilterRarities,
+  getFilterStatus,
+  getFilterCollection,
+  getFilterCategory,
+  getFilterPackType,
+  getFilterTriggerType,
+} from "../../../actions/filtering";
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -27,10 +36,11 @@ export const DatesPage: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
   const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
     INftCardDayMonth[] | null
-  >(null);
+  >([]);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -38,8 +48,7 @@ export const DatesPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-    const token = localStorage.auth;
-    const response = await getMyNftCardDayMonth(token);
+    const response = await getMyNftCardDayMonth();
     if (response?.data) {
       setNftCardDayMonthData(response?.data);
     }
@@ -55,13 +64,12 @@ export const DatesPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
 
     if (response.success) {
       setModal(true);
@@ -81,6 +89,35 @@ export const DatesPage: React.FC = () => {
   const handleSell = (item: any) => {
     setSelectedItem(item);
     setIsView("sell");
+  };
+
+  // filter option click
+  const handleOptionClick = async (
+    filterType: string,
+    selectedOptions: string[]
+  ) => {
+    setIsLoadingFilter(true);
+
+    let res;
+    if (filterType === "Card Types") {
+      res = await getFilterCardType(selectedOptions);
+    } else if (filterType === "All Rarities") {
+      res = await getFilterRarities(selectedOptions);
+    } else if (filterType === "Status") {
+      res = await getFilterStatus(selectedOptions);
+    } else if (filterType === "Category") {
+      res = await getFilterCategory(selectedOptions);
+    } else if (filterType === "Pack Types") {
+      res = await getFilterPackType(selectedOptions);
+    } else if (filterType === "Triggers Type") {
+      res = await getFilterTriggerType(selectedOptions);
+    } else if (filterType === "Collections") {
+      res = await getFilterCollection(selectedOptions[0]);
+    }
+    if (res?.data) {
+      setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
+    }
+    setIsLoadingFilter(false);
   };
 
   return (
@@ -103,14 +140,19 @@ export const DatesPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <DatesFilterSection />
-              <CardGridSection
-                cardType="date"
-                data={nftCardDayMonthData}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                onView={handleView}
-              />
+              <DatesFilterSection onClick={handleOptionClick} />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  cardType="date"
+                  data={nftCardDayMonthData}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
+
               <ViewDateCardSection
                 cardType="date"
                 isView={isView === "view"}

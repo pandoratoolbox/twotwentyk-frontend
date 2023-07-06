@@ -236,7 +236,6 @@ export const SummaryContent = styled.div`
   align-items: center;
   mix-blend-mode: luminosity;
   img {
-    min-width: 117px;
     height: 117px;
     border-radius: 4px;
     margin-right: 32px;

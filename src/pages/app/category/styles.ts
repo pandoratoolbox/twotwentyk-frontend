@@ -1,6 +1,7 @@
 import { styled } from "styled-components";
 
 export const DatesPageWrapper = styled.div<{ isview?: string }>`
+  margin-bottom: auto;
   position: relative;
   width: 100%;
   padding-right: ${({ isview }) => (isview ? "405px" : "0px")};

@@ -3,15 +3,22 @@ import { AppLayout } from "../../../layout/AppLayout";
 import { CraftLeftWrapper, CraftRightWrapper, CraftingWrapper } from "./styles";
 import {
   CardPreviewSection,
-  CraftSection,
-  MatchListSection,
-  SelectCardSection,
+  IdentityMatchListSection,
 } from "../../../modules";
 import { Button, CraftIdentityModal } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { craftingIdentity, getMyNFTs } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
 import { useMyNFTsContext } from "../../../context";
+import { ICelebrity } from "../../../models/celebrity";
+import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import { INftCardYear, NftCardYear } from "../../../models/nft_card_year";
+import { INftCardCategory } from "../../../models/nft_card_category";
+import { INftCardIdentity } from "../../../models/nft_card_identity";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
+import { INftCardCrafting } from "../../../models/nft_card_crafting";
+import { IdentitySelectCardSection } from "../../../modules/crafting/IdentitySelectCardSection";
+import { IdentityCraftSection } from "../../../modules/crafting/IdentityCraftSection";
 
 export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -23,21 +30,21 @@ export const CraftingIdentitesPage: React.FC = () => {
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
   const [selectedCard, setSelectedCard] = useState<number | string | null>(-1);
   const [selectedCards, setSelectedCards] = useState<{
-    crafting: number | string | null;
-    year: number | string | null;
-    dayMonth: number | string | null;
-    category: number | string | null;
-    identity: number | string | null;
-    trigger: Array<number | string | null>;
+    crafting: INftCardCrafting | null;
+    year: INftCardYear | null;
+    dayMonth: INftCardDayMonth | null;
+    category: INftCardCategory | null;
   }>({
-    crafting: -1,
-    category: -1,
-    dayMonth: -1,
-    year: -1,
-    identity: -1,
-    trigger: [],
+    crafting: null,
+    category: null,
+    dayMonth: null,
+    year: null,
   });
   const [confirm, setConfirm] = useState(false);
+
+  const [selectedCelebrity, setSelectedCelebrity] = useState<ICelebrity | null>(null);
+
+
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -62,30 +69,74 @@ export const CraftingIdentitesPage: React.FC = () => {
     setSelectedCards((prev) => ({ ...prev, [craft]: id }));
     setSelectedCard(id);
   };
-  const handleCraft = (page: "identity" | "prediction") => {
-    page === "identity" && craftIdentity();
+
+
+  const handleSelectCardCategory = (card: INftCardCategory) => {
+    setSelectedCards((prev) => ({category: card, dayMonth: prev.dayMonth, year: prev.year, crafting: prev.crafting}))
+    if (card.id) setSelectedCard(card.id);
+  };
+
+  const handleSelectCardCrafting = (card: INftCardCrafting) => {
+    setSelectedCards((prev) => ({...prev, crafting: card}))
+    // if (card.id) setSelectedCard(card.id);
+  };
+
+  const handleSelectCardDayMonth = (card: INftCardDayMonth) => {
+    setSelectedCards((prev) => ({...prev, dayMonth: card}))
+    if (card.id) setSelectedCard(card.id);
+  };
+
+  const handleSelectCardYear = (card: INftCardYear) => {
+    setSelectedCards((prev) => ({...prev, year: card}))
+    if (card.id) setSelectedCard(card.id);
+  };
+
+  const handleCraft = () => {
+    // craftIdentity();
+    setConfirm(true);
   };
 
   const craftIdentity = async () => {
-    setConfirm(true);
-    // const token = localStorage.auth;
+    if (selectedCards.dayMonth === null) {
+      toast.error("Select a Day-Month card");
+      return
+    }
 
-    // const newCraft = {
-    //   nft_card_day_month_id: Number(selectedCards.dayMonth),
-    //   nft_card_year_id: Number(selectedCards.year),
-    //   nft_card_crafting_id: Number(selectedCards.crafting),
-    //   celebrity_id: Number(selectedCards.crafting),
-    //   nft_card_category_id: Number(selectedCards.category),
-    // };
-    // const res = await craftingIdentity(newCraft);
-    // if (res.success) {
-    //   toast.success("Crafted Successfully.");
-    //   const myNFTs = await getMyNFTs(token);
-    //   setMyNFTsContext(myNFTs.data);
-    // } else {
-    //   toast.error(res.message);
-    // }
+    if (selectedCards.year === null) {
+      toast.error("Select a Year card");
+      return
+    }
+
+    if (selectedCards.category === null) {
+      toast.error("Select a Category card");
+      return
+    }
+
+    if (selectedCards.crafting === null) {
+      toast.error("Select a Crafting card");
+      return
+    }
+
+    const newCraft = {
+      nft_card_day_month_id: Number(selectedCards.dayMonth.id),
+      nft_card_year_id: Number(selectedCards.year.id),
+      nft_card_crafting_id: Number(selectedCards.crafting?.id),
+      celebrity_id: Number(selectedCelebrity?.id),
+      nft_card_category_id: Number(selectedCards.category?.id),
+    };
+    const res = await craftingIdentity(newCraft);
+    if (res.success) {
+      toast.success("Crafted Successfully.");
+      setConfirm(false);
+    } else {
+      toast.error(res.message);
+    }
   };
+
+  const handleSelectCelebrity = (c: ICelebrity) => {
+    console.log(c)
+    setSelectedCelebrity(c);
+  }
 
   return (
     <AppLayout noFooter>
@@ -101,29 +152,30 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <CraftIdentityModal open={confirm} onClose={() => setConfirm(false)} />
+      <CraftIdentityModal selectCelebrity={handleSelectCelebrity} open={confirm} onClose={() => setConfirm(false)} onCraft={craftIdentity} selectedCards={selectedCards} />
       <CraftingWrapper>
         {currentUser ? (
           <>
             <CraftLeftWrapper>
-              <CraftSection
+              <IdentityCraftSection
                 onCraft={handleCraft}
-                page="identity"
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
               />
-              <SelectCardSection
-                page="identity"
+              <IdentitySelectCardSection
                 clickedCard={clickedCard}
                 selectedCard={selectedCard}
                 selectedCraft={selectedCraft}
                 onCardClicked={handleCardClick}
-                onCardSelected={handleCardSelected}
+                onSelectCardCrafting={handleSelectCardCrafting}
+                onSelectCardCategory={handleSelectCardCategory}
+                onSelectCardDayMonth={handleSelectCardDayMonth}
+                onSelectCardYear={handleSelectCardYear}
               />
             </CraftLeftWrapper>
             <CraftRightWrapper>
-              <MatchListSection page="identity" clickedCard={clickedCard} />
+              <IdentityMatchListSection page="identity" selectedCards={selectedCards} chooseCelebrity={setSelectedCelebrity}/>
               <CardPreviewSection
                 page="identity"
                 clickedCard={clickedCard}

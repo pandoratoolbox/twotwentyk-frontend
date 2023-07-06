@@ -6,7 +6,7 @@ import {
   MarketplacePageWrapper,
 } from "../cards/styles";
 import {
-  DatesFilterSection,
+  MFilterSection,
   MBuyCardSection,
   MCardGridSection,
   // MOfferCardSection,
@@ -25,6 +25,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
@@ -32,8 +33,8 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
 
   // const [selectedId, setSelectedId] = useState<number | string>("");
 
-  const handleCardClick = (id: string | number, action: CardActionTypes) => {
-    // setSelectedId(id);
+  const handleCardClick = (item: any, action: CardActionTypes) => {
+    setSelectedItem(item);
     setSide(action);
   };
 
@@ -45,7 +46,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList(token);
+    const response = await getMarketplaceList(6, 20, token);
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);
@@ -70,51 +71,41 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   }, []);
   return (
     <AppLayout>
-      {/* <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      /> */}
-      <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
-        {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+      {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+        <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Identities</h2>
-            <DatesFilterSection />
+            <MFilterSection page="identities" />
             <MCardGridSection
               data={nftMarketplaceData}
               onCardClick={handleCardClick}
               page="identities"
             />
           </MarketplacePageContainer>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <p style={{ maxWidth: "253px" }}>
-              Wow, can you believe no one wants to sell even a single card?
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Sell Card
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )}
-      </MarketplacePageWrapper>
+        </MarketplacePageWrapper>
+      ) : !isLoading ? (
+        <EmptyCards>
+          <p style={{ maxWidth: "253px" }}>
+            Wow, can you believe no one wants to sell even a single card?
+          </p>
+          <Button
+            className="buy-button"
+            onClick={() => navigate("/marketplace")}
+          >
+            Sell Card
+          </Button>
+        </EmptyCards>
+      ) : (
+        <Loader />
+      )}
       <MViewCardSection
+        selectedItem={selectedItem}
         open={side === "view"}
         onClose={handleSideClose}
         page="identities"
       />
       <MBuyCardSection
+        selectedItem={selectedItem}
         open={side === "buy"}
         onClose={handleSideClose}
         page="identities"

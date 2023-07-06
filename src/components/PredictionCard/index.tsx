@@ -20,6 +20,7 @@ import { PredictionCardProps } from "../../types";
 import { useMonthContext } from "../../context";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
+  dashbordstyle,
   celebrity_name,
   cardType,
   item,
@@ -38,13 +39,14 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onClick,
   onCraft,
   onSell,
+  onCard,
   onView,
   onBuy,
 }) => {
   const { monthContext } = useMonthContext();
 
   image = "/assets/nfts/1.png";
-
+  // console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
@@ -54,7 +56,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover ? "true" : undefined}
     >
       <CardTopWrapper>
-        <CardDateWrapper>
+        <CardDateWrapper dashbordstyle={dashbordstyle}>
           {monthContext && day && (
             <span className="date">
               {day && month
@@ -65,9 +67,19 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 
           {year && <span className="year">{year}</span>}
         </CardDateWrapper>
-        {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
+        {rarity === 0 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>
+            Common
+          </CardTypeWrapper>
+        )}
+        {rarity === 1 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>
+            Uncommon
+          </CardTypeWrapper>
+        )}
+        {rarity === 2 && (
+          <CardTypeWrapper dashbordstyle={dashbordstyle}>Rare</CardTypeWrapper>
+        )}
       </CardTopWrapper>
       {category && (
         <CardBodyWrapper>
@@ -81,14 +93,26 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       )}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
-          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {!is_crafted && onCraft && (
             <CardButton onClick={() => onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {onCard && (
+            <>
+              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
+              {item?.is_listed ? (
+                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+              ) : (
+                <CardButton onClick={() => onCard(item, "offer")}>
+                  Make an Offer
+                </CardButton>
+              )}
+            </>
+          )}
           {cardType === "prediction" && (
             <CardTooltip>
               <span>
@@ -101,7 +125,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
                   <h3>Triggers</h3>
                   {triggers &&
                     triggers?.map((item: string, key: number) => (
-                      <TooltipItem>{item}</TooltipItem>
+                      <TooltipItem key={key}>{item}</TooltipItem>
                     ))}
                 </div>
               </TooltipContent>

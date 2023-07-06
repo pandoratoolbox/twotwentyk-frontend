@@ -63,7 +63,23 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [celebritiesContext, setCelebritiesContext] =
     useState<Map<number, ICelebrity>>();
   const [marketplaceListContext, setMarketplaceListContext] = useState<any>([]);
-  const [monthContext, setMonthContext] = useState<Map<number, string>>();
+
+  const [monthContext, setMonthContext] = useState<Map<number, string>>(
+    new Map<number, string>([
+      [1, "January"],
+      [2, "February"],
+      [3, "March"],
+      [4, "April"],
+      [5, "May"],
+      [6, "June"],
+      [7, "July"],
+      [8, "August"],
+      [9, "September"],
+      [10, "October"],
+      [11, "November"],
+      [12, "December"],
+    ])
+  );
   const [cardTypesContext, setCardTypesContext] =
     useState<Map<number, ICategory>>();
   const [allRaritiesContext, setAllRaritiesContext] =
@@ -171,59 +187,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
 
-      const myNFTsData = await getMyNFTs(token);
-      if (myNFTsData.data) setMyNFTsContext(myNFTsData.data);
-
-      const triggersData = await getTriggers();
-      if (triggersData.data) {
-        let triggers = new Map<number, ITrigger>();
-        triggersData.data.forEach((v) => {
-          if (v.id) {
-            triggers.set(v.id, v);
-          }
-        });
-        setTriggersContext(triggers);
-      }
-
-      const celebritiesData = await getCelebrities();
-      if (celebritiesData.data) {
-        let celebrities = new Map<number, ICelebrity>();
-        celebritiesData.data.forEach((v) => {
-          if (v.id) {
-            celebrities.set(v.id, v);
-          }
-        });
-        setCelebritiesContext(celebrities);
-      }
-
-      const categoriesData = await getCategories();
-      if (categoriesData.data) {
-        let categories = new Map<number, ICategory>();
-        categoriesData.data.forEach((v) => {
-          if (v.id) {
-            categories.set(v.id, v);
-          }
-        });
-        setCategoriesContext(categories);
-      }
-
-      setMonthContext(
-        new Map<number, string>([
-          [1, "January"],
-          [2, "February"],
-          [3, "March"],
-          [4, "April"],
-          [5, "May"],
-          [6, "June"],
-          [7, "July"],
-          [8, "August"],
-          [9, "September"],
-          [10, "October"],
-          [11, "November"],
-          [12, "December"],
-        ])
-      );
-
       setCardTypesContext(
         new Map<number, ICategory>([
           [1, { id: 1, name: "Day/Month" }],
@@ -244,11 +207,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           [2, { id: 2, name: "New for sale" }],
         ])
       );
-
-      const marketplaceListingData = await getMarketplaceList(token);
-      if (marketplaceListingData.data)
-        setMarketplaceListContext(marketplaceListingData.data);
-      // }
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
@@ -256,7 +214,43 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     }
   };
 
+  const setCache = async () => {
+    const triggersData = await getTriggers();
+    if (triggersData.data) {
+      let triggers = new Map<number, ITrigger>();
+      triggersData.data.forEach((v) => {
+        if (v.id) {
+          triggers.set(v.id, v);
+        }
+      });
+      setTriggersContext(triggers);
+    }
+
+    const celebritiesData = await getCelebrities();
+    if (celebritiesData.data) {
+      let celebrities = new Map<number, ICelebrity>();
+      celebritiesData.data.forEach((v) => {
+        if (v.id) {
+          celebrities.set(v.id, v);
+        }
+      });
+      setCelebritiesContext(celebrities);
+    }
+
+    const categoriesData = await getCategories();
+    if (categoriesData.data) {
+      let categories = new Map<number, ICategory>();
+      categoriesData.data.forEach((v) => {
+        if (v.id) {
+          categories.set(v.id, v);
+        }
+      });
+      setCategoriesContext(categories);
+    }
+  };
+
   useEffect(() => {
+    setCache();
     setContext();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -270,11 +264,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   }, [location.pathname]);
 
   return (
-    <AuthContext.Provider value={authValue}>
-      <CategoriesContext.Provider value={categoriesValue}>
-        <TriggersContext.Provider value={triggersValue}>
-          <CelebritiesContext.Provider value={celebritiesValue}>
-            <MonthContext.Provider value={monthValue}>
+    <MonthContext.Provider value={monthValue}>
+      <AuthContext.Provider value={authValue}>
+        <CategoriesContext.Provider value={categoriesValue}>
+          <TriggersContext.Provider value={triggersValue}>
+            <CelebritiesContext.Provider value={celebritiesValue}>
               <CardTypesContext.Provider value={cardTypeValue}>
                 <AllRaritiesContext.Provider value={allRaritiesValue}>
                   <StatusContext.Provider value={statusValue}>
@@ -300,11 +294,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                   </StatusContext.Provider>
                 </AllRaritiesContext.Provider>
               </CardTypesContext.Provider>
-            </MonthContext.Provider>
-          </CelebritiesContext.Provider>
-        </TriggersContext.Provider>
-      </CategoriesContext.Provider>
-    </AuthContext.Provider>
+            </CelebritiesContext.Provider>
+          </TriggersContext.Provider>
+        </CategoriesContext.Provider>
+      </AuthContext.Provider>
+    </MonthContext.Provider>
   );
 };
 
@@ -330,10 +324,6 @@ export const useMyNFTsContext = () => {
 
 export const useInventoryNFTsContext = () => {
   return useContext(InventoryNftsContext);
-};
-
-export const useMarketplaceListContext = () => {
-  return useContext(MarketplaceListContext);
 };
 
 export const useMonthContext = () => {

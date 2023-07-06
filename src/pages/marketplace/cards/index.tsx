@@ -22,6 +22,7 @@ export const MarketplacePage: React.FC = () => {
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
+  const [selectedItem, setSelectedItem] = useState(null);
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
@@ -33,8 +34,9 @@ export const MarketplacePage: React.FC = () => {
     getPageData();
   }, []);
 
-  const handleCardClick = (id: string | number, action: CardActionTypes) => {
-    setSelectedId(id);
+  const handleCardClick = (item: any, action: CardActionTypes) => {
+    setSelectedId(item.id);
+    setSelectedItem(item);
     setSide(action);
   };
 
@@ -46,7 +48,7 @@ export const MarketplacePage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList(token);
+    const response = await getMarketplaceList(3, 20, token);
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);
@@ -89,8 +91,8 @@ export const MarketplacePage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
-        {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+      {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
+        <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Cards</h2>
             <MFilterSection />
@@ -99,29 +101,38 @@ export const MarketplacePage: React.FC = () => {
               onCardClick={handleCardClick}
             />
           </MarketplacePageContainer>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <p style={{ maxWidth: "253px" }}>
-              Wow, can you believe no one wants to sell even a single card?
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/dashboard/dates")}
-            >
-              Sell Card
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )}
-      </MarketplacePageWrapper>
-      <MViewCardSection open={side === "view"} onClose={handleSideClose} />
-      <MBuyCardSection open={side === "buy"} onClose={handleSideClose} />
+        </MarketplacePageWrapper>
+      ) : !isLoading ? (
+        <EmptyCards>
+          <p style={{ maxWidth: "253px" }}>
+            Wow, can you believe no one wants to sell even a single card?
+          </p>
+          <Button
+            className="buy-button"
+            onClick={() => navigate("/dashboard/dates")}
+          >
+            Sell Card
+          </Button>
+        </EmptyCards>
+      ) : (
+        <Loader />
+      )}
+      <MViewCardSection
+        open={side === "view"}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
+      />
+      <MBuyCardSection
+        open={side === "buy"}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
+      />
       <MSellCardSection open={side === "sell"} onClose={handleSideClose} />
       <MOfferCardSection
         open={side === "offer"}
-        onClose={handleSideClose}
         onConfirm={handleOfferConfirm}
+        selectedItem={selectedItem}
+        onClose={handleSideClose}
       />
     </AppLayout>
   );

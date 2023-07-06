@@ -24,6 +24,7 @@ export const SelectBoxContainer = styled.div<{ border?: string }>`
 `;
 
 export const SelectBoxTextWrapper = styled.div`
+text-transform: capitalize;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
@@ -39,7 +40,8 @@ export const SelectBoxTextWrapper = styled.div`
   }
 `;
 
-export const SelectOptionsWrapper = styled.div<{ open?: string }>`
+export const SelectOptionsWrapper = styled.div<{ open?: boolean }>`
+text-transform: capitalize;
   position: absolute;
   padding: 10px 24px;
   margin-top: 10px;
@@ -58,10 +60,11 @@ export const OptionItem = styled.label`
   justify-content: space-between;
   align-items: center;
   font-weight: 400;
-  font-size: 14px;
+  font-size: 13.5px;
   line-height: 17px;
   padding: 12px 0;
   cursor: pointer;
+  text-transform: capitalize;
   div {
     display: flex;
     align-items: center;

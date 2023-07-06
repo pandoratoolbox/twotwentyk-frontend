@@ -1,3 +1,8 @@
+import { ICelebrity } from "../models/celebrity";
+import { INftCardCategory } from "../models/nft_card_category";
+import { INftCardCrafting } from "../models/nft_card_crafting";
+import { INftCardDayMonth } from "../models/nft_card_day_month";
+import { INftCardYear } from "../models/nft_card_year";
 import { IMarketplaceListing } from "./actions";
 import { CardActionTypes } from "./common";
 
@@ -38,6 +43,7 @@ export type AppHeaderMenuItemProps = {
 };
 
 export type PredictionCardProps = {
+  dashbordstyle?: boolean;
   cardType?: string;
   item?: any;
   id?: number;
@@ -57,6 +63,7 @@ export type PredictionCardProps = {
   iconText?: string;
   isNotHover?: boolean;
   onClick?: () => void;
+  onCard?: (item: forItem | undefined, action: CardActionTypes) => void;
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
@@ -155,6 +162,17 @@ export type SellModalProps = {
   isOffer?: boolean;
 } & ModalProps;
 
+export type CraftIdentityModalProps = {
+  selectCelebrity: (c: ICelebrity) => void;
+  selectedCards: {
+    crafting: INftCardCrafting | null;
+    year: INftCardYear | null;
+    dayMonth: INftCardDayMonth | null;
+    category: INftCardCategory | null;
+  };
+  onCraft: () => void;
+} & ModalProps;
+
 export type WithdrawConfirmModalProps = {
   status: "success" | "failed";
 } & ModalProps;
@@ -162,15 +180,18 @@ export type WithdrawConfirmModalProps = {
 export type ProfileModalProps = { title: string } & ModalProps;
 
 export type UseBalanceBuyModalProps = {
+  price?: number | string;
   onBuyClick: () => void;
 } & ModalProps;
 
 export type BalanceBuyConfirmModalProps = {
+  price?: number | string;
   onConfirm: () => void;
   isOffer?: boolean;
 } & ModalProps;
 
 export type SelectBoxProps = {
+  clear?: boolean;
   placeholder?: string;
   border?: boolean;
   label?: string;
@@ -178,7 +199,9 @@ export type SelectBoxProps = {
   isFilter?: boolean;
   options?: SelectOptionProps[];
   newData?: any;
+  onClick?: (filterType: string, selectedOptions: string[]) => void;
   onChange?: (value: string | Array<string>) => void;
+  onSelect?: (v: SelectOptionProps) => void;
 };
 
 export type WithdrawModalProps = {
@@ -239,7 +262,34 @@ export type NotificationProps = {
   onClose: () => void;
 };
 
+export type forItem = {
+  nft_card_prediction_id?: number;
+  nft_collection_id?: number;
+  owner?: any;
+  nft_card_day_month?: any;
+  nft_card_trigger?: any;
+  nft_card_crafting_id?: number;
+  is_listed?: boolean;
+  nft_card_identity_id?: number;
+  nft_card_crafting?: any;
+  nft_card_category?: any;
+  price?: number;
+  nft_card_day_month_id?: number;
+  nft_card_year_id?: number;
+  card_pack_id?: number;
+  id?: number;
+  created_at?: number | string | Date;
+  nft_card_category_id?: number;
+  nft_card_trigger_id?: number;
+  nft_card_prediction?: any;
+  nft_card_identity?: any;
+  nft_card_year?: any;
+  owner_id?: number;
+};
+
 export type MarketCardProps = {
+  item?: forItem;
+  price?: number;
   image: string;
   name: string;
   type?: string;
@@ -248,7 +298,10 @@ export type MarketCardProps = {
   rarity: string;
   status?: string;
   owned?: string | number;
-  onCard?: (id?: string | number, action?: CardActionTypes) => void;
+  // onCard?: (id?: string | number, action?: CardActionTypes) => void;
+  is_listed?: string;
+  owner_id?: string | number;
+  onCard?: (item: forItem | undefined, action: CardActionTypes) => void;
 } & IMarketplaceListing;
 
 export type CraftPredictionModalProps = {

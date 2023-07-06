@@ -177,14 +177,15 @@ export const PropertiesWrapper = styled.div`
   width: 100%;
 `;
 
-export const PropertiesHeader = styled.div`
+export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
   padding-bottom: 10px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
   width: 100%;
-  border-bottom: 1px solid #00000022;
+  border-bottom: ${({ noborder }) =>
+    noborder ? "none" : "1px solid #00000022"};
   span {
     font-weight: 700;
     font-size: 14px;
@@ -203,12 +204,14 @@ export const PropertiesContent = styled.div`
   }
 `;
 
-export const PropertyItem = styled.div`
+export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   display: flex;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
   line-height: 15px;
+  text-transform: capitalize;
+  padding: ${({ nfttrigger }) => (nfttrigger ? "0 10px" : "none")};
   p {
     font-weight: 500;
   }

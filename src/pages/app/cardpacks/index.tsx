@@ -14,10 +14,19 @@ import {
   SellDateCardSection,
   ViewDateCardSection,
 } from "../../../modules";
-import { dateCardData } from "./data";
 import { useNavigate } from "react-router-dom";
+import { getMyNftCardPack } from "../../../actions/nft_card_pack";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { ICardPackSeries } from "../../../models/card_pack_series";
+import {
+  getFilterCardType,
+  getFilterRarities,
+  getFilterStatus,
+  getFilterCollection,
+  getFilterCategory,
+  getFilterPackType,
+  getFilterTriggerType,
+} from "../../../actions/filtering";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -26,6 +35,8 @@ export const CardPackPage: React.FC = () => {
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+
   const [nftCardYearData, setNftCardYearData] = useState<
     ICardPackSeries[] | null
   >(null);
@@ -33,11 +44,9 @@ export const CardPackPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
 
-    //const token = localStorage.auth;
-    const response = await dateCardData;
-
-    if (response) {
-      setNftCardYearData(null);
+    const response = await getMyNftCardPack();
+    if (response?.data) {
+      setNftCardYearData(response?.data);
     }
     setIsLoading(false);
   };
@@ -55,13 +64,12 @@ export const CardPackPage: React.FC = () => {
     collection_id: string | number,
     price: string | number
   ) => {
-    const token = localStorage.auth;
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
-    const response = await newMarketplaceList(newMarketplace, token);
+    const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
       setModal(true);
       setIsView("");
@@ -82,6 +90,35 @@ export const CardPackPage: React.FC = () => {
     setIsView("sell");
   };
 
+  // filter option click
+  const handleOptionClick = async (
+    filterType: string,
+    selectedOptions: string[]
+  ) => {
+    setIsLoadingFilter(true);
+
+    let res;
+    if (filterType === "Card Types") {
+      res = await getFilterCardType(selectedOptions);
+    } else if (filterType === "All Rarities") {
+      res = await getFilterRarities(selectedOptions);
+    } else if (filterType === "Status") {
+      res = await getFilterStatus(selectedOptions);
+    } else if (filterType === "Category") {
+      res = await getFilterCategory(selectedOptions);
+    } else if (filterType === "Pack Types") {
+      res = await getFilterPackType(selectedOptions);
+    } else if (filterType === "Triggers Type") {
+      res = await getFilterTriggerType(selectedOptions);
+    } else if (filterType === "Collections") {
+      res = await getFilterCollection(selectedOptions[0]);
+    }
+    if (res?.data) {
+      setNftCardYearData(res?.data as ICardPackSeries[]);
+    }
+    setIsLoadingFilter(false);
+  };
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -100,13 +137,17 @@ export const CardPackPage: React.FC = () => {
                   </Button>
                 </ButtonGroup>
               </DatePageTitleWrapper>
-              <CardPackFilterSection />
-              <CardGridSection
-                data={nftCardYearData}
-                onCraft={handleCraft}
-                onSell={handleSell}
-                onView={handleView}
-              />
+              <CardPackFilterSection onClick={handleOptionClick} />
+              {!isLoadingFilter ? (
+                <CardGridSection
+                  data={nftCardYearData}
+                  onCraft={handleCraft}
+                  onSell={handleSell}
+                  onView={handleView}
+                />
+              ) : (
+                <Loader />
+              )}
               <ViewDateCardSection
                 isView={isView === "view"}
                 item={selectedItem}

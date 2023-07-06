@@ -83,7 +83,18 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
-        <h2>Sell {cardType === "trigger" ? "Trigger" : "Date Card"}</h2>
+        <h2>
+          Sell{" "}
+          {cardType === "trigger"
+            ? "Trigger"
+            : cardType === "identity"
+            ? "Identity"
+            : cardType === "prediction"
+            ? "Prediction"
+            : cardType === "category"
+            ? "Category"
+            : "Date Card"}
+        </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
             <TriggerCard
@@ -227,15 +238,15 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             )}
             {cardType === "prediction" && item?.triggers && (
               <>
-                <PropertiesHeader>
+                <PropertiesHeader noborder={"true"}>
                   <span>Triggers</span>
                   <span>{item?.triggers?.length}</span>
                 </PropertiesHeader>
                 {item?.triggers.map((item: string, key: number) => (
-                  <PropertyItem>
+                  <PropertyItem key={key} nfttrigger={"true"}>
                     <p>Marriage</p>
 
-                    <span key={key}>{item}</span>
+                    <span>{item}</span>
                   </PropertyItem>
                 ))}
               </>

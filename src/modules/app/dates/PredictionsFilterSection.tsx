@@ -8,7 +8,9 @@ import {
   useTriggersContext,
 } from "../../../context";
 
-export const PredictionsFilterSection: React.FC = () => {
+export const PredictionsFilterSection: React.FC<{
+  onClick: (filterType: string, selectedOptions: string[]) => void;
+}> = ({ onClick }) => {
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
   const { triggersContext } = useTriggersContext();
@@ -17,19 +19,30 @@ export const PredictionsFilterSection: React.FC = () => {
     <FilterSectionWrapper>
       <p>Filter traits</p>
       <FilterGroupWrapper>
-        <SelectBox options={collectionOption} placeholder="Collections" />
+        <SelectBox
+          options={collectionOption}
+          placeholder="Collections"
+          onClick={onClick}
+        />
         <SelectBox
           isFilter
           newData={allRaritiesContext}
           placeholder="All Rarities"
+          onClick={onClick}
         />
         <SelectBox
           isFilter
           placeholder="Triggers Type"
           newData={triggersContext}
+          onClick={onClick}
         />
 
-        <SelectBox isFilter newData={statusContext} placeholder="Status" />
+        <SelectBox
+          isFilter
+          newData={statusContext}
+          placeholder="Status"
+          onClick={onClick}
+        />
         <SortButton>
           <IconSort />
         </SortButton>

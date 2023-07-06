@@ -10,6 +10,7 @@ import { IconPigMoney } from "../Icons";
 import { Button } from "../Button";
 
 export const UseBalanceBuyModal: React.FC<UseBalanceBuyModalProps> = ({
+  price,
   onClose,
   onBuyClick,
   open,
@@ -26,7 +27,7 @@ export const UseBalanceBuyModal: React.FC<UseBalanceBuyModalProps> = ({
         </h3>
         <BuyActionWrapper>
           <div>
-            <h4>$1.140 USD</h4>
+            <h4>${price} USD</h4>
             <span onClick={onClose}>Back to details</span>
           </div>
           <Button className="buy-button" onClick={onBuyClick}>
