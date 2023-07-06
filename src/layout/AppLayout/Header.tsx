@@ -105,7 +105,7 @@ export const Header: React.FC = () => {
                   </HeaderNavItem>
                 ))}
             </HeaderMenuWrapper>
-            {currentUser ? (
+            {localStorage.getItem("auth") ? (
               <HeaderButtonGroup>
                 <HeaderButton width={124} onClick={handleWithdrawClick}>
                   <IconCoins />

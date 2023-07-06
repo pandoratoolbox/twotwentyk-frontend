@@ -172,41 +172,13 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       //       user: "",
       //     });
       //   } else {
-      setAuthContext({
-        ...authContext,
-        isAuthenticated: true,
-        user: localStorage.getItem("auth"),
-      });
+      // setAuthContext({
+      //   ...authContext,
+      //   isAuthenticated: true,
+      //   user: localStorage.getItem("auth"),
+      // });
 
-      const myinfo = await getMyInfo(token);
-      if (myinfo.data) setMyInfoContext(myinfo.data);
 
-      const allFeedData = await getFeed();
-      if (allFeedData.data) setFeedContext(allFeedData.data);
-
-      const myFeedData = await getPersonalizedFeed();
-      if (myFeedData.data) setMyFeedContext(myFeedData.data);
-
-      setCardTypesContext(
-        new Map<number, ICategory>([
-          [1, { id: 1, name: "Day/Month" }],
-          [2, { id: 2, name: "Year" }],
-        ])
-      );
-      setAllRaritiesContext(
-        new Map<number, ICategory>([
-          [1, { id: 1, name: "Free to Play" }],
-          [2, { id: 2, name: "Core" }],
-          [3, { id: 3, name: "Uncommon" }],
-          [4, { id: 4, name: "Rare" }],
-        ])
-      );
-      setStatusContext(
-        new Map<number, ICategory>([
-          [1, { id: 1, name: "For sale" }],
-          [2, { id: 2, name: "New for sale" }],
-        ])
-      );
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
@@ -215,6 +187,51 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   };
 
   const setCache = async () => {
+    let token = localStorage.getItem("auth")
+    if (token) {
+      setAuthContext({
+        ...authContext,
+        isAuthenticated: true,
+        user: token,
+      });
+    } else {
+      setAuthContext({
+        ...authContext,
+        isAuthenticated: false,
+      })
+    }
+
+    const myinfo = await getMyInfo();
+    if (myinfo.data) setMyInfoContext(myinfo.data);
+
+    const allFeedData = await getFeed();
+    if (allFeedData.data) setFeedContext(allFeedData.data);
+
+    const myFeedData = await getPersonalizedFeed();
+    if (myFeedData.data) setMyFeedContext(myFeedData.data);
+
+    setCardTypesContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "Day/Month" }],
+        [2, { id: 2, name: "Year" }],
+      ])
+    );
+    setAllRaritiesContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "Free to Play" }],
+        [2, { id: 2, name: "Core" }],
+        [3, { id: 3, name: "Uncommon" }],
+        [4, { id: 4, name: "Rare" }],
+      ])
+    );
+    setStatusContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "For sale" }],
+        [2, { id: 2, name: "New for sale" }],
+      ])
+    );
+
+    
     const triggersData = await getTriggers();
     if (triggersData.data) {
       let triggers = new Map<number, ITrigger>();
