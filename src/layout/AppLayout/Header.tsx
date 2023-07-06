@@ -44,7 +44,7 @@ export const Header: React.FC = () => {
     "failed"
   );
   const [currentPath, setCurrentPath] = useState<AppHeaderMenuItemProps>();
-  const [currentUser, setCurrentUser] = useState<string | null>("");
+  // const [currentUser, setCurrentUser] = useState<string | null>("");
 
   const [data, setData] = useState<any>({
     username: "Moulee",
@@ -59,9 +59,9 @@ export const Header: React.FC = () => {
       }));
   }, [myInfoContext]);
 
-  useEffect(() => {
-    setCurrentUser(localStorage.getItem("auth"));
-  }, []);
+  // useEffect(() => {
+  //   setCurrentUser(localStorage.getItem("auth"));
+  // }, []);
 
   useEffect(() => {
     setCurrentPath(
@@ -105,7 +105,7 @@ export const Header: React.FC = () => {
                   </HeaderNavItem>
                 ))}
             </HeaderMenuWrapper>
-            {currentUser ? (
+            {myInfoContext ? (
               <HeaderButtonGroup>
                 <HeaderButton width={124} onClick={handleWithdrawClick}>
                   <IconCoins />
