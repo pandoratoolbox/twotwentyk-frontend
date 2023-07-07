@@ -14,13 +14,21 @@ import {
 import {
   Button,
   FeedItem,
+  MarketCard,
   PredictionCard,
   SellConfirmModal,
   Loader,
 } from "../../../components";
-import { IArticle, IMarketplaceListing } from "../../../types/actions";
+import { IArticle } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
-import { useFeedContext, useMyFeedContext } from "../../../context";
+import {
+  useFeedContext,
+  // useMarketplaceListContext,
+  useMonthContext,
+  useMyFeedContext,
+  useMyNFTsContext,
+  useMyOfferContext,
+} from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
@@ -32,6 +40,8 @@ export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
   const { feedContext } = useFeedContext();
   const { myFeedContext } = useMyFeedContext();
+  const { myNFTsContext } = useMyNFTsContext();
+  const { myOfferContext } = useMyOfferContext();
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [pageAllFeeds, setPageAllFeeds] = useState<IArticle[]>([]);
@@ -43,13 +53,15 @@ export const DashboardPage: React.FC = () => {
   const [cardType, setCardType] = useState("");
 
   const [modal, setModal] = useState(false);
-  const [isLoadingPrediction, setIsLoadingPrediction] = useState(true);
-  const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
+  const [isLoadingPrediction, setIsLoadingPrediction] = useState(false);
+  const [isLoadingIdentity, setIsLoadingIdentity] = useState(false);
 
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
     []
   );
+
+  const { monthContext } = useMonthContext();
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -107,25 +119,31 @@ export const DashboardPage: React.FC = () => {
     setIsView("sell");
   };
 
-  const loadNfts = async () => {
-    setIsLoadingPrediction(true);
+  const loadIdentities = async () => {
     setIsLoadingIdentity(true);
+    let p_resp = await getMyNftCardIdentity();
+    if (p_resp?.data) {
+      setIdentityNfts(p_resp.data);
+    }
+    setIsLoadingIdentity(false);
+  }
 
-    const p_resp = await getMyNftCardPrediction();
+  const loadPredictions = async () => {
+    setIsLoadingPrediction(true);
+    let p_resp = await getMyNftCardPrediction();
     if (p_resp?.data) {
       setPredictionNfts(p_resp.data);
-      setIsLoadingPrediction(false);
     }
+    setIsLoadingPrediction(false);
+  }
 
-    const i_resp = await getMyNftCardIdentity();
-    if (i_resp?.data) {
-      setIdentityNfts(i_resp.data);
-      setIsLoadingIdentity(false);
-    }
+  const loadNfts = async () => {
+    loadIdentities();
+    loadPredictions();
   };
 
   useEffect(() => {
-    loadNfts();
+    if (localStorage.getItem("auth")) loadNfts();
   }, []);
 
   return (
@@ -147,9 +165,10 @@ export const DashboardPage: React.FC = () => {
       <DashboardPageWrapper>
         <DashboardCardWrapper>
           <CardTitle>My Identities</CardTitle>
-          {identityNfts?.length > 0 && currentUser ? (
+          {identityNfts?.length > 0 && currentUser && monthContext ? (
             <React.Fragment>
               <DashboardCardGrid>
+                {/* {identityNfts */}
                 {identityNfts
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
@@ -212,6 +231,32 @@ export const DashboardPage: React.FC = () => {
             <Loader />
           )}
         </DashboardCardWrapper>
+        {myOfferContext?.length > 0 && (
+          <DashboardCardWrapper>
+            <CardTitle>My Offers</CardTitle>
+            {/* */}
+            <React.Fragment>
+              <DashboardCardGrid>
+                {myOfferContext
+                  ?.filter((f: any) => f.status === 0)
+                  .slice(0, 4) //////////////////// Have to add some filter by collection id
+                  .map((item: any, key: number) => (
+                    <MarketCard
+                      // {...cardData[key]}
+                      key={key}
+                      {...item}
+                      onCard={() =>
+                        navigate("/dashboard/myoffer?id=" + item.nft_id)
+                      }
+                    />
+                  ))}
+              </DashboardCardGrid>
+              <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
+                See More
+              </SeeMoreButton>
+            </React.Fragment>
+          </DashboardCardWrapper>
+        )}
         <DashboardCardWrapper>
           <CardTitle>My Predictions</CardTitle>
           {predictionNfts.length > 0 && currentUser ? (

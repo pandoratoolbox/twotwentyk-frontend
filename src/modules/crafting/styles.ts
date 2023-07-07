@@ -1,9 +1,9 @@
 import { styled } from "styled-components";
 
 export const CraftSectionWrapper = styled.div`
-  width: 100%;
-  padding: 24px 0;
+  padding: 24px 20px;
   max-width: 825px;
+  width: 100%;
   margin: auto;
   height: 414px;
   overflow-y: auto;
@@ -83,9 +83,29 @@ export const CraftCardGroup = styled.div`
 `;
 
 export const SelectCardSectionWrapper = styled.div`
+  padding: 0 20px;
   background: rgba(251, 252, 255, 0.8);
   flex: 1;
   overflow-y: auto;
+`;
+
+export const OpenPreview = styled.div`
+  position: fixed;
+  top: 200px;
+  right: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  background: #fff;
+  box-shadow: 0 0 3px 3px #00000010;
+  border-radius: 5px 0 0 5px;
+  z-index: 99;
+  & > * {
+    transform: rotate(90deg);
+  }
 `;
 
 export const SelectCardSectionContainer = styled.div`
@@ -106,19 +126,31 @@ export const SelectCardSectionContainer = styled.div`
 
 export const FilterWrapper = styled.div`
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 14px;
-  & > :not(:first-child) {
+  gap: 10px;
+  /* & > :not(:first-child) {
     margin-left: 10px;
-  }
+  } */
 `;
 
 export const SelectBoxWrapper = styled.div`
-  width: 180px;
+  min-width: 180px;
+  flex: 1;
 `;
 
 export const CardGridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  @media screen and (max-width: 650px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 480px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 375px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 `;
 
 export const CraftingCardWrapper = styled.div<{ active?: string }>`

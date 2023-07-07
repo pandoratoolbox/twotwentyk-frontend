@@ -2,7 +2,7 @@ import React from "react";
 import {
   Route,
   Routes,
-  BrowserRouter as Router,
+  HashRouter as Router,
   Navigate,
 } from "react-router-dom";
 import {
@@ -31,6 +31,7 @@ import {
   CraftingPredictionsPage,
   CategoriesPage,
   CardPackPage,
+  MyOfferPage,
 } from "./pages";
 import { AppWrapper } from "./context";
 
@@ -63,6 +64,7 @@ const App: React.FC = () => {
               element={<PredictionsPage />}
             />
             <Route path="/dashboard/packs" element={<CardPackPage />} />
+            <Route path="/dashboard/myoffer" element={<MyOfferPage />} />
             {/* Dashboard Routes */}
             {/* Crafting Routes */}
             <Route

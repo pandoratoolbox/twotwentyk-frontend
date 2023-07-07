@@ -47,10 +47,24 @@ export const BuyPackSection: React.FC = () => {
           </BuyPackTextWrapper>
           <BuyPackSlider>
             <Swiper
-              slidesPerView={3}
+              slidesPerView={1}
               spaceBetween={42}
               navigation={true}
               modules={[Navigation]}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 30,
+                },
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 42,
+                },
+              }}
               className="mySwiper"
             >
               {[...new Array(5)].map((item, key) => (
@@ -78,10 +92,24 @@ export const BuyPackSection: React.FC = () => {
           </BuyPackTextWrapper>
           <BuyPackSlider>
             <Swiper
-              slidesPerView={3}
+              slidesPerView={1}
               spaceBetween={42}
               navigation={true}
               modules={[Navigation]}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 30,
+                },
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 42,
+                },
+              }}
               className="mySwiper"
             >
               {[...new Array(5)].map((item, key) => (
@@ -109,10 +137,24 @@ export const BuyPackSection: React.FC = () => {
           </BuyPackTextWrapper>
           <BuyPackSlider>
             <Swiper
-              slidesPerView={3}
+              slidesPerView={1}
               spaceBetween={42}
               navigation={true}
               modules={[Navigation]}
+              breakpoints={{
+                640: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 30,
+                },
+                1024: {
+                  slidesPerView: 3,
+                  spaceBetween: 42,
+                },
+              }}
               className="mySwiper"
             >
               {[...new Array(5)].map((item, key) => (

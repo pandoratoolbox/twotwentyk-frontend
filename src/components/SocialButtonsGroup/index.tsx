@@ -14,13 +14,25 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   const { onGoogleAuthClicked, onAppleAuthClicked, onFacebookAuthClicked } =
     useSocialAuth();
 
+  const handleAppleAuth = (res: any) => {
+    // POST /auth/social { platform: "apple", token: "token" }
+    // if (resp.data.token) {
+    //   localStorage.setItem("auth", resp.data.token)
+    // }
+    // console.log(res);
+  };
+
+  const handleGoogleAuth = (res: any) => {
+    console.log(res);
+  };
+
   return (
     <SocialButtonsWrapper>
       <GoogleLogin
         clientId="620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com" // need to change
         buttonText="Login"
-        onSuccess={(res) => onGoogleAuthClicked(res, authType)}
-        // onFailure={(res) => onGoogleAuthClicked(res, authType)}
+        onSuccess={(res) => handleGoogleAuth(res)}
+        onFailure={(res) => handleGoogleAuth(res)}
         render={(renderProps) => (
           <SocialAuthButton
             authType={authType}
@@ -47,7 +59,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       <AppleLogin
         clientId="com.pandoratoolbox.twotwentyk"
         redirectURI="https://twotwentyk.pandoratoolbox.com"
-        callback={(res) => onAppleAuthClicked(res, authType)}
+        callback={(res) => handleAppleAuth(res)}
         render={(renderProps) => (
           <SocialAuthButton
             authType={authType}

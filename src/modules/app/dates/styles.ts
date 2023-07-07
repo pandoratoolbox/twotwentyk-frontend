@@ -40,11 +40,83 @@ export const SortButton = styled.div`
   justify-content: center;
   /* width: 51px; */
   max-width: 40px;
+  min-width: 40px !important;
   width: 100%;
   height: 40px;
   background: #e2e4ec;
   box-shadow: 1px 1.5px 3px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
+`;
+
+export const ViewOfferInfoWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  b {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+  }
+  p {
+    margin-top: 12px;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+  h1 {
+    font-size: 22px;
+    font-weight: 700;
+  }
+`;
+
+export const OfferPreviewCard = styled.div<{ bg: string }>`
+  box-shadow: 0px 0px 15.3925px rgba(0, 0, 0, 0.05);
+  width: 250px;
+  height: 300px;
+  margin: auto;
+  background: ${({ bg }) =>
+    bg
+      ? `url(${bg}) no-repeat, #CDCDCD `
+      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), #FFFFFF;"};
+  background-blend-mode: luminosity;
+  background-size: cover;
+  background-position: center;
+  position: relative;
+  border-radius: 12px;
+  contain: content;
+  margin-bottom: 36px;
+  border-radius: 0px 6.148px;
+`;
+
+export const CardRarity = styled.div`
+  position: absolute;
+  background: #615e5e;
+  height: 30px;
+  right: 0;
+  top: 0;
+  color: #fff;
+  font-size: 14.346px;
+  font-weight: 500;
+`;
+
+export const ButtonGroup = styled.div``;
+
+export const OfferButton = styled.div`
+  margin-top: 24px;
+  border-radius: 8px;
+  height: 45px;
+  background: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 700;
+  width: 100%;
+  &.deny {
+    background: #e31a4a;
+  }
 `;
 
 export const CardGridWrapper = styled.div`
@@ -65,7 +137,7 @@ export const CardGridWrapper = styled.div`
 export const ViewDateCardWrapper = styled.div<{ isview?: string }>`
   max-width: 405px;
   width: 100%;
-  z-index: 1;
+  z-index: 100;
   height: calc(100% - 125px);
   background-color: #fff;
   position: fixed;
@@ -82,6 +154,10 @@ export const ViewDateCardWrapper = styled.div<{ isview?: string }>`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 1024px) {
+    top: 76px;
+    height: calc(100% - 76px);
+  }
 `;
 
 export const PreviewCardWrapper = styled.div`
@@ -108,6 +184,7 @@ export const PropertiesWrapper = styled.div`
 
 export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
   padding-bottom: 10px;
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;

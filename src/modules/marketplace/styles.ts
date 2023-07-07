@@ -12,8 +12,14 @@ export const FilterSectionWrapper = styled.div`
 export const FilterSectionGrid = styled.div`
   display: flex;
   justify-content: space-between;
-  & > :not(:first-child) {
+  flex-wrap: wrap;
+  /* & > :not(:first-child) {
     margin-left: 20px;
+  } */
+  gap: 20px;
+  & > * {
+    flex: 1;
+    min-width: 192px;
   }
 `;
 
@@ -22,6 +28,15 @@ export const CardGridWrapper = styled.div`
   display: grid;
   grid-gap: 42px;
   grid-template-columns: repeat(4, 1fr);
+  @media screen and (max-width: 1024px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  @media screen and (max-width: 650px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 375px) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const MSidebarWrapper = styled.div<{ open: boolean }>`
@@ -35,6 +50,10 @@ export const MSidebarWrapper = styled.div<{ open: boolean }>`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 1024px) {
+    height: calc(100% - 76px);
+    top: 76px;
+  }
 `;
 
 export const MSidebarContainer = styled.div`
@@ -132,7 +151,7 @@ export const SummaryCard = styled.div<{ bg: string }>`
   background-size: cover;
   background-position: center;
   border-radius: 5px;
-margin-right: 25px;
+  margin-right: 25px;
   span {
     max-width: fit-content;
     height: 11.94px;

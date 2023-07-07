@@ -72,6 +72,7 @@ export const EmptyCardWrapper = styled.div`
   align-items: center;
   p {
     font-weight: 400;
+    text-align: center;
     font-size: 14px;
     line-height: 17px;
     opacity: 0.5;

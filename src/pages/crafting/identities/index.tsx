@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { AppLayout } from "../../../layout/AppLayout";
 import { CraftLeftWrapper, CraftRightWrapper, CraftingWrapper } from "./styles";
-import {
-  CardPreviewSection,
-  IdentityMatchListSection,
-} from "../../../modules";
-import { Button, CraftIdentityModal } from "../../../components";
+import { CardPreviewSection, IdentityMatchListSection } from "../../../modules";
+import { Button, CraftIdentityModal, IconArrowDown } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { craftingIdentity, getMyNFTs } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
@@ -19,6 +16,8 @@ import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../../models/nft_card_crafting";
 import { IdentitySelectCardSection } from "../../../modules/crafting/IdentitySelectCardSection";
 import { IdentityCraftSection } from "../../../modules/crafting/IdentityCraftSection";
+import { CloseButton } from "../../../components/Modals/styles";
+import { OpenPreview } from "../../../modules/crafting/styles";
 
 export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -42,9 +41,11 @@ export const CraftingIdentitesPage: React.FC = () => {
   });
   const [confirm, setConfirm] = useState(false);
 
-  const [selectedCelebrity, setSelectedCelebrity] = useState<ICelebrity | null>(null);
+  const [isOpen, setIsOpen] = useState(false);
 
-
+  const [selectedCelebrity, setSelectedCelebrity] = useState<ICelebrity | null>(
+    null
+  );
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -70,24 +71,28 @@ export const CraftingIdentitesPage: React.FC = () => {
     setSelectedCard(id);
   };
 
-
   const handleSelectCardCategory = (card: INftCardCategory) => {
-    setSelectedCards((prev) => ({category: card, dayMonth: prev.dayMonth, year: prev.year, crafting: prev.crafting}))
+    setSelectedCards((prev) => ({
+      category: card,
+      dayMonth: prev.dayMonth,
+      year: prev.year,
+      crafting: prev.crafting,
+    }));
     if (card.id) setSelectedCard(card.id);
   };
 
   const handleSelectCardCrafting = (card: INftCardCrafting) => {
-    setSelectedCards((prev) => ({...prev, crafting: card}))
+    setSelectedCards((prev) => ({ ...prev, crafting: card }));
     // if (card.id) setSelectedCard(card.id);
   };
 
   const handleSelectCardDayMonth = (card: INftCardDayMonth) => {
-    setSelectedCards((prev) => ({...prev, dayMonth: card}))
+    setSelectedCards((prev) => ({ ...prev, dayMonth: card }));
     if (card.id) setSelectedCard(card.id);
   };
 
   const handleSelectCardYear = (card: INftCardYear) => {
-    setSelectedCards((prev) => ({...prev, year: card}))
+    setSelectedCards((prev) => ({ ...prev, year: card }));
     if (card.id) setSelectedCard(card.id);
   };
 
@@ -99,22 +104,22 @@ export const CraftingIdentitesPage: React.FC = () => {
   const craftIdentity = async () => {
     if (selectedCards.dayMonth === null) {
       toast.error("Select a Day-Month card");
-      return
+      return;
     }
 
     if (selectedCards.year === null) {
       toast.error("Select a Year card");
-      return
+      return;
     }
 
     if (selectedCards.category === null) {
       toast.error("Select a Category card");
-      return
+      return;
     }
 
     if (selectedCards.crafting === null) {
       toast.error("Select a Crafting card");
-      return
+      return;
     }
 
     const newCraft = {
@@ -134,12 +139,14 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   const handleSelectCelebrity = (c: ICelebrity) => {
-    console.log(c)
     setSelectedCelebrity(c);
-  }
+  };
 
   return (
     <AppLayout noFooter>
+      <OpenPreview onClick={() => setIsOpen(true)}>
+        <IconArrowDown />
+      </OpenPreview>
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -152,7 +159,13 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      <CraftIdentityModal selectCelebrity={handleSelectCelebrity} open={confirm} onClose={() => setConfirm(false)} onCraft={craftIdentity} selectedCards={selectedCards} />
+      <CraftIdentityModal
+        selectCelebrity={handleSelectCelebrity}
+        open={confirm}
+        onClose={() => setConfirm(false)}
+        onCraft={craftIdentity}
+        selectedCards={selectedCards}
+      />
       <CraftingWrapper>
         {currentUser ? (
           <>
@@ -174,8 +187,18 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onSelectCardYear={handleSelectCardYear}
               />
             </CraftLeftWrapper>
-            <CraftRightWrapper>
-              <IdentityMatchListSection page="identity" selectedCards={selectedCards} chooseCelebrity={setSelectedCelebrity}/>
+            <CraftRightWrapper open={isOpen ? "true" : undefined}>
+              <CloseButton
+                className="close-button"
+                onClick={() => setIsOpen(false)}
+              >
+                &times;
+              </CloseButton>
+              <IdentityMatchListSection
+                page="identity"
+                selectedCards={selectedCards}
+                chooseCelebrity={setSelectedCelebrity}
+              />
               <CardPreviewSection
                 page="identity"
                 clickedCard={clickedCard}

@@ -31,6 +31,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AppHeaderMenuItemProps } from "../../types";
 import { Notification } from "./Notification";
 import { useMyInfoContext } from "../../context";
+import { MobileMenu } from "./MobileMenu";
 
 export const Header: React.FC = () => {
   const { myInfoContext } = useMyInfoContext();
@@ -43,25 +44,9 @@ export const Header: React.FC = () => {
   const [withdrawStatus, setWithdrawStatus] = useState<"success" | "failed">(
     "failed"
   );
+  const [isOpen, setIsOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState<AppHeaderMenuItemProps>();
-  const [currentUser, setCurrentUser] = useState<string | null>("");
-
-  const [data, setData] = useState<any>({
-    username: "Moulee",
-    balance: 0,
-  });
-
-  useEffect(() => {
-    if (myInfoContext)
-      setData((prev: any) => ({
-        username: myInfoContext?.username,
-        balance: myInfoContext?.balance ? myInfoContext?.balance : 0,
-      }));
-  }, [myInfoContext]);
-
-  useEffect(() => {
-    setCurrentUser(localStorage.getItem("auth"));
-  }, []);
+  // const [currentUser, setCurrentUser] = useState<string | null>("");
 
   useEffect(() => {
     setCurrentPath(
@@ -88,6 +73,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
+      <MobileMenu onClose={() => setIsOpen(false)} open={isOpen} />
       <HeaderWrapper>
         <MainHeaderWrapper>
           <MainHeaderContainer>
@@ -105,13 +91,13 @@ export const Header: React.FC = () => {
                   </HeaderNavItem>
                 ))}
             </HeaderMenuWrapper>
-            {currentUser ? (
+            {localStorage.getItem("auth") ? (
               <HeaderButtonGroup>
                 <HeaderButton width={124} onClick={handleWithdrawClick}>
                   <IconCoins />
                   <span>
                     $
-                    {data.balance.toLocaleString("en-US", {
+                    {myInfoContext?.balance.toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}
@@ -123,7 +109,7 @@ export const Header: React.FC = () => {
                   onClick={() => navigate("/profile/")}
                 >
                   <IconProfile />
-                  <span>{data.username}</span>
+                  <span>{myInfoContext?.username}</span>
                 </HeaderButton>
                 <NotificationButtonWrapper>
                   <HeaderButton onClick={() => setNotification(true)}>
@@ -147,7 +133,7 @@ export const Header: React.FC = () => {
                 </Button>
               </HeaderButtonGroup>
             )}
-            <MobileMenuButton>
+            <MobileMenuButton onClick={() => setIsOpen(true)}>
               <HeaderButton>
                 <IconMenu />
               </HeaderButton>

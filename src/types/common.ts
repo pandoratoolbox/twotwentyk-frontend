@@ -6,5 +6,6 @@ export type CardSidebarProps = {
   selectedItem?: any;
   onClose: () => void;
   page?: string;
+  onConfirm?: () => void;
   open: boolean;
 };

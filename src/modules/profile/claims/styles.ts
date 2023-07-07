@@ -16,9 +16,15 @@ export const ClaimsSectionWrapper = styled.div`
   }
 `;
 
+export const CliamsTableContainer = styled.div`
+  width: 100%;
+  overflow: auto;
+`;
+
 export const ClaimsTableWrapper = styled.table`
   border-collapse: collapse;
   width: 100%;
+  white-space: nowrap;
   tr:nth-child(even) {
     background: #f2f5ff;
   }

@@ -41,6 +41,7 @@ const CategoriesContext = createContext<any>([]);
 const CelebritiesContext = createContext<any>([]);
 const TriggersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
+const MyOfferContext = createContext<any>([]);
 
 export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
@@ -55,6 +56,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [myFeedContext, setMyFeedContext] = useState<IArticle[]>([]);
   const [myInfoContext, setMyInfoContext] = useState<IUser>();
   const [myNFTsContext, setMyNFTsContext] = useState<any>();
+  const [myOfferContext, setMyOfferContext] = useState<any>();
   const [categoriesContext, setCategoriesContext] =
     useState<Map<number, ICategory>>();
   const [triggersContext, setTriggersContext] =
@@ -62,7 +64,23 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [celebritiesContext, setCelebritiesContext] =
     useState<Map<number, ICelebrity>>();
   const [marketplaceListContext, setMarketplaceListContext] = useState<any>([]);
-  const [monthContext, setMonthContext] = useState<Map<number, string>>();
+
+  const [monthContext, setMonthContext] = useState<Map<number, string>>(
+    new Map<number, string>([
+      [1, "January"],
+      [2, "February"],
+      [3, "March"],
+      [4, "April"],
+      [5, "May"],
+      [6, "June"],
+      [7, "July"],
+      [8, "August"],
+      [9, "September"],
+      [10, "October"],
+      [11, "November"],
+      [12, "December"],
+    ])
+  );
   const [cardTypesContext, setCardTypesContext] =
     useState<Map<number, ICategory>>();
   const [marketCardTypesContext, setMarketCardTypesContext] =
@@ -130,6 +148,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     [myInfoContext]
   );
 
+  const myOfferValue = useMemo(
+    () => ({ myOfferContext, setMyOfferContext }),
+    [myOfferContext]
+  );
+
   const myNFTsValue = useMemo(
     () => ({ myNFTsContext, setMyNFTsContext }),
     [myNFTsContext]
@@ -157,45 +180,87 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       //       user: "",
       //     });
       //   } else {
+      // setAuthContext({
+      //   ...authContext,
+      //   isAuthenticated: true,
+      //   user: localStorage.getItem("auth"),
+      // });
+
+
+    } else {
+      //   if (!isPrivateUrl(location.pathname, false)) {
+      //     navigate("/");
+      //   }
+    }
+  };
+
+  const setCache = async () => {
+    let token = localStorage.getItem("auth")
+    if (token) {
       setAuthContext({
         ...authContext,
         isAuthenticated: true,
-        user: localStorage.getItem("auth"),
+        user: token,
       });
 
-      const myinfo = await getMyInfo(token);
+      const myinfo = await getMyInfo();
       if (myinfo.data) setMyInfoContext(myinfo.data);
-
+  
       const allFeedData = await getFeed();
       if (allFeedData.data) setFeedContext(allFeedData.data);
-
+  
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
+    } else {
+      setAuthContext({
+        ...authContext,
+        isAuthenticated: false,
+      })
+    }
 
-      const myNFTsData = await getMyNFTs(token);
-      if (myNFTsData.data) setMyNFTsContext(myNFTsData.data);
+    setCardTypesContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "Day/Month" }],
+        [2, { id: 2, name: "Year" }],
+      ])
+    );
+    setAllRaritiesContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "Free to Play" }],
+        [2, { id: 2, name: "Core" }],
+        [3, { id: 3, name: "Uncommon" }],
+        [4, { id: 4, name: "Rare" }],
+      ])
+    );
+    setStatusContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "For sale" }],
+        [2, { id: 2, name: "New for sale" }],
+      ])
+    );
 
-      const triggersData = await getTriggers();
-      if (triggersData.data) {
-        let triggers = new Map<number, ITrigger>();
-        triggersData.data.forEach((v) => {
-          if (v.id) {
-            triggers.set(v.id, v);
-          }
-        });
-        setTriggersContext(triggers);
-      }
+    
+    const triggersData = await getTriggers();
+    if (triggersData.data) {
+      let triggers = new Map<number, ITrigger>();
+      triggersData.data.forEach((v) => {
+        if (v.id) {
+          triggers.set(v.id, v);
+        }
+      });
+      setTriggersContext(triggers);
+    }
 
-      const celebritiesData = await getCelebrities();
-      if (celebritiesData.data) {
-        let celebrities = new Map<number, ICelebrity>();
-        celebritiesData.data.forEach((v) => {
-          if (v.id) {
-            celebrities.set(v.id, v);
-          }
-        });
-        setCelebritiesContext(celebrities);
-      }
+    const celebritiesData = await getCelebrities();
+    if (celebritiesData.data) {
+      let celebrities = new Map<number, ICelebrity>();
+      celebritiesData.data.forEach((v) => {
+        if (v.id) {
+          celebrities.set(v.id, v);
+        }
+      });
+      setCelebritiesContext(celebrities);
+    }
 
       const categoriesData = await getCategories();
       if (categoriesData.data) {
@@ -231,15 +296,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           [2, { id: 2, name: "Year" }],
         ])
       );
-      setMarketCardTypesContext(
-        new Map<number, ICategory>([
-          [1, { id: 1, name: "Day/Month" }],
-          [2, { id: 2, name: "Year" }],
-          [3, { id: 3, name: "Trigger" }],
-          [4, { id: 4, name: "Category" }],
-          [5, { id: 5, name: "Crafting" }],
-        ])
-      );
       setAllRaritiesContext(
         new Map<number, ICategory>([
           [1, { id: 1, name: "Free to Play" }],
@@ -254,6 +310,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
           [2, { id: 2, name: "New for sale" }],
         ])
       );
+
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
@@ -262,6 +319,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   };
 
   useEffect(() => {
+    setCache();
     setContext();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -280,27 +338,23 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         <TriggersContext.Provider value={triggersValue}>
           <CelebritiesContext.Provider value={celebritiesValue}>
             <MonthContext.Provider value={monthValue}>
-              <MarketCardTypesContext.Provider value={marketCardTypeValue}>
-                <CardTypesContext.Provider value={cardTypeValue}>
-                  <AllRaritiesContext.Provider value={allRaritiesValue}>
-                    <StatusContext.Provider value={statusValue}>
-                      <FeedContext.Provider value={feedValue}>
-                        <MyFeedContext.Provider value={myFeedValue}>
-                          <MyInfoContext.Provider value={myInfoValue}>
-                            <MyNFTsContext.Provider value={myNFTsValue}>
-                              <InventoryNftsContext.Provider
-                                value={inventoryNFTsValue}
-                              >
+              <CardTypesContext.Provider value={cardTypeValue}>
+                <AllRaritiesContext.Provider value={allRaritiesValue}>
+                  <StatusContext.Provider value={statusValue}>
+                    <FeedContext.Provider value={feedValue}>
+                      <MyFeedContext.Provider value={myFeedValue}>
+                        <MyInfoContext.Provider value={myInfoValue}>
+                          <MyNFTsContext.Provider value={myNFTsValue}>
+                            <InventoryNftsContext.Provider value={inventoryNFTsValue}>
                                 {children}
-                              </InventoryNftsContext.Provider>
-                            </MyNFTsContext.Provider>
-                          </MyInfoContext.Provider>
-                        </MyFeedContext.Provider>
-                      </FeedContext.Provider>
-                    </StatusContext.Provider>
-                  </AllRaritiesContext.Provider>
-                </CardTypesContext.Provider>
-              </MarketCardTypesContext.Provider>
+                            </InventoryNftsContext.Provider>
+                          </MyNFTsContext.Provider>
+                        </MyInfoContext.Provider>
+                      </MyFeedContext.Provider>
+                    </FeedContext.Provider>
+                  </StatusContext.Provider>
+                </AllRaritiesContext.Provider>
+              </CardTypesContext.Provider>
             </MonthContext.Provider>
           </CelebritiesContext.Provider>
         </TriggersContext.Provider>
@@ -359,4 +413,8 @@ export const useCelebritiesContext = () => {
 
 export const useCategoriesContext = () => {
   return useContext(CategoriesContext);
+};
+
+export const useMyOfferContext = () => {
+  return useContext(MyOfferContext);
 };
