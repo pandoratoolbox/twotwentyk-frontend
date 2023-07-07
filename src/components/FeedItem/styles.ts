@@ -33,7 +33,7 @@ export const FeedInfoWrapper = styled.div`
     font-size: 16px;
     line-height: 19px;
     margin-bottom: 3px;
-    width: 80%;
+    width: calc(100% - 120px);
     overflow: hidden;
     text-overflow: ellipsis;
     display: -webkit-box;

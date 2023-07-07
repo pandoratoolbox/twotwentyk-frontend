@@ -32,20 +32,41 @@ export const CraftingWrapper = styled.div`
       height: 51px;
     }
   }
+  @media screen and (max-width: 1024px) {
+    height: calc(100vh - 76px);
+  }
 `;
 
 export const CraftLeftWrapper = styled.div`
   flex: 1;
   position: relative;
   display: flex;
+  padding-right: 405px;
+  width: 100%;
   flex-direction: column;
+  @media screen and (max-width: 1024px) {
+    padding-right: 0;
+  }
 `;
 
-export const CraftRightWrapper = styled.div`
+export const CraftRightWrapper = styled.div<{ open?: string }>`
+  position: fixed;
   max-width: 405px;
   width: 100%;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
   background: #f9faff;
   display: flex;
   flex-direction: column;
+  right: 0;
+  height: calc(100% - 76px);
+  .close-button {
+    display: none;
+  }
+  @media screen and (max-width: 1024px) {
+    right: ${({ open }) => (open ? 0 : "-100%")};
+    z-index: 100;
+    .close-button {
+      display: flex;
+    }
+  }
 `;

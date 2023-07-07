@@ -40,131 +40,118 @@ export const IdentityCraftSection: React.FC<{
   onCraft: () => void;
   selectedCraft: string;
 }> = ({ onCraftChanged, selectedCraft, selectedCards, onCraft }) => {
-  
   const { monthContext } = useMonthContext();
 
   return (
     <CraftSectionWrapper>
       <TitleWrapper>
-        <h3>
-          Craft an Identity
-        </h3>
-          <Button
-            className="craft-button"
-            disabled={
-              !(
-                selectedCards.crafting != null &&
-                selectedCards.dayMonth != null &&
-                selectedCards.category != null &&
-                selectedCards.year != null
-              )
-            }
-            onClick={() => onCraft()}
-          >
-            Craft Identity
-          </Button>
+        <h3>Craft an Identity</h3>
+        <Button
+          className="craft-button"
+          disabled={
+            !(
+              selectedCards.crafting != null &&
+              selectedCards.dayMonth != null &&
+              selectedCards.category != null &&
+              selectedCards.year != null
+            )
+          }
+          onClick={() => onCraft()}
+        >
+          Craft Identity
+        </Button>
       </TitleWrapper>
 
       <p>
-        Identities are cards crafted by combining a Day-Month card, a Year card and a Category card. Select one card of each type to craft an Identity.
+        Identities are cards crafted by combining a Day-Month card, a Year card
+        and a Category card. Select one card of each type to craft an Identity.
       </p>
       <CraftCardGroup>
-            <CraftCardWrapper key="crafting">
-              <h6>Crafting</h6>
-              {selectedCards.crafting != null ? (
-                <CraftCard
-                onClick={() => onCraftChanged("crafting")}
-                  bg={
-                    "/assets/nfts/1.png"
-                  }
-                  className="crafting-card"
-                >
-                  {selectedCards.crafting.rarity === 0 && <span>Common</span>}
-                  {selectedCards.crafting.rarity === 1 && <span>Uncommon</span>}
-                  {selectedCards.crafting.rarity === 2 && <span>Rare</span>}
-                  <p>
-                  Crafting
-                  </p>
-                </CraftCard>
-              ) : (
-                <EmptyCraftCard
-                  active={selectedCraft === "crafting" ? "true" : undefined}
-                  onClick={() => onCraftChanged("crafting")}
-                />
-              )}
-            </CraftCardWrapper>
-            <CraftCardWrapper key="dayMonth">
-              <h6>Day/Month</h6>
-              {selectedCards.dayMonth != null ? (
-                <CraftCard
-                onClick={() => onCraftChanged("dayMonth")}
-                  bg={
-                    "/assets/nfts/1.png"
-                  }
-                  className="crafting-card"
-                >
-                  {selectedCards.dayMonth.rarity === 0 && <span>Common</span>}
-                  {selectedCards.dayMonth.rarity === 1 && <span>Uncommon</span>}
-                  {selectedCards.dayMonth.rarity === 2 && <span>Rare</span>}
-                  <p>
-                  {selectedCards.dayMonth.day} {(monthContext as Map<number, string>).get(selectedCards.dayMonth.month)}
-                  </p>
-                </CraftCard>
-              ) : (
-                <EmptyCraftCard
-                  active={selectedCraft === "dayMonth" ? "true" : undefined}
-                  onClick={() => onCraftChanged("dayMonth")}
-                />
-              )}
-            </CraftCardWrapper>
-            <CraftCardWrapper key="year">
-              <h6>Year</h6>
-              {selectedCards.year != null ? (
-                <CraftCard
-                onClick={() => onCraftChanged("year")}
-                  bg={
-                    "/assets/nfts/1.png"
-                  }
-                  className="crafting-card"
-                >
-                  {selectedCards.year.rarity === 0 && <span>Common</span>}
-                  {selectedCards.year.rarity === 1 && <span>Uncommon</span>}
-                  {selectedCards.year.rarity === 2 && <span>Rare</span>}
-                  <p>
-                  {selectedCards.year.year}
-                  </p>
-                </CraftCard>
-              ) : (
-                <EmptyCraftCard
-                  active={selectedCraft === "year" ? "true" : undefined}
-                  onClick={() => onCraftChanged("year")}
-                />
-              )}
-            </CraftCardWrapper>
-            <CraftCardWrapper key="category">
-              <h6>Category</h6>
-              {selectedCards.category != null ? (
-                <CraftCard
-                onClick={() => onCraftChanged("category")}
-                  bg={
-                    "/assets/nfts/1.png"
-                  }
-                  className="crafting-card"
-                >
-                  {selectedCards.category.rarity === 0 && <span>Common</span>}
-                  {selectedCards.category.rarity === 1 && <span>Uncommon</span>}
-                  {selectedCards.category.rarity === 2 && <span>Rare</span>}
-                  <p>
-                  {selectedCards.category.category}
-                  </p>
-                </CraftCard>
-              ) : (
-                <EmptyCraftCard
-                  active={selectedCraft === "category" ? "true" : undefined}
-                  onClick={() => onCraftChanged("category")}
-                />
-              )}
-            </CraftCardWrapper>
+        <CraftCardWrapper key="crafting">
+          <h6>Crafting</h6>
+          {selectedCards.crafting != null ? (
+            <CraftCard
+              onClick={() => onCraftChanged("crafting")}
+              bg={"/assets/nfts/1.png"}
+              className="crafting-card"
+            >
+              {selectedCards.crafting.rarity === 0 && <span>Common</span>}
+              {selectedCards.crafting.rarity === 1 && <span>Uncommon</span>}
+              {selectedCards.crafting.rarity === 2 && <span>Rare</span>}
+              <p>Crafting</p>
+            </CraftCard>
+          ) : (
+            <EmptyCraftCard
+              active={selectedCraft === "crafting" ? "true" : undefined}
+              onClick={() => onCraftChanged("crafting")}
+            />
+          )}
+        </CraftCardWrapper>
+        <CraftCardWrapper key="dayMonth">
+          <h6>Day/Month</h6>
+          {selectedCards.dayMonth != null ? (
+            <CraftCard
+              onClick={() => onCraftChanged("dayMonth")}
+              bg={"/assets/nfts/1.png"}
+              className="crafting-card"
+            >
+              {selectedCards.dayMonth.rarity === 0 && <span>Common</span>}
+              {selectedCards.dayMonth.rarity === 1 && <span>Uncommon</span>}
+              {selectedCards.dayMonth.rarity === 2 && <span>Rare</span>}
+              <p>
+                {selectedCards.dayMonth.day}{" "}
+                {(monthContext as Map<number, string>).get(
+                  selectedCards.dayMonth.month
+                )}
+              </p>
+            </CraftCard>
+          ) : (
+            <EmptyCraftCard
+              active={selectedCraft === "dayMonth" ? "true" : undefined}
+              onClick={() => onCraftChanged("dayMonth")}
+            />
+          )}
+        </CraftCardWrapper>
+        <CraftCardWrapper key="year">
+          <h6>Year</h6>
+          {selectedCards.year != null ? (
+            <CraftCard
+              onClick={() => onCraftChanged("year")}
+              bg={"/assets/nfts/1.png"}
+              className="crafting-card"
+            >
+              {selectedCards.year.rarity === 0 && <span>Common</span>}
+              {selectedCards.year.rarity === 1 && <span>Uncommon</span>}
+              {selectedCards.year.rarity === 2 && <span>Rare</span>}
+              <p>{selectedCards.year.year}</p>
+            </CraftCard>
+          ) : (
+            <EmptyCraftCard
+              active={selectedCraft === "year" ? "true" : undefined}
+              onClick={() => onCraftChanged("year")}
+            />
+          )}
+        </CraftCardWrapper>
+        <CraftCardWrapper key="category">
+          <h6>Category</h6>
+          {selectedCards.category != null ? (
+            <CraftCard
+              onClick={() => onCraftChanged("category")}
+              bg={"/assets/nfts/1.png"}
+              className="crafting-card"
+            >
+              {selectedCards.category.rarity === 0 && <span>Common</span>}
+              {selectedCards.category.rarity === 1 && <span>Uncommon</span>}
+              {selectedCards.category.rarity === 2 && <span>Rare</span>}
+              <p>{selectedCards.category.category}</p>
+            </CraftCard>
+          ) : (
+            <EmptyCraftCard
+              active={selectedCraft === "category" ? "true" : undefined}
+              onClick={() => onCraftChanged("category")}
+            />
+          )}
+        </CraftCardWrapper>
       </CraftCardGroup>
     </CraftSectionWrapper>
   );

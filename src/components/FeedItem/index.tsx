@@ -22,7 +22,7 @@ export const FeedItem: React.FC<IArticle> = ({
         <p>{excerpt}</p>
         <div>
           {tags?.map((item, key) => (
-            <span key={key}>{item}</span>
+            <span key={key}>#{item}</span>
           ))}
         </div>
       </FeedInfoWrapper>

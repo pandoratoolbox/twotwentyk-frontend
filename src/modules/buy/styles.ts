@@ -12,6 +12,11 @@ export const BuyPackWrapper = styled.div`
     font-size: 24px;
     line-height: 29px;
   }
+  @media screen and (max-width: 768px) {
+    & > h2 {
+      padding: 0 30px;
+    }
+  }
 `;
 
 export const BuyPackTextWrapper = styled.div`
@@ -29,6 +34,9 @@ export const BuyPackTextWrapper = styled.div`
     line-height: 125%;
     opacity: 0.5;
     margin-bottom: 24px;
+  }
+  @media screen and (max-width: 768px) {
+    padding: 0 30px;
   }
 `;
 
@@ -55,6 +63,15 @@ export const BuyPackSlider = styled.div`
   }
   .swiper-button-next {
     right: 0;
+  }
+  @media screen and (max-width: 768px) {
+    .mySwiper {
+      padding: 0 30px;
+    }
+    .swiper-button-prev,
+    .swiper-button-next {
+      width: 20px;
+    }
   }
 `;
 

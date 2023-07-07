@@ -64,6 +64,9 @@ export const SubHeaderWrapper = styled.div`
   width: 100%;
   background-color: #ffffff;
   opacity: 0.5;
+  @media screen and (max-width: 1024px) {
+    display: none;
+  }
 `;
 
 export const SubHeaderContainer = styled.div`
@@ -106,6 +109,9 @@ export const AppContainer = styled.div<{ issubmenu?: string }>`
   align-items: center;
   flex: 1;
   justify-content: center;
+  @media screen and (max-width: 1024px) {
+    padding-top: 76px;
+  }
 `;
 
 export const HeaderButtonGroup = styled.div`
@@ -231,4 +237,62 @@ export const NotificationsGroup = styled.div`
 export const NotificationButtonWrapper = styled.div`
   display: flex;
   position: relative;
+`;
+
+export const MobileMenuWrapper = styled.div<{ open?: string }>`
+  opacity: ${({ open }) => (open ? 1 : 0)};
+  right: ${({ open }) => (open ? "0" : "-100%")};
+  position: fixed;
+  top: 0;
+  height: 100vh;
+  overflow: auto;
+  max-width: 450px;
+  width: 100%;
+  background: #fff;
+  z-index: 1001;
+`;
+
+export const MobileMenuOverlay = styled.div<{ open?: string }>`
+  opacity: ${({ open }) => (open ? 1 : 0)};
+  visibility: ${({ open }) => (open ? "visible" : "hidden")};
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 1000;
+  background: #00000080;
+  backdrop-filter: blur(5px);
+`;
+
+export const MobileMenuContainer = styled.div`
+  padding: 20px 30px;
+`;
+
+export const MobileMenuNavbar = styled.div`
+  margin-top: 20px;
+`;
+
+export const MobileMenuItem = styled.div<{ active?: string }>`
+  cursor: pointer;
+  padding: 15px;
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #00000030;
+  font-size: 16px;
+  font-weight: ${({ active }) => (active ? "700" : "300")};
+  /* background: ${({ active }) => (active ? "#00000005" : "transparent")}; */
+`;
+
+export const MobileSubMenuWrapper = styled.div`
+  padding-left: 20px;
+`;
+
+export const MobileSubmenuItem = styled.div<{ active?: string }>`
+  padding: 10px;
+  font-weight: ${({ active }) => (active ? "700" : "300")};
+  /* background: ${({ active }) => (active ? "#00000005" : "transparent")}; */
+  border-bottom: 1px solid #00000030;
+  cursor: pointer;
 `;

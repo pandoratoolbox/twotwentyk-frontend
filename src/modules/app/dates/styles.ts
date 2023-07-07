@@ -40,6 +40,7 @@ export const SortButton = styled.div`
   justify-content: center;
   /* width: 51px; */
   max-width: 40px;
+  min-width: 40px !important;
   width: 100%;
   height: 40px;
   background: #e2e4ec;
@@ -136,7 +137,7 @@ export const CardGridWrapper = styled.div`
 export const ViewDateCardWrapper = styled.div<{ isview?: string }>`
   max-width: 405px;
   width: 100%;
-  z-index: 1;
+  z-index: 100;
   height: calc(100% - 125px);
   background-color: #fff;
   position: fixed;
@@ -153,6 +154,10 @@ export const ViewDateCardWrapper = styled.div<{ isview?: string }>`
   display: flex;
   align-items: center;
   flex-direction: column;
+  @media screen and (max-width: 1024px) {
+    top: 76px;
+    height: calc(100% - 76px);
+  }
 `;
 
 export const PreviewCardWrapper = styled.div`

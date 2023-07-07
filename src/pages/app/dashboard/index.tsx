@@ -162,6 +162,7 @@ export const DashboardPage: React.FC = () => {
           {identityNfts?.length > 0 && currentUser && monthContext ? (
             <React.Fragment>
               <DashboardCardGrid>
+                {/* {identityNfts */}
                 {identityNfts
                   ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (

@@ -31,6 +31,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { AppHeaderMenuItemProps } from "../../types";
 import { Notification } from "./Notification";
 import { useMyInfoContext } from "../../context";
+import { MobileMenu } from "./MobileMenu";
 
 export const Header: React.FC = () => {
   const { myInfoContext } = useMyInfoContext();
@@ -43,13 +44,9 @@ export const Header: React.FC = () => {
   const [withdrawStatus, setWithdrawStatus] = useState<"success" | "failed">(
     "failed"
   );
+  const [isOpen, setIsOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState<AppHeaderMenuItemProps>();
   // const [currentUser, setCurrentUser] = useState<string | null>("");
-
-  const [data, setData] = useState<any>({
-    username: "...",
-    balance: 0,
-  });
 
   useEffect(() => {
     setCurrentPath(
@@ -76,6 +73,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
+      <MobileMenu onClose={() => setIsOpen(false)} open={isOpen} />
       <HeaderWrapper>
         <MainHeaderWrapper>
           <MainHeaderContainer>
@@ -135,7 +133,7 @@ export const Header: React.FC = () => {
                 </Button>
               </HeaderButtonGroup>
             )}
-            <MobileMenuButton>
+            <MobileMenuButton onClick={() => setIsOpen(true)}>
               <HeaderButton>
                 <IconMenu />
               </HeaderButton>
