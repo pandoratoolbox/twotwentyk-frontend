@@ -25,26 +25,28 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
   onClose,
 }) => {
   const { monthContext } = useMonthContext();
-  const { triggersContext } = useTriggersContext()
+  const { triggersContext } = useTriggersContext();
 
-  const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(null)
+  const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(
+    null
+  );
   useEffect(() => {
     if (cardType === "prediction") {
-      let filtered: ITrigger[] = []
+      let filtered: ITrigger[] = [];
       if (triggersContext) {
         (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
           if (item.triggers) {
             if (item.triggers.includes(v.name)) {
-              filtered.push(v)
+              filtered.push(v);
             }
           }
-        })
+        });
         if (filtered.length !== 0) {
-          setFilteredTriggers(filtered)
+          setFilteredTriggers(filtered);
         }
       }
     }
-  }, [triggersContext, item])
+  }, [triggersContext, item]);
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -151,7 +153,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               </PropertyItem>
             ) : cardType === "date" ? (
               <PropertyItem>
-                <p>Type</p>
+                <p>{item?.day ? "Day/Month" : "Year"}</p>
                 <span>
                   {item?.day
                     ? `${item?.day} ${

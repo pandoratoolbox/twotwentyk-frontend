@@ -21,8 +21,9 @@ import {
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
+import { ITrigger } from "../../../models/trigger";
 
-import { useMonthContext } from "../../../context";
+import { useMonthContext, useTriggersContext } from "../../../context";
 
 const addMarketPlaceFee = (priceValue: string) => {
   const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
@@ -39,6 +40,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   onSellConfirm,
 }) => {
   const { monthContext } = useMonthContext();
+  const { triggersContext } = useTriggersContext();
 
   // console.log(item);
   const [priceValue, setPriceValue] = useState<string>("$1,000");
@@ -78,6 +80,27 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
       }
     }
   }, [item]);
+
+  const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(
+    null
+  );
+  useEffect(() => {
+    if (cardType === "prediction") {
+      let filtered: ITrigger[] = [];
+      if (triggersContext) {
+        (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
+          if (item.triggers) {
+            if (item.triggers.includes(v.name)) {
+              filtered.push(v);
+            }
+          }
+        });
+        if (filtered.length !== 0) {
+          setFilteredTriggers(filtered);
+        }
+      }
+    }
+  }, [triggersContext, item]);
 
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
@@ -157,7 +180,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               </span>
             </PropertyItem>
 
-            { cardType === "identity" ? (
+            {cardType === "identity" ? (
               <PropertyItem>
                 <p>Day/Month</p>
                 <span>{`${item?.day} ${
@@ -183,7 +206,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               </PropertyItem>
             ) : cardType === "date" ? (
               <PropertyItem>
-                <p>Type</p>
+                <p>{item?.day ? "Day/Month" : "Year"}</p>
                 <span>
                   {item?.day
                     ? `${item?.day} ${
@@ -224,17 +247,17 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 </span>
               </PropertyItem>
             )}
-            {cardType === "prediction" && item?.triggers && (
+            {cardType === "prediction" && filteredTriggers && (
               <>
                 <PropertiesHeader noborder={"true"}>
                   <span>Triggers</span>
-                  <span>{item?.triggers?.length}</span>
+                  <span>{filteredTriggers?.length}</span>
                 </PropertiesHeader>
-                {item?.triggers.map((item: string, key: number) => (
+                {filteredTriggers.map((item: ITrigger, key: number) => (
                   <PropertyItem key={key} nfttrigger={"true"}>
-                    <p>Marriage</p>
+                    <p>{item.tier}</p>
 
-                    <span>{item}</span>
+                    <span>{item.name}</span>
                   </PropertyItem>
                 ))}
               </>
