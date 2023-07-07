@@ -119,21 +119,27 @@ export const DashboardPage: React.FC = () => {
     setIsView("sell");
   };
 
-  const loadNfts = async () => {
-    setIsLoadingPrediction(true);
+  const loadIdentities = async () => {
     setIsLoadingIdentity(true);
+    let p_resp = await getMyNftCardIdentity();
+    if (p_resp?.data) {
+      setIdentityNfts(p_resp.data);
+    }
+    setIsLoadingIdentity(false);
+  }
 
-    const p_resp = await getMyNftCardPrediction();
+  const loadPredictions = async () => {
+    setIsLoadingPrediction(true);
+    let p_resp = await getMyNftCardPrediction();
     if (p_resp?.data) {
       setPredictionNfts(p_resp.data);
-      setIsLoadingPrediction(false);
     }
+    setIsLoadingPrediction(false);
+  }
 
-    const i_resp = await getMyNftCardIdentity();
-    if (i_resp?.data) {
-      setIdentityNfts(i_resp.data);
-      setIsLoadingIdentity(false);
-    }
+  const loadNfts = async () => {
+    loadIdentities();
+    loadPredictions();
   };
 
   useEffect(() => {
