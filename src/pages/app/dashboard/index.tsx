@@ -53,8 +53,8 @@ export const DashboardPage: React.FC = () => {
   const [cardType, setCardType] = useState("");
 
   const [modal, setModal] = useState(false);
-  const [isLoadingPrediction, setIsLoadingPrediction] = useState(true);
-  const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
+  const [isLoadingPrediction, setIsLoadingPrediction] = useState(false);
+  const [isLoadingIdentity, setIsLoadingIdentity] = useState(false);
 
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
@@ -143,7 +143,7 @@ export const DashboardPage: React.FC = () => {
   };
 
   useEffect(() => {
-    loadNfts();
+    if (localStorage.getItem("auth")) loadNfts();
   }, []);
 
   return (

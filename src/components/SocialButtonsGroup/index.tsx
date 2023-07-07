@@ -15,7 +15,11 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
     useSocialAuth();
 
   const handleAppleAuth = (res: any) => {
-    console.log(res);
+    // POST /auth/social { platform: "apple", token: "token" }
+    // if (resp.data.token) {
+    //   localStorage.setItem("auth", resp.data.token)
+    // }
+    // console.log(res);
   };
 
   const handleGoogleAuth = (res: any) => {
@@ -28,7 +32,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
         clientId="620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com" // need to change
         buttonText="Login"
         onSuccess={(res) => handleGoogleAuth(res)}
-        // onFailure={(res) => onGoogleAuthClicked(res, authType)}
+        onFailure={(res) => handleGoogleAuth(res)}
         render={(renderProps) => (
           <SocialAuthButton
             authType={authType}

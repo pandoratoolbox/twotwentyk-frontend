@@ -194,21 +194,21 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         isAuthenticated: true,
         user: token,
       });
+
+      const myinfo = await getMyInfo();
+      if (myinfo.data) setMyInfoContext(myinfo.data);
+  
+      const allFeedData = await getFeed();
+      if (allFeedData.data) setFeedContext(allFeedData.data);
+  
+      const myFeedData = await getPersonalizedFeed();
+      if (myFeedData.data) setMyFeedContext(myFeedData.data);
     } else {
       setAuthContext({
         ...authContext,
         isAuthenticated: false,
       })
     }
-
-    const myinfo = await getMyInfo();
-    if (myinfo.data) setMyInfoContext(myinfo.data);
-
-    const allFeedData = await getFeed();
-    if (allFeedData.data) setFeedContext(allFeedData.data);
-
-    const myFeedData = await getPersonalizedFeed();
-    if (myFeedData.data) setMyFeedContext(myFeedData.data);
 
     setCardTypesContext(
       new Map<number, ICategory>([

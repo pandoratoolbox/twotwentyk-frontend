@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ViewDateCardProps } from "../../../types";
 import {
   CloseButton,
@@ -13,7 +13,10 @@ import {
 import { DateCard, IconArrowDown, PredictionCard } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
-import { useMonthContext } from "../../../context";
+import { useMonthContext, useTriggersContext } from "../../../context";
+import { ITrigger } from "../../../models/trigger";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
 
 export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
   item,
@@ -22,6 +25,26 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
   onClose,
 }) => {
   const { monthContext } = useMonthContext();
+  const { triggersContext } = useTriggersContext()
+
+  const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(null)
+  useEffect(() => {
+    if (cardType === "prediction") {
+      let filtered: ITrigger[] = []
+      if (triggersContext) {
+        (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
+          if (item.triggers) {
+            if (item.triggers.includes(v.name)) {
+              filtered.push(v)
+            }
+          }
+        })
+        if (filtered.length !== 0) {
+          setFilteredTriggers(filtered)
+        }
+      }
+    }
+  }, [triggersContext, item])
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -165,17 +188,17 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   : ""}
               </span>
             </PropertyItem>
-            {cardType === "prediction" && item?.triggers && (
+            {cardType === "prediction" && filteredTriggers && (
               <>
                 <PropertiesHeader noborder={"true"}>
                   <span>Triggers</span>
-                  <span>{item?.triggers?.length}</span>
+                  <span>{filteredTriggers.length}</span>
                 </PropertiesHeader>
-                {item?.triggers.map((item: string, key: number) => (
+                {filteredTriggers.map((item: ITrigger, key: number) => (
                   <PropertyItem key={key} nfttrigger={"true"}>
-                    <p>Marriage</p>
+                    <p>{item.tier}</p>
 
-                    <span>{item}</span>
+                    <span>{item.name}</span>
                   </PropertyItem>
                 ))}
               </>
