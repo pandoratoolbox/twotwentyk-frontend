@@ -54,7 +54,7 @@ export const MarketplacePage: React.FC = () => {
       {nftMarketplaceData && nftMarketplaceData?.length > 0 ? (
         <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
-            <h2>Dates</h2>
+            <h2>Cards</h2>
             <MFilterSection />
             <MCardGridSection
               data={nftMarketplaceData}

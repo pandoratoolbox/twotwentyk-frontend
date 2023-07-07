@@ -5,6 +5,7 @@ import { SortButton } from "../app/dates/styles";
 import { collectionOption } from "./data";
 
 import {
+  useMarketCardTypesContext,
   useCardTypesContext,
   useAllRaritiesContext,
   useStatusContext,
@@ -12,6 +13,7 @@ import {
 } from "../../context";
 
 export const MFilterSection: React.FC<{ page?: string }> = ({ page }) => {
+  const { marketCardTypesContext } = useMarketCardTypesContext();
   const { cardTypesContext } = useCardTypesContext();
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
@@ -26,7 +28,7 @@ export const MFilterSection: React.FC<{ page?: string }> = ({ page }) => {
           <>
             <SelectBox
               isFilter
-              newData={cardTypesContext}
+              newData={marketCardTypesContext}
               placeholder="Card Types"
             />
             <SelectBox options={collectionOption} placeholder="Collections" />

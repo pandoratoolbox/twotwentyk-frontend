@@ -16,12 +16,7 @@ export const MCardGridSection: React.FC<{
     <CardGridWrapper>
       {!page &&
         data?.map((item, key) => (
-          <MarketCard
-            key={key}
-            item={item}
-            {...item}
-            onCard={onCardClick}
-          />
+          <MarketCard key={key} item={item} {...item} onCard={onCardClick} />
         ))}
       {page === "packs" &&
         data?.map((item, key) => (
@@ -37,6 +32,7 @@ export const MCardGridSection: React.FC<{
         data?.map((item, key) => {
           return (
             <PredictionCard
+              cardType={"identity"}
               isNotHover={true}
               item={item}
               key={key}
@@ -49,6 +45,7 @@ export const MCardGridSection: React.FC<{
         data?.map((item, key) => {
           return (
             <PredictionCard
+              cardType={"prediction"}
               isNotHover={true}
               key={key}
               item={item}
