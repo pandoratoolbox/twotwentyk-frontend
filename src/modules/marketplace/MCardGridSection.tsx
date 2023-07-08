@@ -32,6 +32,7 @@ export const MCardGridSection: React.FC<{
         data?.map((item, key) => {
           return (
             <PredictionCard
+              cardType={"identity"}
               isNotHover={true}
               item={item}
               key={key}
@@ -44,6 +45,7 @@ export const MCardGridSection: React.FC<{
         data?.map((item, key) => {
           return (
             <PredictionCard
+              cardType={"prediction"}
               isNotHover={true}
               key={key}
               item={item}

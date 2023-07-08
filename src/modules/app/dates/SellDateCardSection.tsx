@@ -21,8 +21,9 @@ import {
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
+import { ITrigger } from "../../../models/trigger";
 
-import { useMonthContext } from "../../../context";
+import { useMonthContext, useTriggersContext } from "../../../context";
 
 const addMarketPlaceFee = (priceValue: string) => {
   const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
@@ -39,6 +40,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   onSellConfirm,
 }) => {
   const { monthContext } = useMonthContext();
+  const { triggersContext } = useTriggersContext();
 
   // console.log(item);
   const [priceValue, setPriceValue] = useState<string>("$1,000");
@@ -78,6 +80,29 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
       }
     }
   }, [item]);
+
+  const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(
+    null
+  );
+  useEffect(() => {
+    if (cardType === "prediction") {
+      let filtered: ITrigger[] = [];
+      if (triggersContext) {
+        (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
+          if (item) {
+            if (item.triggers) {
+              if (item.triggers.includes(v.name)) {
+                filtered.push(v);
+              }
+            }
+          }
+        });
+        if (filtered.length !== 0) {
+          setFilteredTriggers(filtered);
+        }
+      }
+    }
+  }, [triggersContext, item]);
 
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
@@ -142,12 +167,12 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             <IconArrowDown />
           </PropertiesHeader>
           <PropertiesContent>
-            {cardType === "identity" && (
+            {cardType === "identity" || cardType === "prediction" ? (
               <PropertyItem>
-                <p>Identity Match</p>
-                <span>Tom Brady</span>
+                <p>Celebrity</p>
+                <span>{item?.celebrity_name}</span>
               </PropertyItem>
-            )}
+            ) : null}
             <PropertyItem>
               <p>Rarity</p>
               <span>
@@ -157,96 +182,84 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               </span>
             </PropertyItem>
 
-            <PropertyItem>
-              <p>
-                {cardType === "trigger"
-                  ? "Category"
-                  : cardType === "identity" || cardType === "prediction"
-                  ? "Day/Month"
-                  : "Type"}
-              </p>
-              <span>
-                {cardType === "date"
-                  ? item?.day
-                    ? "Day/Month"
-                    : "Year"
-                  : cardType === "category"
-                  ? "Category"
-                  : cardType === "trigger"
-                  ? item?.category
-                  : cardType === "identity" || cardType === "prediction"
-                  ? item?.day
-                    ? `${item?.day}/${item?.month}`
-                    : null
-                  : ""}
-              </span>
-            </PropertyItem>
-            <PropertyItem>
-              <p>
-                {cardType === "trigger"
-                  ? "Trigger Type"
-                  : cardType === "date"
-                  ? item?.day
-                    ? "Day/Month"
-                    : "Year"
-                  : cardType === "category"
-                  ? "Category"
-                  : cardType === "identity" || cardType === "prediction"
-                  ? "Year"
-                  : ""}
-              </p>
-              <span>
-                {cardType === "date"
-                  ? item?.day
+            {cardType === "identity" ? (
+              <PropertyItem>
+                <p>Day/Month</p>
+                <span>{`${item?.day} ${
+                  monthContext &&
+                  (monthContext as Map<number, string>).get(item?.month)
+                }`}</span>
+              </PropertyItem>
+            ) : cardType === "date" ? (
+              <PropertyItem>
+                <p>Type</p>
+                <span>{item?.day ? "Day/Month" : "Year"}</span>
+              </PropertyItem>
+            ) : null}
+            {cardType === "trigger" ? (
+              <PropertyItem>
+                <p>Tire</p>
+                <span>{item?.tier}</span>
+              </PropertyItem>
+            ) : cardType === "identity" ? (
+              <PropertyItem>
+                <p>Year</p>
+                <span>{item?.year}</span>
+              </PropertyItem>
+            ) : cardType === "date" ? (
+              <PropertyItem>
+                <p>{item?.day ? "Day/Month" : "Year"}</p>
+                <span>
+                  {item?.day
                     ? `${item?.day} ${
                         monthContext &&
                         (monthContext as Map<number, string>).get(item?.month)
                       }`
-                    : item?.year
-                  : cardType === "category"
-                  ? item?.category
-                  : cardType === "trigger"
-                  ? item?.tier
-                  : cardType === "identity" || cardType === "prediction"
-                  ? item?.year
-                    ? item?.year
-                    : null
-                  : ""}
-              </span>
-            </PropertyItem>
+                    : item?.year}
+                </span>
+              </PropertyItem>
+            ) : cardType === "category" ? (
+              <PropertyItem>
+                <p>Category</p>
+                <span>{item?.category}</span>
+              </PropertyItem>
+            ) : null}
+
             <PropertyItem>
               <p>
                 {cardType === "trigger"
                   ? "Trigger"
-                  : cardType === "identity" || cardType === "prediction"
+                  : cardType === "identity"
                   ? "Category"
-                  : "Collection"}
+                  : null}
               </p>
               <span>
                 {cardType === "trigger"
                   ? item?.trigger
-                  : cardType === "identity" || cardType === "prediction"
+                  : cardType === "identity"
                   ? item?.category
-                  : ""}
+                  : null}
               </span>
             </PropertyItem>
             {cardType === "identity" && (
               <PropertyItem>
                 <p>Collection</p>
-                <span>Sports Series</span>
+                <span>
+                  {item?.card_series_id ? item?.card_series_id : "N/A"}
+                </span>
               </PropertyItem>
             )}
-            {cardType === "prediction" && item?.triggers && (
+            {cardType === "prediction" && filteredTriggers && (
               <>
                 <PropertiesHeader noborder={"true"}>
                   <span>Triggers</span>
-                  <span>{item?.triggers?.length}</span>
+                  <span>{filteredTriggers?.length}</span>
                 </PropertiesHeader>
-                {item?.triggers.map((item: string, key: number) => (
+                {filteredTriggers.map((item: ITrigger, key: number) => (
                   <PropertyItem key={key} nfttrigger={"true"}>
-                    <p>Marriage</p>
+                    <p>{item.tier}</p>
 
-                    <span>{item}</span>
+                    <span>{item.name}</span>
                   </PropertyItem>
                 ))}
               </>

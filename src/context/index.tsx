@@ -33,6 +33,7 @@ const MyInfoContext = createContext<any>(null);
 const MyNFTsContext = createContext<any>(null);
 const MarketplaceListContext = createContext<any>([]);
 const MonthContext = createContext<any>([]);
+const MarketCardTypesContext = createContext<any>([]);
 const CardTypesContext = createContext<any>([]);
 const AllRaritiesContext = createContext<any>([]);
 const StatusContext = createContext<any>([]);
@@ -82,6 +83,8 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   );
   const [cardTypesContext, setCardTypesContext] =
     useState<Map<number, ICategory>>();
+  const [marketCardTypesContext, setMarketCardTypesContext] =
+    useState<Map<number, ICategory>>();
   const [allRaritiesContext, setAllRaritiesContext] =
     useState<Map<number, ICategory>>();
   const [statusContext, setStatusContext] = useState<Map<number, ICategory>>();
@@ -105,6 +108,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const monthValue = useMemo(
     () => ({ monthContext, setMonthContext }),
     [monthContext]
+  );
+
+  const marketCardTypeValue = useMemo(
+    () => ({ marketCardTypesContext, setMarketCardTypesContext }),
+    [marketCardTypesContext]
   );
 
   const cardTypeValue = useMemo(
@@ -177,8 +185,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       //   isAuthenticated: true,
       //   user: localStorage.getItem("auth"),
       // });
-
-
     } else {
       //   if (!isPrivateUrl(location.pathname, false)) {
       //     navigate("/");
@@ -187,28 +193,38 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   };
 
   const setCache = async () => {
-    let token = localStorage.getItem("auth")
+    let token = localStorage.getItem("auth");
     if (token) {
       setAuthContext({
         ...authContext,
         isAuthenticated: true,
         user: token,
       });
+
+      const myinfo = await getMyInfo();
+      if (myinfo.data) setMyInfoContext(myinfo.data);
+
+      const allFeedData = await getFeed();
+      if (allFeedData.data) setFeedContext(allFeedData.data);
+
+      const myFeedData = await getPersonalizedFeed();
+      if (myFeedData.data) setMyFeedContext(myFeedData.data);
     } else {
       setAuthContext({
         ...authContext,
         isAuthenticated: false,
-      })
+      });
     }
 
-    const myinfo = await getMyInfo();
-    if (myinfo.data) setMyInfoContext(myinfo.data);
-
-    const allFeedData = await getFeed();
-    if (allFeedData.data) setFeedContext(allFeedData.data);
-
-    const myFeedData = await getPersonalizedFeed();
-    if (myFeedData.data) setMyFeedContext(myFeedData.data);
+    setMarketCardTypesContext(
+      new Map<number, ICategory>([
+        [1, { id: 1, name: "Day/Month" }],
+        [2, { id: 2, name: "Year" }],
+        [3, { id: 3, name: "Trigger" }],
+        [4, { id: 4, name: "Category" }],
+        [5, { id: 5, name: "Crafting" }],
+      ])
+    );
 
     setCardTypesContext(
       new Map<number, ICategory>([
@@ -231,7 +247,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       ])
     );
 
-    
     const triggersData = await getTriggers();
     if (triggersData.data) {
       let triggers = new Map<number, ITrigger>();
@@ -286,31 +301,33 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         <CategoriesContext.Provider value={categoriesValue}>
           <TriggersContext.Provider value={triggersValue}>
             <CelebritiesContext.Provider value={celebritiesValue}>
-              <CardTypesContext.Provider value={cardTypeValue}>
-                <AllRaritiesContext.Provider value={allRaritiesValue}>
-                  <StatusContext.Provider value={statusValue}>
-                    <FeedContext.Provider value={feedValue}>
-                      <MyFeedContext.Provider value={myFeedValue}>
-                        <MyInfoContext.Provider value={myInfoValue}>
-                          <MyNFTsContext.Provider value={myNFTsValue}>
-                            <InventoryNftsContext.Provider
-                              value={inventoryNFTsValue}
-                            >
-                              <MarketplaceListContext.Provider
-                                value={marketplaceListValue}
+              <MarketCardTypesContext.Provider value={marketCardTypeValue}>
+                <CardTypesContext.Provider value={cardTypeValue}>
+                  <AllRaritiesContext.Provider value={allRaritiesValue}>
+                    <StatusContext.Provider value={statusValue}>
+                      <FeedContext.Provider value={feedValue}>
+                        <MyFeedContext.Provider value={myFeedValue}>
+                          <MyInfoContext.Provider value={myInfoValue}>
+                            <MyNFTsContext.Provider value={myNFTsValue}>
+                              <InventoryNftsContext.Provider
+                                value={inventoryNFTsValue}
                               >
-                                <MyOfferContext.Provider value={myOfferValue}>
-                                  {children}
-                                </MyOfferContext.Provider>
-                              </MarketplaceListContext.Provider>
-                            </InventoryNftsContext.Provider>
-                          </MyNFTsContext.Provider>
-                        </MyInfoContext.Provider>
-                      </MyFeedContext.Provider>
-                    </FeedContext.Provider>
-                  </StatusContext.Provider>
-                </AllRaritiesContext.Provider>
-              </CardTypesContext.Provider>
+                                <MarketplaceListContext.Provider
+                                  value={marketplaceListValue}
+                                >
+                                  <MyOfferContext.Provider value={myOfferValue}>
+                                    {children}
+                                  </MyOfferContext.Provider>
+                                </MarketplaceListContext.Provider>
+                              </InventoryNftsContext.Provider>
+                            </MyNFTsContext.Provider>
+                          </MyInfoContext.Provider>
+                        </MyFeedContext.Provider>
+                      </FeedContext.Provider>
+                    </StatusContext.Provider>
+                  </AllRaritiesContext.Provider>
+                </CardTypesContext.Provider>
+              </MarketCardTypesContext.Provider>
             </CelebritiesContext.Provider>
           </TriggersContext.Provider>
         </CategoriesContext.Provider>
@@ -346,7 +363,9 @@ export const useInventoryNFTsContext = () => {
 export const useMonthContext = () => {
   return useContext(MonthContext);
 };
-
+export const useMarketCardTypesContext = () => {
+  return useContext(MarketCardTypesContext);
+};
 export const useCardTypesContext = () => {
   return useContext(CardTypesContext);
 };
