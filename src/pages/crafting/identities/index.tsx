@@ -25,7 +25,7 @@ export const CraftingIdentitesPage: React.FC = () => {
   const params = new URLSearchParams(location.search);
   const { setMyNFTsContext } = useMyNFTsContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
-  const [selectedCraft, setSelectedCraft] = useState("crafting");
+  const [selectedCraft, setSelectedCraft] = useState("dayMonth");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
   const [selectedCard, setSelectedCard] = useState<number | string | null>(-1);
   const [selectedCards, setSelectedCards] = useState<{
