@@ -126,7 +126,7 @@ export const DashboardPage: React.FC = () => {
       setIdentityNfts(p_resp.data);
     }
     setIsLoadingIdentity(false);
-  }
+  };
 
   const loadPredictions = async () => {
     setIsLoadingPrediction(true);
@@ -135,7 +135,7 @@ export const DashboardPage: React.FC = () => {
       setPredictionNfts(p_resp.data);
     }
     setIsLoadingPrediction(false);
-  }
+  };
 
   const loadNfts = async () => {
     loadIdentities();
@@ -231,32 +231,49 @@ export const DashboardPage: React.FC = () => {
             <Loader />
           )}
         </DashboardCardWrapper>
-        {myOfferContext?.length > 0 && (
-          <DashboardCardWrapper>
-            <CardTitle>My Offers</CardTitle>
-            {/* */}
-            <React.Fragment>
-              <DashboardCardGrid>
-                {myOfferContext
-                  ?.filter((f: any) => f.status === 0)
-                  .slice(0, 4) //////////////////// Have to add some filter by collection id
-                  .map((item: any, key: number) => (
-                    <MarketCard
-                      // {...cardData[key]}
-                      key={key}
-                      {...item}
-                      onCard={() =>
-                        navigate("/dashboard/myoffer?id=" + item.nft_id)
-                      }
-                    />
-                  ))}
-              </DashboardCardGrid>
-              <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
-                See More
-              </SeeMoreButton>
-            </React.Fragment>
-          </DashboardCardWrapper>
-        )}
+        {currentUser &&
+          (myOfferContext?.length > 0 ? (
+            <DashboardCardWrapper>
+              <CardTitle>My Offers</CardTitle>
+              {/* */}
+              <React.Fragment>
+                <DashboardCardGrid>
+                  {myOfferContext
+                    ?.filter((f: any) => f.status === 0)
+                    .slice(0, 4) //////////////////// Have to add some filter by collection id
+                    .map((item: any, key: number) => (
+                      <MarketCard
+                        // {...cardData[key]}
+                        key={key}
+                        {...item}
+                        onCard={() =>
+                          navigate("/dashboard/myoffer?id=" + item.nft_id)
+                        }
+                      />
+                    ))}
+                </DashboardCardGrid>
+                <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
+                  See More
+                </SeeMoreButton>
+              </React.Fragment>
+            </DashboardCardWrapper>
+          ) : (
+            <DashboardCardWrapper>
+              <CardTitle>My Offers</CardTitle>
+              <EmptyCardWrapper>
+                <p>There is no card to offer</p>
+                <img src="/assets/prediction-empty.png" alt="" />
+                {currentUser && (
+                  <Button
+                    className="dashboard-card-button"
+                    onClick={() => navigate("/marketplace")}
+                  >
+                    Go to Marketplace
+                  </Button>
+                )}
+              </EmptyCardWrapper>
+            </DashboardCardWrapper>
+          ))}
         <DashboardCardWrapper>
           <CardTitle>My Predictions</CardTitle>
           {predictionNfts.length > 0 && currentUser ? (
