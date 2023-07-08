@@ -31,18 +31,22 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
     null
   );
   useEffect(() => {
-    if (cardType === "prediction") {
-      let filtered: ITrigger[] = [];
-      if (triggersContext) {
-        (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
-          if (item.triggers) {
-            if (item.triggers.includes(v.name)) {
-              filtered.push(v);
+    if (item) {
+      if (cardType === "prediction") {
+        let filtered: ITrigger[] = [];
+        if (triggersContext) {
+          (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
+            if (item) {
+              if (item.triggers) {
+                if (item.triggers.includes(v.name)) {
+                  filtered.push(v);
+                }
+              }
             }
+          });
+          if (filtered.length !== 0) {
+            setFilteredTriggers(filtered);
           }
-        });
-        if (filtered.length !== 0) {
-          setFilteredTriggers(filtered);
         }
       }
     }

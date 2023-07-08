@@ -89,9 +89,11 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
       let filtered: ITrigger[] = [];
       if (triggersContext) {
         (triggersContext as Map<number, ITrigger>).forEach((v: ITrigger) => {
-          if (item.triggers) {
-            if (item.triggers.includes(v.name)) {
-              filtered.push(v);
+          if (item) {
+            if (item.triggers) {
+              if (item.triggers.includes(v.name)) {
+                filtered.push(v);
+              }
             }
           }
         });
