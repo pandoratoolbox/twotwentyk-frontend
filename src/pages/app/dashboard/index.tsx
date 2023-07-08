@@ -308,7 +308,7 @@ export const DashboardPage: React.FC = () => {
             <ResponsivePagination
               maxWidth={272}
               current={myCurrentPage}
-              total={Math.round(Number(myFeedContext?.length / 5))}
+              total={Math.ceil(Number(myFeedContext?.length / 5))}
               onPageChange={(page) => handlePagination(page, "my")}
             />
           </DashboardCardWrapper>
@@ -324,7 +324,7 @@ export const DashboardPage: React.FC = () => {
             <ResponsivePagination
               maxWidth={272}
               current={afCurrentPage}
-              total={Math.round(Number(feedContext.length / 5))}
+              total={Math.ceil(Number(feedContext.length / 5))}
               onPageChange={(page) => handlePagination(page, "all")}
             />
           </DashboardCardWrapper>
