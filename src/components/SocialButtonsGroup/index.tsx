@@ -32,35 +32,20 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
 
   return (
     <SocialButtonsWrapper>
-      {/* <GoogleLogin
-        clientId="620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com" // need to change
-        buttonText="Login"
-        onSuccess={(res) => handleGoogleAuth(res)}
-        onFailure={(res) => handleGoogleAuth(res)}
-        render={(renderProps) => (
-          <SocialAuthButton
-            authType={authType}
-            socialType="Google"
-            onClick={renderProps.onClick}
-          />
-        )}
-        cookiePolicy={"single_host_origin"}
-        redirectUri="https://twotwentyk.pandoratoolbox.com"
-      /> */}
-      {/* <GoogleLogin
+      
+      <GoogleLogin
         onSuccess={(credentialResponse) => {
           console.log(credentialResponse);
         }}
         onError={() => {
           console.log("Login Failed");
         }}
-        useOneTap
-      /> */}
-      <SocialAuthButton
+      />
+      {/* <SocialAuthButton
         authType={authType}
         socialType="Google"
         onClick={() => login()}
-      />
+      /> */}
       <FacebookLogin
         appId="1088597931155576"
         // autoLoad={true}
