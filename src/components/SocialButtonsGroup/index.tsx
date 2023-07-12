@@ -7,17 +7,13 @@ import { AuthDividerWrapper, SocialButtonsWrapper } from "./styles";
 import { SocialAuthButton } from "../SocialAuthButton";
 import { SocialButtonsGroupProps } from "../../types";
 import { useSocialAuth } from "../../hooks/useSocialAuth";
-import { useGoogleLogin } from "@react-oauth/google";
-import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin, useGoogleLogin } from "@react-oauth/google";
 export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   authType,
 }) => {
   const { onGoogleAuthClicked, onAppleAuthClicked, onFacebookAuthClicked } =
     useSocialAuth();
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-  });
   const handleAppleAuth = (res: any) => {
     // POST /auth/social { platform: "apple", token: "token" }
     // if (resp.data.token) {
@@ -30,22 +26,27 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
     console.log(res);
   };
 
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => console.log(tokenResponse),
+    onError: () => console.log("Login Failed"),
+  });
+
   return (
     <SocialButtonsWrapper>
-      
-      <GoogleLogin
+      {/* <GoogleLogin
         onSuccess={(credentialResponse) => {
           console.log(credentialResponse);
         }}
         onError={() => {
           console.log("Login Failed");
         }}
-      />
-      {/* <SocialAuthButton
+        
+      /> */}
+      <SocialAuthButton
         authType={authType}
         socialType="Google"
         onClick={() => login()}
-      /> */}
+      />
       <FacebookLogin
         appId="1088597931155576"
         // autoLoad={true}

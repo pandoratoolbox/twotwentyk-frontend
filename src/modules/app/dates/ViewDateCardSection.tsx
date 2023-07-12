@@ -115,7 +115,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             <IconArrowDown />
           </PropertiesHeader>
           <PropertiesContent>
-            {cardType === "prediction" ? (
+            {cardType === "prediction" || cardType === "identity" ? (
               <PropertyItem>
                 <p>Celebrity</p>
                 <span>{item?.celebrity_name}</span>
