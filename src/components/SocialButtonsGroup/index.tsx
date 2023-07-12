@@ -36,7 +36,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       console.log(resp)
       if (resp) {
         if (resp.data.token) {
-          localStorage.setItem("token", resp.data.token)
+          localStorage.setItem("auth", resp.data.token)
           navigate("/dashboard");
         } else {
           throw("No token in API response")
