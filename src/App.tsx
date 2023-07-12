@@ -32,6 +32,9 @@ import {
   CategoriesPage,
   CardPackPage,
   MyOfferPage,
+  CollectionCreationPage,
+  ClaimManagementPage,
+  UserManagementPage,
 } from "./pages";
 import { AppWrapper } from "./context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -113,6 +116,20 @@ const App: React.FC = () => {
                 element={<TransactionsPage />}
               />
               {/* Profile Routes */}
+              {/* Admin Routes */}
+              <Route
+                path="/admin/collection-creation"
+                element={<CollectionCreationPage />}
+              />
+              <Route
+                path="/admin/claim-management"
+                element={<ClaimManagementPage />}
+              />
+              <Route
+                path="/admin/user-management"
+                element={<UserManagementPage />}
+              />
+              {/* Admin Routes */}
               <Route path="*" element={<NotFoundPage />} />
             </Routes>
           </AppWrapper>

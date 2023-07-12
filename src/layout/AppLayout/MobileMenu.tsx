@@ -102,47 +102,56 @@ export const MobileMenu: React.FC<{
                   )}
                 </>
               ))}
-            <MobileMenuItem onClick={handleWithdrawClick}>
-              My Balance
-              <span>
-                $
-                {myInfoContext?.balance.toLocaleString("en-US", {
-                  minimumFractionDigits: 2,
-                  maximumFractionDigits: 2,
-                })}
-              </span>
-            </MobileMenuItem>
-            <MobileMenuItem
-              onClick={() =>
-                setCollapse((prev) =>
-                  prev === headerData.length ? -1 : headerData.length
-                )
-              }
-              active={currentPath?.to === "/profile" ? "true" : undefined}
-            >
-              {myInfoContext?.username}
-              <IconArrowDown />
-            </MobileMenuItem>
-            {collapse === headerData.length && (
-              <MobileSubMenuWrapper>
-                {[
-                  { label: "Profile", to: "" },
-                  { label: "Claims", to: "claims" },
-                  { label: "Transactions", to: "transactions" },
-                ].map((cItem, cKey) => (
-                  <MobileSubmenuItem
-                    key={cKey}
-                    onClick={() => navigate("/profile/" + cItem.to)}
-                    active={
-                      location.pathname.split("/")[2] === cItem.to
-                        ? "true"
-                        : undefined
-                    }
-                  >
-                    {cItem.label}
-                  </MobileSubmenuItem>
-                ))}
-              </MobileSubMenuWrapper>
+            {localStorage.getItem("auth") ? (
+              <>
+                {" "}
+                <MobileMenuItem onClick={handleWithdrawClick}>
+                  My Balance
+                  <span>
+                    $
+                    {myInfoContext?.balance.toLocaleString("en-US", {
+                      minimumFractionDigits: 2,
+                      maximumFractionDigits: 2,
+                    })}
+                  </span>
+                </MobileMenuItem>
+                <MobileMenuItem
+                  onClick={() =>
+                    setCollapse((prev) =>
+                      prev === headerData.length ? -1 : headerData.length
+                    )
+                  }
+                  active={currentPath?.to === "/profile" ? "true" : undefined}
+                >
+                  {myInfoContext?.username}
+                  <IconArrowDown />
+                </MobileMenuItem>
+                {collapse === headerData.length && (
+                  <MobileSubMenuWrapper>
+                    {[
+                      { label: "Profile", to: "" },
+                      { label: "Claims", to: "claims" },
+                      { label: "Transactions", to: "transactions" },
+                    ].map((cItem, cKey) => (
+                      <MobileSubmenuItem
+                        key={cKey}
+                        onClick={() => navigate("/profile/" + cItem.to)}
+                        active={
+                          location.pathname.split("/")[2] === cItem.to
+                            ? "true"
+                            : undefined
+                        }
+                      >
+                        {cItem.label}
+                      </MobileSubmenuItem>
+                    ))}
+                  </MobileSubMenuWrapper>
+                )}
+              </>
+            ) : (
+              <MobileMenuItem onClick={() => navigate("/signin")}>
+                Log In
+              </MobileMenuItem>
             )}
           </MobileMenuNavbar>
         </MobileMenuContainer>

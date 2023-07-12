@@ -1,3 +1,4 @@
+export * from "./AdminSearchInput";
 export * from "./AuthFormGroup";
 export * from "./AuthFormTitle";
 export * from "./Button";
@@ -16,4 +17,3 @@ export * from "./SelectBox";
 export * from "./SocialAuthButton";
 export * from "./SocialButtonsGroup";
 export * from "./Loader";
-
