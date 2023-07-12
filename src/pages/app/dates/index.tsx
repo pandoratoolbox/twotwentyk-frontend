@@ -16,8 +16,14 @@ import {
 } from "../../../modules";
 import { useNavigate } from "react-router-dom";
 import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
+import { getMyNftCardYear } from "../../../actions/nft_card_year";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import { INftCardYear } from "../../../models/nft_card_year";
+import {
+  NftCardDayMonthFilters,
+  NftCardYearFilters,
+} from "../../../models/filters";
 import {
   getFilterCardType,
   getFilterRarities,
@@ -28,6 +34,13 @@ import {
   getFilterTriggerType,
 } from "../../../actions/filtering";
 
+interface DateFilters {
+  card_types: number[];
+  card_series_id: number | null;
+  rarities: number[] | null;
+  status: number[] | null;
+}
+
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
 
@@ -37,10 +50,20 @@ export const DatesPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+  const [filters, setFilters] = useState<DateFilters>({
+    card_types: [0],
+    card_series_id: null,
+    rarities: null,
+    status: null,
+  });
 
   const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
     INftCardDayMonth[] | null
   >([]);
+
+  const [nftCardYearData, setNftCardYearData] = useState<INftCardYear[] | null>(
+    null
+  );
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -48,7 +71,7 @@ export const DatesPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-    const response = await getMyNftCardDayMonth();
+    const response = await getMyNftCardDayMonth(null);
     if (response?.data) {
       setNftCardDayMonthData(response?.data);
     }
@@ -98,25 +121,66 @@ export const DatesPage: React.FC = () => {
   ) => {
     setIsLoadingFilter(true);
 
-    let res;
-    if (filterType === "Card Types") {
-      res = await getFilterCardType(selectedOptions);
-    } else if (filterType === "All Rarities") {
-      res = await getFilterRarities(selectedOptions);
-    } else if (filterType === "Status") {
-      res = await getFilterStatus(selectedOptions);
-    } else if (filterType === "Category") {
-      res = await getFilterCategory(selectedOptions);
-    } else if (filterType === "Pack Types") {
-      res = await getFilterPackType(selectedOptions);
-    } else if (filterType === "Triggers Type") {
-      res = await getFilterTriggerType(selectedOptions);
-    } else if (filterType === "Collections") {
-      res = await getFilterCollection(selectedOptions[0]);
+    let newFilters: DateFilters = {
+      card_series_id: filters.card_series_id,
+      status: filters.status,
+      rarities: filters.rarities,
+      card_types: filters.card_types,
+    };
+
+    switch (filterType) {
+      case "Card Types":
+        newFilters.card_types = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "All Rarities":
+        newFilters.rarities = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Status":
+        newFilters.status = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Collections":
+        newFilters.card_series_id = Number(selectedOptions[0]);
+        break;
     }
-    if (res?.data) {
-      setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
+
+    setFilters(newFilters);
+
+    if (filters.card_types.includes(0)) {
+      let dayMonthFilters: NftCardDayMonthFilters = {
+        rarities: newFilters.rarities,
+        card_series_id: newFilters.card_series_id,
+        status: newFilters.status,
+        day: null,
+        month: null,
+      };
+
+      let res = await getMyNftCardDayMonth(dayMonthFilters);
+      if (res?.data) {
+        console.log("refreshed nft card day-month data");
+        setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
+      }
     }
+
+    if (filters.card_types.includes(1)) {
+      let yearFilters: NftCardYearFilters = {
+        card_series_id: newFilters.card_series_id,
+        year: null,
+        rarities: newFilters.rarities,
+        status: newFilters.status,
+      };
+
+      let res = await getMyNftCardYear(yearFilters);
+      if (res?.data) {
+        setNftCardYearData(res?.data as INftCardYear[]);
+      }
+    }
+
     setIsLoadingFilter(false);
   };
 

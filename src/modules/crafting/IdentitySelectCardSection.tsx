@@ -76,25 +76,25 @@ export const IdentitySelectCardSection: React.FC<{
     setIsLoadingCategory(true);
 
     if (selectedCraft === "crafting") {
-      const response = await getMyNftCardCrafting();
+      const response = await getMyNftCardCrafting(null);
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
       setIsLoadingCrating(false);
     } else if (selectedCraft === "dayMonth") {
-      const response = await getMyNftCardDayMonth();
+      const response = await getMyNftCardDayMonth(null);
       if (response.data) {
         setNftCardDayMonthData(response.data);
       }
       setIsLoadingDayMonth(false);
     } else if (selectedCraft === "year") {
-      const response = await getMyNftCardYear();
+      const response = await getMyNftCardYear(null);
       if (response.data) {
         setNftCardYearData(response.data);
       }
       setIsLoadingYear(false);
     } else if (selectedCraft === "category") {
-      const response = await getMyNftCardCategory();
+      const response = await getMyNftCardCategory(null);
       if (response.data) {
         setNftCardCategoryData(response.data);
       }

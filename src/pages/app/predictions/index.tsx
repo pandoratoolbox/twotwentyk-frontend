@@ -27,6 +27,7 @@ import {
   getFilterPackType,
   getFilterTriggerType,
 } from "../../../actions/filtering";
+import { NftCardPredictionFilters } from "../../../models/filters";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -54,7 +55,7 @@ export const PredictionsPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
 
-    const response = await getMyNftCardPrediction();
+    const response = await getMyNftCardPrediction(null);
     if (response?.data) {
       setPredictionNfts(response.data);
     }
@@ -99,6 +100,14 @@ export const PredictionsPage: React.FC = () => {
     setIsView("sell");
   };
 
+  const [filters, setFilters] = useState<NftCardPredictionFilters>({
+    card_series_id: null,
+    rarities: null,
+    status: null,
+    triggers: null,
+    celebrities: null
+  })
+
   // filter option click
   const handleOptionClick = async (
     filterType: string,
@@ -106,25 +115,42 @@ export const PredictionsPage: React.FC = () => {
   ) => {
     setIsLoadingFilter(true);
 
-    let res;
-    if (filterType === "Card Types") {
-      res = await getFilterCardType(selectedOptions);
-    } else if (filterType === "All Rarities") {
-      res = await getFilterRarities(selectedOptions);
-    } else if (filterType === "Status") {
-      res = await getFilterStatus(selectedOptions);
-    } else if (filterType === "Category") {
-      res = await getFilterCategory(selectedOptions);
-    } else if (filterType === "Pack Types") {
-      res = await getFilterPackType(selectedOptions);
-    } else if (filterType === "Triggers Type") {
-      res = await getFilterTriggerType(selectedOptions);
-    } else if (filterType === "Collections") {
-      res = await getFilterCollection(selectedOptions[0]);
+    let newFilters: NftCardPredictionFilters = {
+      card_series_id: filters.card_series_id,
+      status: filters.status,
+      rarities: filters.rarities,
+      triggers: filters.triggers,
+      celebrities: filters.celebrities,
+    };
+
+    switch (filterType) {
+      case "Triggers":
+        newFilters.triggers = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "All Rarities":
+        newFilters.rarities = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Status":
+        newFilters.status = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Collections":
+        newFilters.card_series_id = Number(selectedOptions[0]);
+        break;
     }
+
+    setFilters(newFilters);
+
+    let res = await getMyNftCardPrediction(newFilters);
     if (res?.data) {
       setPredictionNfts(res?.data as INftCardPrediction[]);
     }
+
     setIsLoadingFilter(false);
   };
 

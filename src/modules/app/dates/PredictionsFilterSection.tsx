@@ -32,7 +32,7 @@ export const PredictionsFilterSection: React.FC<{
         />
         <SelectBox
           isFilter
-          placeholder="Triggers Type"
+          placeholder="Triggers"
           newData={triggersContext}
           onClick={onClick}
         />

@@ -64,19 +64,19 @@ export const PredictionSelectCardSection: React.FC<{
     setIsLoadingTrigger(true);
 
     if (selectedCraft === "crafting") {
-      const response = await getMyNftCardCrafting();
+      const response = await getMyNftCardCrafting(null);
       if (response.data) {
         setNftCardCraftingData(response.data);
       }
       setIsLoadingCrafting(false);
     } else if (selectedCraft === "trigger") {
-      const response = await getMyNftCardTrigger();
+      const response = await getMyNftCardTrigger(null);
       if (response.data) {
         setNftCardTriggerData(response.data);
       }
       setIsLoadingIdentity(false);
     } else if (selectedCraft === "identity") {
-      const response = await getMyNftCardIdentity();
+      const response = await getMyNftCardIdentity(null);
       if (response.data) {
         setNftCardIdentityData(response.data);
       }

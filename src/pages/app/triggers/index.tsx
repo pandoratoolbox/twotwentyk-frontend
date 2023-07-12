@@ -27,6 +27,7 @@ import {
   getFilterPackType,
   getFilterTriggerType,
 } from "../../../actions/filtering";
+import { NftCardTriggerFilters } from "../../../models/filters";
 export const TriggersPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
@@ -45,7 +46,7 @@ export const TriggersPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-    const response = await getMyNftCardTrigger();
+    const response = await getMyNftCardTrigger(null);
 
     if (response?.data) {
       setNftCardTriggerData(response?.data);
@@ -90,6 +91,15 @@ export const TriggersPage: React.FC = () => {
     setIsView("sell");
   };
 
+
+  const [filters, setFilters] = useState<NftCardTriggerFilters>({
+    tiers: null,
+    rarities: null,
+    status: null,
+    card_series_id: null,
+    triggers: null
+  })
+
   // filter option click
   const handleOptionClick = async (
     filterType: string,
@@ -97,27 +107,45 @@ export const TriggersPage: React.FC = () => {
   ) => {
     setIsLoadingFilter(true);
 
-    let res;
-    if (filterType === "Card Types") {
-      res = await getFilterCardType(selectedOptions);
-    } else if (filterType === "All Rarities") {
-      res = await getFilterRarities(selectedOptions);
-    } else if (filterType === "Status") {
-      res = await getFilterStatus(selectedOptions);
-    } else if (filterType === "Category") {
-      res = await getFilterCategory(selectedOptions);
-    } else if (filterType === "Pack Types") {
-      res = await getFilterPackType(selectedOptions);
-    } else if (filterType === "Triggers Type") {
-      res = await getFilterTriggerType(selectedOptions);
-    } else if (filterType === "Collections") {
-      res = await getFilterCollection(selectedOptions[0]);
+    let newFilters: NftCardTriggerFilters = {
+      card_series_id: filters.card_series_id,
+      status: filters.status,
+      triggers: filters.triggers,
+      rarities: filters.rarities,
+      tiers: filters.tiers,
+    };
+
+    switch (filterType) {
+      case "Tier":
+        newFilters.tiers = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "All Rarities":
+        newFilters.rarities = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Status":
+        newFilters.status = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Collections":
+        newFilters.card_series_id = Number(selectedOptions[0]);
+        break;
     }
+
+    setFilters(newFilters);
+
+    let res = await getMyNftCardTrigger(newFilters);
     if (res?.data) {
       setNftCardTriggerData(res?.data as INftCardTrigger[]);
     }
+
     setIsLoadingFilter(false);
   };
+
 
   return (
     <AppLayout>

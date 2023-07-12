@@ -22,7 +22,7 @@ export const TriggerFilterSection: React.FC<{
       <FilterGroupWrapper>
         <SelectBox
           isFilter
-          placeholder="Triggers Type"
+          placeholder="Tier"
           newData={triggersContext}
           onClick={onClick}
         />
