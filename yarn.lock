@@ -2057,6 +2057,11 @@
     "@types/qs" "*"
     "@types/serve-static" "*"
 
+"@types/google.accounts@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@types/google.accounts/-/google.accounts-0.0.7.tgz#d9f20f29f3d14336967c905bddb2d89dc2bfc709"
+  integrity sha512-AAA2+/s/Oa9ETgaWY6JM2P3h8RiQ1FkdyI7QYKMY3hbIkwGbjEBLX0L6FpazVxHnq68ruDyl8Fi5v0tEwSyfeg==
+
 "@types/graceful-fs@^4.1.2":
   version "4.1.6"
   resolved "https://registry.npmjs.org/@types/graceful-fs/-/graceful-fs-4.1.6.tgz"

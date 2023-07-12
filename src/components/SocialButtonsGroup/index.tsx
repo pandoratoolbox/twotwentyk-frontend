@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect, useRef} from "react";
 import AppleLogin from "react-apple-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 // import FacebookLogin from "react-facebook-login";
@@ -10,9 +10,12 @@ import { useSocialAuth } from "../../hooks/useSocialAuth";
 import { useGoogleLogin } from "@react-oauth/google";
 import { GoogleLogin } from "@react-oauth/google";
 import api from "../../config/api";
+import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   authType,
 }) => {
+  const GOOGLE_CLIENT_ID = "620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com"
   const { onGoogleAuthClicked, onAppleAuthClicked, onFacebookAuthClicked } =
     useSocialAuth();
 
@@ -24,17 +27,56 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
     console.log(res);
   };
 
+  const navigate = useNavigate();
+
   const handleGoogleAuth = async (res: any) => {
     console.log(res);
-    let resp = await api.post("/auth/google", {id_token: res.credential})
-    console.log(resp)
-    localStorage.setItem("token", res.data.token)
+    try {
+      let resp = await api.post("/auth/google", {id_token: res.credential})
+      console.log(resp)
+      if (resp) {
+        if (resp.data.token) {
+          localStorage.setItem("token", resp.data.token)
+          navigate("/dashboard");
+        } else {
+          throw("No token in API response")
+        }
+      }
+    } catch (e: any) {
+      toast.error(e)
+    }
+
   };
 
-  const login = useGoogleLogin({
-    onSuccess: (tokenResponse) => console.log(tokenResponse),
-    onError: () => console.log("Login Failed"),
-  });
+  // const login = useGoogleLogin({
+  //   onSuccess: (tokenResponse) => console.log(tokenResponse),
+  //   onError: () => console.log("Login Failed"),
+  // });
+
+  const loadScript = (src: string, id: string, onload: () => void = () => {}) => {
+    const existingScript = document.getElementById(id)
+  
+    if (existingScript != null) return
+  
+    const script = document.createElement('script')
+    script.id = id
+    script.src = src
+    script.defer = true
+    script.async = true
+    script.onload = onload
+  
+    document.head.appendChild(script)
+  }
+  
+  const handleGoogleClick = () => {
+    google.accounts.id.initialize({
+      client_id: GOOGLE_CLIENT_ID,
+      callback: handleGoogleAuth,
+      ux_mode: "redirect"
+    })
+
+    google.accounts.id.prompt()
+  }
 
   return (
     <SocialButtonsWrapper>
@@ -50,7 +92,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       <SocialAuthButton
         authType={authType}
         socialType="Google"
-        onClick={() => login()}
+        onClick={handleGoogleClick}
       />
       {/* <FacebookLogin
         appId="1088597931155576"
