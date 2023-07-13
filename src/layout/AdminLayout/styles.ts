@@ -123,7 +123,7 @@ export const AdminContentWrapper = styled.div`
   overflow: auto;
   flex: 1;
   & > div {
-    padding-top: 32px;
+    padding: 32px 0;
     max-width: 1200px;
     width: 95%;
     margin: auto;
