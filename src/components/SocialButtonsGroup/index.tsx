@@ -16,15 +16,26 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   authType,
 }) => {
   const GOOGLE_CLIENT_ID = "620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com"
+  const APPLE_CLIENT_ID = "com.pandoratoolbox.twotwentyk"
   const { onGoogleAuthClicked, onAppleAuthClicked, onFacebookAuthClicked } =
     useSocialAuth();
 
-  const handleAppleAuth = (res: any) => {
-    // POST /auth/social { platform: "apple", token: "token" }
-    // if (resp.data.token) {
-    //   localStorage.setItem("auth", resp.data.token)
-    // }
+  const handleAppleAuth = async (res: any) => {
     console.log(res);
+    try {
+      let resp = await api.post("/auth/apple", {id_token: res.id_token})
+      console.log(resp)
+      if (resp) {
+        if (resp.data.token) {
+          localStorage.setItem("auth", resp.data.token)
+          navigate("/dashboard");
+        } else {
+          throw("No token in API response")
+        }
+      }
+    } catch (e: any) {
+      toast.error(e)
+    }
   };
 
   const navigate = useNavigate();
@@ -36,7 +47,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       console.log(resp)
       if (resp) {
         if (resp.data.token) {
-          localStorage.setItem("token", resp.data.token)
+          localStorage.setItem("auth", resp.data.token)
           navigate("/dashboard");
         } else {
           throw("No token in API response")
@@ -109,9 +120,10 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       />  */}
       <AppleLogin
       usePopup={true}
-        clientId="com.pandoratoolbox.twotwentyk"
+        clientId={APPLE_CLIENT_ID}
         redirectURI="https://twotwentyk.pandoratoolbox.com"
         callback={(res) => handleAppleAuth(res)}
+        responseType="id_token"
         render={(renderProps) => (
           <SocialAuthButton
             authType={authType}

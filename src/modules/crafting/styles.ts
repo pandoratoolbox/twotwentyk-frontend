@@ -343,6 +343,16 @@ export const ItemContentInfoWrapper = styled.div`
       color: #ee3f3f;
     }
   }
+    &.owned {
+    h5 {
+      color: #23b983;
+    }
+  }
+  &.notowned {
+    h5 {
+      color: #ee3f3f;
+    }
+  }
   &.green {
     &.active {
       border: 1px solid #23b983;
@@ -359,6 +369,7 @@ export const ItemContentInfoWrapper = styled.div`
       color: #8f00ff;
     }
   }
+
   h5 {
     font-weight: 300;
     font-size: 10px;

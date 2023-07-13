@@ -63,7 +63,7 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {
         setIsOption(false);
-        setValue(null);
+        // setValue(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);

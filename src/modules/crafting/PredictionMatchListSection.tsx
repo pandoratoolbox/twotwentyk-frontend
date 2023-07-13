@@ -32,7 +32,7 @@ const [triggerData, setTriggerData] = useState<ITrigger | null>(null);
   return (
     <MatchListSectionWrapper>
       <h2>Eligible Triggers</h2>
-      {selectedCards.crafting !== null && selectedCards.identity !== null && selectedCards.triggers !== null? (
+      {selectedCards.identity != null ? (
         <p>
           Only triggers relevant to selected identity are showing. Click to open item.
         </p>
@@ -41,7 +41,7 @@ const [triggerData, setTriggerData] = useState<ITrigger | null>(null);
           Choose an Identity card to see eligible triggers.
         </div>
       )}
-      {selectedCards.crafting !== null && selectedCards.identity !== null && selectedCards.triggers !== null && (
+      {selectedCards.identity !== null && (
         <MatchListGroup>
           {triggerList.map((item, key) => (
                 <TriggerListItem key={key} {...item} />
