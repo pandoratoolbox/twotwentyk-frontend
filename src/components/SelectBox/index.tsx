@@ -35,7 +35,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     const handleClickOutside = (event: MouseEvent) => {
       if (optionRef.current && !optionRef.current.contains(event.target)) {
         setIsOption(false);
-        setSelectedOptions([]);
+        // setSelectedOptions([]);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -51,13 +51,9 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   };
 
   const handleFilterClick = async (filterType: string) => {
-    if (selectedOptions.length !== 0) {
       onClick && onClick(filterType, selectedOptions);
 
       setIsOption(false);
-    } else {
-      toast.warn("Please checked some value");
-    }
   };
 
   const handleCheckboxChange = (

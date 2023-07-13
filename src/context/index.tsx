@@ -218,32 +218,31 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
     setMarketCardTypesContext(
       new Map<number, ICategory>([
-        [1, { id: 1, name: "Day/Month" }],
-        [2, { id: 2, name: "Year" }],
-        [3, { id: 3, name: "Trigger" }],
-        [4, { id: 4, name: "Category" }],
-        [5, { id: 5, name: "Crafting" }],
+        [0, { id: 0, name: "Day/Month" }],
+        [1, { id: 1, name: "Year" }],
+        [2, { id: 2, name: "Trigger" }],
+        [3, { id: 3, name: "Category" }],
+        [4, { id: 4, name: "Crafting" }],
       ])
     );
 
     setCardTypesContext(
       new Map<number, ICategory>([
-        [1, { id: 1, name: "Day/Month" }],
-        [2, { id: 2, name: "Year" }],
+        [0, { id: 0, name: "Day/Month" }],
+        [1, { id: 1, name: "Year" }],
       ])
     );
     setAllRaritiesContext(
       new Map<number, ICategory>([
-        [1, { id: 1, name: "Free to Play" }],
-        [2, { id: 2, name: "Core" }],
-        [3, { id: 3, name: "Uncommon" }],
-        [4, { id: 4, name: "Rare" }],
+        [0, { id: 0, name: "Common" }],
+        [1, { id: 1, name: "Uncommon" }],
+        [2, { id: 2, name: "Rare" }],
       ])
     );
     setStatusContext(
       new Map<number, ICategory>([
+        [0, { id: 0, name: "Not for sale" }],
         [1, { id: 1, name: "For sale" }],
-        [2, { id: 2, name: "New for sale" }],
       ])
     );
 

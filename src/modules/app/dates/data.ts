@@ -28,8 +28,8 @@ export const categoryOption = [
 
 export const collectionOption = [
   {
-    label: "Conception",
-    value: "conception",
+    label: "Genesis",
+    value: "0",
   },
 ];
 
