@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { AppLayout } from "../../../layout/AppLayout";
 import { MarketplacePageContainer, MarketplacePageWrapper } from "./styles";
 import {
