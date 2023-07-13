@@ -33,8 +33,8 @@ export const DateCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const { monthContext } = useMonthContext();
-  
-  image = "/assets/nfts/1.png"
+
+  image = "/assets/nfts/1.png";
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
       <CardTopWrapper>
@@ -43,11 +43,12 @@ export const DateCard: React.FC<DateCardProps> = ({
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
       </CardTopWrapper>
-      {monthContext && (
+      {day && monthContext && (
         <CardBottomWrapper>
           {day} {(monthContext as Map<number, string>).get(month)}
         </CardBottomWrapper>
       )}
+      {item?.year && <CardBottomWrapper>{item?.year}</CardBottomWrapper>}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           <CardTooltip>
