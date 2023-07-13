@@ -65,19 +65,6 @@ export const DatesPage: React.FC = () => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
-  const getPageData = async () => {
-    setIsLoading(true);
-    const response = await getMyNftCardDayMonth(null);
-    if (response?.data) {
-      setNftCardDayMonthData(response?.data);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getPageData();
-  }, []);
-
   const handleSellConfirm = async (
     id: number | string,
     collection_id: string | number,
