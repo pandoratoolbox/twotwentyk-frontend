@@ -34,30 +34,31 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
   onChange,
   newData,
   onSelect,
-  clear
+  clear,
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
-  const [selectedOptions, setSelectedOptions] = useState<Array<{
-    label: string;
-    value: number;
-  }>>([]);
+  const [selectedOptions, setSelectedOptions] = useState<
+    Array<{
+      label: string;
+      value: number;
+    }>
+  >([]);
   const { setInventoryNftsContext } = useInventoryNFTsContext();
   const [value, setValue] = useState<SelectOptionProps | null>(null);
 
-
   const handleSelect = (v: SelectOptionProps) => {
     if (onSelect) {
-      onSelect(v)
+      onSelect(v);
     }
-    
+
     setValue(v);
     setIsOption(false);
-  }
+  };
 
   useEffect(() => {
     setValue(null);
-  }, [clear])
+  }, [clear]);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -71,10 +72,8 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
-
-
   return (
-    <SelectBoxWrapper ref={optionRef}>
+    <SelectBoxWrapper ref={optionRef} className={placeholder === "Identity Matches" ? "IMSelect" : undefined}>
       <ToastContainer
         position="top-right"
         autoClose={2000}
@@ -91,17 +90,22 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
       <SelectBoxContainer
         border={border ? "true" : undefined}
         onClick={() => setIsOption((prev) => !prev)}
+        className={placeholder === "Identity Matches" ? "IMSelect" : undefined}
       >
         <SelectBoxTextWrapper>
           {value ? (
             <>
-              {options && options.filter((f) => f.value === value.value)[0].image && (
-                <img
-                  src={options.filter((f) => f.value === value.value)[0].image}
-                  alt=""
-                />
-              )}{" "}
-              {options && options.filter((f) => f.value === value.value)[0].label}
+              {options &&
+                options.filter((f) => f.value === value.value)[0].image && (
+                  <img
+                    src={
+                      options.filter((f) => f.value === value.value)[0].image
+                    }
+                    alt=""
+                  />
+                )}{" "}
+              {options &&
+                options.filter((f) => f.value === value.value)[0].label}
             </>
           ) : (
             <span>{placeholder}</span>
@@ -109,21 +113,18 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
         </SelectBoxTextWrapper>
         <IconArrowDown />
       </SelectBoxContainer>
-      <SelectOptionsWrapper open={isOption}>
-          <OptionGroup>
-            {options &&
-              options.map((value, key) => (
-                <OptionItem
-                  key={key}
-                  onClick={() => handleSelect(value)}
-                >
-                  <div>
-                    {value.image ? <img src={value.image} alt="" /> : ""}
-                    {value.label}
-                  </div>
-                </OptionItem>
-              ))}
-          </OptionGroup>
+      <SelectOptionsWrapper open={isOption} className={placeholder === "Identity Matches" ? "IMSelect" : undefined}>
+        <OptionGroup>
+          {options &&
+            options.map((value, key) => (
+              <OptionItem key={key} onClick={() => handleSelect(value)} className={placeholder === "Identity Matches" ? "IMSelect" : undefined}>
+                <div>
+                  {value.image ? <img src={value.image} alt="" /> : ""}
+                  {value.label}
+                </div>
+              </OptionItem>
+            ))}
+        </OptionGroup>
       </SelectOptionsWrapper>
     </SelectBoxWrapper>
   );

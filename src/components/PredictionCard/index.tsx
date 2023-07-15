@@ -16,8 +16,11 @@ import {
   CardButtonGroup,
   CardOverlayWrapper,
 } from "../DateCard/styles";
-import { PredictionCardProps } from "../../types";
-import { useMonthContext } from "../../context";
+import { PredictionCardProps, SelectOptionProps } from "../../types";
+import { useMonthContext, useCelebritiesContext } from "../../context";
+import { SelectOption } from "../SelectBox/SelectOption";
+import { ICelebrity } from "../../models/celebrity";
+import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -44,16 +47,30 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onBuy,
 }) => {
   const { monthContext } = useMonthContext();
+  const { celebritiesContext } = useCelebritiesContext();
+  const [clearSelect, setClearSelect] = React.useState<boolean>(true);
+
+  const chooseCelebrity = async (v: SelectOptionProps) => {
+    let c = (celebritiesContext as Map<number, ICelebrity>).get(
+      Number(v.value)
+    );
+
+    if (c) {
+      let res = await updateMyNftCardIdentity(c?.id , c?.name);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log(res?.data);
+      }
+    }
+  };
 
   image = "/assets/nfts/1.png";
-  // console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
       onClick={onClick}
       bg={cardType === "prediction" ? image : ""}
       height={height}
-      isnothover={isNotHover ? "true" : undefined}
+      isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardTopWrapper>
         <CardDateWrapper dashbordstyle={dashbordstyle}>
@@ -88,9 +105,25 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         </CardBodyWrapper>
       )}
 
-      {celebrity_name && (
+      {celebrity_name ? (
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+      ) : (
+        <CardBottomWrapper>
+          {celebritiesContext && (
+            <SelectOption
+              options={Array.from<[number, any]>(celebritiesContext).map(
+                ([key, value]) => {
+                  return { label: value.name, value: String(value.id) };
+                }
+              )}
+              placeholder="Identity Matches"
+              clear={clearSelect}
+              onSelect={chooseCelebrity}
+            />
+          )}
+        </CardBottomWrapper>
       )}
+
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {!is_crafted && onCraft && (

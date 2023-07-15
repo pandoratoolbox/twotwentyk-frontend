@@ -10,7 +10,7 @@ export const PredictionCardWrapper = styled.div<{
   cursor: pointer;
   position: relative;
   width: 100%;
-  contain: content;
+  // contain: content;
   border-radius: 6px;
   box-shadow: 0px 0px 15.3925px rgba(0, 0, 0, 0.05);
   background: ${({ bg, cardType }) =>
