@@ -24,8 +24,9 @@ export const HeaderWrapper = styled.div`
   left: 0;
   top: 0;
   z-index: 10;
-  height: 95px;
-  background-color: #ffffff;
+  height: 89px;
+  /* background-color: #ffffff; */
+  background: linear-gradient(90deg, #0071d0 0%, #1f20a0 100%);
   display: flex;
   align-items: center;
 `;

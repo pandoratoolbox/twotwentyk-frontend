@@ -54,7 +54,7 @@ export const SignUpForm: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
-      ;<AuthFormTitle>Sign Up</AuthFormTitle>
+      <AuthFormTitle>Sign Up</AuthFormTitle>
       <SocialButtonsGroup authType="Signup" />
       <AuthFormGroup>
         <Input

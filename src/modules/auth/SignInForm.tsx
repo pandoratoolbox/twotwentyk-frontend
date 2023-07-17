@@ -84,7 +84,7 @@ export const SignInForm: React.FC = () => {
       <FormActionWrapper>
         <Button onClick={handleSignIn}>Enter</Button>
         <FormActionText>
-          {"Don’t have an account? "} <Link to={"/signup"}>Sign Up now</Link>
+          {"Don’t have an account? "} <Link to={"/signup"}>Sign Up Now</Link>
         </FormActionText>
       </FormActionWrapper>
     </AuthFormWrapper>

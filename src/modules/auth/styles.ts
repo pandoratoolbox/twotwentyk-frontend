@@ -3,21 +3,21 @@ import { styled } from "styled-components";
 export const AuthFormWrapper = styled.div`
   max-width: 400px;
   width: 100%;
-  background: #ffffff;
-  border-radius: 10px;
-  padding: 32px;
+  border-radius: 20px 8px 8px;
+  background: #fff;
+  box-shadow: 0px 2px 20px 0px rgba(94, 113, 182, 0.25);
+  padding: 0 32px 32px;
 `;
 
 export const ForgotPasswordText = styled.div`
   width: fit-content;
   margin-left: auto;
   a {
-    font-weight: 500;
-    font-size: 10px;
-    line-height: 24px;
-    color: #000000;
-    cursor: pointer;
-    opacity: 0.5;
+    color: #0e4fbc;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 16px;
+    text-decoration: none;
 
     &:hover {
       opacity: 1;
@@ -31,18 +31,15 @@ export const FormActionWrapper = styled.div`
 `;
 
 export const FormActionText = styled.div`
-  margin-top: 25px;
+  margin-top: 16px;
   text-align: center;
-  font-weight: 400;
+  color: #000;
   font-size: 12px;
+  font-weight: 600;
   line-height: 150%;
   a {
-    font-weight: 700;
-    color: #000;
-    text-decoration: none;
-    &:hover {
-      text-decoration: underline;
-    }
+    color: #0e4fbc;
+    text-decoration: underline;
   }
 `;
 
@@ -51,10 +48,19 @@ export const AuthFormDesc = styled.div`
   font-size: 14px;
   line-height: 22px;
   margin-bottom: 17px;
+  span {
+    color: #000;
+    display: flex;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 24px;
+    margin-bottom: 12px; /* 171.429% */
+  }
 `;
 
 export const CheckEmailWrapper = styled.div`
   display: flex;
+  margin-top: 40px;
   flex-direction: column;
   align-items: center;
   text-align: center;
@@ -79,10 +85,12 @@ export const ResendEmail = styled.div`
   font-size: 14px;
   line-height: 24px;
   margin-top: 32px;
-  color: #898989;
+  color: #000;
   span {
     text-decoration: underline;
     cursor: pointer;
+    font-weight: 600;
+    color: #1243b6;
   }
 `;
 

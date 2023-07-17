@@ -3,10 +3,10 @@ import { styled } from "styled-components";
 export const FormWrapper = styled.div`
   width: 100%;
   p {
-    font-weight: 600;
+    color: #0e4fbc;
     font-size: 14px;
+    font-weight: 600;
     line-height: 150%;
-    margin-bottom: 6px;
   }
 
   span {
@@ -26,16 +26,19 @@ export const InputDescWrapper = styled.div`
 `;
 
 export const InputWrapper = styled.div<{ iserror?: string; suffix?: string }>`
-  border: 1px solid ${({ iserror }) => (iserror ? "#ff0000" : "#E4E4E4")};
-  border-radius: 4px;
+  border: 1px solid
+    ${({ iserror }) => (iserror ? "#ff0000" : "rgba(14, 79, 188, 0.4)")};
+  border-radius: 6px;
+  background: rgba(14, 79, 188, 0.05);
   display: flex;
   align-items: center;
-  background-color: #fff;
+  /* background-color: #fff; */
   position: relative;
 
   input {
     height: 40px;
     width: 100%;
+    color: #0e4fbc;
     outline: none;
     padding: 0 16px;
     padding-right: ${({ suffix }) =>
@@ -46,6 +49,13 @@ export const InputWrapper = styled.div<{ iserror?: string; suffix?: string }>`
     font-size: 14px;
     line-height: 150%;
     background-color: transparent;
+    &::placeholder {
+      color: #0e4fbc;
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px; /* 171.429% */
+      opacity: 0.4;
+    }
   }
   div {
     position: absolute;

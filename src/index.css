@@ -1,3 +1,8 @@
+@font-face {
+  font-family: vipnagorgialla;
+  src: url(../public/assets/fonts/vipnagorgialla.ttf);
+}
+
 body {
   margin: 0;
   font-family: "Jockey One", sans-serif;
@@ -6,7 +11,10 @@ body {
     "Helvetica Neue", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #f2f5ff;
+  /* background: #f2f5ff; */
+  background: url(../public/assets/bg.png) no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 code {
@@ -15,7 +23,8 @@ code {
 }
 
 * {
-  font-family: "Inter";
+  /* font-family: "Poppins", sans-serif; */
+  font-family: "Montserrat", sans-serif;
   box-sizing: border-box;
 
   transition: all 0.2s ease-in-out;
@@ -41,4 +50,19 @@ p {
 
 ::-webkit-scrollbar-thumb {
   background-color: #00000016;
+}
+
+.page-link {
+  border-radius: 100px !important;
+  border: 0.5px solid #ccc;
+  background: #fff;
+  margin: 0 6px !important;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
+  color: #000 !important;
+  font-weight: 600;
+}
+
+.page-item.active .page-link {
+  color: #0e4fbc !important ;
+  background: #fff !important;
 }

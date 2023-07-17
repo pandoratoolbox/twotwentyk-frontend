@@ -1,8 +1,16 @@
 import React from "react";
-import { TitleWrapper } from "./styles";
+import { TitleBGWrapper, TitleWrapper } from "./styles";
+import { TitleBG } from "../Icons";
 
 export const AuthFormTitle: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
 }) => {
-  return <TitleWrapper>{children}</TitleWrapper>;
+  return (
+    <TitleWrapper>
+      <TitleBGWrapper>
+        <TitleBG />
+      </TitleBGWrapper>
+      <span>{children}</span>
+    </TitleWrapper>
+  );
 };

@@ -5,8 +5,7 @@ export const Footer: React.FC = () => {
   return (
     <FooterWrapper>
       <FooterLogo>
-        <h4>partner</h4>
-        <p>-Logo-</p>
+        <img src="/assets/footer-logo.png" alt="" />
       </FooterLogo>
       <FooterDesc>
         <p>POWERED BY</p>

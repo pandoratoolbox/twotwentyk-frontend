@@ -2,7 +2,7 @@ import { styled } from "styled-components";
 
 export const DashboardPageWrapper = styled.div`
   padding-bottom: 28px;
-  max-width: 900px;
+  max-width: 1173px;
   width: 95%;
   margin: auto;
   & > div {
@@ -20,7 +20,8 @@ export const DashboardCardWrapper = styled.div`
   background: rgba(255, 255, 255, 0.8);
   border: 1px solid rgba(0, 0, 0, 0.02);
   border-radius: 12px;
-  padding: 38px 22px;
+  /* padding: 38px 22px; */
+  padding: 0 0 32px;
   .page-link {
     width: 30px;
     height: 30px;
@@ -30,6 +31,10 @@ export const DashboardCardWrapper = styled.div`
     margin: 0 1px;
     padding: 0;
   }
+`;
+
+export const DashboardContainer = styled.div`
+  padding: 0 38px;
 `;
 
 export const DashboardCardGrid = styled.div`
@@ -48,21 +53,43 @@ export const DashboardCardGrid = styled.div`
 export const CardTitle = styled.div`
   font-weight: 600;
   font-size: 20px;
+  position: relative;
   line-height: 24px;
   margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  div {
+    display: flex;
+    svg {
+      height: 100%;
+      width: 100%;
+    }
+  }
+  span {
+    position: absolute;
+    color: #fff;
+    font-family: vipnagorgialla;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    text-transform: uppercase;
+  }
 `;
 
 export const SeeMoreButton = styled.div`
-  font-weight: 500;
-  font-size: 14px;
   cursor: pointer;
-  line-height: 24px;
   width: fit-content;
   margin-left: auto;
   text-transform: capitalize;
   color: #000000;
+  margin-bottom: 20px;
+  color: #0e4fbc;
+  font-size: 16px;
+  font-weight: 600;
   text-decoration-line: underline;
-  opacity: 0.5;
+  text-transform: capitalize;
 `;
 
 export const EmptyCardWrapper = styled.div`
@@ -79,12 +106,15 @@ export const EmptyCardWrapper = styled.div`
     margin-bottom: 28px;
   }
   img {
-    max-width: 320px;
+    max-width: 860px;
     width: 100%;
     margin-bottom: 30px;
   }
   .dashboard-card-button {
     max-width: 206px;
+    background: #fff;
+    border: 2px solid #1440b3;
+    color: #0e4fbc;
     height: 42px;
   }
 `;

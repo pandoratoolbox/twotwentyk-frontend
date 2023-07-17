@@ -6,6 +6,7 @@ import {
   CardTitle,
   DashboardCardGrid,
   DashboardCardWrapper,
+  DashboardContainer,
   DashboardListGrid,
   DashboardPageWrapper,
   EmptyCardWrapper,
@@ -18,6 +19,7 @@ import {
   PredictionCard,
   SellConfirmModal,
   Loader,
+  DashboardTitleBG,
 } from "../../../components";
 import { IArticle } from "../../../types/actions";
 import { ToastContainer } from "react-toastify";
@@ -166,148 +168,175 @@ export const DashboardPage: React.FC = () => {
       />
       <DashboardPageWrapper>
         <DashboardCardWrapper>
-          <CardTitle>My Identities</CardTitle>
-          {identityNfts?.length > 0 && currentUser && monthContext ? (
-            <React.Fragment>
-              <DashboardCardGrid>
-                {/* {identityNfts */}
-                {identityNfts
-                  ?.slice(0, 4) //////////////////// Have to add some filter by collection id
-                  .map((item: any, key: number) => (
-                    <PredictionCard
-                      dashbordstyle={"true"}
-                      height={"225"}
-                      isNotHover={true}
-                      day={item.day}
-                      month={item.month}
-                      year={item.year}
-                      rarity={item.rarity}
-                      item={item}
-                      {...item}
-                      key={key}
-                      onSell={handleSell}
-                      cardType="identity"
-                      onView={handleView}
-                    />
-                  ))}
-              </DashboardCardGrid>
-
-              <ViewDateCardSection
-                isView={isView === "view"}
-                cardType={cardType}
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                }}
-              />
-              <SellDateCardSection
-                onSellConfirm={handleSellConfirm}
-                cardType={cardType}
-                isView={isView === "sell"}
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                }}
-              />
-              <SeeMoreButton onClick={() => navigate("/dashboard/identities")}>
-                See More
-              </SeeMoreButton>
-            </React.Fragment>
-          ) : !isLoadingIdentity ? (
-            <EmptyCardWrapper>
-              <p>
-                Combine a Year card, a Day & Month, and a Category card to craft
-                an Identity.
-              </p>
-              <img src="/assets/identities-empty.png" alt="" />
-              {currentUser && (
-                <Button
-                  className="dashboard-card-button"
-                  onClick={() => navigate("/crafting/identities")}
-                >
-                  Craft an Identity Now
-                </Button>
-              )}
-            </EmptyCardWrapper>
-          ) : (
-            <Loader />
-          )}
-        </DashboardCardWrapper>
-        <DashboardCardWrapper>
-          <CardTitle>My Predictions</CardTitle>
-          {predictionNfts.length > 0 && currentUser ? (
-            <React.Fragment>
-              <DashboardCardGrid>
-                {predictionNfts
-                  ?.slice(0, 4) //////////////////// Have to add some filter by collection id
-                  .map((item: any, key: number) => (
-                    <PredictionCard
-                      dashbordstyle={"true"}
-                      height={"225"}
-                      isNotHover={true}
-                      item={item}
-                      {...item}
-                      rarity={item.rarity}
-                      key={key}
-                      onSell={handleSell}
-                      cardType="prediction"
-                      onView={handleView}
-                    />
-                  ))}
-              </DashboardCardGrid>
-
-              <SeeMoreButton onClick={() => navigate("/dashboard/predictions")}>
-                See More
-              </SeeMoreButton>
-            </React.Fragment>
-          ) : !isLoadingPrediction ? (
-            <EmptyCardWrapper>
-              <p>
-                Add one or more Triggers to an Identity to craft a Prediction
-              </p>
-              <img src="/assets/prediction-empty.png" alt="" />
-              {currentUser && (
-                <Button
-                  className="dashboard-card-button"
-                  onClick={() => navigate("/crafting/predictions")}
-                >
-                  Craft a Prediction Now
-                </Button>
-              )}
-            </EmptyCardWrapper>
-          ) : (
-            <Loader />
-          )}
-        </DashboardCardWrapper>
-        {currentUser &&
-          myOfferContext?.length > 0 ? (
-            <DashboardCardWrapper>
-              <CardTitle>My Offers</CardTitle>
-              {/* */}
+          <CardTitle>
+            <div>
+              <DashboardTitleBG />
+            </div>
+            <span>My Identities</span>
+          </CardTitle>
+          <DashboardContainer>
+            {identityNfts?.length > 0 && currentUser && monthContext ? (
               <React.Fragment>
+                <SeeMoreButton
+                  onClick={() => navigate("/dashboard/identities")}
+                >
+                  See More
+                </SeeMoreButton>
                 <DashboardCardGrid>
-                  {myOfferContext
-                    ?.filter((f: any) => f.status === 0)
-                    .slice(0, 4) //////////////////// Have to add some filter by collection id
+                  {/* {identityNfts */}
+                  {identityNfts
+                    ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                     .map((item: any, key: number) => (
-                      <MarketCard
-                        // {...cardData[key]}
-                        key={key}
+                      <PredictionCard
+                        dashbordstyle={"true"}
+                        height={"225"}
+                        isNotHover={true}
+                        day={item.day}
+                        month={item.month}
+                        year={item.year}
+                        rarity={item.rarity}
+                        item={item}
                         {...item}
-                        onCard={() =>
-                          navigate("/dashboard/myoffer?id=" + item.nft_id)
-                        }
+                        key={key}
+                        onSell={handleSell}
+                        cardType="identity"
+                        onView={handleView}
                       />
                     ))}
                 </DashboardCardGrid>
-                <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
+
+                <ViewDateCardSection
+                  isView={isView === "view"}
+                  cardType={cardType}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                  }}
+                />
+                <SellDateCardSection
+                  onSellConfirm={handleSellConfirm}
+                  cardType={cardType}
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                  }}
+                />
+              </React.Fragment>
+            ) : !isLoadingIdentity ? (
+              <EmptyCardWrapper>
+                <p>
+                  Combine a Year card, a Day & Month, and a Category card to
+                  craft an Identity.
+                </p>
+                <img src="/assets/identities-empty.png" alt="" />
+                {currentUser && (
+                  <Button
+                    className="dashboard-card-button"
+                    onClick={() => navigate("/crafting/identities")}
+                  >
+                    Craft an Identity
+                  </Button>
+                )}
+              </EmptyCardWrapper>
+            ) : (
+              <Loader />
+            )}
+          </DashboardContainer>
+        </DashboardCardWrapper>
+        <DashboardCardWrapper>
+          <CardTitle>
+            <div>
+              <DashboardTitleBG />
+            </div>
+            <span>My Predictions</span>
+          </CardTitle>
+          <DashboardContainer>
+            {predictionNfts.length > 0 && currentUser ? (
+              <React.Fragment>
+                <SeeMoreButton
+                  onClick={() => navigate("/dashboard/predictions")}
+                >
                   See More
                 </SeeMoreButton>
+                <DashboardCardGrid>
+                  {predictionNfts
+                    ?.slice(0, 4) //////////////////// Have to add some filter by collection id
+                    .map((item: any, key: number) => (
+                      <PredictionCard
+                        dashbordstyle={"true"}
+                        height={"225"}
+                        isNotHover={true}
+                        item={item}
+                        {...item}
+                        rarity={item.rarity}
+                        key={key}
+                        onSell={handleSell}
+                        cardType="prediction"
+                        onView={handleView}
+                      />
+                    ))}
+                </DashboardCardGrid>
               </React.Fragment>
-            </DashboardCardWrapper>
-          ) : !isLoadingOffers ? (
-            <DashboardCardWrapper>
-              <CardTitle>My Offers</CardTitle>
+            ) : !isLoadingPrediction ? (
+              <EmptyCardWrapper>
+                <p>
+                  Add one or more Triggers to an Identity to craft a Prediction
+                </p>
+                <img src="/assets/prediction-empty.png" alt="" />
+                {currentUser && (
+                  <Button
+                    className="dashboard-card-button"
+                    onClick={() => navigate("/crafting/predictions")}
+                  >
+                    Craft a Prediction
+                  </Button>
+                )}
+              </EmptyCardWrapper>
+            ) : (
+              <Loader />
+            )}
+          </DashboardContainer>
+        </DashboardCardWrapper>
+        {currentUser && myOfferContext?.length > 0 ? (
+          <DashboardCardWrapper>
+            <CardTitle>
+              <div>
+                <DashboardTitleBG />
+              </div>
+              <span>My Offers</span>
+            </CardTitle>
+            {/* */}
+            <DashboardContainer>
+              <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
+                See More
+              </SeeMoreButton>
+              <DashboardCardGrid>
+                {myOfferContext
+                  ?.filter((f: any) => f.status === 0)
+                  .slice(0, 4) //////////////////// Have to add some filter by collection id
+                  .map((item: any, key: number) => (
+                    <MarketCard
+                      // {...cardData[key]}
+                      key={key}
+                      {...item}
+                      onCard={() =>
+                        navigate("/dashboard/myoffer?id=" + item.nft_id)
+                      }
+                    />
+                  ))}
+              </DashboardCardGrid>
+            </DashboardContainer>
+          </DashboardCardWrapper>
+        ) : !isLoadingOffers ? (
+          <DashboardCardWrapper>
+            <CardTitle>
+              <div>
+                <DashboardTitleBG />
+              </div>
+              <span>My Offers</span>
+            </CardTitle>
+            <DashboardContainer>
               <EmptyCardWrapper>
                 <p>There is no card to offer</p>
                 <img src="/assets/prediction-empty.png" alt="" />
@@ -320,40 +349,55 @@ export const DashboardPage: React.FC = () => {
                   </Button>
                 )}
               </EmptyCardWrapper>
-            </DashboardCardWrapper>
-          ) : (
-            <Loader />
-          )}
+            </DashboardContainer>
+          </DashboardCardWrapper>
+        ) : (
+          <Loader />
+        )}
         {currentUser && myFeedContext?.length > 0 && (
           <DashboardCardWrapper>
-            <CardTitle>My Feed</CardTitle>
-            <DashboardListGrid>
-              {pageMyFeeds.map((item, key) => (
-                <FeedItem {...item} key={key} />
-              ))}
-            </DashboardListGrid>
-            <ResponsivePagination
-              maxWidth={272}
-              current={myCurrentPage}
-              total={Math.ceil(Number(myFeedContext?.length / 5))}
-              onPageChange={(page) => handlePagination(page, "my")}
-            />
+            <CardTitle>
+              <div>
+                <DashboardTitleBG />
+              </div>
+              <span>My Feed</span>
+            </CardTitle>
+            <DashboardContainer>
+              <DashboardListGrid>
+                {pageMyFeeds.map((item, key) => (
+                  <FeedItem {...item} key={key} />
+                ))}
+              </DashboardListGrid>
+              <ResponsivePagination
+                maxWidth={272}
+                current={myCurrentPage}
+                total={Math.ceil(Number(myFeedContext?.length / 5))}
+                onPageChange={(page) => handlePagination(page, "my")}
+              />
+            </DashboardContainer>
           </DashboardCardWrapper>
         )}
         {currentUser && feedContext?.length > 0 && (
           <DashboardCardWrapper>
-            <CardTitle>TwoTwentyK News Feed</CardTitle>
-            <DashboardListGrid>
-              {pageAllFeeds?.map((item, key) => (
-                <FeedItem {...item} key={key} />
-              ))}
-            </DashboardListGrid>
-            <ResponsivePagination
-              maxWidth={272}
-              current={afCurrentPage}
-              total={Math.ceil(Number(feedContext.length / 5))}
-              onPageChange={(page) => handlePagination(page, "all")}
-            />
+            <CardTitle>
+              <div>
+                <DashboardTitleBG />
+              </div>
+              <span>TwoTwentyK News Feed</span>
+            </CardTitle>
+            <DashboardContainer>
+              <DashboardListGrid>
+                {pageAllFeeds?.map((item, key) => (
+                  <FeedItem {...item} key={key} />
+                ))}
+              </DashboardListGrid>
+              <ResponsivePagination
+                maxWidth={272}
+                current={afCurrentPage}
+                total={Math.ceil(Number(feedContext.length / 5))}
+                onPageChange={(page) => handlePagination(page, "all")}
+              />
+            </DashboardContainer>
           </DashboardCardWrapper>
         )}
         {!currentUser && (
