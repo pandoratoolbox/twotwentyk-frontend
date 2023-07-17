@@ -28,6 +28,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       if (resp) {
         if (resp.data.token) {
           localStorage.setItem("auth", resp.data.token)
+          api.defaults.headers.common["Authorization"] = `Bearer ${resp.data.token}`;
           navigate("/dashboard");
         } else {
           throw("No token in API response")
@@ -48,6 +49,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
       if (resp) {
         if (resp.data.token) {
           localStorage.setItem("auth", resp.data.token)
+          api.defaults.headers.common["Authorization"] = `Bearer ${resp.data.token}`;
           navigate("/dashboard");
         } else {
           throw("No token in API response")

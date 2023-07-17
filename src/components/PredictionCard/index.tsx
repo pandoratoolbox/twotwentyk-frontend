@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   AmountWrapper,
   CardBodyWrapper,
@@ -48,7 +48,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { celebritiesContext } = useCelebritiesContext();
-  const [clearSelect, setClearSelect] = React.useState<boolean>(true);
+  const [clearSelect, setClearSelect] = useState<boolean>(true);
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -62,6 +62,19 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       }
     }
   };
+
+  const [identityMatches, setIdentityMatches] = useState<{label: string, value: string}[] | null>(null);
+
+  useEffect(() => {
+    if (celebritiesContext) {
+      let matches: {label: string, value: string}[] = [];
+      (celebritiesContext as Map<number,ICelebrity>).forEach((v) => {
+        if (v.birth_day === day && v.birth_month === month && v.birth_year === year && v.category === category) matches.push({label: v.name, value: v.id.toString() })
+      })
+
+      setIdentityMatches(matches)
+    }
+  }, [celebritiesContext])
 
   image = "/assets/nfts/1.png";
   return (
@@ -109,13 +122,9 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
       ) : (
         <CardBottomWrapper>
-          {celebritiesContext && (
+          {identityMatches && (
             <SelectOption
-              options={Array.from<[number, any]>(celebritiesContext).map(
-                ([key, value]) => {
-                  return { label: value.name, value: String(value.id) };
-                }
-              )}
+              options={identityMatches}
               placeholder="Identity Matches"
               clear={clearSelect}
               onSelect={chooseCelebrity}

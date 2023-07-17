@@ -40,7 +40,7 @@ export interface NftCardTriggerFilters {
   status: number[] | null;
   rarities: number[] | null;
   triggers: number[] | null;
-  tiers: number[] | null;
+  tiers: string[] | null;
 }
 
 export interface NftCardYearFilters {
