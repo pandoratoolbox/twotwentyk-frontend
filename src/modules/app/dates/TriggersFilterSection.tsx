@@ -6,6 +6,7 @@ import {
   useStatusContext,
   useTriggersContext,
   useCategoriesContext,
+  useTiersContext,
 } from "../../../context";
 
 export const TriggerFilterSection: React.FC<{
@@ -15,6 +16,7 @@ export const TriggerFilterSection: React.FC<{
   const { statusContext } = useStatusContext();
   const { triggersContext } = useTriggersContext();
   const { categoriesContext } = useCategoriesContext();
+  const { tiersContext } = useTiersContext();
 
   return (
     <FilterSectionWrapper>
@@ -22,14 +24,14 @@ export const TriggerFilterSection: React.FC<{
       <FilterGroupWrapper>
         <SelectBox
           isFilter
-          placeholder="Tier"
-          newData={triggersContext}
+          placeholder="Trigger Tier"
+          newData={tiersContext}
           onClick={onClick}
         />
         <SelectBox
           isFilter
-          newData={categoriesContext}
-          placeholder="Categories"
+          newData={triggersContext}
+          placeholder="Trigger"
           onClick={onClick}
         />
         <SelectBox

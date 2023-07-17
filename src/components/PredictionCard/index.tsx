@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import {
   AmountWrapper,
   CardBodyWrapper,
@@ -16,8 +16,11 @@ import {
   CardButtonGroup,
   CardOverlayWrapper,
 } from "../DateCard/styles";
-import { PredictionCardProps } from "../../types";
-import { useMonthContext } from "../../context";
+import { PredictionCardProps, SelectOptionProps } from "../../types";
+import { useMonthContext, useCelebritiesContext } from "../../context";
+import { SelectOption } from "../SelectBox/SelectOption";
+import { ICelebrity } from "../../models/celebrity";
+import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -44,16 +47,43 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onBuy,
 }) => {
   const { monthContext } = useMonthContext();
+  const { celebritiesContext } = useCelebritiesContext();
+  const [clearSelect, setClearSelect] = useState<boolean>(true);
+
+  const chooseCelebrity = async (v: SelectOptionProps) => {
+    let c = (celebritiesContext as Map<number, ICelebrity>).get(
+      Number(v.value)
+    );
+
+    if (c) {
+      let res = await updateMyNftCardIdentity(c?.id , c?.name);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log(res?.data);
+      }
+    }
+  };
+
+  const [identityMatches, setIdentityMatches] = useState<{label: string, value: string}[] | null>(null);
+
+  useEffect(() => {
+    if (celebritiesContext) {
+      let matches: {label: string, value: string}[] = [];
+      (celebritiesContext as Map<number,ICelebrity>).forEach((v) => {
+        if (v.birth_day === day && v.birth_month === month && v.birth_year === year && v.category === category) matches.push({label: v.name, value: v.id.toString() })
+      })
+
+      setIdentityMatches(matches)
+    }
+  }, [celebritiesContext])
 
   image = "/assets/nfts/1.png";
-  // console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
       onClick={onClick}
       bg={cardType === "prediction" ? image : ""}
       height={height}
-      isnothover={isNotHover ? "true" : undefined}
+      isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardTopWrapper>
         <CardDateWrapper dashbordstyle={dashbordstyle}>
@@ -88,9 +118,21 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         </CardBodyWrapper>
       )}
 
-      {celebrity_name && (
+      {celebrity_name ? (
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+      ) : (
+        <CardBottomWrapper>
+          {identityMatches && (
+            <SelectOption
+              options={identityMatches}
+              placeholder="Identity Matches"
+              clear={clearSelect}
+              onSelect={chooseCelebrity}
+            />
+          )}
+        </CardBottomWrapper>
       )}
+
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {!is_crafted && onCraft && (

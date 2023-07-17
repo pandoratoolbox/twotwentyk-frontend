@@ -25,6 +25,7 @@ import {
   ICelebrity,
   ICategory,
 } from "../types/actions";
+import { ITier } from "../models/tier";
 
 const AuthContext = createContext<any>({});
 const FeedContext = createContext<any>([]);
@@ -40,6 +41,7 @@ const StatusContext = createContext<any>([]);
 const CategoriesContext = createContext<any>([]);
 const CelebritiesContext = createContext<any>([]);
 const TriggersContext = createContext<any>([]);
+const TiersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
 
@@ -59,6 +61,8 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [myOfferContext, setMyOfferContext] = useState<any>();
   const [categoriesContext, setCategoriesContext] =
     useState<Map<number, ICategory>>();
+    const [tiersContext, setTiersContext] =
+    useState<Map<string,string>>(new Map<string,string>([["minor_1","minor_1"],["minor_2","minor_2"],["major","major"]]));
   const [triggersContext, setTriggersContext] =
     useState<Map<number, ITrigger>>();
   const [celebritiesContext, setCelebritiesContext] =
@@ -89,6 +93,12 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     useState<Map<number, ICategory>>();
   const [statusContext, setStatusContext] = useState<Map<number, ICategory>>();
   const [inventoryNFTsContext, setInventoryNftsContext] = useState<any>();
+
+
+  const tiersValue = useMemo(
+    () => ({ tiersContext, setTiersContext }),
+    [tiersContext]
+  );
 
   const celebritiesValue = useMemo(
     () => ({ celebritiesContext, setCelebritiesContext }),
@@ -295,6 +305,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   }, [location.pathname]);
 
   return (
+    <TiersContext.Provider value={tiersValue}>
     <MonthContext.Provider value={monthValue}>
       <AuthContext.Provider value={authValue}>
         <CategoriesContext.Provider value={categoriesValue}>
@@ -332,8 +343,14 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
         </CategoriesContext.Provider>
       </AuthContext.Provider>
     </MonthContext.Provider>
+    </TiersContext.Provider>
   );
 };
+
+export const useTiersContext = () => {
+  return useContext(TiersContext);
+};
+
 
 export const useAuthContext = () => {
   return useContext(AuthContext);

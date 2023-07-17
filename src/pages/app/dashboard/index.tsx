@@ -22,14 +22,14 @@ import {
   DashboardTitleBG,
 } from "../../../components";
 import { IArticle } from "../../../types/actions";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import {
-  useFeedContext,
+  // useFeedContext,
   // useMarketplaceListContext,
   useMonthContext,
-  useMyFeedContext,
-  useMyNFTsContext,
-  useMyOfferContext,
+  // useMyFeedContext,
+  // useMyNFTsContext,
+  // useMyOfferContext,
 } from "../../../context";
 import { SellDateCardSection, ViewDateCardSection } from "../../../modules";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
@@ -37,13 +37,14 @@ import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
 import { INftCardIdentity } from "../../../models/nft_card_identity";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
+import api from "../../../config/api";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
-  const { feedContext } = useFeedContext();
-  const { myFeedContext } = useMyFeedContext();
-  const { myNFTsContext } = useMyNFTsContext();
-  const { myOfferContext } = useMyOfferContext();
+  // const { feedContext } = useFeedContext();
+  // const { myFeedContext } = useMyFeedContext();
+  // const { myNFTsContext } = useMyNFTsContext();
+  // const { myOfferContext } = useMyOfferContext();
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [pageAllFeeds, setPageAllFeeds] = useState<IArticle[]>([]);
@@ -58,12 +59,16 @@ export const DashboardPage: React.FC = () => {
   const [isLoadingPrediction, setIsLoadingPrediction] = useState(false);
   const [isLoadingIdentity, setIsLoadingIdentity] = useState(false);
   const [isLoadingOffers, setIsLoadingOffers] = useState(false);
+  const [isLoadingFeed, setIsLoadingFeed] = useState(false);
+  const [isLoadingMyFeed, setIsLoadingMyFeed] = useState(false);
 
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
     []
   );
   const [marketplaceOffers, setMarketplaceOffers] = useState<any[]>([]);
+  const [feedData, setFeedData] = useState<IArticle[]>([]);
+  const [myFeedData, setMyFeedData] = useState<IArticle[]>([]);
 
   const { monthContext } = useMonthContext();
 
@@ -72,24 +77,20 @@ export const DashboardPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setPageAllFeeds(feedContext.slice(0, 5));
-  }, [feedContext]);
+    setPageAllFeeds(feedData.slice(0, 5));
+  }, [feedData]);
 
   useEffect(() => {
-    setPageMyFeeds(myFeedContext?.slice(0, 5));
-  }, [myFeedContext]);
+    setPageMyFeeds(myFeedData?.slice(0, 5));
+  }, [myFeedData]);
 
   const handlePagination = (number: number, key: string) => {
     if (key === "all") {
       setAFCurrentPage(number);
-      setPageAllFeeds(
-        feedContext.slice(5 * (number - 1), 5 * (number - 1) + 5)
-      );
+      setPageAllFeeds(feedData.slice(5 * (number - 1), 5 * (number - 1) + 5));
     } else if (key === "my") {
       setMYCurrentPage(number);
-      setPageMyFeeds(
-        myFeedContext.slice(5 * (number - 1), 5 * (number - 1) + 5)
-      );
+      setPageMyFeeds(myFeedData.slice(5 * (number - 1), 5 * (number - 1) + 5));
     }
   };
 
@@ -141,9 +142,57 @@ export const DashboardPage: React.FC = () => {
     setIsLoadingPrediction(false);
   };
 
+  const loadOffers = async () => {
+    setIsLoadingOffers(true);
+
+    try {
+      let res = await api.get("/me/marketplace_offer");
+      if (res.data) {
+        setMarketplaceOffers(res.data);
+      }
+    } catch (e: any) {
+      toast.error(e);
+    }
+
+    setIsLoadingOffers(false);
+  };
+
+  const loadFeed = async () => {
+    setIsLoadingFeed(true);
+
+    try {
+      let res = await api.get("/feed");
+      if (res.data) {
+        setFeedData(res.data);
+      }
+    } catch (e: any) {
+      toast.error(e);
+    }
+
+    setIsLoadingFeed(false);
+  };
+
+  const loadMyFeed = async () => {
+    setIsLoadingMyFeed(true);
+
+    try {
+      let res = await api.get("/feed/personalised");
+      if (res.data) {
+        setMyFeedData(res.data);
+      }
+    } catch (e: any) {
+      toast.error(e);
+    }
+
+    setIsLoadingMyFeed(false);
+  };
+
   const loadNfts = async () => {
     loadIdentities();
     loadPredictions();
+    loadFeed();
+    loadMyFeed();
+    loadOffers();
   };
 
   useEffect(() => {
@@ -235,7 +284,7 @@ export const DashboardPage: React.FC = () => {
                     className="dashboard-card-button"
                     onClick={() => navigate("/crafting/identities")}
                   >
-                    Craft an Identity
+                    Craft an Identity Now
                   </Button>
                 )}
               </EmptyCardWrapper>
@@ -289,7 +338,7 @@ export const DashboardPage: React.FC = () => {
                     className="dashboard-card-button"
                     onClick={() => navigate("/crafting/predictions")}
                   >
-                    Craft a Prediction
+                    Craft a Prediction Now
                   </Button>
                 )}
               </EmptyCardWrapper>
@@ -298,7 +347,7 @@ export const DashboardPage: React.FC = () => {
             )}
           </DashboardContainer>
         </DashboardCardWrapper>
-        {currentUser && myOfferContext?.length > 0 ? (
+        {currentUser && marketplaceOffers?.length > 0 ? (
           <DashboardCardWrapper>
             <CardTitle>
               <div>
@@ -312,7 +361,7 @@ export const DashboardPage: React.FC = () => {
                 See More
               </SeeMoreButton>
               <DashboardCardGrid>
-                {myOfferContext
+                {marketplaceOffers
                   ?.filter((f: any) => f.status === 0)
                   .slice(0, 4) //////////////////// Have to add some filter by collection id
                   .map((item: any, key: number) => (
@@ -330,31 +379,24 @@ export const DashboardPage: React.FC = () => {
           </DashboardCardWrapper>
         ) : !isLoadingOffers ? (
           <DashboardCardWrapper>
-            <CardTitle>
-              <div>
-                <DashboardTitleBG />
-              </div>
-              <span>My Offers</span>
-            </CardTitle>
-            <DashboardContainer>
-              <EmptyCardWrapper>
-                <p>There is no card to offer</p>
-                <img src="/assets/prediction-empty.png" alt="" />
-                {currentUser && (
-                  <Button
-                    className="dashboard-card-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Go to Marketplace
-                  </Button>
-                )}
-              </EmptyCardWrapper>
-            </DashboardContainer>
+            <CardTitle>My Offers</CardTitle>
+            <EmptyCardWrapper>
+              <p>There is no card to offer</p>
+              <img src="/assets/prediction-empty.png" alt="" />
+              {currentUser && (
+                <Button
+                  className="dashboard-card-button"
+                  onClick={() => navigate("/marketplace")}
+                >
+                  Go to Marketplace
+                </Button>
+              )}
+            </EmptyCardWrapper>
           </DashboardCardWrapper>
         ) : (
           <Loader />
         )}
-        {currentUser && myFeedContext?.length > 0 && (
+        {currentUser && myFeedData?.length > 0 && (
           <DashboardCardWrapper>
             <CardTitle>
               <div>
@@ -371,13 +413,13 @@ export const DashboardPage: React.FC = () => {
               <ResponsivePagination
                 maxWidth={272}
                 current={myCurrentPage}
-                total={Math.ceil(Number(myFeedContext?.length / 5))}
+                total={Math.ceil(Number(myFeedData?.length / 5))}
                 onPageChange={(page) => handlePagination(page, "my")}
               />
             </DashboardContainer>
           </DashboardCardWrapper>
         )}
-        {currentUser && feedContext?.length > 0 && (
+        {currentUser && feedData?.length > 0 && (
           <DashboardCardWrapper>
             <CardTitle>
               <div>
@@ -394,7 +436,7 @@ export const DashboardPage: React.FC = () => {
               <ResponsivePagination
                 maxWidth={272}
                 current={afCurrentPage}
-                total={Math.ceil(Number(feedContext.length / 5))}
+                total={Math.ceil(Number(feedData.length / 5))}
                 onPageChange={(page) => handlePagination(page, "all")}
               />
             </DashboardContainer>

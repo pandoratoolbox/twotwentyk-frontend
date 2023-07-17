@@ -116,9 +116,9 @@ export const TriggersPage: React.FC = () => {
     };
 
     switch (filterType) {
-      case "Tier":
+      case "Trigger Tier":
         newFilters.tiers = selectedOptions.map((v) => {
-          return Number(v);
+          return v;
         });
         break;
       case "All Rarities":
@@ -126,6 +126,11 @@ export const TriggersPage: React.FC = () => {
           return Number(v);
         });
         break;
+      case "Trigger":
+          newFilters.triggers = selectedOptions.map((v) => {
+            return Number(v);
+          });
+          break;
       case "Status":
         newFilters.status = selectedOptions.map((v) => {
           return Number(v);

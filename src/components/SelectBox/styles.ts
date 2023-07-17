@@ -3,6 +3,7 @@ import { styled } from "styled-components";
 export const SelectBoxWrapper = styled.div`
   width: 100%;
   position: relative;
+
   & > p {
     font-weight: 600;
     font-size: 14px;
@@ -21,10 +22,14 @@ export const SelectBoxContainer = styled.div<{ border?: string }>`
   padding: 0 10px 0 24px;
   cursor: pointer;
   border: 1px solid ${({ border }) => (border ? "#E4E4E4" : "transparent")};
+  &.IMSelect {
+    background: transparent;
+    justify-content: space-around;
+  }
 `;
 
 export const SelectBoxTextWrapper = styled.div`
-text-transform: capitalize;
+  text-transform: capitalize;
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
@@ -41,7 +46,7 @@ text-transform: capitalize;
 `;
 
 export const SelectOptionsWrapper = styled.div<{ open?: boolean }>`
-text-transform: capitalize;
+  text-transform: capitalize;
   position: absolute;
   padding: 10px 24px;
   margin-top: 10px;
@@ -53,6 +58,14 @@ text-transform: capitalize;
   border-radius: 8px;
   width: 100%;
   z-index: 5;
+  &.IMSelect {
+    max-width: 216px;
+    max-height: 200px;
+    overflow: auto;
+    padding: 11px 12px;
+    left: unset;
+    right: 0;
+  }
 `;
 
 export const OptionItem = styled.label`
@@ -70,6 +83,18 @@ export const OptionItem = styled.label`
     align-items: center;
     img {
       margin-right: 10px;
+    }
+  }
+
+  &.IMSelect {
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0;
+    padding-bottom: 10px;
+    line-height: normal;
+    border: none !important;
+    &:last-child {
+      padding: 0;
     }
   }
 `;

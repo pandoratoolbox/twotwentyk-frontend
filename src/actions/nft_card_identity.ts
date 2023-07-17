@@ -34,3 +34,14 @@ export const getMyNftCardIdentity = async (filters: NftCardIdentityFilters | nul
     return { success: false, message: error };
   }
 };
+
+
+export const updateMyNftCardIdentity = async (id: number, cName: string) => {
+  try {
+  
+    const res = await api.put(`/nft_card_identity/${id}`, {celebrity_name:cName});
+    return { success: true, data: res.data };
+  } catch (error) {
+    return { success: false, message: error };
+  }
+};

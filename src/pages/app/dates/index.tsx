@@ -51,35 +51,18 @@ export const DatesPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
   const [filters, setFilters] = useState<DateFilters>({
-    card_types: [0],
+    card_types: [0, 1],
     card_series_id: null,
     rarities: null,
     status: null,
   });
 
   const [nftCardDayMonthData, setNftCardDayMonthData] = useState<
-    INftCardDayMonth[] | null
+    INftCardDayMonth[] | INftCardYear[]
   >([]);
-
-  const [nftCardYearData, setNftCardYearData] = useState<INftCardYear[] | null>(
-    null
-  );
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
-  }, []);
-
-  const getPageData = async () => {
-    setIsLoading(true);
-    const response = await getMyNftCardDayMonth(null);
-    if (response?.data) {
-      setNftCardDayMonthData(response?.data);
-    }
-    setIsLoading(false);
-  };
-
-  useEffect(() => {
-    getPageData();
   }, []);
 
   const handleSellConfirm = async (
@@ -119,6 +102,8 @@ export const DatesPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
+    // for loader
+    setNftCardDayMonthData([{}]);
     setIsLoadingFilter(true);
 
     let newFilters: DateFilters = {
@@ -150,6 +135,16 @@ export const DatesPage: React.FC = () => {
     }
 
     setFilters(newFilters);
+  };
+
+  // filter Api Call
+  const handleFilterAPICall = async () => {
+    let newFilters: DateFilters = {
+      card_series_id: filters.card_series_id,
+      status: filters.status,
+      rarities: filters.rarities,
+      card_types: filters.card_types,
+    };
 
     if (filters.card_types.includes(0)) {
       let dayMonthFilters: NftCardDayMonthFilters = {
@@ -161,9 +156,12 @@ export const DatesPage: React.FC = () => {
       };
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
-      if (res?.data) {
+      if (res?.data && Array.isArray(res.data)) {
         console.log("refreshed nft card day-month data");
-        setNftCardDayMonthData(res?.data as INftCardDayMonth[]);
+        setNftCardDayMonthData((prevData) => [
+          ...prevData,
+          ...(res?.data as INftCardDayMonth[]),
+        ]);
       }
     }
 
@@ -176,13 +174,23 @@ export const DatesPage: React.FC = () => {
       };
 
       let res = await getMyNftCardYear(yearFilters);
-      if (res?.data) {
-        setNftCardYearData(res?.data as INftCardYear[]);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log("refreshed nft card year data");
+        setNftCardDayMonthData((prevData) => [
+          ...prevData,
+          ...(res?.data as INftCardYear[]),
+        ]);
       }
     }
 
     setIsLoadingFilter(false);
   };
+
+  useEffect(() => {
+    if (filters.card_types.length > 0) {
+      handleFilterAPICall();
+    }
+  }, [filters]);
 
   return (
     <AppLayout>
