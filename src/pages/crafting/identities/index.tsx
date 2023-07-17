@@ -24,8 +24,6 @@ import { getMyNftCardCategory } from "../../../actions/nft_card_category";
 import { getMyNftCardYear } from "../../../actions/nft_card_year";
 import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
 
-
-
 export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -53,40 +51,38 @@ export const CraftingIdentitesPage: React.FC = () => {
     null
   );
 
-  const [myNfts, setMyNfts] = useState<
-    {
-      crafting: INftCardCrafting[] | null;
-      category: INftCardCategory[] | null;
-      dayMonth: INftCardDayMonth[] | null;
-      year: INftCardYear[] | null;
-    }
-  >({
+  const [myNfts, setMyNfts] = useState<{
+    crafting: INftCardCrafting[] | null;
+    category: INftCardCategory[] | null;
+    dayMonth: INftCardDayMonth[] | null;
+    year: INftCardYear[] | null;
+  }>({
     crafting: null,
     category: null,
     dayMonth: null,
-    year: null
+    year: null,
   });
 
   const loadMyNfts = async () => {
     try {
-      let crafting = await getMyNftCardCrafting(null)
+      let crafting = await getMyNftCardCrafting(null);
       if (!crafting.data) {
-        throw "Error getting crafting cards"
+        throw "Error getting crafting cards";
       }
 
-      let category = await getMyNftCardCategory(null)
+      let category = await getMyNftCardCategory(null);
       if (!category.data) {
-        throw "Error getting category cards"
+        throw "Error getting category cards";
       }
 
-      let dayMonth = await getMyNftCardDayMonth(null)
+      let dayMonth = await getMyNftCardDayMonth(null);
       if (!dayMonth.data) {
-        throw "Error getting day-month cards"
+        throw "Error getting day-month cards";
       }
 
-      let year = await getMyNftCardYear(null)
+      let year = await getMyNftCardYear(null);
       if (!year.data) {
-        throw "Error getting year cards"
+        throw "Error getting year cards";
       }
 
       setMyNfts({
@@ -94,13 +90,11 @@ export const CraftingIdentitesPage: React.FC = () => {
         category: category.data,
         dayMonth: dayMonth.data,
         year: year.data,
-      })
-
-    } catch(e: any) {
-      toast.error(e)
+      });
+    } catch (e: any) {
+      toast.error(e);
     }
-  }
-
+  };
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -178,13 +172,24 @@ export const CraftingIdentitesPage: React.FC = () => {
       return;
     }
 
-    const newCraft = {
+    let newCraft: {
+      nft_card_day_month_id: number;
+      nft_card_year_id: number;
+      nft_card_crafting_id: number;
+      nft_card_category_id: number;
+      celebrity_id: number | null;
+    } = {
       nft_card_day_month_id: Number(selectedCards.dayMonth.id),
       nft_card_year_id: Number(selectedCards.year.id),
       nft_card_crafting_id: Number(selectedCards.crafting?.id),
-      celebrity_id: Number(selectedCelebrity?.id),
       nft_card_category_id: Number(selectedCards.category?.id),
+      celebrity_id: null,
     };
+
+    if (selectedCelebrity !== null) {
+      newCraft.celebrity_id = Number(selectedCelebrity?.id);
+    }
+
     const res = await craftingIdentity(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
@@ -194,7 +199,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   };
 
-  const handleSelectCelebrity = (c: ICelebrity) => {
+  const handleSelectCelebrity = (c: ICelebrity | null) => {
     setSelectedCelebrity(c);
   };
 
@@ -242,7 +247,7 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onSelectCardDayMonth={handleSelectCardDayMonth}
                 onSelectCardYear={handleSelectCardYear}
                 myNfts={myNfts}
-                setMyNfts={(setMyNfts)}
+                setMyNfts={setMyNfts}
               />
             </CraftLeftWrapper>
             <CraftRightWrapper open={isOpen ? "true" : undefined}>
