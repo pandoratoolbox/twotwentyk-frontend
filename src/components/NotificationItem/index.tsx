@@ -10,14 +10,18 @@ export const NotificationItem: React.FC<NotificationItemProps> = ({
 }) => {
   return (
     <NotificationItemWrapper>
-      <NotificationTitleWrapper>
-        <h5>
-          <p>{date} - </p>
-          {title}
-        </h5>
-        {isNew && <span>New</span>}
-      </NotificationTitleWrapper>
-      <p>{desc}</p>
+      {/* {isNew && <span>New</span>} */}
+      <div className="notify-img">
+        <img src="/assets/notification.png" alt="" />
+      </div>
+      <div>
+        <NotificationTitleWrapper>
+          <h5>
+            <b>{title}</b> <p>{date}</p>
+          </h5>
+        </NotificationTitleWrapper>
+        <p>{desc}</p>
+      </div>
     </NotificationItemWrapper>
   );
 };

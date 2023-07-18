@@ -11,7 +11,8 @@ export const CheckEmailForm: React.FC<checkEmailFormProps> = ({
   return (
     <AuthFormWrapper>
       <CheckEmailWrapper>
-        <IconMailbox />
+        {/* <IconMailbox /> */}
+        <img src="/assets/mail.png" alt="" />
         <h3>{title}</h3>
         <p>{desc}</p>
         <ResendEmail>

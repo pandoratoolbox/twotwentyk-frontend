@@ -16,7 +16,7 @@ export const SocialAuthButton: React.FC<SocialAuthButtonProps> = ({
     <SocialAuthButtonWrapper onClick={onClick}>
       <span>{social(socialType).icon}</span>
       <p>
-        {authType} with {socialType}
+        {authType === "Login" ? "Sign In" : "Sign Up"} with {socialType}
       </p>
     </SocialAuthButtonWrapper>
   );

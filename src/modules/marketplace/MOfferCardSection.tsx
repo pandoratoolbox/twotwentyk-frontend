@@ -20,6 +20,7 @@ import {
   BalanceBuyConfirmModal,
   Button,
   IconArrowDown,
+  IconCoinsLarge,
   IconPigMoney,
   Input,
   MarketCard,
@@ -44,77 +45,77 @@ export const MOfferCardSection: React.FC<CardSidebarProps> = ({
     setConfirm(true);
   };
 
-    // for check rarity
-    const checkRarity = (selectedItem: any) => {
-      if (
-        selectedItem?.nft_card_day_month?.rarity === 0 ||
-        selectedItem?.nft_card_trigger?.rarity === 0 ||
-        selectedItem?.nft_card_crafting?.rarity === 0 ||
-        selectedItem?.nft_card_identity?.rarity === 0 ||
-        selectedItem?.nft_card_prediction?.rarity === 0 ||
-        selectedItem?.nft_card_year?.rarity === 0
-      ) {
-        return "Common";
-      } else if (
-        selectedItem?.nft_card_day_month?.rarity === 1 ||
-        selectedItem?.nft_card_trigger?.rarity === 1 ||
-        selectedItem?.nft_card_crafting?.rarity === 1 ||
-        selectedItem?.nft_card_identity?.rarity === 1 ||
-        selectedItem?.nft_card_prediction?.rarity === 1 ||
-        selectedItem?.nft_card_year?.rarity === 1
-      ) {
-        return "Uncommon";
-      } else if (
-        selectedItem?.nft_card_day_month?.rarity === 2 ||
-        selectedItem?.nft_card_trigger?.rarity === 2 ||
-        selectedItem?.nft_card_crafting?.rarity === 2 ||
-        selectedItem?.nft_card_identity?.rarity === 2 ||
-        selectedItem?.nft_card_prediction?.rarity === 2 ||
-        selectedItem?.nft_card_year?.rarity === 2
-      ) {
-        return "Rare";
-      }
-  
-      return undefined;
-    };
-  
-    //for check type
-    const checkType = (selectedItem: any) => {
-      if (selectedItem?.nft_card_day_month) {
-        return "Day/Month";
-      } else if (selectedItem?.nft_card_trigger) {
-        return "Trigger";
-      } else if (selectedItem?.nft_card_crafting) {
-        return "Crafting";
-      } else if (selectedItem?.nft_card_identity) {
-        return "Identity";
-      } else if (selectedItem?.nft_card_prediction) {
-        return "Prediction";
-      } else if (selectedItem?.nft_card_year) {
-        return "Year";
-      }
-  
-      return undefined;
-    };
-  
-    //for check type value
-    const checkTypeValue = (selectedItem: any) => {
-      if (selectedItem?.nft_card_day_month) {
-        return `${selectedItem?.nft_card_day_month?.day}/${selectedItem?.nft_card_day_month?.month}`;
-      } else if (selectedItem?.nft_card_trigger) {
-        return selectedItem?.nft_card_trigger?.trigger;
-      } else if (selectedItem?.nft_card_crafting) {
-        return "Crafting";
-      } else if (selectedItem?.nft_card_identity) {
-        return selectedItem?.nft_card_identity?.celebrity_name;
-      } else if (selectedItem?.nft_card_prediction) {
-        return selectedItem?.nft_card_prediction?.celebrity_name;
-      } else if (selectedItem?.nft_card_year) {
-        return selectedItem?.nft_card_year?.year;
-      }
-  
-      return undefined;
-    };
+  // for check rarity
+  const checkRarity = (selectedItem: any) => {
+    if (
+      selectedItem?.nft_card_day_month?.rarity === 0 ||
+      selectedItem?.nft_card_trigger?.rarity === 0 ||
+      selectedItem?.nft_card_crafting?.rarity === 0 ||
+      selectedItem?.nft_card_identity?.rarity === 0 ||
+      selectedItem?.nft_card_prediction?.rarity === 0 ||
+      selectedItem?.nft_card_year?.rarity === 0
+    ) {
+      return "Common";
+    } else if (
+      selectedItem?.nft_card_day_month?.rarity === 1 ||
+      selectedItem?.nft_card_trigger?.rarity === 1 ||
+      selectedItem?.nft_card_crafting?.rarity === 1 ||
+      selectedItem?.nft_card_identity?.rarity === 1 ||
+      selectedItem?.nft_card_prediction?.rarity === 1 ||
+      selectedItem?.nft_card_year?.rarity === 1
+    ) {
+      return "Uncommon";
+    } else if (
+      selectedItem?.nft_card_day_month?.rarity === 2 ||
+      selectedItem?.nft_card_trigger?.rarity === 2 ||
+      selectedItem?.nft_card_crafting?.rarity === 2 ||
+      selectedItem?.nft_card_identity?.rarity === 2 ||
+      selectedItem?.nft_card_prediction?.rarity === 2 ||
+      selectedItem?.nft_card_year?.rarity === 2
+    ) {
+      return "Rare";
+    }
+
+    return undefined;
+  };
+
+  //for check type
+  const checkType = (selectedItem: any) => {
+    if (selectedItem?.nft_card_day_month) {
+      return "Day/Month";
+    } else if (selectedItem?.nft_card_trigger) {
+      return "Trigger";
+    } else if (selectedItem?.nft_card_crafting) {
+      return "Crafting";
+    } else if (selectedItem?.nft_card_identity) {
+      return "Identity";
+    } else if (selectedItem?.nft_card_prediction) {
+      return "Prediction";
+    } else if (selectedItem?.nft_card_year) {
+      return "Year";
+    }
+
+    return undefined;
+  };
+
+  //for check type value
+  const checkTypeValue = (selectedItem: any) => {
+    if (selectedItem?.nft_card_day_month) {
+      return `${selectedItem?.nft_card_day_month?.day}/${selectedItem?.nft_card_day_month?.month}`;
+    } else if (selectedItem?.nft_card_trigger) {
+      return selectedItem?.nft_card_trigger?.trigger;
+    } else if (selectedItem?.nft_card_crafting) {
+      return "Crafting";
+    } else if (selectedItem?.nft_card_identity) {
+      return selectedItem?.nft_card_identity?.celebrity_name;
+    } else if (selectedItem?.nft_card_prediction) {
+      return selectedItem?.nft_card_prediction?.celebrity_name;
+    } else if (selectedItem?.nft_card_year) {
+      return selectedItem?.nft_card_year?.year;
+    }
+
+    return undefined;
+  };
 
   return (
     <>
@@ -122,13 +123,12 @@ export const MOfferCardSection: React.FC<CardSidebarProps> = ({
         <MSidebarContainer>
           <CloseButton onClick={onClose}>&times;</CloseButton>
           <h2>Make an Offer</h2>
-          <p>You can only make an offer with your TwotwentyK balance</p>
           <MyBalanceWrapper>
             <IconWRapper>
-              <IconPigMoney />
+              <IconCoinsLarge />
             </IconWRapper>
             <BalanceInfo>
-              <p>Your TwoTwentyK balance is</p>
+              <p>Your account balance is</p>
               <h3>
                 ${selectedItem?.price}
                 <span>USD</span>
@@ -138,9 +138,9 @@ export const MOfferCardSection: React.FC<CardSidebarProps> = ({
           <ViewCardWrapper>
             <MarketCard item={selectedItem} {...selectedItem} />
           </ViewCardWrapper>
-          <p className="owner">
+          {/* <p className="owner">
             Owned by <b>Username</b>
-          </p>
+          </p> */}
           <PropertiesWrapper>
             <PropertiesHeader>
               <span>Properties</span>
@@ -156,8 +156,8 @@ export const MOfferCardSection: React.FC<CardSidebarProps> = ({
                 <span>{checkType(selectedItem)}</span>
               </PropertyItem>
               <PropertyItem>
-              <p>{checkType(selectedItem)}</p>
-                  {checkTypeValue(selectedItem)}
+                <p>{checkType(selectedItem)}</p>
+                {checkTypeValue(selectedItem)}
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>

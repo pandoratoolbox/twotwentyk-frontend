@@ -16,6 +16,7 @@ import {
 } from "../../components";
 import { signinFormValidation } from "../../utils";
 import { signin } from "../../actions";
+import api from "../../config/api";
 
 export const SignInForm: React.FC = () => {
   const navigate = useNavigate();
@@ -32,6 +33,7 @@ export const SignInForm: React.FC = () => {
       });
       if (res.success) {
         localStorage.setItem("auth", res.token);
+        api.defaults.headers.common["Authorization"] = `Bearer ${res.token}`;
         navigate("/dashboard");
       } else {
         toast.error(res.message);
@@ -84,7 +86,7 @@ export const SignInForm: React.FC = () => {
       <FormActionWrapper>
         <Button onClick={handleSignIn}>Enter</Button>
         <FormActionText>
-          {"Don’t have an account? "} <Link to={"/signup"}>Sign Up now</Link>
+          {"Don’t have an account? "} <Link to={"/signup"}>Sign Up Now</Link>
         </FormActionText>
       </FormActionWrapper>
     </AuthFormWrapper>

@@ -1,15 +1,16 @@
 import { styled } from "styled-components";
 
-export const CardWrapper = styled.div<{ bg: string }>`
+//  background: ${({ bg }) =>
+//     bg
+//       ? `url(${bg}) no-repeat, #CDCDCD`
+//       : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
+
+export const CardWrapper = styled.div`
+  padding: 23px 25px;
   cursor: pointer;
   position: relative;
   width: 100%;
-  height: 293px;
-  background: ${({ bg }) =>
-    bg
-      ? `url(${bg}) no-repeat, #CDCDCD`
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
-  background-blend-mode: luminosity, normal;
+  /* background-blend-mode: luminosity, normal; */
   background-size: cover;
   background-position: center;
   display: flex;
@@ -24,6 +25,16 @@ export const CardWrapper = styled.div<{ bg: string }>`
   }
 `;
 
+export const CardImgWrapper = styled.div`
+  position: relative;
+  display: flex;
+  width: 100%;
+  img {
+    width: 100%;
+    height: auto;
+  }
+`;
+
 export const CardTopSection = styled.div`
   width: 100%;
   display: flex;
@@ -32,21 +43,25 @@ export const CardTopSection = styled.div`
 `;
 
 export const CardBottomSection = styled.div`
-  height: 75px;
+  height: 37px;
   width: 100%;
-  background: linear-gradient(
+  border-radius: 4px;
+  background: #000;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.2);
+  margin-top: 12px;
+  /* background: linear-gradient(
     180deg,
     rgba(0, 0, 0, 0) 0%,
     rgba(0, 0, 0, 0.08) 18.23%,
     rgba(0, 0, 0, 0.35) 51.56%,
     rgba(0, 0, 0, 0.8) 100%
-  );
+  ); */
   color: #fff;
-  border-radius: 0 0 8px 8px;
   padding: 14px 15px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: center;
+  align-items: center;
   h4 {
     font-weight: 600;
     font-size: 14px;
@@ -54,9 +69,12 @@ export const CardBottomSection = styled.div`
     margin-bottom: 4px;
   }
   p {
-    font-weight: 400;
+    color: #fff;
+    font-family: vipnagorgialla;
     font-size: 12px;
-    line-height: 15px;
+    font-weight: 100;
+    line-height: 100%; /* 12px */
+    text-transform: uppercase;
   }
 `;
 
@@ -68,9 +86,11 @@ export const CardOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(11, 11, 11, 0.6);
-  backdrop-filter: blur(5px);
-  border-radius: 8px;
+  /* background: rgba(11, 11, 11, 0.6); */
+  background: url("/assets/nfts/blur.png") no-repeat;
+  background-size: 100% 100%;
+  backdrop-filter: blur(2px);
+  /* border-radius: 8px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -81,21 +101,30 @@ export const CardOverlay = styled.div`
 `;
 
 export const Rarity = styled.div`
-  height: 30px;
-  border-radius: 0 8px;
-  font-weight: 500;
-  font-size: 14px;
-  line-height: 17px;
+  height: 32px;
+  background: url("/assets/nfts/rarity.png") no-repeat;
+  background-size: 100% 100%;
   min-width: 81px;
   display: flex;
+  font-family: "IBM Plex Mono", monospace;
+  color: #fff;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 400;
   align-items: center;
   justify-content: center;
+  position: absolute;
+  top: 11px;
+  right: 11px;
   color: #fff;
-  padding: 0 20px;
-  background: #615e5e;
+  padding: 0 13px;
+  /* background: #615e5e; */
 `;
 
 export const StatusWrapper = styled.div`
+  position: absolute;
+  bottom: 12px;
+  left: 0px;
   & > * {
     margin-top: 8px;
     padding: 0 7px;
@@ -113,7 +142,8 @@ export const StatusWrapper = styled.div`
     color: #000;
   }
   span {
-    background: rgba(0, 0, 0, 0.5);
-    color: #fff;
+    color: #000;
+    border-radius: 0px 4px 4px 0px;
+    background: rgba(255, 255, 255, 0.7);
   }
 `;

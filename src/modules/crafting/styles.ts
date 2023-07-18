@@ -1,17 +1,43 @@
 import { styled } from "styled-components";
 
 export const CraftSectionWrapper = styled.div`
-  padding: 24px 20px;
-  max-width: 825px;
+  /* padding: 24px 20px; */
+  max-width: 929px;
   width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
   margin: auto;
-  height: 414px;
-  overflow-y: auto;
-  & > p {
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 22px;
-    color: #6c6c6c;
+  /* overflow-y: auto; */
+`;
+
+export const EmptyCraftCardWrapper = styled.div`
+  padding: 16px;
+  width: 182px;
+  height: 215px;
+  position: relative;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    background: url("/assets/nfts/blur.png") no-repeat;
+    background-size: 100% 100%;
+    backdrop-filter: blur(1px);
+    opacity: 0;
+    transition: all 0.3s;
+  }
+  &:hover {
+    &::after {
+      opacity: 1;
+    }
   }
 `;
 
@@ -19,16 +45,23 @@ export const TitleWrapper = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 16px;
+  background: url("/assets/title-bg.png") no-repeat;
+  background-size: 100% 100%;
+  height: 114px;
+  padding: 0 40px 0 30px;
   h3 {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
+    color: #fff;
+    font-family: vipnagorgialla;
+    font-size: 32px;
+    font-weight: 100;
+    text-transform: uppercase;
   }
   .craft-button {
     max-width: 243px;
     width: 100%;
     height: 42px;
+    background: #fff;
+    color: #000;
   }
 `;
 
@@ -84,9 +117,22 @@ export const CraftCardGroup = styled.div`
 
 export const SelectCardSectionWrapper = styled.div`
   padding: 0 20px;
-  background: rgba(251, 252, 255, 0.8);
+  /* background: rgba(251, 252, 255, 0.8); */
+  /* flex: 1; */
+  /* overflow-y: auto; */
+`;
+
+export const CraftSectionContainer = styled.div`
+  overflow: auto;
+  padding-top: 16px;
   flex: 1;
-  overflow-y: auto;
+  & > p {
+    color: #000;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 24px;
+    padding: 0 24px;
+  }
 `;
 
 export const OpenPreview = styled.div`
@@ -244,6 +290,9 @@ export const CardPreviewSectionWrapper = styled.div`
   padding: 38px 46px;
   flex: 1;
   overflow-y: auto;
+  background: #eff8ff;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(15px);
   & > p {
     font-weight: 400;
     font-size: 14px;
@@ -256,9 +305,11 @@ export const CardPreviewSectionWrapper = styled.div`
     margin-top: 50px;
   }
   & > h2 {
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 27px;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
+    font-size: 24px;
+    font-weight: 400;
+    text-transform: uppercase;
     margin-bottom: 29px;
   }
 `;
@@ -270,16 +321,18 @@ export const MatchListSectionWrapper = styled.div`
   flex-direction: column;
   & > h2 {
     padding: 33px 20px 0;
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 27px;
-    text-align: center;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
+    font-size: 24px;
+    font-weight: 100;
+    text-transform: uppercase;
   }
   & > p {
-    margin-top: 4px;
-    margin-bottom: 26px;
-    padding: 0 46px;
+    color: rgba(12, 11, 11, 0.6);
     text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 24px;
   }
   & > .empty-matched {
     opacity: 0.5;
@@ -342,7 +395,7 @@ export const ItemContentInfoWrapper = styled.div`
       color: #ee3f3f;
     }
   }
-    &.owned {
+  &.owned {
     h5 {
       color: #23b983;
     }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { FilterGroupWrapper, FilterSectionWrapper, SortButton } from "./styles";
 import { IconSort, SelectBox } from "../../../components";
 import { collectionOption } from "./data";
@@ -14,6 +14,8 @@ export const PredictionsFilterSection: React.FC<{
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
   const { triggersContext } = useTriggersContext();
+
+  const [triggersList, setTriggersList] = useState<Map<string,string>>()
 
   return (
     <FilterSectionWrapper>

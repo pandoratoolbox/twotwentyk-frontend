@@ -1,5 +1,10 @@
 import React from "react";
-import { FeedImage, FeedInfoWrapper, FeedItemWrapper } from "./styles";
+import {
+  FeedImage,
+  FeedInfoWrapper,
+  FeedItemWrapper,
+  FeedReadMore,
+} from "./styles";
 // import { FeedItemProps } from "../../types";
 import { IArticle } from "../../types/actions";
 
@@ -18,7 +23,7 @@ export const FeedItem: React.FC<IArticle> = ({
       </FeedImage>
       <FeedInfoWrapper>
         <h4>{created_at ? new Date(created_at).toDateString() : ""}</h4>
-        <h3 onClick={() => window.open(url)}>{title}</h3>
+        <h3>{title}</h3>
         <p>{excerpt}</p>
         <div>
           {tags?.map((item, key) => (
@@ -26,6 +31,9 @@ export const FeedItem: React.FC<IArticle> = ({
           ))}
         </div>
       </FeedInfoWrapper>
+      <FeedReadMore>
+        <span onClick={() => window.open(url)}>{"Read More >"}</span>
+      </FeedReadMore>
     </FeedItemWrapper>
   );
 };

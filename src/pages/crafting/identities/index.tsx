@@ -18,12 +18,16 @@ import { IdentitySelectCardSection } from "../../../modules/crafting/IdentitySel
 import { IdentityCraftSection } from "../../../modules/crafting/IdentityCraftSection";
 import { CloseButton } from "../../../components/Modals/styles";
 import { OpenPreview } from "../../../modules/crafting/styles";
+import api from "../../../config/api";
+import { getMyNftCardCrafting } from "../../../actions/nft_card_crafting";
+import { getMyNftCardCategory } from "../../../actions/nft_card_category";
+import { getMyNftCardYear } from "../../../actions/nft_card_year";
+import { getMyNftCardDayMonth } from "../../../actions/nft_card_day_month";
 
 export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const { setMyNFTsContext } = useMyNFTsContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [selectedCraft, setSelectedCraft] = useState("dayMonth");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
@@ -47,8 +51,54 @@ export const CraftingIdentitesPage: React.FC = () => {
     null
   );
 
+  const [myNfts, setMyNfts] = useState<{
+    crafting: INftCardCrafting[] | null;
+    category: INftCardCategory[] | null;
+    dayMonth: INftCardDayMonth[] | null;
+    year: INftCardYear[] | null;
+  }>({
+    crafting: null,
+    category: null,
+    dayMonth: null,
+    year: null,
+  });
+
+  const loadMyNfts = async () => {
+    try {
+      let crafting = await getMyNftCardCrafting(null);
+      if (!crafting.data) {
+        throw "Error getting crafting cards";
+      }
+
+      let category = await getMyNftCardCategory(null);
+      if (!category.data) {
+        throw "Error getting category cards";
+      }
+
+      let dayMonth = await getMyNftCardDayMonth(null);
+      if (!dayMonth.data) {
+        throw "Error getting day-month cards";
+      }
+
+      let year = await getMyNftCardYear(null);
+      if (!year.data) {
+        throw "Error getting year cards";
+      }
+
+      setMyNfts({
+        crafting: crafting.data,
+        category: category.data,
+        dayMonth: dayMonth.data,
+        year: year.data,
+      });
+    } catch (e: any) {
+      toast.error(e);
+    }
+  };
+
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
+    loadMyNfts();
   }, []);
 
   useEffect(() => {
@@ -122,13 +172,24 @@ export const CraftingIdentitesPage: React.FC = () => {
       return;
     }
 
-    const newCraft = {
+    let newCraft: {
+      nft_card_day_month_id: number;
+      nft_card_year_id: number;
+      nft_card_crafting_id: number;
+      nft_card_category_id: number;
+      celebrity_id: number | null;
+    } = {
       nft_card_day_month_id: Number(selectedCards.dayMonth.id),
       nft_card_year_id: Number(selectedCards.year.id),
       nft_card_crafting_id: Number(selectedCards.crafting?.id),
-      celebrity_id: Number(selectedCelebrity?.id),
       nft_card_category_id: Number(selectedCards.category?.id),
+      celebrity_id: null,
     };
+
+    if (selectedCelebrity !== null) {
+      newCraft.celebrity_id = Number(selectedCelebrity?.id);
+    }
+
     const res = await craftingIdentity(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
@@ -138,7 +199,7 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   };
 
-  const handleSelectCelebrity = (c: ICelebrity) => {
+  const handleSelectCelebrity = (c: ICelebrity | null) => {
     setSelectedCelebrity(c);
   };
 
@@ -175,8 +236,17 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
+                clickedCard={clickedCard}
+                selectedCard={selectedCard}
+                onCardClicked={handleCardClick}
+                onSelectCardCrafting={handleSelectCardCrafting}
+                onSelectCardCategory={handleSelectCardCategory}
+                onSelectCardDayMonth={handleSelectCardDayMonth}
+                onSelectCardYear={handleSelectCardYear}
+                myNfts={myNfts}
+                setMyNfts={setMyNfts}
               />
-              <IdentitySelectCardSection
+              {/* <IdentitySelectCardSection
                 clickedCard={clickedCard}
                 selectedCard={selectedCard}
                 selectedCraft={selectedCraft}
@@ -185,7 +255,9 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onSelectCardCategory={handleSelectCardCategory}
                 onSelectCardDayMonth={handleSelectCardDayMonth}
                 onSelectCardYear={handleSelectCardYear}
-              />
+                myNfts={myNfts}
+                setMyNfts={setMyNfts}
+              /> */}
             </CraftLeftWrapper>
             <CraftRightWrapper open={isOpen ? "true" : undefined}>
               <CloseButton
@@ -197,7 +269,10 @@ export const CraftingIdentitesPage: React.FC = () => {
               <IdentityMatchListSection
                 page="identity"
                 selectedCards={selectedCards}
-                chooseCelebrity={setSelectedCelebrity}
+                myNfts={myNfts}
+                onSelectCardDayMonth={handleSelectCardDayMonth}
+                onSelectCardYear={handleSelectCardYear}
+                onSelectCardCategory={handleSelectCardCategory}
               />
               <CardPreviewSection
                 page="identity"

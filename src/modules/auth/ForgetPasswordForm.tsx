@@ -25,9 +25,8 @@ export const ForgetPasswordForm: React.FC = () => {
     <AuthFormWrapper>
       <AuthFormTitle>Forgot Password</AuthFormTitle>
       <AuthFormDesc>
-        {
-          "Enter the email associated with your account and we’ll send an email with instructions to reset your password"
-        }
+        <span>Enter the email associated with your account</span>
+        <p>{"we’ll send an email with instructions to reset your password"}</p>
       </AuthFormDesc>
       <Input
         label="Email Address"

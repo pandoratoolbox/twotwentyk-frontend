@@ -105,8 +105,8 @@ export const PredictionsPage: React.FC = () => {
     rarities: null,
     status: null,
     triggers: null,
-    celebrities: null
-  })
+    celebrities: null,
+  });
 
   // filter option click
   const handleOptionClick = async (
@@ -224,7 +224,7 @@ export const PredictionsPage: React.FC = () => {
         )
       ) : (
         <EmptyCards className="login">
-          <p>Explanatory text. Log in to start playing.</p>
+          <p className="login">Log in to start playing</p>
           <Button className="buy-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>

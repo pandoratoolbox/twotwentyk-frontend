@@ -179,7 +179,7 @@ export type SellModalProps = {
 } & ModalProps;
 
 export type CraftIdentityModalProps = {
-  selectCelebrity: (c: ICelebrity) => void;
+  selectCelebrity: (c: ICelebrity | null) => void;
   selectedCards: {
     crafting: INftCardCrafting | null;
     year: INftCardYear | null;
@@ -264,6 +264,7 @@ export type BuyPackProps = {
   onCardClick: (id: string | number) => void;
   onBuyClick: (id: string | number) => void;
   cardType: string;
+  preview?: boolean;
   price: number;
 };
 

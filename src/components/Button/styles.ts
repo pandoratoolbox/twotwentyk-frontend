@@ -7,9 +7,13 @@ export const ButtonWrapper = styled.div<{
   opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   cursor: ${({ disabled }) => (disabled ? "not-allowed" : "pointer")};
   background-color: ${({ variant }) =>
-    variant === "outlined" ? "#fff" : "#000"};
-  border: 1px solid #000;
-  border-radius: 8px;
+    variant === "outlined" ? "#fff" : "#0e4fbc"};
+  border: 1px solid
+    ${({ variant }) => (variant === "outlined" ? "#000" : "#0e4fbc")};
+  /* border-radius: 8px; */
+  border-radius: 100px;
+  /* background: #0e4fbc; */
+  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.15);
   height: 53px;
   width: 100%;
   display: flex;

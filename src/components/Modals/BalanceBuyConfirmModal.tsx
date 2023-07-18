@@ -14,12 +14,14 @@ export const BalanceBuyConfirmModal: React.FC<BalanceBuyConfirmModalProps> = ({
   return (
     <ModalWrapper open={open} onClose={onClose} width={365}>
       <BalanceBuyConfirmModalWrapper>
-        <h3>Confirm {isOffer ? "your Offer" : "Payment"}</h3>
-        <p className="confirm">
-          {isOffer
-            ? "Confirmation message"
-            : "This amount will be withdrawn from your TwoTwentyK account balance."}
-        </p>
+        <h3>Review {isOffer ? "your Offer" : "Payment"}</h3>
+        {isOffer ? (
+          ""
+        ) : (
+          <p className="confirm">
+            This amount will be withdrawn from your account balance.
+          </p>
+        )}
         <h4>
           ${price} <span>USD</span>
         </h4>

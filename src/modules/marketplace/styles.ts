@@ -41,12 +41,14 @@ export const CardGridWrapper = styled.div`
 
 export const MSidebarWrapper = styled.div<{ open: boolean }>`
   position: fixed;
-  top: 125px;
+  top: 150px;
   width: 100%;
-  max-width: 405px;
-  height: calc(100% - 125px);
-  right: ${({ open }) => (open ? "0" : "-405px")};
-  background-color: #fff;
+  max-width: 400px;
+  height: calc(100% - 150px);
+  right: ${({ open }) => (open ? "5px" : "-400px")};
+  background: #fff;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
+  backdrop-filter: blur(15px);
   display: flex;
   align-items: center;
   flex-direction: column;
@@ -62,10 +64,12 @@ export const MSidebarContainer = styled.div`
   padding: 33px 52px;
   width: 100%;
   h2 {
-    font-weight: 500;
-    font-size: 22px;
-    line-height: 27px;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
+    font-size: 24px;
+    text-transform: uppercase;
     margin-bottom: 32px;
+    font-weight: 100;
     width: 100%;
   }
   .sell-confirm-button {
@@ -101,6 +105,7 @@ export const MyBalanceWrapper = styled.div`
   align-items: center;
   padding: 23px 0;
   position: relative;
+  color: #0e4fbc;
   & > * {
     position: relative;
     z-index: 1;
@@ -113,12 +118,12 @@ export const MyBalanceWrapper = styled.div`
     left: -52px;
     right: -52px;
     background: #f9faff;
-    box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15);
+    /* box-shadow: 0px 0px 6px rgba(0, 0, 0, 0.15); */
   }
 `;
 
 export const IconWRapper = styled.div`
-  margin-right: 30px;
+  margin-right: 16px;
 `;
 
 export const BalanceInfo = styled.div`

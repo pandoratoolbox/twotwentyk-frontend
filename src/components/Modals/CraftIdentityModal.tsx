@@ -48,6 +48,11 @@ const [optionSelected, setOptionSelected] = useState<boolean>(false)
 const [clearSelect, setClearSelect] = useState<boolean>(false);
 
   const chooseCelebrity = (v: SelectOptionProps) => {
+    if (v.value === "0") {
+      selectCelebrity(null);
+      setOptionSelected(true);
+    }
+
     let c = (celebritiesContext as Map<number,ICelebrity>).get(Number(v.value))
     if (c) {
       selectCelebrity(c);
@@ -74,7 +79,17 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
     }
     setMatches(celebrities);
   }, [open]);
-  console.log(celebritiesContext, selectedCards)
+
+
+  const [options, setOptions] = useState<{
+    label: string;
+    value: string;
+  }[]>([])
+
+  useEffect(() => {
+    setOptions([{label: "None", value: "0"}, ...matches.map(v => {return {label: v.name, value: String(v.id)}})])
+  }, [matches])
+
   return (
     <ModalWrapper
       open={open}
@@ -87,7 +102,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
         <CraftIdentifyModalHeader>
           <p>Would you like to assign a name to your Identity?</p>
           <SelectOption
-            options={matches.map(v => {return {label: v.name, value: String(v.id)}})}
+            options={options}
             placeholder="Select matching Identity"
             onSelect={chooseCelebrity}
             clear={clearSelect}
@@ -131,7 +146,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
           </CardGridWrapper>
           {matches.length > 0 && !optionSelected && <h3>Please select a matching Identity from the list.</h3>}
           {matches.length > 0 && optionSelected && <h3>Your cards will be sliced and diced to create this Identity.</h3>}
-          {matches.length === 0 && <h3>There are no matching identities for the selected combination of cards.</h3>}
+          {matches.length === 0 && <h3>There are no matching identities for the selected combination of cards therefore is it not possible to craft.</h3>}
         </CardsWrapper>
       )}
       <CraftIdentifyModalWrapper>
@@ -152,7 +167,7 @@ const [clearSelect, setClearSelect] = useState<boolean>(false);
             </span>
           </CheckboxWrapper>
 
-          <Button disabled={!checked || !optionSelected} onClick={onCraft}>
+          <Button disabled={!checked || !optionSelected || matches.length === 0} onClick={onCraft}>
             Craft Identity
           </Button>
           <Button variant={"outlined"} onClick={onClose}>

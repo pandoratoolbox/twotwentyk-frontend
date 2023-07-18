@@ -22,18 +22,16 @@ import { INftCardIdentity } from "../../models/nft_card_identity";
 import { INftCardTrigger } from "../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../models/nft_card_crafting";
 import { useMonthContext } from "../../context";
+import { categoryOption } from "../app/dates/data";
 
 interface CelebrityMatch {
-  id: number;
-  name: string;
-  match_year: boolean;
-  match_month: boolean;
-  match_day: boolean;
-  match_category: boolean;
-  birth_year: number;
-  birth_month: number;
-  birth_day: number;
-  category: string;
+  celebrity: ICelebrity;
+  year_in_slot: boolean;
+  daymonth_in_slot: boolean;
+  category_in_slot: boolean;
+  inventory_year: INftCardYear | null;
+  inventory_daymonth: INftCardDayMonth | null;
+  inventory_category: INftCardCategory | null;
 }
 
 export const IdentityMatchListSection: React.FC<{
@@ -44,13 +42,31 @@ export const IdentityMatchListSection: React.FC<{
     dayMonth: INftCardDayMonth | null;
     category: INftCardCategory | null;
   };
-  chooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
-}> = ({ page, selectedCards, chooseCelebrity }) => {
+  // onChooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
+  onSelectCardCategory: (card: INftCardCategory) => void;
+  onSelectCardDayMonth: (card: INftCardDayMonth) => void;
+  onSelectCardYear: (card: INftCardYear) => void;
+  myNfts: {
+    year: INftCardYear[] | null;
+    dayMonth: INftCardDayMonth[] | null;
+    category: INftCardCategory[] | null;
+  };
+}> = ({
+  page,
+  selectedCards,
+  // onChooseCelebrity,
+  myNfts,
+  onSelectCardCategory,
+  onSelectCardDayMonth,
+  onSelectCardYear,
+}) => {
   const [collapsed, setCollapsed] = useState<number>(-1);
   const { celebritiesContext } = useCelebritiesContext();
   const [celebrityMatches, setCelebrityMatches] = useState<CelebrityMatch[]>(
     []
   );
+  const [selectedSlot, setSelectedSlot] = useState<"category" | "year" | "dayMonth" | "">("")
+  const [selectedCelebrityMatch, setSelectedCelebrityMatch] = useState<CelebrityMatch | null>(null)
 
   const refreshCelebrities = () => {
     let newCelebrities: CelebrityMatch[] = [];
@@ -59,58 +75,129 @@ export const IdentityMatchListSection: React.FC<{
       (celebritiesContext as Map<number, ICelebrity>).forEach(
         (v: ICelebrity) => {
           let match: CelebrityMatch = {
-            id: v.id,
-            name: v.name,
-            birth_month: v.birth_month,
-            birth_year: v.birth_year,
-            birth_day: v.birth_day,
-            match_category: false,
-            category: v.category,
-            match_month: false,
-            match_day: false,
-            match_year: false
+            celebrity:v,
+            category_in_slot: false,
+            daymonth_in_slot: false,
+            year_in_slot: false,
+            inventory_year: null,
+            inventory_daymonth: null,
+            inventory_category: null,
           };
 
           if (selectedCards.year) {
             if (selectedCards.year.year !== v.birth_year) {
               return;
             } else {
-              match.match_year = true;
+              match.year_in_slot = true;
             }
           }
           if (selectedCards.dayMonth) {
-            if (selectedCards.dayMonth.month !== v.birth_month) {
+            if (
+              selectedCards.dayMonth.month !== v.birth_month &&
+              selectedCards.dayMonth.day !== v.birth_day
+            ) {
               return;
             } else {
-              match.match_month = true;
-            }
-
-            if (selectedCards.dayMonth.day !== v.birth_day) {
-              return;
-            } else {
-              match.match_day = true;
+              match.daymonth_in_slot = true;
             }
           }
+
           if (selectedCards.category) {
             if (selectedCards.category.category !== v.category) {
               return;
             } else {
-              match.match_category = true;
+              match.category_in_slot = true;
             }
           }
+
+          if (myNfts.category) {
+          myNfts.category.forEach((v) => {
+            if (v.category === match.celebrity.category) match.inventory_category = v;
+            return;
+          });
+        }
+
+        if (myNfts.dayMonth) {
+          myNfts.dayMonth.forEach((v) => {
+            if (v.day === match.celebrity.birth_day && v.month === match.celebrity.birth_month)
+              match.inventory_daymonth = v;
+            return;
+          });
+
+        }
+
+        if (myNfts.year) {
+          myNfts.year.forEach((v) => {
+            if (v.year === match.celebrity.birth_year) match.inventory_year = v;
+            return;
+          });
+
+        }
+
           newCelebrities.push(match);
         }
       );
     }
 
-    console.log(newCelebrities)
+    console.log(newCelebrities);
 
     setCelebrityMatches(newCelebrities);
   };
 
+  const selectCelebrityMatch = (match: CelebrityMatch) => {
+    setSelectedCelebrityMatch(match)
+    // onChooseCelebrity(matcsh.celebrity)
+  }
+
+  const handleSelectCategory = (celebrity: CelebrityMatch) => {
+    setSelectedCelebrityMatch(celebrity)
+    setSelectedSlot("category")
+
+    if (celebrity.category_in_slot) {
+      return;
+    }
+
+    if (celebrity.inventory_category) {
+      onSelectCardCategory(celebrity.inventory_category);
+      celebrity.category_in_slot = true;
+    }
+    
+
+  };
+
+  const handleSelectDayMonth = (celebrity: CelebrityMatch) => {
+    setSelectedCelebrityMatch(celebrity)
+    setSelectedSlot("dayMonth")
+
+    if (celebrity.daymonth_in_slot) {
+      return;
+    }
+
+    if (celebrity.inventory_daymonth) {
+      onSelectCardDayMonth(celebrity.inventory_daymonth);
+      celebrity.daymonth_in_slot = true;
+    }
+  };
+
+  const handleSelectYear = (celebrity: CelebrityMatch) => {
+    setSelectedCelebrityMatch(celebrity)
+    setSelectedSlot("year")
+
+    if (celebrity.year_in_slot) {
+      return;
+    }
+
+    if (celebrity.inventory_year) {
+      onSelectCardYear(celebrity.inventory_year);
+      celebrity.year_in_slot = true;
+    }
+    
+
+  };
+
   useEffect(() => {
     refreshCelebrities();
-  }, [selectedCards, celebritiesContext]);
+  }, [selectedCards, celebritiesContext, myNfts]);
   //identity_matches = celebritiesContext.map(v => { if (v.birth_day == nft_card_day_month.day && v.birth_month == nft_card_day_month.month && v.birth_year == nft_card_year.year && v.category == nft_card_category.category) return v }
 
   return (
@@ -135,11 +222,14 @@ export const IdentityMatchListSection: React.FC<{
             return (
               <div>
                 <MatchListItem
-                  chooseCelebrity={chooseCelebrity}
+                  onSelectCelebrityMatch={selectCelebrityMatch}
                   celebrity={v}
-                  key={v.id}
+                  key={v.celebrity.id}
                   onCollapsed={setCollapsed}
-                  collapsed={collapsed === v.id}
+                  collapsed={collapsed === v.celebrity.id}
+                  onSelectDayMonth={handleSelectDayMonth}
+                  onSelectYear={handleSelectYear}
+                  onSelectCategory={handleSelectCategory}
                 />
               </div>
             );
@@ -151,18 +241,17 @@ export const IdentityMatchListSection: React.FC<{
 
 const MatchListItem: React.FC<{
   celebrity: CelebrityMatch;
-  chooseCelebrity: React.Dispatch<React.SetStateAction<ICelebrity | null>>;
-  // id: number;
-
-  // name: string;
+  onSelectCelebrityMatch: (celebrity: CelebrityMatch) => void;
+  onSelectDayMonth: (celebrity: CelebrityMatch) => void;
+  onSelectCategory: (celebrity: CelebrityMatch) => void;
+  onSelectYear: (celebrity: CelebrityMatch) => void;
   onCollapsed: (id: number) => void;
   collapsed: boolean;
-}> = ({ celebrity, onCollapsed, collapsed, chooseCelebrity }) => {
+}> = ({ celebrity, onCollapsed, collapsed, onSelectCelebrityMatch, onSelectDayMonth, onSelectCategory, onSelectYear}) => {
   const [selected, setSelected] = useState<string>("");
   let clicked = () => {
-    onCollapsed(celebrity.id);
-    chooseCelebrity(celebrity);
-    // console.log(celebrity)
+    onCollapsed(celebrity.celebrity.id);
+    onSelectCelebrityMatch(celebrity);
   };
 
   const { monthContext } = useMonthContext();
@@ -175,39 +264,73 @@ const MatchListItem: React.FC<{
               {" "}
               <IconCardAthlete />
             </ItemIconWrapper>
-            <p>{celebrity.name}</p>
+            <p>{celebrity.celebrity.name}</p>
           </MatchListInfoWrapper>
           <IconInfo />
         </ItemHeader>
         {collapsed && (
           <ItemContent>
             <ItemContentInfoWrapper
-              className={celebrity.match_day ? "owned" : "notowned"}
-              onClick={() => setSelected(celebrity.match_day ? "green" : "red")}
+              className={
+                celebrity.daymonth_in_slot
+                  ? "green"
+                  : celebrity.inventory_daymonth
+                  ? "purple"
+                  : "red"
+              }
+              onClick={() => onSelectDayMonth(celebrity)}
             >
               <h4>
-                {celebrity.birth_day}{" "}
+                {celebrity.celebrity.birth_day}{" "}
                 {(monthContext as Map<number, string>).get(
-                  celebrity.birth_month
+                  celebrity.celebrity.birth_month
                 )}
               </h4>
-              <h5>{celebrity.match_day ? "In Slot" : "Not In Slot"}</h5>
+              <h5>
+                {celebrity.daymonth_in_slot
+                  ? "In Slot"
+                  : celebrity.inventory_daymonth
+                  ? "In Inventory"
+                  : "Not Owned"}
+              </h5>
             </ItemContentInfoWrapper>
             <ItemContentInfoWrapper
-              className={celebrity.match_year ? "owned" : "notowned"}
-              onClick={() =>
-                setSelected(celebrity.match_year ? "red" : "red")
+              className={
+                celebrity.year_in_slot
+                  ? "green"
+                  : celebrity.inventory_year
+                  ? "purple"
+                  : "red"
               }
+              onClick={() => onSelectYear(celebrity)}
             >
-              <h4>{celebrity.birth_year}</h4>
-              <h5 >{celebrity.match_year ? "In Slot" : "Not In Slot"}</h5>
+              <h4>{celebrity.celebrity.birth_year}</h4>
+              <h5>
+                {celebrity.year_in_slot
+                  ? "In Slot"
+                  : celebrity.inventory_year
+                  ? "In Inventory"
+                  : "Not Owned"}
+              </h5>
             </ItemContentInfoWrapper>
             <ItemContentInfoWrapper
-              className={celebrity.match_category ? "owned" : "notowned"}
-              onClick={() => setSelected(celebrity.category ? "green" : "red")}
+              className={
+                celebrity.category_in_slot
+                  ? "green"
+                  : celebrity.inventory_category
+                  ? "purple"
+                  : "red"
+              }
+              onClick={() => onSelectCategory(celebrity)}
             >
-              {celebrity.category && <h4>{celebrity.category}</h4>}
-              <h5>{celebrity.match_category ? "In Slot" : "Not In Slot"}</h5>
+              {celebrity.celebrity.category && <h4>{celebrity.celebrity.category}</h4>}
+              <h5>
+                {celebrity.category_in_slot
+                  ? "In Slot"
+                  : celebrity.inventory_category
+                  ? "In Inventory"
+                  : "Not Owned"}
+              </h5>
             </ItemContentInfoWrapper>
           </ItemContent>
         )}

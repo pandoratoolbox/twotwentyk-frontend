@@ -17,7 +17,7 @@ export const HeaderWrapper = styled.div`
 `;
 
 export const MainHeaderWrapper = styled.div`
-  background-color: #fff;
+  background: linear-gradient(90deg, #0071d0 0%, #1f20a0 100%);
   height: 76px;
   display: flex;
   align-items: center;
@@ -35,7 +35,7 @@ export const HeaderMenuWrapper = styled.div`
   display: flex;
   align-items: center;
   & > :not(:first-child) {
-    margin-left: 43px;
+    margin-left: 40px;
   }
   @media screen and (max-width: 1200px) {
     & > :not(:first-child) {
@@ -49,21 +49,32 @@ export const HeaderMenuWrapper = styled.div`
 
 export const HeaderNavItem = styled(Link)<{ active?: string }>`
   text-transform: uppercase;
-  font-weight: 700;
+  font-weight: 500;
   font-size: 14px;
   line-height: 100%;
-  color: #000;
+  color: #fff;
   opacity: ${({ active }) => (active ? 1 : 0.5)};
   text-decoration: none;
+  position: relative;
   &:hover {
     opacity: ${({ active }) => (active ? 1 : 0.75)};
+  }
+  &::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    left: 0;
+    bottom: -8px;
+    height: 1px;
+    background: #fff;
+    opacity: ${({ active }) => (active ? 0.5 : 0)};
   }
 `;
 
 export const SubHeaderWrapper = styled.div`
   width: 100%;
-  background-color: #ffffff;
-  opacity: 0.5;
+  background: #f6f6f6;
+  /* opacity: 0.5; */
   @media screen and (max-width: 1024px) {
     display: none;
   }
@@ -90,15 +101,15 @@ export const SubHeaderContainer = styled.div`
 `;
 
 export const SubMenuItem = styled(Link)<{ active?: string }>`
-  color: #000000;
-  font-weight: ${({ active }) => (active ? 700 : 500)};
+  color: #0b55c0;
+  font-weight: 600;
   font-size: 16px;
   white-space: nowrap;
   line-height: 100%;
   text-decoration: none;
-  opacity: ${({ active }) => (active ? 1 : 0.5)};
+  opacity: ${({ active }) => (active ? 1 : 0.6)};
   &:hover {
-    opacity: ${({ active }) => (active ? 1 : 0.75)};
+    opacity: ${({ active }) => (active ? 1 : 0.6)};
   }
 `;
 
@@ -144,9 +155,11 @@ export const HeaderButton = styled.div<{ width?: number }>`
   position: relative;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.05);
+  border-radius: 8px;
+  background: #323b89;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
   &.active {
-    background: #636363;
+    background: #4e5cd7;
     color: #fff;
   }
   box-shadow: 1px 1.5px 3px rgba(0, 0, 0, 0.2);
@@ -154,7 +167,7 @@ export const HeaderButton = styled.div<{ width?: number }>`
   font-weight: 600;
   font-size: 14px;
   line-height: 100%;
-  color: #00000077;
+  color: #fff;
   cursor: pointer;
   & > :not(:first-child) {
     margin-left: 7px;
@@ -199,10 +212,11 @@ export const CloseButton = styled.div`
 export const NotificationWrapper = styled.div<{ open: boolean }>`
   position: absolute;
   right: 0;
+  contain: content;
   z-index: 11;
   top: 60px;
   width: 400px;
-  padding: 20px 25px;
+  /* padding: 20px 25px; */
   opacity: ${({ open }) => (open ? 1 : 0)};
   visibility: ${({ open }) => (open ? "visible" : "hidden")};
   background: #ffffff;
@@ -213,11 +227,14 @@ export const NotificationWrapper = styled.div<{ open: boolean }>`
     font-size: 12px;
     line-height: 15px;
     color: #000000;
-    margin-top: 11px;
     cursor: pointer;
-    opacity: 0.5;
-    width: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 41px;
     margin-left: auto;
+    background: rgba(14, 79, 188, 0.3);
   }
   & > h3 {
     font-weight: 600;
@@ -225,10 +242,13 @@ export const NotificationWrapper = styled.div<{ open: boolean }>`
     line-height: 32px;
     color: #000;
     margin-bottom: 11px;
+    padding: 24px 24px 8px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
 `;
 
 export const NotificationsGroup = styled.div`
+  padding: 0 24px 24px;
   & > :not(:first-child) {
     margin-top: 11px;
   }

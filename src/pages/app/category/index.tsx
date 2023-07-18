@@ -28,6 +28,7 @@ import {
   getFilterTriggerType,
 } from "../../../actions/filtering";
 import { NftCardCategoryFilters } from "../../../models/filters";
+import { EmptyCards as LoginCards } from "../dates/styles";
 
 export const CategoriesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -109,7 +110,7 @@ export const CategoriesPage: React.FC = () => {
       card_series_id: filters.card_series_id,
       status: filters.status,
       rarities: filters.rarities,
-      categories: filters.categories
+      categories: filters.categories,
     };
 
     switch (filterType) {
@@ -199,7 +200,11 @@ export const CategoriesPage: React.FC = () => {
             >
               Buy Cards
             </Button>
-            <Button className="buy-button" onClick={() => navigate("/buy")}>
+            <Button
+              className="buy-button"
+              variant="outlined"
+              onClick={() => navigate("/buy")}
+            >
               Buy Packs
             </Button>
           </EmptyCards>
@@ -207,12 +212,12 @@ export const CategoriesPage: React.FC = () => {
           <Loader />
         )
       ) : (
-        <EmptyCards className="login">
-          <p>Explanatory text. Log in to start playing.</p>
+        <LoginCards className="login">
+          <p className="login">Log in to start playing</p>
           <Button className="buy-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>
-        </EmptyCards>
+        </LoginCards>
       )}
     </AppLayout>
   );

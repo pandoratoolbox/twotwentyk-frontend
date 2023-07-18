@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from "react";
+import React, { useEffect, useRef } from "react";
 import AppleLogin from "react-apple-login";
 import FacebookLogin from "react-facebook-login/dist/facebook-login-render-props";
 // import FacebookLogin from "react-facebook-login";
@@ -15,26 +15,30 @@ import { useNavigate } from "react-router-dom";
 export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   authType,
 }) => {
-  const GOOGLE_CLIENT_ID = "620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com"
-  const APPLE_CLIENT_ID = "com.pandoratoolbox.twotwentyk"
+  const GOOGLE_CLIENT_ID =
+    "620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com";
+  const APPLE_CLIENT_ID = "com.pandoratoolbox.twotwentyk";
   const { onGoogleAuthClicked, onAppleAuthClicked, onFacebookAuthClicked } =
     useSocialAuth();
 
   const handleAppleAuth = async (res: any) => {
     console.log(res);
     try {
-      let resp = await api.post("/auth/apple", {id_token: res.id_token})
-      console.log(resp)
+      let resp = await api.post("/auth/apple", { id_token: res.id_token });
+      console.log(resp);
       if (resp) {
         if (resp.data.token) {
-          localStorage.setItem("auth", resp.data.token)
+          localStorage.setItem("auth", resp.data.token);
+          api.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${resp.data.token}`;
           navigate("/dashboard");
         } else {
-          throw("No token in API response")
+          throw "No token in API response";
         }
       }
     } catch (e: any) {
-      toast.error(e)
+      toast.error(e);
     }
   };
 
@@ -43,20 +47,22 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   const handleGoogleAuth = async (res: any) => {
     console.log(res);
     try {
-      let resp = await api.post("/auth/google", {id_token: res.credential})
-      console.log(resp)
+      let resp = await api.post("/auth/google", { id_token: res.credential });
+      console.log(resp);
       if (resp) {
         if (resp.data.token) {
-          localStorage.setItem("auth", resp.data.token)
+          localStorage.setItem("auth", resp.data.token);
+          api.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${resp.data.token}`;
           navigate("/dashboard");
         } else {
-          throw("No token in API response")
+          throw "No token in API response";
         }
       }
     } catch (e: any) {
-      toast.error(e)
+      toast.error(e);
     }
-
   };
 
   // const login = useGoogleLogin({
@@ -64,30 +70,34 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   //   onError: () => console.log("Login Failed"),
   // });
 
-  const loadScript = (src: string, id: string, onload: () => void = () => {}) => {
-    const existingScript = document.getElementById(id)
-  
-    if (existingScript != null) return
-  
-    const script = document.createElement('script')
-    script.id = id
-    script.src = src
-    script.defer = true
-    script.async = true
-    script.onload = onload
-  
-    document.head.appendChild(script)
-  }
-  
+  const loadScript = (
+    src: string,
+    id: string,
+    onload: () => void = () => {}
+  ) => {
+    const existingScript = document.getElementById(id);
+
+    if (existingScript != null) return;
+
+    const script = document.createElement("script");
+    script.id = id;
+    script.src = src;
+    script.defer = true;
+    script.async = true;
+    script.onload = onload;
+
+    document.head.appendChild(script);
+  };
+
   const handleGoogleClick = () => {
     google.accounts.id.initialize({
       client_id: GOOGLE_CLIENT_ID,
       callback: handleGoogleAuth,
-      ux_mode: "redirect"
-    })
+      ux_mode: "redirect",
+    });
 
-    google.accounts.id.prompt()
-  }
+    google.accounts.id.prompt();
+  };
 
   return (
     <SocialButtonsWrapper>
@@ -105,7 +115,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
         socialType="Google"
         onClick={handleGoogleClick}
       />
-      {/* <FacebookLogin
+      <FacebookLogin
         appId="1088597931155576"
         // autoLoad={true}
         fields="name,email,picture"
@@ -117,9 +127,9 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
             onClick={renderProps.onClick}
           />
         )}
-      />  */}
+      />
       <AppleLogin
-      usePopup={true}
+        usePopup={true}
         clientId={APPLE_CLIENT_ID}
         redirectURI="https://twotwentyk.pandoratoolbox.com"
         callback={(res) => handleAppleAuth(res)}

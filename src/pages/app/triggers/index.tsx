@@ -91,14 +91,13 @@ export const TriggersPage: React.FC = () => {
     setIsView("sell");
   };
 
-
   const [filters, setFilters] = useState<NftCardTriggerFilters>({
     tiers: null,
     rarities: null,
     status: null,
     card_series_id: null,
-    triggers: null
-  })
+    triggers: null,
+  });
 
   // filter option click
   const handleOptionClick = async (
@@ -116,13 +115,18 @@ export const TriggersPage: React.FC = () => {
     };
 
     switch (filterType) {
-      case "Tier":
+      case "Trigger Tier":
         newFilters.tiers = selectedOptions.map((v) => {
-          return Number(v);
+          return v;
         });
         break;
       case "All Rarities":
         newFilters.rarities = selectedOptions.map((v) => {
+          return Number(v);
+        });
+        break;
+      case "Trigger":
+        newFilters.triggers = selectedOptions.map((v) => {
           return Number(v);
         });
         break;
@@ -145,7 +149,6 @@ export const TriggersPage: React.FC = () => {
 
     setIsLoadingFilter(false);
   };
-
 
   return (
     <AppLayout>
@@ -212,7 +215,7 @@ export const TriggersPage: React.FC = () => {
         )
       ) : (
         <EmptyCards className="login">
-          <p>Explanatory text. Log in to start playing.</p>
+          <p className="login">Log in to start playing</p>
           <Button className="buy-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>

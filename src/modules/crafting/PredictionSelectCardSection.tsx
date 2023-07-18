@@ -172,9 +172,7 @@ export const PredictionSelectCardSection: React.FC<{
             </>
           ) : !isLoadingCrafting ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.
@@ -274,9 +272,8 @@ export const PredictionSelectCardSection: React.FC<{
             </>
           ) : !isLoadingIdentity ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
+
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.
@@ -356,9 +353,8 @@ export const PredictionSelectCardSection: React.FC<{
             </>
           ) : !isLoadingTrigger ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
+
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.

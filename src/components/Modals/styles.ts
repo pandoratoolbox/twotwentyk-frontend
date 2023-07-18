@@ -61,14 +61,21 @@ export const SellConfirmModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  h3 {
+    color: #0f4fba;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 32px;
+  }
   p {
-    padding-top: 24px;
+    padding-top: 6px;
+    color: rgba(15, 79, 186, 0.7);
+    font-size: 14px;
     font-weight: 500;
-    font-size: 16px;
     line-height: 24px;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     text-align: center;
-    max-width: 228px;
+    max-width: 299px;
   }
 `;
 
@@ -107,7 +114,7 @@ export const CraftIdentifyModalHeader = styled.div`
 `;
 
 export const IconWrapper = styled.div`
-  padding: 24px 0 0;
+  margin-bottom: 10px;
 `;
 
 export const ButtonGroup = styled.div`
@@ -125,24 +132,26 @@ export const BuyPackConfirmModalWrapper = styled.div`
   padding-top: 15px;
   text-align: center;
   h3 {
-    font-weight: 600;
+    color: #0f4fba;
     font-size: 24px;
-    line-height: 129.02%;
+    font-weight: 600;
+    line-height: 32px;
+    margin-bottom: 6px;
   }
   p {
     font-weight: 500;
     font-size: 16px;
     line-height: 24px;
-    max-width: 228px;
+    max-width: 299px;
     margin: auto;
+    margin-bottom: 24px;
     width: 100%;
-    margin-top: 34px;
-    margin-bottom: 34px;
   }
 `;
 
 export const UseBalanceBuyModalWrapper = styled.div`
   text-align: center;
+  color: #0e4fbc;
   p {
     font-weight: 500;
     font-size: 14px;
@@ -152,6 +161,7 @@ export const UseBalanceBuyModalWrapper = styled.div`
     font-weight: 600;
     font-size: 28px;
     line-height: 34px;
+    margin-bottom: 32px;
     span {
       line-height: 24px;
       font-weight: 400;
@@ -164,26 +174,26 @@ export const BalanceBuyConfirmModalWrapper = styled.div`
   padding-top: 15px;
   text-align: center;
   h3 {
-    font-weight: 600;
+    color: #0f4fba;
     font-size: 24px;
-    line-height: 129.02%;
-    margin-bottom: 12px;
+    font-weight: 600;
+    line-height: 32px;
+    margin-bottom: 8px;
   }
   p {
-    max-width: 280px;
-    font-weight: 400;
+    color: rgba(15, 79, 186, 0.7);
     font-size: 14px;
-    line-height: 17px;
-    opacity: 0.5;
-    margin-bottom: 12px;
+    font-weight: 500;
+    line-height: 24px;
+
+    margin-bottom: 24px;
   }
   h4 {
-    font-weight: 600;
+    color: #0e4fbc;
     font-size: 24px;
-    line-height: 29px;
+    font-weight: 700;
+    line-height: 24px;
     span {
-      font-size: 16px;
-      line-height: 19px;
       font-weight: 400;
     }
     margin-bottom: 22px;
@@ -193,9 +203,10 @@ export const BalanceBuyConfirmModalWrapper = styled.div`
 export const BuyActionWrapper = styled.div`
   position: relative;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  padding-top: 35px;
+  padding-top: 24px;
   &::after {
     position: absolute;
     content: "";
@@ -206,8 +217,17 @@ export const BuyActionWrapper = styled.div`
     background: #f2f5ff;
     border-radius: 0 0 20px 20px;
   }
+  .current-price {
+    margin-bottom: 16px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    h5 {
+      color: #0e4fbc;
+    }
+  }
   .buy-button {
-    width: 106px;
+    width: 100%;
     height: 45px;
   }
   & > * {
@@ -220,10 +240,12 @@ export const BuyActionWrapper = styled.div`
       font-size: 16px;
       line-height: 19px;
       margin-bottom: 2px;
+      color: #000;
     }
     span {
       color: #027fee;
       display: flex;
+      margin-left: auto;
       width: fit-content;
       cursor: pointer;
       font-weight: 400;
@@ -237,13 +259,14 @@ export const BalanceForWithdrawModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #0e4fbc;
   h3 {
     width: 100%;
-    text-align: left;
+    text-align: center;
     font-weight: 600;
-    font-size: 20px;
+    font-size: 24px;
     line-height: 25px;
-    margin-bottom: 10px;
+    margin-top: 30px;
   }
   p {
     font-weight: 500;
@@ -300,6 +323,7 @@ export const WithdrawConfirmModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  color: #0f4fba;
   text-align: center;
   h3 {
     font-weight: 600;
@@ -310,11 +334,15 @@ export const WithdrawConfirmModalWrapper = styled.div`
     margin: 20px auto;
     font-weight: 500;
     font-size: 14px;
-    line-height: 125%;
-    max-width: 228px;
+    line-height: 24px;
+    color: rgba(15, 79, 186, 0.7);
     a {
-      color: 000;
+      color: rgba(15, 79, 186, 0.7);
     }
+    max-width: 299px;
+  }
+  .confirm-button {
+    height: 42px;
   }
 `;
 export const CardsWrapper = styled.div`

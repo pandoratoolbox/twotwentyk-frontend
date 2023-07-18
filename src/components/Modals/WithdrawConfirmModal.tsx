@@ -12,12 +12,17 @@ export const WithdrawConfirmModal: React.FC<WithdrawConfirmModalProps> = ({
   open,
 }) => {
   return (
-    <ModalWrapper onClose={onClose} open={open} width={365}>
+    <ModalWrapper onClose={onClose} open={open} width={407}>
       <WithdrawConfirmModalWrapper>
-        {status === "success" && <h3>Success</h3>}
-        <IconWrapper>
-          {status === "success" ? <IconWithdraw /> : <IconWarning />}
-        </IconWrapper>
+        {status === "success" ? (
+          <IconWrapper>
+            <img src="/assets/success.png" alt="" />{" "}
+          </IconWrapper>
+        ) : (
+          <img src="/assets/sorry.png" alt="" />
+        )}
+
+        {status === "success" ? <h3>Success</h3> : <h3>Sorry!</h3>}
         <p>
           {status === "success" ? (
             "Your withdrawal request has been submitted. Please allow up to 72 hours for processing"
@@ -29,7 +34,9 @@ export const WithdrawConfirmModal: React.FC<WithdrawConfirmModalProps> = ({
             </>
           )}
         </p>
-        <Button onClick={onClose}>Ok</Button>
+        <Button onClick={onClose} className="confirm-button">
+          {status === "success" ? "Done" : "Ok"}
+        </Button>
       </WithdrawConfirmModalWrapper>
     </ModalWrapper>
   );

@@ -6,6 +6,7 @@ export const PredictionCardWrapper = styled.div<{
   height?: number;
   isnothover?: string;
 }>`
+  padding: 23px 25px;
   text-transform: capitalize;
   cursor: pointer;
   position: relative;
@@ -13,16 +14,16 @@ export const PredictionCardWrapper = styled.div<{
   // contain: content;
   border-radius: 6px;
   box-shadow: 0px 0px 15.3925px rgba(0, 0, 0, 0.05);
-  background: ${({ bg, cardType }) =>
+  /* background: ${({ bg, cardType }) =>
     bg
       ? `url(${bg}) no-repeat, #CDCDCD `
       : cardType === "identity"
       ? "#FFFFFF"
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), #FFFFFF;"};
-  background-blend-mode: luminosity;
+      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), #FFFFFF;"}; */
+  /* background-blend-mode: luminosity; */
   background-size: cover;
   background-position: center;
-  height: ${({ height }) => (height ? height + "px" : "293px")};
+  /* height: ${({ height }) => (height ? height + "px" : "293px")}; */
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -64,15 +65,18 @@ export const CardTopWrapper = styled.div`
 
 export const CardBottomWrapper = styled.div`
   text-transform: capitalize;
-  background-color: #d2d4dd;
+  background-color: #000;
   position: relative;
+  border-radius: 4px;
+  margin-top: 12px;
+  color: #fff;
   display: flex;
   height: 36px;
   align-items: center;
+  box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.2);
   justify-content: center;
   font-weight: 500;
   font-size: 10.7747px;
-  border-radius: 0 0 6px 6px;
   line-height: 13px;
 `;
 

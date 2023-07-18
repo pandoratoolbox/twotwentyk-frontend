@@ -8,7 +8,7 @@ export const HeaderLogo: React.FC<{ noLink?: boolean }> = ({ noLink }) => {
     <HeaderLogoWrapper
       onClick={noLink ? () => {} : () => navigate("/dashboard")}
     >
-      TwoTwentyK
+      <img src="/assets/logo.png" />
     </HeaderLogoWrapper>
   );
 };

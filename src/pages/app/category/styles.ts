@@ -66,15 +66,16 @@ export const EmptyCards = styled.div`
     text-transform: capitalize;
   }
   h3 {
-    font-weight: 500;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
     font-size: 24px;
-    line-height: 29px;
-    margin-bottom: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
   p {
     font-weight: 400;
     font-size: 16px;
-    max-width: 341px;
     text-align: center;
     line-height: 24px;
   }

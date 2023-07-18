@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   AmountWrapper,
   CardBodyWrapper,
@@ -21,6 +21,7 @@ import { useMonthContext, useCelebritiesContext } from "../../context";
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
+import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -48,7 +49,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { celebritiesContext } = useCelebritiesContext();
-  const [clearSelect, setClearSelect] = React.useState<boolean>(true);
+  const [clearSelect, setClearSelect] = useState<boolean>(true);
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -57,13 +58,34 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 
     if (c) {
       let res = await updateMyNftCardIdentity(c?.id , c?.name);
-      if (res?.data && Array.isArray(res.data)) {
-        console.log(res?.data);
+      if (res.success) {
+        console.log("identity updated")
       }
     }
   };
 
-  image = "/assets/nfts/1.png";
+  const [identityMatches, setIdentityMatches] = useState<
+    { label: string; value: string }[] | null
+  >(null);
+
+  useEffect(() => {
+    if (celebritiesContext) {
+      let matches: { label: string; value: string }[] = [];
+      (celebritiesContext as Map<number, ICelebrity>).forEach((v) => {
+        if (
+          v.birth_day === day &&
+          v.birth_month === month &&
+          v.birth_year === year &&
+          v.category === category
+        )
+          matches.push({ label: v.name, value: v.id.toString() });
+      });
+
+      setIdentityMatches(matches);
+    }
+  }, [celebritiesContext]);
+
+  image = "/assets/nfts/new4.png";
   return (
     <PredictionCardWrapper
       cardType={cardType}
@@ -72,7 +94,19 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
-      <CardTopWrapper>
+      <CardImgWrapper>
+        <img src={image} alt="" />
+        <>
+          {rarity === 0 && <Rarity>Common</Rarity>}
+          {rarity === 1 && <Rarity>Uncommon</Rarity>}
+          {rarity === 2 && <Rarity>Rare</Rarity>}
+        </>
+        {/* <Rarity>Uncommon</Rarity> */}
+        {/* <StatusWrapper>
+          {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
+        </StatusWrapper> */}
+      </CardImgWrapper>
+      {/* <CardTopWrapper>
         <CardDateWrapper dashbordstyle={dashbordstyle}>
           {monthContext && day && (
             <span className="date">
@@ -97,25 +131,21 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         {rarity === 2 && (
           <CardTypeWrapper dashbordstyle={dashbordstyle}>Rare</CardTypeWrapper>
         )}
-      </CardTopWrapper>
-      {category && (
+      </CardTopWrapper> */}
+      {/* {category && (
         <CardBodyWrapper>
           <span></span>
           <p>{category}</p>
         </CardBodyWrapper>
-      )}
+      )} */}
 
       {celebrity_name ? (
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
       ) : (
         <CardBottomWrapper>
-          {celebritiesContext && (
+          {identityMatches && (
             <SelectOption
-              options={Array.from<[number, any]>(celebritiesContext).map(
-                ([key, value]) => {
-                  return { label: value.name, value: String(value.id) };
-                }
-              )}
+              options={identityMatches}
               placeholder="Identity Matches"
               clear={clearSelect}
               onSelect={chooseCelebrity}

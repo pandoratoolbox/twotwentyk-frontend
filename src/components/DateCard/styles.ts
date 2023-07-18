@@ -39,8 +39,9 @@ export const CardOverlayWrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(11, 11, 11, 0.6);
-  backdrop-filter: blur(5px);
+  background: url("/assets/nfts/blur.png") no-repeat;
+  background-size: 100% 100%;
+  backdrop-filter: blur(2px);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -48,12 +49,13 @@ export const CardOverlayWrapper = styled.div`
 `;
 
 export const CardButton = styled.div`
-  width: 143px;
+  width: 180px;
   height: 42px;
   border-radius: 20px;
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #0e4fbc;
   border: 2px solid #fff;
   cursor: pointer;
   color: #fff;
@@ -62,7 +64,7 @@ export const CardButton = styled.div`
   line-height: 15px;
   &:hover {
     background: #fff;
-    color: #000;
+    color: #0e4fbc;
   }
 `;
 

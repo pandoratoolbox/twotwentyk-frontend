@@ -30,6 +30,7 @@ export const MSellCardSection: React.FC<CardSidebarProps> = ({
     <>
       <SellConfirmModal
         open={modal}
+        // onConfirm={() => setModal(false)}
         onClose={() => {
           setModal(false);
           onClose();
@@ -117,8 +118,7 @@ export const MSellCardSection: React.FC<CardSidebarProps> = ({
                 <p>Marketplace fee (3%)</p>
                 <span className="weak">$140 USD</span>
               </PriceItem>
-            </PropertiesContent>
-            <PropertiesContent>
+
               <PriceItem>
                 <p>Net amount to seller</p>
                 <span>$1,140 USD</span>
