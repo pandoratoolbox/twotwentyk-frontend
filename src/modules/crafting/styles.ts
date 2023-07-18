@@ -170,7 +170,6 @@ export const CraftCard = styled.div<{ bg: string }>`
   width: 100%;
   height: 220px;
   border-radius: 5px;
-  contain: content;
   background-blend-mode: luminosity, normal;
   background: ${({ bg }) => `url(${bg}) no-repeat, #fff`};
   background-size: cover;
@@ -193,7 +192,7 @@ export const CraftCard = styled.div<{ bg: string }>`
     height: 100%;
     object-fit: cover;
   }
-  span {
+  > span {
     z-index: 1;
     position: absolute;
     display: flex;

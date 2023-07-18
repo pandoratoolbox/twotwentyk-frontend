@@ -1,7 +1,7 @@
 import React from "react";
 import { CardGridWrapper } from "./styles";
 import { DateCardGridProps } from "../../../types";
-import { DateCard, PredictionCard } from "../../../components";
+import { DateCard, PredictionCard, CardPack } from "../../../components";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { TriggerCard } from "../../../components/TriggerCard";
 
@@ -45,6 +45,17 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             item={item}
             {...item}
             onCraft={onCraft}
+            onView={onView}
+            onSell={onSell}
+          />
+        ))}
+      {cardType === "cardPacks" &&
+        data?.map((item, key) => (
+          <CardPack
+            key={key}
+            item={item}
+            {...item}
+            onOpen={onCraft}
             onView={onView}
             onSell={onSell}
           />

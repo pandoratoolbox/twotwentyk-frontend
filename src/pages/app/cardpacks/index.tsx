@@ -37,16 +37,17 @@ export const CardPackPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
-  const [nftCardYearData, setNftCardYearData] = useState<
-    ICardPackSeries[] | null
-  >(null);
+  const [nftCardPack, setNftCardPack] = useState<ICardPackSeries[] | null>(
+    null
+  );
 
   const getPageData = async () => {
     setIsLoading(true);
 
     const response = await getMyNftCardPack();
     if (response?.data) {
-      setNftCardYearData(response?.data);
+      console.log(response?.data);
+      setNftCardPack(response?.data);
     }
     setIsLoading(false);
   };
@@ -77,6 +78,7 @@ export const CardPackPage: React.FC = () => {
   };
 
   const handleView = (item: any) => {
+    console.log(item);
     setSelectedItem(item);
     setIsView("view");
   };
@@ -114,7 +116,7 @@ export const CardPackPage: React.FC = () => {
       res = await getFilterCollection(selectedOptions[0]);
     }
     if (res?.data) {
-      setNftCardYearData(res?.data as ICardPackSeries[]);
+      setNftCardPack(res?.data as ICardPackSeries[]);
     }
     setIsLoadingFilter(false);
   };
@@ -123,7 +125,7 @@ export const CardPackPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        nftCardYearData && nftCardYearData?.length > 0 ? (
+        nftCardPack && nftCardPack?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
@@ -140,7 +142,8 @@ export const CardPackPage: React.FC = () => {
               <CardPackFilterSection onClick={handleOptionClick} />
               {!isLoadingFilter ? (
                 <CardGridSection
-                  data={nftCardYearData}
+                  data={nftCardPack}
+                  cardType={"cardPacks"}
                   onCraft={handleCraft}
                   onSell={handleSell}
                   onView={handleView}
@@ -149,11 +152,13 @@ export const CardPackPage: React.FC = () => {
                 <Loader />
               )}
               <ViewDateCardSection
+                cardType={"cardPacks"}
                 isView={isView === "view"}
                 item={selectedItem}
                 onClose={() => setIsView("")}
               />
               <SellDateCardSection
+                cardType={"cardPacks"}
                 onSellConfirm={handleSellConfirm}
                 isView={isView === "sell"}
                 item={selectedItem}

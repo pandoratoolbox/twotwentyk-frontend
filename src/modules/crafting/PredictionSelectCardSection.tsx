@@ -11,7 +11,11 @@ import {
 } from "./styles";
 import { Button, IconSort, SelectBox, Loader } from "../../components";
 import { SortButton } from "../app/dates/styles";
-import { useStatusContext, useAllRaritiesContext } from "../../context";
+import {
+  useStatusContext,
+  useAllRaritiesContext,
+  useCelebritiesContext,
+} from "../../context";
 import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
 
@@ -21,6 +25,10 @@ import { getMyNftCardTrigger } from "../../actions/nft_card_trigger";
 import { INftCardIdentity } from "../../models/nft_card_identity";
 import { INftCardTrigger } from "../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../models/nft_card_crafting";
+import { SelectOption } from "../../components/SelectBox/SelectOption";
+import { SelectOptionProps } from "../../types";
+import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
+import { ICelebrity } from "../../models/celebrity";
 
 export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
@@ -41,6 +49,7 @@ export const PredictionSelectCardSection: React.FC<{
 }) => {
   const { statusContext } = useStatusContext();
   const { allRaritiesContext } = useAllRaritiesContext();
+  const { celebritiesContext } = useCelebritiesContext();
 
   const [isLoadingCrafting, setIsLoadingCrafting] = useState(true);
   const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
@@ -87,6 +96,19 @@ export const PredictionSelectCardSection: React.FC<{
   useEffect(() => {
     getNFTCrafting();
   }, [selectedCraft]);
+
+  const chooseCelebrity = async (v: SelectOptionProps) => {
+    let c = (celebritiesContext as Map<number, ICelebrity>).get(
+      Number(v.value)
+    );
+
+    if (c) {
+      let res = await updateMyNftCardIdentity(c?.id, c?.name);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log(res?.data);
+      }
+    }
+  };
 
   return (
     <SelectCardSectionWrapper>
@@ -209,7 +231,27 @@ export const PredictionSelectCardSection: React.FC<{
                       {item.rarity === 0 && <span>Common</span>}
                       {item.rarity === 1 && <span>Uncommon</span>}
                       {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.celebrity_name}</p>
+
+                      {item?.celebrity_name ? (
+                        <p>{item.celebrity_name}</p>
+                      ) : (
+                        celebritiesContext && (
+                          <p>
+                            <SelectOption
+                              options={Array.from<[number, any]>(
+                                celebritiesContext
+                              ).map(([key, value]) => {
+                                return {
+                                  label: value.name,
+                                  value: String(value.id),
+                                };
+                              })}
+                              placeholder="Identity Matches"
+                              onSelect={chooseCelebrity}
+                            />
+                          </p>
+                        )
+                      )}
                     </CraftCard>
                     <SelectButton
                       className="select-button"

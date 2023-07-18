@@ -42,6 +42,22 @@ export type AppHeaderMenuItemProps = {
   }[];
 };
 
+export type CardPacksCardProps = {
+  cardType?: string;
+  item?: any;
+  id?: number;
+  is_opened?: boolean;
+  owner_id?: number;
+  rarity?: number;
+  height?: number;
+  image?: string;
+  name?: string;
+  isNotHover?: boolean;
+  onView?: (id: number) => void;
+  onSell?: (id: number) => void;
+  onOpen?: (id: number) => void;
+};
+
 export type PredictionCardProps = {
   dashbordstyle?: boolean;
   cardType?: string;
