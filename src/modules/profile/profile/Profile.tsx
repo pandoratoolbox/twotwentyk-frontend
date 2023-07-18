@@ -6,6 +6,7 @@ import {
   ProfileItemWrapper,
 } from "./styles";
 import { ProfileItemProps, ProfileProps } from "../../../types";
+import { DashboardTitleBG, TitleBG } from "../../../components";
 
 export const Profile: React.FC<ProfileProps> = ({
   email,
@@ -17,7 +18,10 @@ export const Profile: React.FC<ProfileProps> = ({
 }) => {
   return (
     <MyProfileWrapper>
-      <h2>My Profile</h2>
+      <h2>
+        <TitleBG />
+        <span>My Profile</span>
+      </h2>
       <ProfileItem
         id="username"
         label="Username"

@@ -158,10 +158,16 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                 <MarketCard item={selectedItem} {...selectedItem} />
               )}
               {page === "identities" && (
-                <PredictionCard item={selectedItem} {...selectedItem?.nft_card_identity} />
+                <PredictionCard
+                  item={selectedItem}
+                  {...selectedItem?.nft_card_identity}
+                />
               )}
               {page === "predictions" && (
-                <PredictionCard item={selectedItem} {...selectedItem?.nft_card_prediction} />
+                <PredictionCard
+                  item={selectedItem}
+                  {...selectedItem?.nft_card_prediction}
+                />
               )}
             </ViewCardWrapper>
             <PropertiesWrapper>
@@ -189,11 +195,14 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
               </PropertiesContent>
             </PropertiesWrapper>
             <SetPriceWrapper>
-              <h5>Current Price</h5>
-              <h4>${selectedItem?.price}</h4>
+              <div className="price">
+                <h5>Current Price</h5>
+                <h4>${selectedItem?.price}</h4>
+              </div>
               <Button
                 className="sell-confirm-button"
-                onClick={() => setStep(1)}
+                // onClick={() => setStep(1)}
+                onClick={handleUseBalance}
               >
                 Buy Now
               </Button>

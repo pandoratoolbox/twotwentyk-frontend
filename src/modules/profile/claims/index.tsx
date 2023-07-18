@@ -7,24 +7,18 @@ import { useNavigate } from "react-router-dom";
 
 export const ClaimsSection: React.FC = () => {
   const navigate = useNavigate();
-  return (
+  return claimsData.length > 0 ? (
     <ClaimsSectionWrapper>
-      {claimsData.length > 0 ? (
-        <>
-          <h2>Claims</h2>
-          <ClaimsTable />
-        </>
-      ) : (
-        <EmptyData>
-          <p>You do not have any claims yet.</p>
-          <Button
-            onClick={() => navigate("/dashboard/")}
-            className="empty-button"
-          >
-            Go to Predictions
-          </Button>
-        </EmptyData>
-      )}
+      <h2>Claims</h2>
+      <ClaimsTable />
     </ClaimsSectionWrapper>
+  ) : (
+    <EmptyData>
+      <h2>No Claims</h2>
+      <p>You do not have any claims yet.</p>
+      <Button onClick={() => navigate("/dashboard/")} className="empty-button">
+        Go to Predictions
+      </Button>
+    </EmptyData>
   );
 };

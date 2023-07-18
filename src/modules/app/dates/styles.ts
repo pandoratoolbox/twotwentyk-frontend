@@ -43,9 +43,9 @@ export const SortButton = styled.div`
   min-width: 40px !important;
   width: 100%;
   height: 40px;
-  background: #e2e4ec;
-  box-shadow: 1px 1.5px 3px rgba(0, 0, 0, 0.2);
   border-radius: 8px;
+  background: #0e4fbc;
+  box-shadow: 1px 1px 10px 0px rgba(0, 0, 0, 0.2);
 `;
 
 export const ViewOfferInfoWrapper = styled.div`
@@ -189,6 +189,7 @@ export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
   justify-content: space-between;
   align-items: center;
   width: 100%;
+  color: #0e4fbc;
   border-bottom: ${({ noborder }) =>
     noborder ? "none" : "1px solid #00000022"};
   span {
@@ -201,7 +202,7 @@ export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
 export const PropertiesContent = styled.div`
   margin-top: 10px;
   & > :not(:first-child) {
-    margin-top: 8px;
+    /* margin-top: 8px; */
   }
   &:not(:last-child) {
     border-bottom: 0.5px solid #00000022;
@@ -214,11 +215,12 @@ export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
+  height: 45px;
   line-height: 15px;
   text-transform: capitalize;
   padding: ${({ nfttrigger }) => (nfttrigger ? "0 10px" : "none")};
   p {
-    font-weight: 500;
+    font-weight: 600;
   }
   span {
     font-weight: 300;
@@ -226,8 +228,9 @@ export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
 `;
 
 export const PriceItem = styled.div`
-  font-weight: 500;
+  font-weight: 600;
   font-size: 12px;
+  height: 33px;
   line-height: 15px;
   display: flex;
   justify-content: space-between;
@@ -256,12 +259,18 @@ export const SetPriceWrapper = styled.div`
   align-items: center;
   width: 100%;
   padding: 20px 0;
+  .price {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    align-items: center;
+  }
   & > * {
     position: relative;
     z-index: 1;
   }
   & > :not(:last-child) {
-    margin-bottom: 18px;
+    /* margin-bottom: 18px; */
   }
   & > p {
     font-weight: 400;
@@ -277,7 +286,7 @@ export const SetPriceWrapper = styled.div`
     bottom: 0;
     left: -52px;
     right: -52px;
-    background: #f9faff;
+    background: #eff8ff;
   }
   h5 {
     font-weight: 400;
@@ -286,10 +295,10 @@ export const SetPriceWrapper = styled.div`
     text-transform: uppercase;
     color: #878686;
     margin: 0;
-    width: 100%;
+    /* width: 100%; */
   }
   h4 {
-    width: 100%;
+    /* width: 100%; */
     font-weight: 500;
     font-size: 18px;
     margin: 4px 0 0;

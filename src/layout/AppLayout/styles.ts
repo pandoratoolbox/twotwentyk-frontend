@@ -159,7 +159,7 @@ export const HeaderButton = styled.div<{ width?: number }>`
   background: #323b89;
   box-shadow: 0px 1px 20px 0px rgba(0, 0, 0, 0.15);
   &.active {
-    /* background: #636363; */
+    background: #4e5cd7;
     color: #fff;
   }
   box-shadow: 1px 1.5px 3px rgba(0, 0, 0, 0.2);

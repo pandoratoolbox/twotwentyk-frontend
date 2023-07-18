@@ -347,56 +347,63 @@ export const DashboardPage: React.FC = () => {
             )}
           </DashboardContainer>
         </DashboardCardWrapper>
-        {currentUser && marketplaceOffers?.length > 0 ? (
-          <DashboardCardWrapper>
-            <CardTitle>
-              <div>
-                <DashboardTitleBG />
-              </div>
-              <span>My Offers</span>
-            </CardTitle>
-            {/* */}
-            <DashboardContainer>
-              <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
-                See More
-              </SeeMoreButton>
-              <DashboardCardGrid>
-                {marketplaceOffers
-                  ?.filter((f: any) => f.status === 0)
-                  .slice(0, 4) //////////////////// Have to add some filter by collection id
-                  .map((item: any, key: number) => (
-                    <MarketCard
-                      // {...cardData[key]}
-                      key={key}
-                      {...item}
-                      onCard={() =>
-                        navigate("/dashboard/myoffer?id=" + item.nft_id)
-                      }
-                    />
-                  ))}
-              </DashboardCardGrid>
-            </DashboardContainer>
-          </DashboardCardWrapper>
-        ) : !isLoadingOffers ? (
-          <DashboardCardWrapper>
-            <CardTitle>My Offers</CardTitle>
-            <EmptyCardWrapper>
-              <p>There is no card to offer</p>
-              <img src="/assets/prediction-empty.png" alt="" />
-              {currentUser && (
-                <Button
-                  className="dashboard-card-button"
-                  onClick={() => navigate("/marketplace")}
-                >
-                  Go to Marketplace
-                </Button>
-              )}
-            </EmptyCardWrapper>
-          </DashboardCardWrapper>
-        ) : (
-          <Loader />
-        )}
-        {currentUser && myFeedData?.length > 0 && (
+        {currentUser &&
+          (marketplaceOffers?.length > 0 ? (
+            <DashboardCardWrapper>
+              <CardTitle>
+                <div>
+                  <DashboardTitleBG />
+                </div>
+                <span>My Offers</span>
+              </CardTitle>
+              {/* */}
+              <DashboardContainer>
+                <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
+                  See More
+                </SeeMoreButton>
+                <DashboardCardGrid>
+                  {marketplaceOffers
+                    ?.filter((f: any) => f.status === 0)
+                    .slice(0, 4) //////////////////// Have to add some filter by collection id
+                    .map((item: any, key: number) => (
+                      <MarketCard
+                        // {...cardData[key]}
+                        key={key}
+                        {...item}
+                        onCard={() =>
+                          navigate("/dashboard/myoffer?id=" + item.nft_id)
+                        }
+                      />
+                    ))}
+                </DashboardCardGrid>
+              </DashboardContainer>
+            </DashboardCardWrapper>
+          ) : !isLoadingOffers ? (
+            <DashboardCardWrapper>
+              <CardTitle>
+                <div>
+                  <DashboardTitleBG />
+                </div>
+                <span>My Offers</span>
+              </CardTitle>
+              <EmptyCardWrapper>
+                <p>There is no card to offer</p>
+                <img src="/assets/prediction-empty.png" alt="" />
+                {currentUser && (
+                  <Button
+                    className="dashboard-card-button"
+                    onClick={() => navigate("/marketplace")}
+                  >
+                    Go to Marketplace
+                  </Button>
+                )}
+              </EmptyCardWrapper>
+            </DashboardCardWrapper>
+          ) : (
+            <Loader />
+          ))}
+        {/* {currentUser && myFeedData?.length > 0 && ( */}
+        {myFeedData?.length > 0 && (
           <DashboardCardWrapper>
             <CardTitle>
               <div>
@@ -419,7 +426,8 @@ export const DashboardPage: React.FC = () => {
             </DashboardContainer>
           </DashboardCardWrapper>
         )}
-        {currentUser && feedData?.length > 0 && (
+        {/* {currentUser && feedData?.length > 0 && ( */}
+        {feedData?.length > 0 && (
           <DashboardCardWrapper>
             <CardTitle>
               <div>

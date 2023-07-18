@@ -57,32 +57,47 @@ export const ButtonGroup = styled.div`
 `;
 
 export const EmptyCards = styled.div`
-  padding-top: 50px;
+  padding: 72px 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  max-width: 635px;
+  width: 100%;
+  border-radius: 5px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(2px);
   text-align: center;
   h3 {
-    font-weight: 500;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
     font-size: 24px;
-    line-height: 29px;
-    margin-bottom: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
   p {
+    &.login {
+      color: #0e4fbc;
+      text-align: center;
+      font-family: vipnagorgialla;
+      font-size: 24px;
+      line-height: 100%; /* 24px */
+      text-transform: uppercase;
+    }
     font-weight: 400;
     font-size: 16px;
-    max-width: 341px;
     text-align: center;
     line-height: 24px;
   }
   .buy-button {
-    height: 51px;
-    width: 203px;
+    height: 49px;
+    width: 230px;
     margin-top: 20px;
-  }
-  &.login {
-    p {
-      max-width: 233px;
-    }
+    border-radius: 100px;
+    border: 2px solid #1440b3;
+    background: #fff;
+    box-shadow: 0px 1px 25px 0px rgba(0, 0, 0, 0.2);
+    color: #0e4fbc;
+    text-transform: uppercase;
   }
 `;

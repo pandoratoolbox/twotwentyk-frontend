@@ -248,6 +248,7 @@ export type BuyPackProps = {
   onCardClick: (id: string | number) => void;
   onBuyClick: (id: string | number) => void;
   cardType: string;
+  preview?: boolean;
   price: number;
 };
 

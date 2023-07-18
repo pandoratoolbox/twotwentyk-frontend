@@ -236,8 +236,17 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
+                clickedCard={clickedCard}
+                selectedCard={selectedCard}
+                onCardClicked={handleCardClick}
+                onSelectCardCrafting={handleSelectCardCrafting}
+                onSelectCardCategory={handleSelectCardCategory}
+                onSelectCardDayMonth={handleSelectCardDayMonth}
+                onSelectCardYear={handleSelectCardYear}
+                myNfts={myNfts}
+                setMyNfts={setMyNfts}
               />
-              <IdentitySelectCardSection
+              {/* <IdentitySelectCardSection
                 clickedCard={clickedCard}
                 selectedCard={selectedCard}
                 selectedCraft={selectedCraft}
@@ -248,7 +257,7 @@ export const CraftingIdentitesPage: React.FC = () => {
                 onSelectCardYear={handleSelectCardYear}
                 myNfts={myNfts}
                 setMyNfts={setMyNfts}
-              />
+              /> */}
             </CraftLeftWrapper>
             <CraftRightWrapper open={isOpen ? "true" : undefined}>
               <CloseButton
@@ -260,7 +269,6 @@ export const CraftingIdentitesPage: React.FC = () => {
               <IdentityMatchListSection
                 page="identity"
                 selectedCards={selectedCards}
-                // onChooseCelebrity={setSelectedCelebrity}
                 myNfts={myNfts}
                 onSelectCardDayMonth={handleSelectCardDayMonth}
                 onSelectCardYear={handleSelectCardYear}

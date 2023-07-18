@@ -64,7 +64,7 @@ export const InputWrapper = styled.div<{ iserror?: string; suffix?: string }>`
     cursor: pointer;
     right: 10px;
     &.code {
-      width: 80px;
+      width: 83px;
       font-weight: 700;
       font-size: 12px;
       line-height: 150%;

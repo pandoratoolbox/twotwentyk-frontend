@@ -22,6 +22,7 @@ import {
 import {
   BalanceBuyConfirmModal,
   Button,
+  BuyCard,
   BuyPackConfirmModal,
   IconArrowDown,
   IconCoins,
@@ -73,9 +74,13 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
       {step === 0 && (
         <BuyDetailsContainer>
           <CloseButton onClick={onClose}>&times;</CloseButton>
-          <PreviewCard>
-            <div>Standard</div>
-          </PreviewCard>
+          <BuyCard
+            cardType="standard"
+            price={50}
+            preview={true}
+            onBuyClick={() => {}}
+            onCardClick={() => {}}
+          />
           <PropertiesWrapper>
             <PropertiesHeader>
               <span>Properties</span>

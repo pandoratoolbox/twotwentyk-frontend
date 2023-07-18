@@ -27,6 +27,7 @@ import {
   getFilterPackType,
   getFilterTriggerType,
 } from "../../../actions/filtering";
+import { EmptyCards as LoginCard } from "../dates/styles";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -173,12 +174,12 @@ export const CardPackPage: React.FC = () => {
           <Loader />
         )
       ) : (
-        <EmptyCards className="login">
-          <p>Explanatory text. Log in to start playing.</p>
+        <LoginCard className="login">
+          <p className="login">Log in to start playing</p>
           <Button className="buy-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>
-        </EmptyCards>
+        </LoginCard>
       )}
     </AppLayout>
   );

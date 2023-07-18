@@ -13,15 +13,18 @@ export const SelectBoxWrapper = styled.div`
 `;
 
 export const SelectBoxContainer = styled.div<{ border?: string }>`
-  background: #ffffff;
+  background: rgba(7, 98, 200, 0.04);
   border-radius: 4px;
+  backdrop-filter: blur(50px);
   height: 40px;
   display: flex;
+  border: 1px solid #0071d0;
   align-items: center;
   justify-content: space-between;
   padding: 0 10px 0 24px;
   cursor: pointer;
-  border: 1px solid ${({ border }) => (border ? "#E4E4E4" : "transparent")};
+  /* border: 1px solid ${({ border }) =>
+    border ? "#E4E4E4" : "transparent"}; */
   &.IMSelect {
     background: transparent;
     justify-content: space-around;
@@ -35,13 +38,14 @@ export const SelectBoxTextWrapper = styled.div`
   line-height: 17px;
   display: flex;
   align-items: center;
+  color: #2660c3;
   img {
     margin-right: 10px;
     width: 25px;
     height: 25px;
   }
   span {
-    opacity: 0.5;
+    /* opacity: 0.5; */
   }
 `;
 

@@ -62,22 +62,30 @@ export const EmptyCards = styled.div`
   align-items: center;
   text-align: center;
   h3 {
-    font-weight: 500;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
     font-size: 24px;
-    line-height: 29px;
-    margin-bottom: 12px;
+    font-weight: 400;
+    text-transform: uppercase;
+    margin-bottom: 16px;
   }
   p {
     font-weight: 400;
     font-size: 16px;
-    max-width: 341px;
+    /* max-width: 341px; */
     text-align: center;
     line-height: 24px;
   }
   .buy-button {
-    height: 51px;
-    width: 203px;
+    height: 49px;
+    width: 230px;
     margin-top: 20px;
+    border-radius: 100px;
+    border: 2px solid #1440b3;
+    background: #fff;
+    box-shadow: 0px 1px 25px 0px rgba(0, 0, 0, 0.2);
+    color: #0e4fbc;
+    text-transform: uppercase;
   }
   &.login {
     p {

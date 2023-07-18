@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CardActionTypes } from "../../../types";
 import { AppLayout } from "../../../layout/AppLayout";
 import {
+  MarketplaceContentWrapper,
   MarketplacePageContainer,
   MarketplacePageWrapper,
 } from "../cards/styles";
@@ -75,12 +76,14 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         <MarketplacePageWrapper sidebar={side !== "" ? "true" : undefined}>
           <MarketplacePageContainer>
             <h2>Identities</h2>
-            <MFilterSection page="identities" />
-            <MCardGridSection
-              data={nftMarketplaceData}
-              onCardClick={handleCardClick}
-              page="identities"
-            />
+            <MarketplaceContentWrapper>
+              <MFilterSection page="identities" />
+              <MCardGridSection
+                data={nftMarketplaceData}
+                onCardClick={handleCardClick}
+                page="identities"
+              />
+            </MarketplaceContentWrapper>
           </MarketplacePageContainer>
         </MarketplacePageWrapper>
       ) : !isLoading ? (

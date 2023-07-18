@@ -13,15 +13,16 @@ export const BuyPackConfirmModal: React.FC<SellModalProps> = ({
 }) => {
   const navigate = useNavigate();
   return (
-    <ModalWrapper onClose={onClose} open={open} width={365}>
+    <ModalWrapper onClose={onClose} open={open} width={407}>
       <BuyPackConfirmModalWrapper>
         {isMarket ? (
           <IconWrapper>
-            <IconConfirm />
+            <img src="/assets/buy-success.png" alt="" />
           </IconWrapper>
         ) : (
           <h3>Success!</h3>
         )}
+        <h3>Congratulations!</h3>
         <p>
           Your {isMarket ? "purchase" : "transaction"} was completed
           successfully.

@@ -34,13 +34,20 @@ export const IdentitySelectCardSection: React.FC<{
   onSelectCardCategory: (card: INftCardCategory) => void;
   onSelectCardDayMonth: (card: INftCardDayMonth) => void;
   onSelectCardYear: (card: INftCardYear) => void;
-  myNfts: {dayMonth: INftCardDayMonth[] | null, category: INftCardCategory[] | null, year: INftCardYear[] | null, crafting: INftCardCrafting[] | null };
-  setMyNfts: React.Dispatch<React.SetStateAction<{
-    crafting: INftCardCrafting[] | null;
-    category: INftCardCategory[] | null;
+  myNfts: {
     dayMonth: INftCardDayMonth[] | null;
+    category: INftCardCategory[] | null;
     year: INftCardYear[] | null;
-}>>
+    crafting: INftCardCrafting[] | null;
+  };
+  setMyNfts: React.Dispatch<
+    React.SetStateAction<{
+      crafting: INftCardCrafting[] | null;
+      category: INftCardCategory[] | null;
+      dayMonth: INftCardDayMonth[] | null;
+      year: INftCardYear[] | null;
+    }>
+  >;
 }> = ({
   selectedCraft,
   clickedCard,
@@ -65,20 +72,40 @@ export const IdentitySelectCardSection: React.FC<{
   const navigate = useNavigate();
 
   const setNftCardCraftingData = (data: INftCardCrafting[]) => {
-    setMyNfts({dayMonth: myNfts.dayMonth, year: myNfts.year, category: myNfts.category, crafting: myNfts.crafting})
-  }
+    setMyNfts({
+      dayMonth: myNfts.dayMonth,
+      year: myNfts.year,
+      category: myNfts.category,
+      crafting: myNfts.crafting,
+    });
+  };
 
   const setNftCardCategoryData = (data: INftCardCategory[]) => {
-    setMyNfts({dayMonth: myNfts.dayMonth, year: myNfts.year, category: data, crafting: myNfts.crafting})
-  }
+    setMyNfts({
+      dayMonth: myNfts.dayMonth,
+      year: myNfts.year,
+      category: data,
+      crafting: myNfts.crafting,
+    });
+  };
 
   const setNftCardDayMonthData = (data: INftCardDayMonth[]) => {
-    setMyNfts({dayMonth: data, year: myNfts.year, category: myNfts.category, crafting: myNfts.crafting})
-  }
+    setMyNfts({
+      dayMonth: data,
+      year: myNfts.year,
+      category: myNfts.category,
+      crafting: myNfts.crafting,
+    });
+  };
 
   const setNftCardYearData = (data: INftCardYear[]) => {
-    setMyNfts({dayMonth: myNfts.dayMonth, category: myNfts.category, year: data, crafting: myNfts.crafting})
-  }
+    setMyNfts({
+      dayMonth: myNfts.dayMonth,
+      category: myNfts.category,
+      year: data,
+      crafting: myNfts.crafting,
+    });
+  };
 
   const getNFTCrafting = async () => {
     setIsLoadingCrating(true);
@@ -179,9 +206,7 @@ export const IdentitySelectCardSection: React.FC<{
             </>
           ) : !isLoadingCrating ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.
@@ -265,9 +290,7 @@ export const IdentitySelectCardSection: React.FC<{
             </>
           ) : !isLoadingDayMonth ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.
@@ -347,9 +370,7 @@ export const IdentitySelectCardSection: React.FC<{
             </>
           ) : !isLoadingYear ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.
@@ -429,9 +450,7 @@ export const IdentitySelectCardSection: React.FC<{
             </>
           ) : !isLoadingCategory ? (
             <EmptyCards>
-              <h3>
-                No <span className="capitalize">{selectedCraft}</span> Cards
-              </h3>
+              <h3>No {selectedCraft} Cards</h3>
               <p style={{ maxWidth: "243px" }}>
                 It looks like you don’t have any{" "}
                 <span className="capitalize">{selectedCraft}</span> cards yet.

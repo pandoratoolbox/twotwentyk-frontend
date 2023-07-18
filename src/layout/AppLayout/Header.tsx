@@ -58,7 +58,8 @@ export const Header: React.FC = () => {
 
   const handleWithdraw = () => {
     setBalanceModal(false);
-    setWithdrawModal(true);
+    // setWithdrawModal(true);
+    setConfirmModal(true);
   };
 
   const handleWithdrawClick = () => {
@@ -67,7 +68,7 @@ export const Header: React.FC = () => {
 
   const handleConfirmWithdraw = (status?: boolean) => {
     setWithdrawStatus(status ? "success" : "failed");
-    setWithdrawModal(false);
+    // setWithdrawModal(false);
     setConfirmModal(true);
   };
 
@@ -124,13 +125,13 @@ export const Header: React.FC = () => {
               </HeaderButtonGroup>
             ) : (
               <HeaderButtonGroup>
-                <Button
+                <HeaderButton
                   className="login-button"
                   onClick={() => navigate("/signin")}
                 >
                   <IconLogout />
                   <span>Log In</span>
-                </Button>
+                </HeaderButton>
               </HeaderButtonGroup>
             )}
             <MobileMenuButton onClick={() => setIsOpen(true)}>

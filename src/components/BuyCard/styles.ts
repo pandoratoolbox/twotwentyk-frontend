@@ -1,20 +1,21 @@
 import { styled } from "styled-components";
 
 export const BuyCardWrapper = styled.div`
+  padding: 24px;
   cursor: pointer;
-  box-shadow: 0px 0px 27.5768px rgba(0, 0, 0, 0.05);
-  border-radius: 11px;
-  height: 404px;
-  background: url("/assets/buy.png") no-repeat;
+  background: none;
+  &:hover {
+    background: url("/assets/nfts/blur.png") no-repeat;
+    background-size: 100% 100%;
+  }
   cursor: pointer;
-  background-position: center;
-  background-size: cover;
   position: relative;
 `;
 
 export const CardType = styled.div`
   height: 46px;
   min-width: 125px;
+  position: absolute;
   width: fit-content;
   margin-left: auto;
   border-radius: 0px 11px;
@@ -29,45 +30,36 @@ export const CardType = styled.div`
 `;
 
 export const CardAction = styled.div`
-  min-height: 104px;
-  padding: 20px 23px;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: space-between;
   width: 100%;
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  border-radius: 0 0 11px 11px;
-  background: linear-gradient(
-    180deg,
-    rgba(0, 0, 0, 0) 0%,
-    rgba(0, 0, 0, 0.08) 18.23%,
-    rgba(0, 0, 0, 0.35) 51.56%,
-    rgba(0, 0, 0, 0.8) 100%
-  );
+  padding: 16px;
+  margin-top: 11px;
+  border-radius: 10px;
+  background: rgba(14, 79, 188, 0.07);
   .buy-button {
     height: 46px;
     width: 137px;
   }
   div:first-child {
     p {
-      font-weight: 500;
-      font-size: 16px;
-      line-height: 100%;
-      color: #ffffff;
-      opacity: 0.5;
+      color: rgba(14, 79, 188, 0.8);
+      font-family: vipnagorgialla;
+      font-size: 14px;
+      font-weight: 100;
+      text-transform: uppercase;
+      margin-bottom: 7px;
     }
     h3 {
-      line-height: 100%;
-      margin-top: 5px;
-      color: #fff;
-      font-size: 16px;
-      font-weight: 400;
-      span {
-        font-size: 19px;
-        font-weight: 700;
-      }
+      color: #0e4fbc;
+      text-align: center;
+      font-family: vipnagorgialla;
+      font-size: 14px;
+      font-style: normal;
+      font-weight: 700;
+      line-height: 100%; /* 14px */
+      text-transform: uppercase;
     }
   }
 `;

@@ -65,7 +65,7 @@ export const ClaimsTable: React.FC = () => {
       case 0:
         return (
           <Status color="#976400" bg="#FFF5D5">
-            Pending ...
+            Pending
           </Status>
         );
 
@@ -76,38 +76,40 @@ export const ClaimsTable: React.FC = () => {
   return (
     <>
       <CliamsTableContainer>
-        <ClaimsTableWrapper>
-          <thead>
-            <tr>
-              <th>Prediction Created</th>
-              <th>Event Date</th>
-              <th>Claim Submitted</th>
-              <th>Identity</th>
-              <th>Trigger</th>
-              <th>Status</th>
-            </tr>
-          </thead>
-          <tbody>
-            {tableData.length > 0 ? (
-              tableData.map((item: any, key: number) => (
-                <tr key={key}>
-                  <td>{item.created}</td>
-                  <td>{item.event}</td>
-                  <td>{item.submitted}</td>
-                  <td>{item.identity}</td>
-                  <td>{item.trigger}</td>
-                  <td>{renderStatus(item.status)}</td>
-                </tr>
-              ))
-            ) : (
+        <div>
+          <ClaimsTableWrapper>
+            <thead>
               <tr>
-                <td colSpan={6} style={{ textAlign: "center" }}>
-                  No Data
-                </td>
+                <th>Prediction Created</th>
+                <th>Event Date</th>
+                <th>Claim Submitted</th>
+                <th>Identity</th>
+                <th>Trigger</th>
+                <th>Status</th>
               </tr>
-            )}
-          </tbody>
-        </ClaimsTableWrapper>
+            </thead>
+            <tbody>
+              {tableData.length > 0 ? (
+                tableData.map((item: any, key: number) => (
+                  <tr key={key}>
+                    <td>{item.created}</td>
+                    <td>{item.event}</td>
+                    <td>{item.submitted}</td>
+                    <td className="identity">{item.identity}</td>
+                    <td className="trigger">{item.trigger}</td>
+                    <td>{renderStatus(item.status)}</td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={6} style={{ textAlign: "center" }}>
+                    No Data
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </ClaimsTableWrapper>
+        </div>
       </CliamsTableContainer>
       <PaginatonWrapper>
         <p>

@@ -1,16 +1,26 @@
 import { styled } from "styled-components";
 
 export const BuyPackWrapper = styled.div`
-  padding: 50px 0;
-  max-width: 1240px;
+  padding: 24px 0 50px;
+  max-width: 1340px;
+  border-radius: 8px;
+  box-shadow: 0px 1px 10px 0px rgba(0, 0, 0, 0.05);
   margin: auto;
   width: 95%;
   & > h2 {
-    margin-bottom: 30px;
+    margin-bottom: 32px;
     padding: 0 72px;
     font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-family: vipnagorgialla;
+    font-size: 32px;
+    text-transform: uppercase;
+    background: url("/assets/title-bg.png") no-repeat;
+    background-size: 100% 100%;
+    height: 114px;
   }
   @media screen and (max-width: 768px) {
     & > h2 {
@@ -23,16 +33,21 @@ export const BuyPackTextWrapper = styled.div`
   padding: 0 72px;
 
   h3 {
-    margin-bottom: 14px;
-    font-weight: 600;
-    font-size: 20px;
-    line-height: 24px;
+    color: #0e4fbc;
+    font-family: vipnagorgialla;
+    font-size: 24px;
+    line-height: 100%; /* 24px */
+    margin-bottom: 12px;
+    text-transform: uppercase;
   }
   p {
-    font-weight: 400;
+    color: #000;
+    /* font-family: Inter; */
     font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    opacity: 1;
     line-height: 125%;
-    opacity: 0.5;
     margin-bottom: 24px;
   }
   @media screen and (max-width: 768px) {

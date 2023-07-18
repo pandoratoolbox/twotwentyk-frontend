@@ -178,8 +178,14 @@ export const CraftingPredictionsPage: React.FC = () => {
                 onCraftChanged={setSelectedCraft}
                 selectedCards={selectedCards}
                 selectedCraft={selectedCraft}
+                selectedCard={selectedCard}
+                clickedCard={clickedCard}
+                onCardClicked={handleCardClick}
+                onSelectCardCrafting={handleSelectCardCrafting}
+                onSelectCardIdentity={handleSelectCardIdentity}
+                onSelectCardTrigger={handleSelectCardTrigger}
               />
-              <PredictionSelectCardSection
+              {/* <PredictionSelectCardSection
                 selectedCard={selectedCard}
                 clickedCard={clickedCard}
                 selectedCraft={selectedCraft}
@@ -187,7 +193,7 @@ export const CraftingPredictionsPage: React.FC = () => {
                 onSelectCardCrafting={handleSelectCardCrafting}
                 onSelectCardIdentity={handleSelectCardIdentity}
                 onSelectCardTrigger={handleSelectCardTrigger}
-              />
+              /> */}
             </CraftLeftWrapper>
             <CraftRightWrapper>
               <PredictionMatchListSection selectedCards={selectedCards} />

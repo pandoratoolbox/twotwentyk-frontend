@@ -224,7 +224,7 @@ export const IdentitiesPage: React.FC = () => {
         )
       ) : (
         <EmptyCards className="login">
-          <p>Explanatory text. Log in to start playing.</p>
+          <p className="login">Log in to start playing</p>
           <Button className="buy-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>

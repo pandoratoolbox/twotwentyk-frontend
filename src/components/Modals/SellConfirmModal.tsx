@@ -16,18 +16,19 @@ export const SellConfirmModal: React.FC<SellModalProps> = ({
   const navigate = useNavigate();
 
   return (
-    <ModalWrapper open={open} onClose={onClose} width={365}>
+    <ModalWrapper open={open} onClose={onClose} width={407}>
       <SellConfirmModalWrapper>
         <IconWrapper>
-          <IconConfirm />
+          <img src="/assets/buy-success.png" alt="" />
         </IconWrapper>
+        <h3>{isOffer ? "Success!" : "Congratulations!"}</h3>
         <p>
           {isOffer
-            ? "Success! How will you know if accepted or denied message"
-            : "Congratulations! Your card is now listed for sale"}
+            ? "You will be notified whether your offer is accepted or declined."
+            : "Your card is now listed for sale"}
         </p>
         <ButtonGroup>
-          <Button onClick={onConfirm}>Done</Button>
+          <Button onClick={onClose}>Done</Button>
           {!isMarket && (
             <Button onClick={() => navigate("/marketplace")}>
               View In Marketplace

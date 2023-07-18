@@ -13,8 +13,6 @@ import {
 import { IconArrowDown } from "../Icons";
 import { SelectBoxProps } from "../../types";
 import { Button } from "../Button";
-import { ToastContainer, toast } from "react-toastify";
-import { keyboard, keyboardImplementationWrapper } from "@testing-library/user-event/dist/keyboard";
 
 export const SelectBox: React.FC<SelectBoxProps> = ({
   placeholder,
@@ -30,7 +28,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string[]>([]);
-
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -52,9 +49,9 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   };
 
   const handleFilterClick = async (filterType: string) => {
-      onClick && onClick(filterType, selectedOptions);
+    onClick && onClick(filterType, selectedOptions);
 
-      setIsOption(false);
+    setIsOption(false);
   };
 
   const handleCheckboxChange = (
@@ -73,18 +70,6 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
 
   return (
     <SelectBoxWrapper ref={optionRef}>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       {label && <p>{label}</p>}
       <SelectBoxContainer
         border={border ? "true" : undefined}
@@ -113,7 +98,10 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
             <OptionGroup>
               {newData &&
                 Array.from<[any, any]>(newData).map(([key, value]) => (
-                  <OptionItem htmlFor={value.name ? value.name + key : value + key} key={key}>
+                  <OptionItem
+                    htmlFor={value.name ? value.name + key : value + key}
+                    key={key}
+                  >
                     <span>{value.name ? value.name : value}</span>
                     <CheckboxWrapper>
                       <input
@@ -123,7 +111,9 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                         checked={selectedOptions.includes(key as string)}
                         onChange={(e) => handleCheckboxChange(e, key as string)}
                       />
-                      <label htmlFor={value.name ? value.name + key : value + key}></label>
+                      <label
+                        htmlFor={value.name ? value.name + key : value + key}
+                      ></label>
                     </CheckboxWrapper>
                   </OptionItem>
                 ))}
