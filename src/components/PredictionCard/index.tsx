@@ -57,9 +57,9 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     );
 
     if (c) {
-      let res = await updateMyNftCardIdentity(c?.id, c?.name);
-      if (res?.data && Array.isArray(res.data)) {
-        console.log(res?.data);
+      let res = await updateMyNftCardIdentity(c?.id , c?.name);
+      if (res.success) {
+        console.log("identity updated")
       }
     }
   };

@@ -301,8 +301,43 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       await setContext();
     };
     loadFunc();
+    addScript(
+      `https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js`,
+      "moonpay-script",
+      () => {
+        console.log("moonpay script loaded!");
+
+
+        
+      }
+    );
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
+
+  // useExternalScripts("https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js")
+
+
+
+  const addScript = (src: string, id: string, onLoad: ()=>void) => {
+    const existing = document.getElementById(id);
+    if (existing) {
+      return existing;
+    } else {
+      const script = document.createElement("script");
+      script.src = src;
+      script.id = id;
+      script.async = true;
+      script.onload = () => {
+        if (onLoad) {
+          onLoad();
+        }
+      };
+      document.body.appendChild(script);
+      return script;
+    }
+  };
+  // moonpaySdk.show()
 
   return (
     <TiersContext.Provider value={tiersValue}>
