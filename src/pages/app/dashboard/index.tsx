@@ -199,6 +199,24 @@ export const DashboardPage: React.FC = () => {
     if (localStorage.getItem("auth")) loadNfts();
   }, []);
 
+  useEffect(() => {
+    if (typeof window !== 'undefined' && typeof window.MoonPayWebSdk !== 'undefined') {
+      const moonpaySdk = window.MoonPayWebSdk.init({
+        flow: 'nft',
+        environment: 'sandbox',
+        variant: 'overlay',
+        params: {
+          apiKey: 'pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj',
+          contractAddress: '0x495f947276749ce646f68ac8c248420045cb7b5e',
+          tokenId: '1'
+        }
+      }
+      );
+      console.log("moonpay initialised")
+      // moonpaySdk.show()
+    }
+  }, [window.MoonPayWebSdk])
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -378,28 +396,7 @@ export const DashboardPage: React.FC = () => {
                 </DashboardCardGrid>
               </DashboardContainer>
             </DashboardCardWrapper>
-          ) : !isLoadingOffers ? (
-            <DashboardCardWrapper>
-              <CardTitle>
-                <div>
-                  <DashboardTitleBG />
-                </div>
-                <span>My Offers</span>
-              </CardTitle>
-              <EmptyCardWrapper>
-                <p>There is no card to offer</p>
-                <img src="/assets/prediction-empty.png" alt="" />
-                {currentUser && (
-                  <Button
-                    className="dashboard-card-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Go to Marketplace
-                  </Button>
-                )}
-              </EmptyCardWrapper>
-            </DashboardCardWrapper>
-          ) : (
+          ) : !isLoadingOffers ? null : (
             <Loader />
           ))}
         {/* {currentUser && myFeedData?.length > 0 && ( */}

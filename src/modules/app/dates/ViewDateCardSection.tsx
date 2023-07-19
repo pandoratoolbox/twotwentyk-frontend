@@ -10,7 +10,12 @@ import {
   ViewDateCardContainer,
   ViewDateCardWrapper,
 } from "./styles";
-import { DateCard, IconArrowDown, PredictionCard } from "../../../components";
+import {
+  DateCard,
+  IconArrowDown,
+  PredictionCard,
+  CardPack,
+} from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { useMonthContext, useTriggersContext } from "../../../context";
@@ -65,6 +70,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             ? "Prediction"
             : cardType === "category"
             ? "Category"
+            : cardType === "cardPacks"
+            ? "Card Pack"
             : "Date Card"}
         </h2>
         <PreviewCardWrapper>
@@ -98,6 +105,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               rarity={item?.rarity}
               image={item?.image}
             />
+          ) : cardType === "cardPacks" ? (
+            <CardPack item={item} rarity={item?.rarity} image={item?.image} />
           ) : (
             <DateCard
               day={item?.day}
@@ -180,6 +189,8 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? "Trigger"
                   : cardType === "identity"
                   ? "Category"
+                  : cardType === "cardPacks"
+                  ? "Collection"
                   : null}
               </p>
               <span>
@@ -187,9 +198,12 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                   ? item?.trigger
                   : cardType === "identity"
                   ? item?.category
+                  : cardType === "cardPacks"
+                  ? item?.collection
                   : ""}
               </span>
             </PropertyItem>
+
             {cardType === "prediction" && filteredTriggers && (
               <>
                 <PropertiesHeader noborder={"true"}>
@@ -203,6 +217,27 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                     <span>{item.name}</span>
                   </PropertyItem>
                 ))}
+              </>
+            )}
+
+            {cardType === "cardPacks" && (
+              <>
+                <PropertiesHeader>
+                  <span>Pack Contents</span>
+                  <IconArrowDown />
+                </PropertiesHeader>
+                <PropertyItem>
+                  <p>6 Cards</p>
+                </PropertyItem>
+                <PropertyItem>
+                  <p>3 Guaranteed Core Cards</p>
+                </PropertyItem>
+                <PropertyItem>
+                  <p>2 Core cards with chance of Uncommon Card</p>
+                </PropertyItem>
+                <PropertyItem>
+                  <p>1 Crafting Card</p>
+                </PropertyItem>
               </>
             )}
           </PropertiesContent>

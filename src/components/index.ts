@@ -9,6 +9,7 @@ export * from "./HeaderLogo";
 export * from "./Icons";
 export * from "./Input";
 export * from "./MarketCard";
+export * from "./CardPack";
 export * from "./Modals";
 export * from "./NotificationItem";
 export * from "./Notify";
