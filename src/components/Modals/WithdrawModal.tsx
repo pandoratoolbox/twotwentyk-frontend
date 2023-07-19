@@ -26,7 +26,7 @@ export const WithdrawModal: React.FC<WithdrawModalProps> = ({
 
   useEffect(() => {
     if (myInfoContext)
-      setBalance(myInfoContext?.balance ? myInfoContext?.balance : 0);
+      setBalance(myInfoContext?.balance ? myInfoContext?.balance / 100: 0);
   }, [myInfoContext]);
 
   const handleWithdraw = () => {

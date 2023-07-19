@@ -98,7 +98,7 @@ export const Header: React.FC = () => {
                   <IconCoins />
                   <span>
                     $
-                    {myInfoContext?.balance.toLocaleString("en-US", {
+                    {myInfoContext && (myInfoContext?.balance / 100).toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}

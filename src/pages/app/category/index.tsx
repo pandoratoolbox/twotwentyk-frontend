@@ -30,6 +30,12 @@ import {
 } from "../../../actions/filtering";
 import { NftCardCategoryFilters } from "../../../models/filters";
 import { EmptyCards as LoginCards } from "../dates/styles";
+import { INftCardCrafting } from "../../../models/nft_card_crafting";
+import { INftCardDayMonth } from "../../../models/nft_card_day_month";
+import { INftCardYear } from "../../../models/nft_card_year";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+import { INftCardIdentity } from "../../../models/nft_card_identity";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
 
 export const CategoriesPage: React.FC = () => {
   const navigate = useNavigate();
@@ -65,13 +71,16 @@ export const CategoriesPage: React.FC = () => {
   const handleSellConfirm = async (
     id: number | string,
     collection_id: string | number,
-    price: string | number
+    price: string | number,
+    // card: INftCardCategory | INftCardCrafting | INftCardDayMonth | INftCardYear | INftCardPrediction | INftCardIdentity | INftCardTrigger
   ) => {
     const newMarketplace = {
       nft_collection_id: collection_id,
       nft_id: id,
       price: price,
     };
+
+
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
       setModal(true);

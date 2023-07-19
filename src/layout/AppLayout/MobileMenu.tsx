@@ -109,7 +109,7 @@ export const MobileMenu: React.FC<{
                   My Balance
                   <span>
                     $
-                    {myInfoContext?.balance.toLocaleString("en-US", {
+                    {(myInfoContext?.balance/100).toLocaleString("en-US", {
                       minimumFractionDigits: 2,
                       maximumFractionDigits: 2,
                     })}

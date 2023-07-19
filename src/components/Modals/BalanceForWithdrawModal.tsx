@@ -15,7 +15,7 @@ export const BalanceForWithdrawModal: React.FC<WithdrawModalProps> = ({
   const [balance, setBalance] = useState(0);
 
   useEffect(() => {
-    setBalance(myInfoContext?.balance ? myInfoContext?.balance : 0);
+    setBalance(myInfoContext?.balance ? myInfoContext?.balance / 100 : 0);
   }, [myInfoContext]);
   return (
     <ModalWrapper onClose={onClose} open={open} width={408}>
