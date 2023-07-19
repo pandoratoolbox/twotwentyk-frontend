@@ -30,6 +30,7 @@ import {
 
 import { identitiesData } from "./data";
 import { NftCardIdentityFilters } from "../../../models/filters";
+import { DatePageContent } from "../category/styles";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
@@ -162,6 +163,8 @@ export const IdentitiesPage: React.FC = () => {
             <DatePageContainer>
               <DatePageTitleWrapper>
                 <h3>Identities</h3>
+              </DatePageTitleWrapper>
+              <DatePageContent>
                 <ButtonGroup>
                   <Button
                     className="craft-button"
@@ -170,38 +173,38 @@ export const IdentitiesPage: React.FC = () => {
                     Craft Identity
                   </Button>
                 </ButtonGroup>
-              </DatePageTitleWrapper>
-              <IdentitiesFilterSection onClick={handleOptionClick} />
-              {!isLoadingFilter ? (
-                <CardGridSection
-                  identityData={identityNfts}
-                  onCraft={handleCraft}
-                  onSell={handleSell}
+                <IdentitiesFilterSection onClick={handleOptionClick} />
+                {!isLoadingFilter ? (
+                  <CardGridSection
+                    identityData={identityNfts}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    cardType="identity"
+                    onView={handleView}
+                  />
+                ) : (
+                  <Loader />
+                )}
+                <ViewDateCardSection
+                  isView={isView === "view"}
                   cardType="identity"
-                  onView={handleView}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                    navigate("/dashboard/identities");
+                  }}
                 />
-              ) : (
-                <Loader />
-              )}
-              <ViewDateCardSection
-                isView={isView === "view"}
-                cardType="identity"
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                  navigate("/dashboard/identities");
-                }}
-              />
-              <SellDateCardSection
-                onSellConfirm={handleSellConfirm}
-                cardType="identity"
-                isView={isView === "sell"}
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                  navigate("/dashboard/identities");
-                }}
-              />
+                <SellDateCardSection
+                  onSellConfirm={handleSellConfirm}
+                  cardType="identity"
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                    navigate("/dashboard/identities");
+                  }}
+                />
+              </DatePageContent>
             </DatePageContainer>
           </DatesPageWrapper>
         ) : !isLoading ? (

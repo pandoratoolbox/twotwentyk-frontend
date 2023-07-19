@@ -3,6 +3,7 @@ import { AppLayout } from "../../../layout/AppLayout";
 import {
   ButtonGroup,
   DatePageContainer,
+  DatePageContent,
   DatePageTitleWrapper,
   DatesPageWrapper,
   EmptyCards,
@@ -153,6 +154,8 @@ export const CategoriesPage: React.FC = () => {
             <DatePageContainer>
               <DatePageTitleWrapper>
                 <h3>Category Cards</h3>
+              </DatePageTitleWrapper>
+              <DatePageContent>
                 <ButtonGroup>
                   <Button className="buy-button">Buy Cards</Button>
                   <Button
@@ -162,32 +165,33 @@ export const CategoriesPage: React.FC = () => {
                     Buy Packs
                   </Button>
                 </ButtonGroup>
-              </DatePageTitleWrapper>
-              <CategoryFilterSection onClick={handleOptionClick} />
-              {!isLoadingFilter ? (
-                <CardGridSection
-                  cardType="category"
-                  data={nftCardCategoryData}
-                  onCraft={handleCraft}
-                  onSell={handleSell}
-                  onView={handleView}
+                <CategoryFilterSection onClick={handleOptionClick} />
+                {!isLoadingFilter ? (
+                  <CardGridSection
+                    cardType="category"
+                    data={nftCardCategoryData}
+                    // data={[]}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                ) : (
+                  <Loader />
+                )}
+                <ViewDateCardSection
+                  cardType={"category"}
+                  isView={isView === "view"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
                 />
-              ) : (
-                <Loader />
-              )}
-              <ViewDateCardSection
-                cardType={"category"}
-                isView={isView === "view"}
-                item={selectedItem}
-                onClose={() => setIsView("")}
-              />
-              <SellDateCardSection
-                cardType={"category"}
-                onSellConfirm={handleSellConfirm}
-                isView={isView === "sell"}
-                item={selectedItem}
-                onClose={() => setIsView("")}
-              />
+                <SellDateCardSection
+                  cardType={"category"}
+                  onSellConfirm={handleSellConfirm}
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+              </DatePageContent>
             </DatePageContainer>
           </DatesPageWrapper>
         ) : !isLoading ? (

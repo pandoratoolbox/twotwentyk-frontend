@@ -12,7 +12,7 @@ import { Button } from "../Button";
 export const CraftPredictionModal: React.FC<CraftPredictionModalProps> = ({
   open,
   onClose,
-  onBurn
+  onBurn,
 }) => {
   useEffect(() => {
     setChecked(false);
@@ -20,7 +20,7 @@ export const CraftPredictionModal: React.FC<CraftPredictionModalProps> = ({
 
   const [checked, setChecked] = useState(false);
   return (
-    <ModalWrapper open={open} onClose={onClose} width={365}>
+    <ModalWrapper open={open} onClose={onClose} width={400}>
       <CraftPredictionModalWrapper>
         <h3>
           Your Identity and Trigger cards will be turned to ash to craft this
@@ -43,7 +43,9 @@ export const CraftPredictionModal: React.FC<CraftPredictionModalProps> = ({
             </span>
           </CheckboxWrapper>
 
-          <Button disabled={!checked} onClick={onBurn}>Burn</Button>
+          <Button disabled={!checked} onClick={onBurn}>
+            Burn
+          </Button>
           <Button variant={"outlined"}>Back</Button>
         </ButtonGroup>
       </CraftPredictionModalWrapper>

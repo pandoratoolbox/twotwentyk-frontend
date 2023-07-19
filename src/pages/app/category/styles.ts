@@ -11,22 +11,31 @@ export const DatesPageWrapper = styled.div<{ isview?: string }>`
 `;
 
 export const DatePageContainer = styled.div`
-  max-width: 1100px;
+  max-width: 1340px;
   width: 95%;
   margin: auto;
   padding: 20px 0;
 `;
 
+export const DatePageContent = styled.div`
+  padding: 25px 40px;
+`;
+
 export const DatePageTitleWrapper = styled.div`
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
+  background: url("/assets/title-bg.png") no-repeat;
+  background-size: 100% 100%;
+  height: 114px;
+
   & > h3 {
-    font-weight: 600;
-    font-size: 24px;
-    line-height: 29px;
+    color: #fff;
+    font-family: vipnagorgialla;
+    font-size: 32px;
+    text-transform: uppercase;
+    font-weight: 100;
   }
-  margin-bottom: 8px;
   @media screen and (max-width: 425px) {
     flex-direction: column;
     align-items: flex-start;
@@ -35,10 +44,13 @@ export const DatePageTitleWrapper = styled.div`
 
 export const ButtonGroup = styled.div`
   display: flex;
-
+  justify-content: flex-end;
   .buy-button {
-    height: 51px;
-    width: 118px;
+    height: 49px;
+    width: 163px;
+    background: #fff;
+    border: 2px solid #0e4fbc;
+    color: #0e4fbc;
   }
   .craft-button {
     width: 203px;

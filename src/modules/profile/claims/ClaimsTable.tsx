@@ -6,42 +6,21 @@ import {
   PaginatonWrapper,
   Status,
 } from "./styles";
-import { claimsData } from "./data";
-import { getClaim } from "../../../actions";
 
-export const ClaimsTable: React.FC = () => {
+export const ClaimsTable: React.FC<{ data: any }> = ({ data }) => {
   const [allData, setAllData] = useState<any>([]);
   const [tableData, setTableData] = useState<any>([]);
   const [currentPage, setCurrentPage] = useState(1);
 
   useEffect(() => {
-    getData();
-  }, []);
-
-  const getData = async () => {
-    const resData = await getClaim();
-    if (resData.success) {
-      const tempData = resData.data.map((item: any) => {
-        return {
-          id: item.id,
-          created: item.nft_card_prediction.created_at,
-          event: item.event_date,
-          submitted: item.created_at,
-          identity: item.nft_card_prediction.celebrity_name,
-          trigger: item.trigger,
-          status: item.status,
-        };
-      });
-      setTableData(tempData.slice(0, 8));
-      setAllData(tempData);
-    }
-  };
+    setTableData(data.slice(0, 8));
+    setAllData(data);
+  }, [data]);
 
   const handlePagination = (number: number) => {
     setCurrentPage(number);
     setTableData(allData.slice(8 * (number - 1), 8 * (number - 1) + 8));
   };
-
   const renderStatus = (status: number) => {
     switch (status) {
       case 2:

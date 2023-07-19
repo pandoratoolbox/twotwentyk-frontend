@@ -28,6 +28,7 @@ import {
   getFilterTriggerType,
 } from "../../../actions/filtering";
 import { NftCardTriggerFilters } from "../../../models/filters";
+import { DatePageContent } from "../category/styles";
 export const TriggersPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
@@ -159,6 +160,8 @@ export const TriggersPage: React.FC = () => {
             <DatePageContainer>
               <DatePageTitleWrapper>
                 <h3>Triggers</h3>
+              </DatePageTitleWrapper>
+              <DatePageContent>
                 <ButtonGroup>
                   <Button
                     className="buy-button"
@@ -173,32 +176,33 @@ export const TriggersPage: React.FC = () => {
                     Buy Packs
                   </Button>
                 </ButtonGroup>
-              </DatePageTitleWrapper>
-              <TriggerFilterSection onClick={handleOptionClick} />
-              {!isLoadingFilter ? (
-                <CardGridSection
-                  data={nftCardTriggerData}
-                  cardType={"trigger"}
-                  onCraft={handleCraft}
-                  onSell={handleSell}
-                  onView={handleView}
+                <TriggerFilterSection onClick={handleOptionClick} />
+                {!isLoadingFilter ? (
+                  <CardGridSection
+                    // data={nftCardTriggerData}
+                    data={[]}
+                    cardType={"trigger"}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                ) : (
+                  <Loader />
+                )}
+                <ViewDateCardSection
+                  isView={isView === "view"}
+                  cardType="trigger"
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
                 />
-              ) : (
-                <Loader />
-              )}
-              <ViewDateCardSection
-                isView={isView === "view"}
-                cardType="trigger"
-                item={selectedItem}
-                onClose={() => setIsView("")}
-              />
-              <SellDateCardSection
-                onSellConfirm={handleSellConfirm}
-                isView={isView === "sell"}
-                cardType="trigger"
-                item={selectedItem}
-                onClose={() => setIsView("")}
-              />
+                <SellDateCardSection
+                  onSellConfirm={handleSellConfirm}
+                  isView={isView === "sell"}
+                  cardType="trigger"
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+              </DatePageContent>
             </DatePageContainer>
           </DatesPageWrapper>
         ) : !isLoading ? (

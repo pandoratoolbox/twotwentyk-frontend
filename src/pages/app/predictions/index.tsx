@@ -28,6 +28,7 @@ import {
   getFilterTriggerType,
 } from "../../../actions/filtering";
 import { NftCardPredictionFilters } from "../../../models/filters";
+import { DatePageContent } from "../category/styles";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -163,6 +164,8 @@ export const PredictionsPage: React.FC = () => {
             <DatePageContainer>
               <DatePageTitleWrapper>
                 <h3>Predictions</h3>
+              </DatePageTitleWrapper>
+              <DatePageContent>
                 <ButtonGroup>
                   <Button
                     className="craft-button"
@@ -171,38 +174,38 @@ export const PredictionsPage: React.FC = () => {
                     Craft Prediction
                   </Button>
                 </ButtonGroup>
-              </DatePageTitleWrapper>
-              <PredictionsFilterSection onClick={handleOptionClick} />
-              {!isLoadingFilter ? (
-                <CardGridSection
-                  identityData={predictionNfts}
-                  onCraft={handleCraft}
-                  onSell={handleSell}
+                <PredictionsFilterSection onClick={handleOptionClick} />
+                {!isLoadingFilter ? (
+                  <CardGridSection
+                    identityData={predictionNfts}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    cardType="prediction"
+                    onView={handleView}
+                  />
+                ) : (
+                  <Loader />
+                )}
+                <ViewDateCardSection
+                  isView={isView === "view"}
                   cardType="prediction"
-                  onView={handleView}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                    navigate("/dashboard/predictions");
+                  }}
                 />
-              ) : (
-                <Loader />
-              )}
-              <ViewDateCardSection
-                isView={isView === "view"}
-                cardType="prediction"
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                  navigate("/dashboard/predictions");
-                }}
-              />
-              <SellDateCardSection
-                onSellConfirm={handleSellConfirm}
-                cardType="prediction"
-                isView={isView === "sell"}
-                item={selectedItem}
-                onClose={() => {
-                  setIsView("");
-                  navigate("/dashboard/predictions");
-                }}
-              />
+                <SellDateCardSection
+                  onSellConfirm={handleSellConfirm}
+                  cardType="prediction"
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => {
+                    setIsView("");
+                    navigate("/dashboard/predictions");
+                  }}
+                />
+              </DatePageContent>
             </DatePageContainer>
           </DatesPageWrapper>
         ) : !isLoading ? (

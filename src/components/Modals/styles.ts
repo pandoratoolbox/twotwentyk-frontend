@@ -443,43 +443,41 @@ export const CraftCard = styled.div<{ bg: string }>`
 export const CheckboxWrapper = styled.div`
   display: flex;
   align-items: center;
-
+  margin-bottom: 24px;
   span {
-    color: rgba(0, 0, 0, 0.5);
-    text-align: justify;
-    font-size: 12px;
-    font-family: Inter;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 13.5px;
+    color: #cf3d3d;
+    text-align: center;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 24px;
   }
 `;
 
 export const Checkbox = styled.div`
-  height: 20px;
+  height: 16px;
   position: relative;
-  width: 20px;
+  width: 16px;
   margin-right: 10px;
   label {
     background-color: #fff;
-    border: 1.5px solid #000;
+    border: 1.5px solid #cf3d3d;
     border-radius: 4px;
     cursor: pointer;
-    height: 20px;
+    height: 16px;
     left: 0;
     position: absolute;
     top: 0;
-    width: 20px;
+    width: 16px;
     &::after {
-      border: 2px solid #000;
+      border: 2px solid #cf3d3d;
       border-top: none;
       border-right: none;
       content: "";
       height: 4px;
-      left: 3px;
+      left: 1px;
       opacity: 0;
       position: absolute;
-      top: 4px;
+      top: 2px;
       transform: rotate(-45deg);
       width: 10px;
     }
@@ -488,8 +486,8 @@ export const Checkbox = styled.div`
     visibility: hidden;
   }
   input:checked + label {
-    background-color: #f0f0f0;
-    border-color: #f0f0f0;
+    background-color: #fff;
+    border-color: #cf3d3d;
   }
 
   input:checked + label:after {
@@ -499,11 +497,15 @@ export const Checkbox = styled.div`
 
 export const CraftPredictionModalWrapper = styled.div`
   padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   h3 {
     text-align: center;
     font-size: 16px;
     font-weight: 500;
     line-height: 22px;
     margin-bottom: 24px;
+    max-width: 273px;
   }
 `;
