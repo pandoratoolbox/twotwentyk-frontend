@@ -14,9 +14,9 @@ import {
   CardTopWrapper,
   CardTypeWrapper,
 } from "../PredictionCard/styles";
-import { IconUserAdd } from "../Icons";
+import { IconUser2 } from "../Icons";
 import { useMonthContext } from "../../context";
-
+import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
 export const DateCard: React.FC<DateCardProps> = ({
   item,
   image,
@@ -34,16 +34,18 @@ export const DateCard: React.FC<DateCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
 
-  image = "/assets/nfts/1.png";
+  image = "/assets/nfts/new4.png";
   return (
     item?.id && (
       <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
-        <CardTopWrapper>
-          <div></div>
-          {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-          {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-          {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-        </CardTopWrapper>
+        <CardImgWrapper>
+          <img src={image} alt="nft" />
+          <>
+            {rarity === 0 && <Rarity>Common</Rarity>}
+            {rarity === 1 && <Rarity>Uncommon</Rarity>}
+            {rarity === 2 && <Rarity>Rare</Rarity>}
+          </>
+        </CardImgWrapper>
         {day && monthContext && (
           <CardBottomWrapper>
             {day} {(monthContext as Map<number, string>).get(month)}
@@ -53,7 +55,9 @@ export const DateCard: React.FC<DateCardProps> = ({
         <CardOverlayWrapper className="overlay">
           <CardButtonGroup>
             <CardTooltip>
-              <IconUserAdd />
+              <div className="bg-black">
+                <IconUser2 />
+              </div>
               <TooltipContent className="tooltip-content">
                 <div>
                   <h3>Identity Matches</h3>

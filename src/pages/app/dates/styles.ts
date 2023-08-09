@@ -17,6 +17,10 @@ export const DatePageContainer = styled.div`
   padding: 20px 0;
 `;
 
+export const DatePageContent = styled.div`
+  padding: 25px 40px;
+`;
+
 export const DatePageTitleWrapper = styled.div`
   display: flex;
   align-items: center;

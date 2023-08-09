@@ -95,7 +95,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardImgWrapper>
-        <img src={image} alt="" />
+        <img src={image} alt="nft" />
         <>
           {rarity === 0 && <Rarity>Common</Rarity>}
           {rarity === 1 && <Rarity>Uncommon</Rarity>}

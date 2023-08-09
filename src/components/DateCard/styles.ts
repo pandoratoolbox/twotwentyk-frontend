@@ -1,16 +1,18 @@
 import { styled } from "styled-components";
 
 export const DateCardWrapper = styled.div<{ bg: string; isnothover?: string }>`
+  padding: 23px 25px;
+
   text-transform: capitalize;
   cursor: pointer;
   width: 100%;
-  height: 293px;
+  /* height: 293px;*/
   position: relative;
-  background: ${({ bg }) =>
+  /* background: ${({ bg }) =>
     bg
       ? `url(${bg}) no-repeat, #CDCDCD`
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
-  background-blend-mode: luminosity, normal;
+      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"}; */
+  /* background-blend-mode: luminosity, normal; */
   background-position: center;
   background-size: cover;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
@@ -76,8 +78,8 @@ export const CardButtonGroup = styled.div`
 
 export const CardTooltip = styled.div`
   position: absolute;
-  top: 3px;
-  right: 4px;
+  top: 0;
+  right: 0;
   &.left {
     left: 4px;
     right: auto;
@@ -91,6 +93,16 @@ export const CardTooltip = styled.div`
       opacity: 1;
       visibility: visible;
     }
+  }
+
+  .bg-black {
+    background: url("/assets/nfts/personFrame.png") no-repeat;
+    background-size: 100% 100%;
+    width: 45px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 

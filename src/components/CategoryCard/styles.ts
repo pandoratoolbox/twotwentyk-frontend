@@ -1,15 +1,16 @@
 import { styled } from "styled-components";
 
 export const DateCardWrapper = styled.div<{ bg: string; isnothover?: string }>`
+  padding: 23px 25px;
   cursor: pointer;
   width: 100%;
-  height: 293px;
+  /* height: 293px; */
   position: relative;
-  background: ${({ bg }) =>
+  /* background: ${({ bg }) =>
     bg
       ? `url(${bg}) no-repeat, #CDCDCD`
       : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
-  background-blend-mode: luminosity, normal;
+  background-blend-mode: luminosity, normal; */
   background-position: center;
   background-size: cover;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
@@ -38,8 +39,9 @@ export const CardOverlayWrapper = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
-  background: rgba(11, 11, 11, 0.6);
-  backdrop-filter: blur(5px);
+  background: url("/assets/nfts/blur.png") no-repeat;
+  background-size: 100% 100%;
+  backdrop-filter: blur(2px);
   border-radius: 6px;
   display: flex;
   align-items: center;
@@ -53,6 +55,7 @@ export const CardButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+  background-color: #0e4fbc;
   border: 2px solid #fff;
   cursor: pointer;
   color: #fff;
@@ -62,6 +65,7 @@ export const CardButton = styled.div`
   &:hover {
     background: #fff;
     color: #000;
+    color: #0e4fbc;
   }
 `;
 
@@ -73,8 +77,8 @@ export const CardButtonGroup = styled.div`
 
 export const CardTooltip = styled.div`
   position: absolute;
-  top: 3px;
-  right: 4px;
+  top: 0;
+  right: 0;
   &.left {
     left: 4px;
     right: auto;
@@ -88,6 +92,16 @@ export const CardTooltip = styled.div`
       opacity: 1;
       visibility: visible;
     }
+  }
+
+  .bg-black {
+    background: url("/assets/nfts/personFrame.png") no-repeat;
+    background-size: 100% 100%;
+    width: 45px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 `;
 
