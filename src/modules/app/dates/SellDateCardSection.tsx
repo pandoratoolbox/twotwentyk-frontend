@@ -157,6 +157,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             <CardPack item={item} rarity={item?.rarity} image={item?.image} />
           ) : (
             <DateCard
+              item={item}
               day={item?.day}
               month={item?.month}
               image={item?.image}

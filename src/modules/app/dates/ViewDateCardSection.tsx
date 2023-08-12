@@ -109,6 +109,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             <CardPack item={item} rarity={item?.rarity} image={item?.image} />
           ) : (
             <DateCard
+              item={item}
               day={item?.day}
               month={item?.month}
               image={item?.image}
