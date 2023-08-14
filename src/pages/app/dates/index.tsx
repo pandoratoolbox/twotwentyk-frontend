@@ -104,7 +104,7 @@ export const DatesPage: React.FC = () => {
     selectedOptions: string[]
   ) => {
     // for loader
-    setNftCardDayMonthData([{}]);
+    setNftCardDayMonthData([]);
     setIsLoadingFilter(true);
 
     let newFilters: DateFilters = {
@@ -159,10 +159,7 @@ export const DatesPage: React.FC = () => {
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
         console.log("refreshed nft card day-month data");
-        setNftCardDayMonthData((prevData) => [
-          ...prevData,
-          ...(res?.data as INftCardDayMonth[]),
-        ]);
+        setNftCardDayMonthData(res.data);
       }
     }
 
@@ -177,10 +174,7 @@ export const DatesPage: React.FC = () => {
       let res = await getMyNftCardYear(yearFilters);
       if (res?.data && Array.isArray(res.data)) {
         console.log("refreshed nft card year data");
-        setNftCardDayMonthData((prevData) => [
-          ...prevData,
-          ...(res?.data as INftCardYear[]),
-        ]);
+        setNftCardDayMonthData(res.data);
       }
     }
 

@@ -1,13 +1,15 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { Modal as ModalWrapper } from "./Modal";
 import { UseBalanceBuyModalProps } from "../../types";
 import {
+  BalanceBuyConfirmModalWrapper,
   BuyActionWrapper,
   IconWrapper,
   UseBalanceBuyModalWrapper,
 } from "./styles";
 import { IconCoinsLarge, IconPigMoney } from "../Icons";
 import { Button } from "../Button";
+import { useMyInfoContext } from "../../context";
 
 export const UseBalanceBuyModal: React.FC<UseBalanceBuyModalProps> = ({
   price,
@@ -15,6 +17,12 @@ export const UseBalanceBuyModal: React.FC<UseBalanceBuyModalProps> = ({
   onBuyClick,
   open,
 }) => {
+  const [balance, setBalance] = useState<number>(0)
+  const {myInfoContext} = useMyInfoContext()
+  useEffect(() => {
+    setBalance(myInfoContext?.balance ? myInfoContext?.balance / 100 : 0);
+  }, [myInfoContext]);
+
   return (
     <ModalWrapper onClose={onClose} open={open} width={351}>
       <UseBalanceBuyModalWrapper>
@@ -23,7 +31,7 @@ export const UseBalanceBuyModal: React.FC<UseBalanceBuyModalProps> = ({
         </IconWrapper>
         <p>Your account balance is:</p>
         <h3>
-          $1.325.00 <span>USD</span>
+          ${balance} <span>USD</span>
         </h3>
         <BuyActionWrapper>
           <div className="current-price">

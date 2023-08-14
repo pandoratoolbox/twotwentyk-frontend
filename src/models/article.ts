@@ -2,44 +2,44 @@ import { IArticleSource, ArticleSource } from "./article_source";
 import { IClaim, Claim } from "./claim";
 
 export interface IArticle {
+  article_source?: IArticleSource;
   id?: number;
-  article_source_id?: number;
-  url?: string;
+  excerpt?: string;
   created_at?: number | string | Date;
   thumbnail_src?: string;
-  article_source?: IArticleSource;
-  excerpt?: string;
   title?: string;
-  tags?: string[];
   claim?: IClaim[];
+  article_source_id?: number;
+  url?: string;
+  tags?: string[];
 }
 
 export class Article {
+  article_source?: ArticleSource;
   id?: number;
-  article_source_id?: number;
-  url?: string;
+  excerpt?: string;
   created_at?: Date;
   thumbnail_src?: string;
-  article_source?: ArticleSource;
-  excerpt?: string;
   title?: string;
-  tags?: string[];
   claim?: Claim[];
+  article_source_id?: number;
+  url?: string;
+  tags?: string[];
 
   constructor(data: IArticle) {
-    this.id = data.id;
-    this.article_source_id = data.article_source_id;
-    this.url = data.url;
-    this.created_at = data.created_at ? new Date(data.created_at) : undefined;
-    this.thumbnail_src = data.thumbnail_src;
     this.article_source = data.article_source
       ? new ArticleSource(data.article_source)
       : undefined;
+    this.id = data.id;
     this.excerpt = data.excerpt;
+    this.created_at = data.created_at ? new Date(data.created_at) : undefined;
+    this.thumbnail_src = data.thumbnail_src;
     this.title = data.title;
-    this.tags = data.tags;
     this.claim = data.claim?.map((i) => {
       return new Claim(i);
     });
+    this.article_source_id = data.article_source_id;
+    this.url = data.url;
+    this.tags = data.tags;
   }
 }

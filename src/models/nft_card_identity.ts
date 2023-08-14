@@ -1,46 +1,55 @@
 import { IUser, User } from "./user";
+import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
+import { ICardSeries, CardSeries } from "./card_series";
 
 export interface INftCardIdentity {
-  day: number;
-  rarity: number;
-  owner?: IUser;
-  is_crafted: boolean;
+  id: number;
+  year?: number;
   owner_id?: number;
-  celebrity_name: string;
-  category: string;
-  id?: number;
-  month: number;
-  year: number;
-  image?: string;
-
+  owner?: IUser;
+  marketplace_listing?: IMarketplaceListing[];
+  card_series_id?: number;
+  card_series?: ICardSeries;
+  month?: number;
+  day?: number;
+  is_crafted?: boolean;
+  celebrity_name?: string;
+  category?: string;
+  rarity?: number;
 }
 
 export class NftCardIdentity {
-  day?: number;
-  rarity?: number;
-  owner?: User;
-  is_crafted?: boolean;
+  id?: number;
+  year?: number;
   owner_id?: number;
+  owner?: User;
+  marketplace_listing?: MarketplaceListing[];
+  card_series_id?: number;
+  card_series?: CardSeries;
+  month?: number;
+  day?: number;
+  is_crafted?: boolean;
   celebrity_name?: string;
   category?: string;
-  id?: number;
-  month?: number;
-  year?: number;
-  image?: string;
-
+  rarity?: number;
 
   constructor(data: INftCardIdentity) {
-    this.day = data.day;
-    this.rarity = data.rarity;
-    this.owner = data.owner ? new User(data.owner) : undefined;
-    this.is_crafted = data.is_crafted;
+    this.id = data.id;
+    this.year = data.year;
     this.owner_id = data.owner_id;
+    this.owner = data.owner ? new User(data.owner) : undefined;
+    this.marketplace_listing = data.marketplace_listing?.map((i) => {
+      return new MarketplaceListing(i);
+    });
+    this.card_series_id = data.card_series_id;
+    this.card_series = data.card_series
+      ? new CardSeries(data.card_series)
+      : undefined;
+    this.month = data.month;
+    this.day = data.day;
+    this.is_crafted = data.is_crafted;
     this.celebrity_name = data.celebrity_name;
     this.category = data.category;
-    this.id = data.id;
-    this.month = data.month;
-    this.year = data.year;
-    this.image = data.image;
-
+    this.rarity = data.rarity;
   }
 }

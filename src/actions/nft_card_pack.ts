@@ -1,9 +1,9 @@
 import api from "../config/api";
-import { ICardPacks } from "../models/card_packs";
+import { ICardPack } from "../models/card_pack";
 
 export const getMyNftCardPack = async () => {
   try {
-    const res = await api.get<ICardPacks[]>("/me/card_pack");
+    const res = await api.get<ICardPack[]>("/me/card_pack");
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: error };
