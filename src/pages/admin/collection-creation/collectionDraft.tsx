@@ -1,28 +1,43 @@
 import React, { useState } from "react";
-import { AdminSearchInput } from "../../../components";
+import {
+  AdminSearchInput,
+  IconArrowUp,
+  IconThreeDot,
+  IconFilter,
+} from "../../../components";
 import { AdminLayout } from "../../../layout";
 import CollectionCreationTable from "../../../modules/admin/CollectionCreationTable/CollectionCreationTable";
 import {
   CollectionCreationPageWrapper,
-  CreateButton,
+  CollectionHead,
   PageActionWrapper,
 } from "./styles";
 
-export const CollectionCreationPage: React.FC = () => {
+export const CollectionDraft: React.FC = () => {
   const [filterValue, setFilterValue] = useState("");
 
   return (
     <AdminLayout>
       <CollectionCreationPageWrapper>
-        <h1>Collection Creation</h1>
         <PageActionWrapper>
           <AdminSearchInput
             onChange={(e) => setFilterValue(e.target.value)}
             value={filterValue}
             bg="white"
           />
-          <CreateButton>Add New Collection</CreateButton>
         </PageActionWrapper>
+        <CollectionHead>
+          <div>
+            <h1>Conception Collection </h1>
+            <IconArrowUp />
+          </div>
+
+          <div>
+            <IconThreeDot />
+            <IconFilter />
+          </div>
+        </CollectionHead>
+
         <CollectionCreationTable />
       </CollectionCreationPageWrapper>
     </AdminLayout>

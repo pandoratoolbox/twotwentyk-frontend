@@ -33,6 +33,7 @@ import {
   CardPackPage,
   MyOfferPage,
   CollectionCreationPage,
+  CollectionDraft,
   ClaimManagementPage,
   UserManagementPage,
 } from "./pages";
@@ -120,6 +121,10 @@ const App: React.FC = () => {
               <Route
                 path="/admin/collection-creation"
                 element={<CollectionCreationPage />}
+              />
+              <Route
+                path="/admin/collection-creation/draft"
+                element={<CollectionDraft />}
               />
               <Route
                 path="/admin/claim-management"

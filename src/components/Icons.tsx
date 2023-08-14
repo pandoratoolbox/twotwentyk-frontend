@@ -437,6 +437,22 @@ export const IconArrowDown: React.FC<SVGAttributes> = () => (
   </svg>
 );
 
+export const IconArrowUp: React.FC<SVGAttributes> = () => (
+  <svg
+    width="10"
+    height="6"
+    viewBox="0 0 10 6"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      id="Vector"
+      d="M1.70711 5.70711C1.31658 6.09763 0.683418 6.09763 0.292893 5.70711C-0.0976304 5.31658 -0.0976304 4.68342 0.292894 4.29289L4.29289 0.292892C4.68342 -0.0976314 5.31658 -0.0976314 5.70711 0.292893L9.70711 4.29289C10.0976 4.68342 10.0976 5.31658 9.70711 5.70711C9.31658 6.09763 8.68342 6.09763 8.29289 5.70711L5 2.41421L1.70711 5.70711Z"
+      fill="#64748B"
+    />
+  </svg>
+);
+
 export const IconConfirm: React.FC<SVGAttributes> = () => (
   <svg
     width="50"
@@ -998,5 +1014,26 @@ export const DashboardTitleBG: React.FC<SVGAttributes> = () => (
       d="M12.2721 9L23.0162 0H1172V101L1165.05 107.5L1158.1 114H-1L0.264009 19L12.2721 9Z"
       fill="#0E4FBC"
     />
+  </svg>
+);
+
+export const TrashIcon: React.FC<SVGAttributes> = () => (
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <g id="Icon/Outline/trash">
+      <path
+        id="Vector"
+        d="M19 7L18.133 19.142C18.0971 19.6466 17.8713 20.1188 17.5011 20.4636C17.1309 20.8083 16.6439 21 16.138 21H7.862C7.35614 21 6.86907 20.8083 6.49889 20.4636C6.1287 20.1188 5.90292 19.6466 5.867 19.142L5 7M10 11V17M14 11V17M15 7V4C15 3.73478 14.8946 3.48043 14.7071 3.29289C14.5196 3.10536 14.2652 3 14 3H10C9.73478 3 9.48043 3.10536 9.29289 3.29289C9.10536 3.48043 9 3.73478 9 4V7M4 7H20"
+        stroke="#94A3B8"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </g>
   </svg>
 );

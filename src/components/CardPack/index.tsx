@@ -4,13 +4,14 @@ import {
   CardTopWrapper,
   CardTypeWrapper,
   PredictionCardWrapper,
+  CardOverlayWrapper
 } from "./styles";
 import {
   CardButton,
   CardButtonGroup,
-  CardOverlayWrapper,
 } from "../DateCard/styles";
 import { CardPacksCardProps } from "../../types";
+import { CardImgWrapper, Rarity } from "../MarketCard/styles";
 
 export const CardPack: React.FC<CardPacksCardProps> = ({
   item,
@@ -22,14 +23,22 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
   onView,
   onOpen,
 }) => {
-  image = "/assets/buy.png";
+  image = "/assets/nfts/new2.png";
   return (
     <PredictionCardWrapper height={height} bg={image}>
-      <CardTopWrapper>
+      <CardImgWrapper>
+        <img src={image} alt="nft" />
+        <>
+          {rarity === 0 && <Rarity>Common</Rarity>}
+          {rarity === 1 && <Rarity>Uncommon</Rarity>}
+          {rarity === 2 && <Rarity>Rare</Rarity>}
+        </>
+      </CardImgWrapper>
+      {/* <CardTopWrapper>
         {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
         {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
         {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-      </CardTopWrapper>
+      </CardTopWrapper> */}
 
       <CardBottomWrapper>Card Pack</CardBottomWrapper>
 

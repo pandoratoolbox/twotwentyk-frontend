@@ -123,7 +123,6 @@ export const CardPackPage: React.FC = () => {
     }
     setIsLoadingFilter(false);
   };
-
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -146,6 +145,7 @@ export const CardPackPage: React.FC = () => {
                 <CardPackFilterSection onClick={handleOptionClick} />
                 {!isLoadingFilter ? (
                   <CardGridSection
+                    cardType="cardPacks"
                     data={nftCardPack}
                     onCraft={handleCraft}
                     onSell={handleSell}

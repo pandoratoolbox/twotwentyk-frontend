@@ -32,6 +32,34 @@ export const TableFilter = styled.div`
   }
 `;
 
+export const CCTableHeaderWrapper = styled.thead`
+  border-bottom: 1px solid #f1f5f9;
+  background: #f8fafc;
+  height: 60px;
+  th {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 800;
+    line-height: 20px;
+    text-transform: uppercase;
+    text-align: left;
+    div {
+      padding: 8px 11px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      span {
+        display: flex;
+        margin-left: 8px;
+      }
+    }
+    // &:first-child {
+    //   width: 32px;
+    //   padding-left: 12px;
+    // }
+  }
+`;
+
 export const CMTableContainer = styled.table`
   width: 100%;
   white-space: nowrap;
