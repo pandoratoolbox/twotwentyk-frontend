@@ -179,8 +179,8 @@ export const TriggersPage: React.FC = () => {
                 <TriggerFilterSection onClick={handleOptionClick} />
                 {!isLoadingFilter ? (
                   <CardGridSection
-                    // data={nftCardTriggerData}
-                    data={[]}
+                    data={nftCardTriggerData}
+                    // data={[]}
                     cardType={"trigger"}
                     onCraft={handleCraft}
                     onSell={handleSell}

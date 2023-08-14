@@ -154,11 +154,13 @@ export const CardPackPage: React.FC = () => {
                   <Loader />
                 )}
                 <ViewDateCardSection
+                  cardType="cardPacks"
                   isView={isView === "view"}
                   item={selectedItem}
                   onClose={() => setIsView("")}
                 />
                 <SellDateCardSection
+                  cardType="cardPacks"
                   onSellConfirm={handleSellConfirm}
                   isView={isView === "sell"}
                   item={selectedItem}

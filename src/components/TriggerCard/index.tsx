@@ -13,6 +13,7 @@ import {
   CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconBag } from "../Icons";
+import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
 
 export const TriggerCard: React.FC<TriggerCardProps> = ({
   item,
@@ -28,15 +29,17 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
   onSell,
   onView,
 }) => {
-  image = "/assets/nfts/1.png";
+  image = "/assets/nfts/new4.png";
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
-      <CardTopWrapper>
-        <div className="trigger">{tier}</div>
-        {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-      </CardTopWrapper>
+      <CardImgWrapper>
+        <img src={image} alt="nft" />
+        <>
+          {rarity === 0 && <Rarity>Common</Rarity>}
+          {rarity === 1 && <Rarity>Uncommon</Rarity>}
+          {rarity === 2 && <Rarity>Rare</Rarity>}
+        </>
+      </CardImgWrapper>
       <CardBottomWrapper>{trigger}</CardBottomWrapper>
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
