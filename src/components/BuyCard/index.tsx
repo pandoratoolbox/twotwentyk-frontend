@@ -8,11 +8,12 @@ export const BuyCard: React.FC<BuyPackProps> = ({
   cardType,
   preview,
   price,
-  onBuyClick,
   onCardClick,
+  cardSeries,
+  rarity
 }) => {
   return (
-    <BuyCardWrapper onClick={() => onCardClick("1")}>
+    <BuyCardWrapper onClick={() => onCardClick(cardSeries)}>
       <CardImgWrapper>
         <img src="/assets/nfts/new3.png" alt="" />
         <Rarity>{cardType}</Rarity>
@@ -21,9 +22,9 @@ export const BuyCard: React.FC<BuyPackProps> = ({
         <CardAction>
           <div>
             <p>Price</p>
-            <h3>${price} USD</h3>
+            <h3>${cardSeries.cost_usd / 100} USD</h3>
           </div>
-          <Button className="buy-button" onClick={() => onBuyClick("1")}>
+          <Button className="buy-button" onClick={() => onCardClick(cardSeries)}>
             Buy Now
           </Button>
         </CardAction>

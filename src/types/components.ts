@@ -1,3 +1,4 @@
+import { ICardSeries } from "../models/card_series";
 import { ICelebrity } from "../models/celebrity";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
@@ -261,17 +262,21 @@ export type NotifyProps = {
 };
 
 export type BuyPackProps = {
-  onCardClick: (id: string | number) => void;
-  onBuyClick: (id: string | number) => void;
+  onCardClick: (cardSeries: ICardSeries) => void;
   cardType: string;
   preview?: boolean;
   price: number;
+  cardSeries: ICardSeries;
+  rarity: number;
 };
 
 export type BuyDetailsProps = {
   id: string | number;
   onClose: () => void;
   isView: boolean;
+  onBuyClick: (cardSeries: ICardSeries, quantity: number, payment_method_id: number) => void;
+  cardSeries: ICardSeries;
+  rarity: number;
 };
 
 export type NotificationProps = {

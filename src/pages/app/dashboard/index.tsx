@@ -199,23 +199,28 @@ export const DashboardPage: React.FC = () => {
     if (localStorage.getItem("auth")) loadNfts();
   }, []);
 
-  useEffect(() => {
-    if (typeof window !== 'undefined' && typeof window.MoonPayWebSdk !== 'undefined') {
-      const moonpaySdk = window.MoonPayWebSdk.init({
-        flow: 'nft',
-        environment: 'sandbox',
-        variant: 'overlay',
-        params: {
-          apiKey: 'pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj',
-          contractAddress: '0x495f947276749ce646f68ac8c248420045cb7b5e',
-          tokenId: '1'
-        }
-      }
-      );
-      console.log("moonpay initialised")
-      // moonpaySdk.show()
-    }
-  }, [window.MoonPayWebSdk])
+
+  // const [showingMoonpay, setShowingMoonpay] = useState<boolean>(false);
+
+
+  // useEffect(() => {
+  //   if (!showingMoonpay && typeof window !== 'undefined' && typeof window.MoonPayWebSdk !== 'undefined') {
+  //     const moonpaySdk = window.MoonPayWebSdk.init({
+  //       flow: 'nft',
+  //       environment: 'sandbox',
+  //       variant: 'overlay',
+  //       params: {
+  //         apiKey: 'pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj',
+  //         contractAddress: 'category',
+  //         tokenId: '__14'
+  //       }
+  //     }
+  //     );
+  //     console.log("moonpay initialised")
+  //     moonpaySdk.show()
+  //     setShowingMoonpay(true)
+  //   }
+  // }, [window.MoonPayWebSdk])
 
   return (
     <AppLayout>

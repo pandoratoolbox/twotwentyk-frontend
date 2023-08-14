@@ -1,17 +1,17 @@
 export interface ITrigger {
-  name: string;
-  tier: string;
   id?: number;
+  name?: string;
+  tier?: string;
 }
 
 export class Trigger {
-  name: string;
-  tier: string;
   id?: number;
+  name?: string;
+  tier?: string;
 
   constructor(data: ITrigger) {
+    this.id = data.id;
     this.name = data.name;
     this.tier = data.tier;
-    this.id = data.id;
   }
 }

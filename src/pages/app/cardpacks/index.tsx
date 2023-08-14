@@ -17,7 +17,6 @@ import {
 import { useNavigate } from "react-router-dom";
 import { getMyNftCardPack } from "../../../actions/nft_card_pack";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
-import { ICardPackSeries } from "../../../models/card_pack_series";
 import {
   getFilterCardType,
   getFilterRarities,
@@ -29,6 +28,8 @@ import {
 } from "../../../actions/filtering";
 import { EmptyCards as LoginCard } from "../dates/styles";
 import { DatePageContent } from "../category/styles";
+import { ICardSeries } from "../../../models/card_series";
+import { ICardPack } from "../../../models/card_pack";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -39,7 +40,7 @@ export const CardPackPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
-  const [nftCardPack, setNftCardPack] = useState<ICardPackSeries[] | null>(
+  const [nftCardPack, setNftCardPack] = useState<ICardPack[] | null>(
     null
   );
 
@@ -118,7 +119,7 @@ export const CardPackPage: React.FC = () => {
       res = await getFilterCollection(selectedOptions[0]);
     }
     if (res?.data) {
-      setNftCardPack(res?.data as ICardPackSeries[]);
+      setNftCardPack(res?.data as ICardPack[]);
     }
     setIsLoadingFilter(false);
   };
