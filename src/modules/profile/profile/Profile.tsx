@@ -4,9 +4,12 @@ import {
   ItemInfo,
   MyProfileWrapper,
   ProfileItemWrapper,
+  LogoutWrapper,
 } from "./styles";
 import { ProfileItemProps, ProfileProps } from "../../../types";
 import { DashboardTitleBG, TitleBG } from "../../../components";
+import { Button } from "../../../components";
+import { useNavigate } from "react-router-dom";
 
 export const Profile: React.FC<ProfileProps> = ({
   email,
@@ -16,6 +19,14 @@ export const Profile: React.FC<ProfileProps> = ({
   username,
   onEdit,
 }) => {
+  const navigate = useNavigate();
+
+  //for logout
+  const handleLogout = () => {
+    localStorage.removeItem("auth");
+    navigate("/profile")
+  };
+
   return (
     <MyProfileWrapper>
       <h2>
@@ -51,6 +62,13 @@ export const Profile: React.FC<ProfileProps> = ({
         value={password}
         type="password"
       />
+      {localStorage.getItem("auth") && (
+        <LogoutWrapper>
+          <Button onClick={handleLogout}>
+            Logout
+          </Button>
+        </LogoutWrapper>
+      )}
     </MyProfileWrapper>
   );
 };
