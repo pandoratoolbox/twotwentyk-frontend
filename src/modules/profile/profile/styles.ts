@@ -105,3 +105,8 @@ export const InputGroup = styled.div`
     margin-top: 11px;
   }
 `;
+
+export const LogoutWrapper = styled.div`
+  margin-top: 20px;
+  width: 50%;
+`;
