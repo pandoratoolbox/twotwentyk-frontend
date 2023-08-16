@@ -35,13 +35,17 @@ import {
 import { buyMarketplaceById } from "../../actions/marketplace_listing";
 import api from "../../config/api";
 import { toast, ToastContainer } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   selectedItem,
   onClose,
   open,
   page,
+  onLoad,
 }) => {
+  const navigate = useNavigate();
+
   const [step, setStep] = useState(0);
   const [useBalance, setUseBalance] = useState(false);
   const [balanceConfirm, setBalanceConfirm] = useState(false);
@@ -69,10 +73,11 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       if (res.status === 200) {
         toast.success("You bought a card from the marketplace!");
         setConfirm(true);
+        onLoad();
       }
     } catch (e: any) {
-      console.log(e)
-      toast.error(e.response.data)
+      console.log(e);
+      toast.error(e.response.data);
     }
   };
 
@@ -205,7 +210,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
             <SetPriceWrapper>
               <div className="price">
                 <h5>Current Price</h5>
-                <h4>${selectedItem.price ? selectedItem.price/100 : 0}</h4>
+                <h4>${selectedItem.price ? selectedItem.price / 100 : 0}</h4>
               </div>
               <Button
                 className="sell-confirm-button"
@@ -259,13 +264,13 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
         onClose={handleConfirmClose}
       />
       <UseBalanceBuyModal
-        price={selectedItem.price ? selectedItem.price/100 : 0}
+        price={selectedItem.price ? selectedItem.price / 100 : 0}
         onBuyClick={handleBalanceBuy}
         open={useBalance}
         onClose={() => setUseBalance(false)}
       />
       <BalanceBuyConfirmModal
-        price={selectedItem.price ? selectedItem.price/100 : 0}
+        price={selectedItem.price ? selectedItem.price / 100 : 0}
         onConfirm={handleBuyConfirm}
         open={balanceConfirm}
         onClose={() => setBalanceConfirm(false)}

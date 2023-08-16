@@ -10,4 +10,5 @@ export type CardSidebarProps = {
   page?: string;
   onConfirm?: () => void;
   open: boolean;
+  onLoad?: () => void;
 };

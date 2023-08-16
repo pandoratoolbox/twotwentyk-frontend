@@ -35,7 +35,10 @@ export const BuyPackConfirmModal: React.FC<SellModalProps> = ({
           >
             {isMarket ? "Buy More" : "Buy More Packs"}
           </Button>
-          <Button variant="outlined" onClick={onClose}>
+          <Button
+            variant="outlined"
+            onClick={() => navigate("/dashboard/dates")}
+          >
             {isMarket ? "View Purchase" : "  Open Packs"}
           </Button>
         </ButtonGroup>
