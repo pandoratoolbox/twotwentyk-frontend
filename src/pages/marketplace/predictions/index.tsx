@@ -83,7 +83,7 @@ export const MarketplacePredictionPage: React.FC = () => {
       ) : (
         <Loader />
       )}
-      <MViewCardSection
+      {selectedItem && <div id="sidebar"><MViewCardSection
         selectedItem={selectedItem}
         open={side === "view"}
         onClose={handleSideClose}
@@ -99,7 +99,8 @@ export const MarketplacePredictionPage: React.FC = () => {
         open={side === "sell"}
         onClose={handleSideClose}
         page="predictions"
-      />
+        selectedItem={selectedItem}
+      /></div>}
     </AppLayout>
   );
 };

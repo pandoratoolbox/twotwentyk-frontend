@@ -1,5 +1,5 @@
 import api from "../config/api";
-import { ITrigger } from "../types/actions";
+import { ITrigger } from "../models/trigger";
 
 export const getTriggers = async () => {
     try {

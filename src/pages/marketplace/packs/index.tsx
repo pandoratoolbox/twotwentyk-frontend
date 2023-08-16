@@ -26,6 +26,7 @@ export const MarketplacePacksPage: React.FC = () => {
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
+  const [selectedItem, setSelectedItem] = useState<IMarketplaceListing | null>(null);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
     console.log(item);
@@ -83,22 +84,26 @@ export const MarketplacePacksPage: React.FC = () => {
       ) : (
         <Loader />
       )}
-
+{selectedItem && <div>
       <MViewCardSection
         open={side === "view"}
         onClose={handleSideClose}
         page="packs"
+        selectedItem={selectedItem}
       />
       <MBuyCardSection
         open={side === "buy"}
         onClose={handleSideClose}
         page="packs"
+        selectedItem={selectedItem}
       />
       <MSellCardSection
         open={side === "sell"}
         onClose={handleSideClose}
         page="packs"
+        selectedItem={selectedItem}
       />
+      </div>}
     </AppLayout>
   );
 };

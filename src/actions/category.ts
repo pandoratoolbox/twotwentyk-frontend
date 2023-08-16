@@ -1,5 +1,6 @@
 import api from '../config/api';
-import { ICategory } from '../types/actions';
+import { ICategory } from '../models/category';
+
 
 export const getCategories = async () => {
     try {

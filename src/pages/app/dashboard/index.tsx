@@ -21,7 +21,6 @@ import {
   Loader,
   DashboardTitleBG,
 } from "../../../components";
-import { IArticle } from "../../../types/actions";
 import { ToastContainer, toast } from "react-toastify";
 import {
   // useFeedContext,
@@ -38,6 +37,7 @@ import { INftCardIdentity } from "../../../models/nft_card_identity";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
 import api from "../../../config/api";
+import { IArticle } from "../../../models/article";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();

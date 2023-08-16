@@ -2,27 +2,25 @@ import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { IUser, User } from "./user";
 
 export interface IMarketplaceOffer {
-  id?: number;
-  status?: number;
   marketplace_listing_id?: number;
   amount?: number;
   buyer_id?: number;
   marketplace_listing?: IMarketplaceListing;
   buyer?: IUser;
+  id?: number;
+  status?: number;
 }
 
 export class MarketplaceOffer {
-  id?: number;
-  status?: number;
   marketplace_listing_id?: number;
   amount?: number;
   buyer_id?: number;
   marketplace_listing?: MarketplaceListing;
   buyer?: User;
+  id?: number;
+  status?: number;
 
   constructor(data: IMarketplaceOffer) {
-    this.id = data.id;
-    this.status = data.status;
     this.marketplace_listing_id = data.marketplace_listing_id;
     this.amount = data.amount;
     this.buyer_id = data.buyer_id;
@@ -30,5 +28,7 @@ export class MarketplaceOffer {
       ? new MarketplaceListing(data.marketplace_listing)
       : undefined;
     this.buyer = data.buyer ? new User(data.buyer) : undefined;
+    this.id = data.id;
+    this.status = data.status;
   }
 }

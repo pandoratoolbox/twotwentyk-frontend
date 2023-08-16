@@ -5,8 +5,7 @@ import {
   FeedItemWrapper,
   FeedReadMore,
 } from "./styles";
-// import { FeedItemProps } from "../../types";
-import { IArticle } from "../../types/actions";
+import { IArticle } from "../../models/article";
 
 export const FeedItem: React.FC<IArticle> = ({
   created_at,

@@ -1,6 +1,5 @@
 import api from "../config/api";
-import { IArticle } from "../types/actions";
-
+import { IArticle } from "../models/article";
 export const getFeed = async () => {
   try {
     const res = await api.get<IArticle[]>("/feed");

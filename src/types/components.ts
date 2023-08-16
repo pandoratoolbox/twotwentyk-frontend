@@ -1,10 +1,10 @@
 import { ICardSeries } from "../models/card_series";
 import { ICelebrity } from "../models/celebrity";
+import { IMarketplaceListing } from "../models/marketplace_listing";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
 import { INftCardDayMonth } from "../models/nft_card_day_month";
 import { INftCardYear } from "../models/nft_card_year";
-import { IMarketplaceListing } from "./actions";
 import { CardActionTypes } from "./common";
 
 export type SocialAuthButtonProps = {
@@ -80,7 +80,7 @@ export type PredictionCardProps = {
   iconText?: string;
   isNotHover?: boolean;
   onClick?: () => void;
-  onCard?: (item: forItem | undefined, action: CardActionTypes) => void;
+  onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
@@ -154,9 +154,9 @@ export type SellDateCardProps = {
   item: any;
 
   onSellConfirm: (
-    id: string | number,
-    nftCollectionId: string | number,
-    totalPrice: string | number
+    id: number,
+    nftCollectionId: number,
+    totalPrice: number
   ) => Promise<void>;
 } & ViewDateCardProps;
 
@@ -284,46 +284,46 @@ export type NotificationProps = {
   onClose: () => void;
 };
 
-export type forItem = {
-  nft_card_prediction_id?: number;
-  nft_collection_id?: number;
-  owner?: any;
-  nft_card_day_month?: any;
-  nft_card_trigger?: any;
-  nft_card_crafting_id?: number;
-  is_listed?: boolean;
-  nft_card_identity_id?: number;
-  nft_card_crafting?: any;
-  nft_card_category?: any;
-  price?: number;
-  nft_card_day_month_id?: number;
-  nft_card_year_id?: number;
-  card_pack_id?: number;
-  id?: number;
-  created_at?: number | string | Date;
-  nft_card_category_id?: number;
-  nft_card_trigger_id?: number;
-  nft_card_prediction?: any;
-  nft_card_identity?: any;
-  nft_card_year?: any;
-  owner_id?: number;
-};
+// export type forItem = {
+//   nft_card_prediction_id?: number;
+//   nft_collection_id?: number;
+//   owner?: any;
+//   nft_card_day_month?: any;
+//   nft_card_trigger?: any;
+//   nft_card_crafting_id?: number;
+//   is_listed?: boolean;
+//   nft_card_identity_id?: number;
+//   nft_card_crafting?: any;
+//   nft_card_category?: any;
+//   price?: number;
+//   nft_card_day_month_id?: number;
+//   nft_card_year_id?: number;
+//   card_pack_id?: number;
+//   id?: number;
+//   created_at?: number | string | Date;
+//   nft_card_category_id?: number;
+//   nft_card_trigger_id?: number;
+//   nft_card_prediction?: any;
+//   nft_card_identity?: any;
+//   nft_card_year?: any;
+//   owner_id?: number;
+// };
 
 export type MarketCardProps = {
-  item?: forItem;
-  price?: number;
-  image: string;
-  name: string;
+  item: IMarketplaceListing;
+  // price?: number;
+  // image: string;
+  // name: string;
   type?: string;
-  id?: number | string;
+  // id?: number | string;
   isOffer?: boolean;
-  rarity: string;
-  status?: string;
-  owned?: string | number;
+  // rarity: string;
+  // status?: string;
+  // owned?: string | number;
   // onCard?: (id?: string | number, action?: CardActionTypes) => void;
-  is_listed?: string;
-  owner_id?: string | number;
-  onCard?: (item: forItem | undefined, action: CardActionTypes) => void;
+  // is_listed?: string;
+  // owner_id?: string | number;
+  onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
 } & IMarketplaceListing;
 
 export type CraftPredictionModalProps = {

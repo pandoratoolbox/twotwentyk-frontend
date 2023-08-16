@@ -1,5 +1,5 @@
 import api from '../config/api';
-import { ICelebrity } from '../types/actions';
+import { ICelebrity } from '../models/celebrity';
 
 export const getCelebrities = async () => {
     try {

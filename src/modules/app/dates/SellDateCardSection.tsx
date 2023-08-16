@@ -25,13 +25,7 @@ import { CategoryCard } from "../../../components/CategoryCard";
 import { ITrigger } from "../../../models/trigger";
 
 import { useMonthContext, useTriggersContext } from "../../../context";
-
-const addMarketPlaceFee = (priceValue: string) => {
-  const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
-  const priceNumber = parseFloat(amountWithoutDollarSign);
-  const fee = (priceNumber * 0.03).toFixed(2);
-  return fee;
-};
+import { NFT_TYPE_ID_CATEGORY, NFT_TYPE_ID_CRAFTING, NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_IDENTITY, NFT_TYPE_ID_PREDICTION, NFT_TYPE_ID_TRIGGER, NFT_TYPE_ID_YEAR } from "../../../models/nft";
 
 export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   item,
@@ -40,13 +34,30 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   onClose,
   onSellConfirm,
 }) => {
+  const prizePoolFee = 0.05;
+  const marketplaceFee = 0.05;
   const { monthContext } = useMonthContext();
   const { triggersContext } = useTriggersContext();
 
   // console.log(item);
-  const [priceValue, setPriceValue] = useState<string>("$1,000");
-  const [totalPrice, setTotalPrice] = useState<string | number>("");
-  const [nftCollectionId, setNftCollectionID] = useState<string | number>("");
+  const [priceValue, setPriceValue] = useState<string>("$1");
+  const [totalPrice, setTotalPrice] = useState<number>(1);
+  const [nftCollectionId, setNftCollectionID] = useState<number>(0);
+
+  const calculateMarketplaceFee = (priceValue: string) => {
+    const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
+    const priceNumber = parseFloat(amountWithoutDollarSign);
+    const fee = (priceNumber * marketplaceFee).toFixed(2);
+    return fee;
+  };
+
+  const calculatePrizePoolFee = (priceValue: string) => {
+    const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
+    const priceNumber = parseFloat(amountWithoutDollarSign);
+    const fee = (priceNumber * prizePoolFee).toFixed(2);
+    return fee;
+  };
+
 
   const handlePriceChange = (price: string) => {
     setPriceValue(price);
@@ -54,30 +65,31 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
 
   //get price
   useEffect(() => {
-    const fee = addMarketPlaceFee(priceValue);
+    const marketplaceFee = calculateMarketplaceFee(priceValue);
+    const prizePoolFee = calculatePrizePoolFee(priceValue);
     const totalPrice =
-      parseFloat(priceValue.replace("$", "").replace(",", "")) +
-      parseFloat(fee);
-    setTotalPrice(totalPrice);
+      parseFloat(priceValue.replace("$", "").replace(",", "")) -
+      parseFloat(marketplaceFee) - parseFloat(prizePoolFee);
+    setTotalPrice(Number(totalPrice.toFixed(2)));
   }, [priceValue]);
 
   //get collection id
   useEffect(() => {
     if (item) {
       if (item.day || item.month) {
-        setNftCollectionID(3);
+        setNftCollectionID(NFT_TYPE_ID_DAY_MONTH);
       } else if (item.year) {
-        setNftCollectionID(4);
+        setNftCollectionID(NFT_TYPE_ID_YEAR);
       } else if (item.category) {
-        setNftCollectionID(2);
+        setNftCollectionID(NFT_TYPE_ID_CATEGORY);
       } else if (item.crafting) {
-        setNftCollectionID(1);
+        setNftCollectionID(NFT_TYPE_ID_CRAFTING);
       } else if (item.trigger) {
-        setNftCollectionID(5);
+        setNftCollectionID(NFT_TYPE_ID_TRIGGER);
       } else if (item.identity) {
-        setNftCollectionID(6);
+        setNftCollectionID(NFT_TYPE_ID_IDENTITY);
       } else if (item.prediction) {
-        setNftCollectionID(7);
+        setNftCollectionID(NFT_TYPE_ID_PREDICTION);
       }
     }
   }, [item]);
@@ -314,8 +326,14 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               <span>{priceValue} USD</span>
             </PriceItem>
             <PriceItem>
-              <p>Marketplace fee (3%)</p>
-              <span className="weak">{`$${addMarketPlaceFee(
+              <p>Marketplace fee (5%)</p>
+              <span className="weak">{`$${calculateMarketplaceFee(
+                priceValue
+              )} USD`}</span>
+            </PriceItem>
+            <PriceItem>
+              <p>Prize Pool Replenishment Fee (5%)</p>
+              <span className="weak">{`$${calculatePrizePoolFee(
                 priceValue
               )} USD`}</span>
             </PriceItem>
@@ -324,10 +342,6 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             <PriceItem>
               <p>Net amount to seller</p>
               <span>{`$${totalPrice && totalPrice} USD`}</span>
-            </PriceItem>
-            <PriceItem>
-              <p>Prize Pool Replenishment Fee</p>
-              <span className="weak">--</span>
             </PriceItem>
           </PropertiesContent>
         </PropertiesWrapper>

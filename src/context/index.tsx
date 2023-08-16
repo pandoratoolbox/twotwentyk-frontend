@@ -17,15 +17,12 @@ import {
   getCelebrities,
   getCategories,
 } from "../actions";
-import {
-  IArticle,
-  IMarketplaceListing,
-  IUser,
-  ITrigger,
-  ICelebrity,
-  ICategory,
-} from "../types/actions";
 import { ITier } from "../models/tier";
+import { IArticle } from "../models/article";
+import { ITrigger } from "../models/trigger";
+import { ICategory } from "../models/category";
+import { ICelebrity } from "../models/celebrity";
+import { IUser } from "../models/user";
 
 const AuthContext = createContext<any>({});
 const FeedContext = createContext<any>([]);

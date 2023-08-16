@@ -23,6 +23,9 @@ import { useMyInfoContext, useMyOfferContext } from "../../../context";
 import { ToastContainer, toast } from "react-toastify";
 
 export const MarketplacePage: React.FC = () => {
+  const nftCollections = new Map<number, string>([
+    [1,""]
+  ])
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
@@ -123,7 +126,7 @@ export const MarketplacePage: React.FC = () => {
       ) : (
         <Loader />
       )}
-      <MViewCardSection
+      {selectedItem && <div id="sideview"><MViewCardSection
         open={side === "view"}
         selectedItem={selectedItem}
         onClose={handleSideClose}
@@ -133,13 +136,13 @@ export const MarketplacePage: React.FC = () => {
         selectedItem={selectedItem}
         onClose={handleSideClose}
       />
-      <MSellCardSection open={side === "sell"} onClose={handleSideClose} />
+      <MSellCardSection open={side === "sell"} onClose={handleSideClose} selectedItem={selectedItem}/>
       <MOfferCardSection
         open={side === "offer"}
         onConfirm={handleOfferConfirm}
         selectedItem={selectedItem}
         onClose={handleSideClose}
-      />
+      /></div>}
     </AppLayout>
   );
 };

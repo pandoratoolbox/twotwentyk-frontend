@@ -101,7 +101,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
       ) : (
         <Loader />
       )}
-      <MViewCardSection
+      {selectedItem && <div><MViewCardSection
         selectedItem={selectedItem}
         open={side === "view"}
         onClose={handleSideClose}
@@ -114,10 +114,11 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         page="identities"
       />
       <MSellCardSection
+      selectedItem={selectedItem}
         open={side === "sell"}
         onClose={handleSideClose}
         page="identities"
-      />
+      /></div>}
       {/* <MOfferCardSection
         open={side === "offer"}
         onClose={handleSideClose}

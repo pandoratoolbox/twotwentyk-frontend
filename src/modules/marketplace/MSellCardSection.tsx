@@ -24,6 +24,7 @@ export const MSellCardSection: React.FC<CardSidebarProps> = ({
   open,
   page,
   onClose,
+  selectedItem
 }) => {
   const [modal, setModal] = useState(false);
   return (
@@ -44,18 +45,14 @@ export const MSellCardSection: React.FC<CardSidebarProps> = ({
           <ViewCardWrapper>
             {!page && (
               <MarketCard
-                image="/assets/nfts/1.png"
-                name=""
-                rarity="Rare"
                 type=""
+                item={selectedItem}
               />
             )}
             {page === "packs" && (
               <MarketCard
-                image="/assets/buy.png"
-                name=""
-                rarity="Rare"
                 type=""
+                item={selectedItem}
               />
             )}
             {page === "identities" && (

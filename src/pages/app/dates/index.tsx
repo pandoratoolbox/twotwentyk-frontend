@@ -34,6 +34,11 @@ import {
   getFilterPackType,
   getFilterTriggerType,
 } from "../../../actions/filtering";
+import api from "../../../config/api";
+import { NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_YEAR } from "../../../models/nft";
+import { toast, ToastContainer } from "react-toastify";
+import { AnyComponent } from "styled-components/dist/types";
+import { IMarketplaceListing } from "../../../models/marketplace_listing";
 
 interface DateFilters {
   card_types: number[];
@@ -67,20 +72,30 @@ export const DatesPage: React.FC = () => {
   }, []);
 
   const handleSellConfirm = async (
-    id: number | string,
-    collection_id: string | number,
-    price: string | number
+    id: number,
+    collection_id: number,
+    price: number
   ) => {
-    const newMarketplace = {
-      nft_collection_id: collection_id,
-      nft_id: id,
-      price: price,
-    };
-    const response = await newMarketplaceList(newMarketplace);
-
-    if (response.success) {
-      setModal(true);
-      setIsView("");
+    try {
+      let params: IMarketplaceListing = {
+        nft_type_id: collection_id,
+        price: price*100
+      }
+      switch (collection_id) {
+        case NFT_TYPE_ID_DAY_MONTH:
+          params.nft_card_day_month_id = id;
+          break
+        case NFT_TYPE_ID_YEAR:
+          params.nft_card_year_id = id;
+          break
+      }
+      let res = await api.post(`/marketplace_listing`, params);
+      if (res.status === 200) {
+        toast.success("You listed a card for sale!");
+        setModal(true)
+      }
+    } catch (e: any) {
+      toast.error(e.response.data);
     }
   };
 
@@ -189,6 +204,18 @@ export const DatesPage: React.FC = () => {
 
   return (
     <AppLayout>
+            <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
 
       {currentUser ? (

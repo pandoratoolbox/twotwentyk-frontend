@@ -45,7 +45,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {onOpen && <CardButton onClick={() => onOpen(item)}>Open</CardButton>}
+          {onOpen && <CardButton onClick={() => onOpen(item.id)}>Open</CardButton>}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>

@@ -12,21 +12,21 @@ import { CardButton } from "../DateCard/styles";
 import { useMonthContext } from "../../context";
 
 export const MarketCard: React.FC<MarketCardProps> = ({
-  id,
+  // id,
   item,
-  image,
-  name,
-  rarity,
+  // image,
+  // name,
+  // rarity,
   type,
   isOffer,
-  owner_id,
-  is_listed,
+  // owner_id,
+  // is_listed,
   onCard,
 }) => {
   const { monthContext } = useMonthContext();
 
   // console.log(item, type);
-  image = "/assets/nfts/new3.png";
+  const image = "/assets/nfts/new3.png";
 
   // for check rarity
   const checkRarity = (item: any) => {
@@ -93,7 +93,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
         {/* <Rarity>Uncommon</Rarity> */}
         <StatusWrapper>
           {/* {owner_id && <p>Owned x{owner_id}</p>} */}
-          {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
+          {item.is_listed && <span>{item.is_listed ? "For Sale" : "Not For Sale"}</span>}
         </StatusWrapper>
       </CardImgWrapper>
       <CardBottomSection>
@@ -111,6 +111,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
             ? "Prediction"
             : item?.nft_card_year
             ? "Year"
+            : item?.card_pack ? "Card Pack"
             : checkTypeValue(item)
             ? checkTypeValue(item)
             : "No Type"}
@@ -133,10 +134,10 @@ export const MarketCard: React.FC<MarketCardProps> = ({
                   Make an Offer
                 </CardButton>
               )}
-              {is_listed && (
+              {item.is_listed && (
                 <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
               )}
-              {!is_listed && (
+              {!item.is_listed && (
                 <CardButton onClick={() => onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>

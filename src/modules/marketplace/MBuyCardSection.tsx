@@ -33,6 +33,8 @@ import {
   SummaryWrapper,
 } from "../buy/styles";
 import { buyMarketplaceById } from "../../actions/marketplace_listing";
+import api from "../../config/api";
+import { toast, ToastContainer } from "react-toastify";
 
 export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   selectedItem,
@@ -60,12 +62,18 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
 
   const handleBuyConfirm = async () => {
     setBalanceConfirm(false);
-    setConfirm(true);
-
-    const token = localStorage.auth;
-    const id = selectedItem?.nft_collection_id;
-    const response = await buyMarketplaceById(id, token);
-    console.log(response);
+    try {
+      let res = await api.post(`/marketplace_listing/${selectedItem.id}/buy`, {
+        payment_method_id: 1,
+      });
+      if (res.status === 200) {
+        toast.success("You bought a card from the marketplace!");
+        setConfirm(true);
+      }
+    } catch (e: any) {
+      console.log(e)
+      toast.error(e.response.data)
+    }
   };
 
   const handleConfirmClose = () => {
@@ -153,7 +161,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
             <CloseButton onClick={onClose}>&times;</CloseButton>
             <h2>Buy Card</h2>
             <ViewCardWrapper>
-              {!page && <MarketCard item={selectedItem} {...selectedItem} />}
+              {!page && <MarketCard item={selectedItem} />}
               {page === "packs" && (
                 <MarketCard item={selectedItem} {...selectedItem} />
               )}
@@ -197,7 +205,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
             <SetPriceWrapper>
               <div className="price">
                 <h5>Current Price</h5>
-                <h4>${selectedItem?.price}</h4>
+                <h4>${selectedItem.price ? selectedItem.price/100 : 0}</h4>
               </div>
               <Button
                 className="sell-confirm-button"
@@ -251,13 +259,13 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
         onClose={handleConfirmClose}
       />
       <UseBalanceBuyModal
-        price={selectedItem?.price}
+        price={selectedItem.price ? selectedItem.price/100 : 0}
         onBuyClick={handleBalanceBuy}
         open={useBalance}
         onClose={() => setUseBalance(false)}
       />
       <BalanceBuyConfirmModal
-        price={selectedItem?.price}
+        price={selectedItem.price ? selectedItem.price/100 : 0}
         onConfirm={handleBuyConfirm}
         open={balanceConfirm}
         onClose={() => setBalanceConfirm(false)}

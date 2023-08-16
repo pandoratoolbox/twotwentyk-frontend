@@ -30,6 +30,8 @@ import { EmptyCards as LoginCard } from "../dates/styles";
 import { DatePageContent } from "../category/styles";
 import { ICardSeries } from "../../../models/card_series";
 import { ICardPack } from "../../../models/card_pack";
+import api from "../../../config/api";
+import { toast, ToastContainer } from "react-toastify";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -50,7 +52,7 @@ export const CardPackPage: React.FC = () => {
     const response = await getMyNftCardPack();
     if (response?.data) {
       console.log(response?.data);
-      setNftCardPack(response?.data);
+      setNftCardPack(response?.data.filter(v => v.is_opened === false));
     }
     setIsLoading(false);
   };
@@ -86,8 +88,20 @@ export const CardPackPage: React.FC = () => {
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/identities");
+  const handleCraft = async (id: string | number) => {
+    // navigate("/crafting/identities");
+    try {
+      let res = await api.post(`/card_pack/${id}/open`)
+      if (res.status === 200) {
+        toast.success("You opened a card pack!")
+
+      let n = nftCardPack?.filter(v => v.id !== id)
+      if (n) setNftCardPack(n)
+      } else throw(res.data)
+    } catch (e: any) {
+      toast.error(e)
+    }
+
   };
 
   const handleSell = (item: any) => {
@@ -125,6 +139,18 @@ export const CardPackPage: React.FC = () => {
   };
   return (
     <AppLayout>
+            <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
         nftCardPack && nftCardPack?.length > 0 ? (
