@@ -42,9 +42,7 @@ export const CardPackPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
-  const [nftCardPack, setNftCardPack] = useState<ICardPack[] | null>(
-    null
-  );
+  const [nftCardPack, setNftCardPack] = useState<ICardPack[] | null>(null);
 
   const getPageData = async () => {
     setIsLoading(true);
@@ -52,7 +50,7 @@ export const CardPackPage: React.FC = () => {
     const response = await getMyNftCardPack();
     if (response?.data) {
       console.log(response?.data);
-      setNftCardPack(response?.data.filter(v => v.is_opened === false));
+      setNftCardPack(response?.data.filter((v) => v.is_opened === false));
     }
     setIsLoading(false);
   };
@@ -91,17 +89,16 @@ export const CardPackPage: React.FC = () => {
   const handleCraft = async (id: string | number) => {
     // navigate("/crafting/identities");
     try {
-      let res = await api.post(`/card_pack/${id}/open`)
+      let res = await api.post(`/card_pack/${id}/open`);
       if (res.status === 200) {
-        toast.success("You opened a card pack!")
+        toast.success("You opened a card pack!");
 
-      let n = nftCardPack?.filter(v => v.id !== id)
-      if (n) setNftCardPack(n)
-      } else throw(res.data)
+        let n = nftCardPack?.filter((v) => v.id !== id);
+        if (n) setNftCardPack(n);
+      } else throw res.data;
     } catch (e: any) {
-      toast.error(e)
+      toast.error(e);
     }
-
   };
 
   const handleSell = (item: any) => {
@@ -139,7 +136,7 @@ export const CardPackPage: React.FC = () => {
   };
   return (
     <AppLayout>
-            <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={2000}
         hideProgressBar={false}

@@ -135,7 +135,8 @@ export const MarketplacePage: React.FC = () => {
             open={side === "buy"}
             selectedItem={selectedItem}
             onClose={handleSideClose}
-            onLoad={getPageData}
+            data={nftMarketplaceData}
+            setData={setNftMarketplaceData}
           />
           <MSellCardSection
             open={side === "sell"}

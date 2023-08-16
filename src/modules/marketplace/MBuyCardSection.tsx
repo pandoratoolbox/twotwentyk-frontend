@@ -42,7 +42,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   onClose,
   open,
   page,
-  onLoad,
+  data,
+  setData,
 }) => {
   const navigate = useNavigate();
 
@@ -73,7 +74,10 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       if (res.status === 200) {
         toast.success("You bought a card from the marketplace!");
         setConfirm(true);
-        onLoad();
+        if (setData && data) {
+          let n = data?.filter((v) => v.id !== selectedItem.id);
+          if (n) setData(n);
+        }
       }
     } catch (e: any) {
       console.log(e);

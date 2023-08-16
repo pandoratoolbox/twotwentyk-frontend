@@ -10,5 +10,6 @@ export type CardSidebarProps = {
   page?: string;
   onConfirm?: () => void;
   open: boolean;
-  onLoad?: () => void;
+  data?: IMarketplaceListing[] | null;
+  setData?: React.Dispatch<React.SetStateAction<IMarketplaceListing[] | null>>;
 };
