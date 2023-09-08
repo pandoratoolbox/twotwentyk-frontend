@@ -40,7 +40,7 @@ export const MarketplacePredictionPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList(7, 20, token);
+    const response = await getMarketplaceList(1, [7], 20);
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);

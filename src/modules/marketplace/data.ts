@@ -1,73 +1,83 @@
-export const cardTypeOption = [
-  {
-    label: "Day/Month",
-    value: "daymonth",
-    checked: false,
-  },
-  {
-    label: "Year",
-    value: "year",
-    checked: false,
-  },
-  {
-    label: "Category",
-    value: "category",
-    checked: false,
-  },
-  {
-    label: "Trigger",
-    value: "trigger",
-    checked: false,
-  },
-  {
-    label: "Crafting",
-    value: "crafting",
-    checked: false,
-  },
-];
+export const cardTypeOption = new Map<number, {name: string, id: number}>([
+  [3, {
+    name: "Day/Month",
+    id: 1
+  }],
+  [4, {
+    name: "Year",
+    id: 4
+  }],
+  [2,{
+    name: "Category",
+    id: 2
+  }],
+  [5,{
+    name: "Trigger",
+    id: 5
+  }],
+  [1,{
+    name: "Crafting",
+    id: 1
+  }]
+]);
 
-export const triggerTypeOption = [
-  {
-    label: "Major",
-    value: "major",
-    checked: false,
-  },
-  {
-    label: "Minor Tier1",
-    value: "minor1",
-    checked: false,
-  },
-  {
-    label: "Minor Tier2",
-    value: "minor2",
-    checked: false,
-  },
-];
+export const triggerTypeOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      name: "Major",
+      id: 1,
+    },
+  ],
+  [
+    2,
+    {
+      name: "Minor Tier1",
+      id: 2,
+    },
+  ],
+  [
+    3,
+    {
+      name: "Minor Tier2",
+      id: 3,
+    },
+  ],
+]);
 
-export const collectionOption = [
-  {
-    label: "Conception",
-    value: "conception",
-  },
-];
+export const collectionOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      id: 1,
+      name: "Genesis",
+    },
+  ],
+]);
 
-export const statusOption = [
-  {
-    label: "Owned",
-    value: "owned",
-    checked: false,
-  },
-  {
-    label: "For sale",
-    value: "forsale",
-    checked: false,
-  },
-  {
-    label: "Not for sale",
-    value: "notforsale",
-    checked: false,
-  },
-];
+export const statusOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      name: "Owned",
+      id: 1,
+    },
+  ],
+  [
+    2,
+    {
+      name: "For Sale",
+      id: 2,
+    },
+  ],
+  [
+    3,
+    {
+      name: "Not for sale",
+      id: 3,
+    },
+  ],
+]);
 
 export const cardData = [
   {

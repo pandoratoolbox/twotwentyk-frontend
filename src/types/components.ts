@@ -215,7 +215,7 @@ export type SelectBoxProps = {
   value?: string | Array<string>;
   isFilter?: boolean;
   options?: SelectOptionProps[];
-  newData?: any;
+  // newData?: any;
   onClick?: (filterType: string, selectedOptions: string[]) => void;
   onChange?: (value: string | Array<string>) => void;
   onSelect?: (v: SelectOptionProps) => void;
@@ -329,3 +329,85 @@ export type MarketCardProps = {
 export type CraftPredictionModalProps = {
   onBurn?: () => void;
 } & ModalProps;
+
+
+export const cardTypeOption = new Map<number, {name: string, id: number}>([
+  [3, {
+    name: "Day/Month",
+    id: 1
+  }],
+  [4, {
+    name: "Year",
+    id: 4
+  }],
+  [2,{
+    name: "Category",
+    id: 2
+  }],
+  [5,{
+    name: "Trigger",
+    id: 5
+  }],
+  [1,{
+    name: "Crafting",
+    id: 1
+  }]
+]);
+
+export const triggerTypeOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      name: "Major",
+      id: 1,
+    },
+  ],
+  [
+    2,
+    {
+      name: "Minor Tier1",
+      id: 2,
+    },
+  ],
+  [
+    3,
+    {
+      name: "Minor Tier2",
+      id: 3,
+    },
+  ],
+]);
+
+export const collectionOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      id: 1,
+      name: "Genesis",
+    },
+  ],
+]);
+
+export const statusOption = new Map<number, { id: number; name: string }>([
+  [
+    1,
+    {
+      name: "Owned",
+      id: 1,
+    },
+  ],
+  [
+    2,
+    {
+      name: "For Sale",
+      id: 2,
+    },
+  ],
+  [
+    3,
+    {
+      name: "Not for sale",
+      id: 3,
+    },
+  ],
+]);

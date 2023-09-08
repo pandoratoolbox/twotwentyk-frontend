@@ -23,7 +23,7 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
   isFilter,
   onClick,
   onChange,
-  newData,
+  // newData,
 }) => {
   const optionRef = useRef<any>(null);
   const [isOption, setIsOption] = useState(false);
@@ -96,23 +96,23 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
         {isFilter ? (
           <>
             <OptionGroup>
-              {newData &&
-                Array.from<[any, any]>(newData).map(([key, value]) => (
+              {options &&
+                options.map(v => (
                   <OptionItem
-                    htmlFor={value.name ? value.name + key : value + key}
-                    key={key}
+                    htmlFor={v.value}
+                    key={v.value}
                   >
-                    <span>{value.name ? value.name : value}</span>
+                    <span>{v.label}</span>
                     <CheckboxWrapper>
                       <input
-                        id={value.name ? value.name + key : value + key}
+                        id={v.value}
                         type="checkbox"
-                        value={key as string}
-                        checked={selectedOptions.includes(key as string)}
-                        onChange={(e) => handleCheckboxChange(e, key as string)}
+                        value={v.label as string}
+                        checked={selectedOptions.includes(v.value as string)}
+                        onChange={(e) => handleCheckboxChange(e, v.value as string)}
                       />
                       <label
-                        htmlFor={value.name ? value.name + key : value + key}
+                        htmlFor={v.value}
                       ></label>
                     </CheckboxWrapper>
                   </OptionItem>

@@ -110,6 +110,27 @@ export const PredictionSelectCardSection: React.FC<{
     }
   };
 
+  const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
+  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
+  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
+  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
+  const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
+  const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
+
+  useEffect(() => {
+    if (statusContext && allRaritiesContext) {
+      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+    }
+  }, [statusContext, allRaritiesContext])
+
+
   return (
     <SelectCardSectionWrapper>
       {selectedCraft === "crafting" && (
@@ -121,14 +142,14 @@ export const PredictionSelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
@@ -201,14 +222,14 @@ export const PredictionSelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
@@ -302,14 +323,14 @@ export const PredictionSelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
