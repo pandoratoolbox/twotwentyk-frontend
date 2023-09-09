@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { AdminSearchInput } from "../../../components";
 import { AdminLayout } from "../../../layout";
-import CollectionCreationTable from "../../../modules/admin/CollectionCreationTable/CollectionCreationTable";
+import CollectionCreationTable from "../../../modules/admin/CollectionCreation/CollectionCreationTable";
 import {
   CollectionCreationPageWrapper,
   CreateButton,

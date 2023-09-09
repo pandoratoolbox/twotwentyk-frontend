@@ -55,4 +55,24 @@ export const CollectionHead = styled.div`
     text-transform: uppercase;
     margin-right: 12px;
   }
+  .rightIcons {
+    display: flex;
+    gap: 20px;
+  }
+
+  span {
+    display: flex;
+    height: 24px;
+    padding: 0px 8px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 999px;
+    background: #fef9c3;
+    color: #e3a31c;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 800;
+    line-height: 18px;
+    text-transform: uppercase;
+  }
 `;

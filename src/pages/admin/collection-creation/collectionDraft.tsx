@@ -4,9 +4,11 @@ import {
   IconArrowUp,
   IconThreeDot,
   IconFilter,
+  TrashIcon,
+  PencilAlt,
 } from "../../../components";
 import { AdminLayout } from "../../../layout";
-import CollectionCreationTable from "../../../modules/admin/CollectionCreationTable/CollectionCreationTable";
+import CollectionDraftSections from "../../../modules/admin/CollectionCreation/CollectionDraftSections";
 import {
   CollectionCreationPageWrapper,
   CollectionHead,
@@ -32,13 +34,14 @@ export const CollectionDraft: React.FC = () => {
             <IconArrowUp />
           </div>
 
-          <div>
+          <div className="rightIcons">
             <IconThreeDot />
-            <IconFilter />
+            <PencilAlt />
+            <TrashIcon />
           </div>
         </CollectionHead>
 
-        <CollectionCreationTable />
+        <CollectionDraftSections />
       </CollectionCreationPageWrapper>
     </AdminLayout>
   );

@@ -34,6 +34,7 @@ import {
   MyOfferPage,
   CollectionCreationPage,
   CollectionDraft,
+  CollectionMetaData,
   ClaimManagementPage,
   UserManagementPage,
 } from "./pages";
@@ -125,6 +126,10 @@ const App: React.FC = () => {
               <Route
                 path="/admin/collection-creation/draft"
                 element={<CollectionDraft />}
+              />
+              <Route
+                path="/admin/collection-creation/metadata"
+                element={<CollectionMetaData />}
               />
               <Route
                 path="/admin/claim-management"
