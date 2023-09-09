@@ -27,6 +27,9 @@ export const MarketplacePacksPage: React.FC = () => {
     IMarketplaceListing[] | null
   >(null);
   const [selectedItem, setSelectedItem] = useState<IMarketplaceListing | null>(null);
+  const [selectedNftCollectionId, setSelectedNftCollectionId] = useState<number>(0)
+  const [selectedRarity, setSelectedRarity] = useState<number[] | null>(null);
+  const [selectedStatus, setSelectedStatus] = useState<number[] | null>(null);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
     console.log(item);
@@ -40,8 +43,7 @@ export const MarketplacePacksPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-    const token = localStorage.auth;
-    const response = await getMarketplaceList(0, 20, token);
+    const response = await getMarketplaceList(selectedNftCollectionId, [0], 20);
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);
@@ -60,7 +62,12 @@ export const MarketplacePacksPage: React.FC = () => {
           <MarketplacePageContainer>
             <h2>Card Packs</h2>
             <MarketplaceContentWrapper>
-              <MFilterSection page="packs" />
+              <MFilterSection
+              page="packs"
+              onSelectRarity={(selected) => {setSelectedRarity(selected)}}
+              onSelectNftCollection={(selected) => {setSelectedNftCollectionId(selected)}}
+              onSelectStatus={(selected) => {setSelectedStatus(selected)}}
+              />
               <MCardGridSection
                 data={nftMarketplaceData}
                 onCardClick={handleCardClick}

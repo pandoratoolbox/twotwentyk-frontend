@@ -2,18 +2,13 @@ import api from "../config/api";
 import { MarketplaceListObjectParams } from "../types/actions";
 
 export const getMarketplaceList = async (
-  nft_type_id: number,
-  limit: number,
-  token: string
+  nft_collection_id: number,
+  nft_type_ids: number[],
+  limit: number
 ) => {
   try {
     const res = await api.get(
-      `/marketplace_listing?nft_type_id=${nft_type_id}&limit=${limit}`,
-      {
-        headers: {
-          Authorization: "Bearer " + token,
-        },
-      }
+      `/marketplace_listing?nft_type_ids=${nft_type_ids.join(",")}&limit=${limit}&nft_collection_id=${nft_collection_id}`
     );
     return { success: true, data: res.data };
   } catch (error) {

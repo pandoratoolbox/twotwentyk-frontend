@@ -1,7 +1,7 @@
-import React from "react";
+import React, {useState, useEffect} from "react";
 import { FilterGroupWrapper, FilterSectionWrapper, SortButton } from "./styles";
 import { IconSort, SelectBox } from "../../../components";
-import { collectionOption } from "./data";
+import { SelectOptionProps, collectionOption } from "../../../types";
 import {
   useCardTypesContext,
   useAllRaritiesContext,
@@ -15,6 +15,31 @@ export const DatesFilterSection: React.FC<{
   const { allRaritiesContext } = useAllRaritiesContext();
   const { statusContext } = useStatusContext();
 
+  const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
+  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
+  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
+  const [optionsCardTypes, setOptionsCardTypes] = useState<SelectOptionProps[]>([]);
+
+  useEffect(() => {
+    if (statusContext && allRaritiesContext && collectionOption && cardTypesContext) {
+      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+      setOptionsCollection(Array.from((collectionOption as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+      setOptionsCardTypes(Array.from((cardTypesContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+    }
+  }, [statusContext, allRaritiesContext, collectionOption, cardTypesContext])
+
   return (
     <FilterSectionWrapper>
       <p>Filter traits</p>
@@ -22,23 +47,23 @@ export const DatesFilterSection: React.FC<{
         <SelectBox
           isFilter
           placeholder="Card Types"
-          newData={cardTypesContext}
+          options={optionsCardTypes}
           onClick={onClick}
         />
         <SelectBox
           onClick={onClick}
-          options={collectionOption}
+          options={optionsCollection}
           placeholder="Collections"
         />
         <SelectBox
           isFilter
-          newData={allRaritiesContext}
+          options={optionsRarities}
           placeholder="All Rarities"
           onClick={onClick}
         />
         <SelectBox
           isFilter
-          newData={statusContext}
+          options={optionsStatus}
           placeholder="Status"
           onClick={onClick}
         />

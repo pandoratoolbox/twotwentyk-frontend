@@ -24,6 +24,7 @@ import { INftCardDayMonth } from "../../models/nft_card_day_month";
 import { INftCardYear } from "../../models/nft_card_year";
 import { INftCardCategory } from "../../models/nft_card_category";
 import { useMonthContext } from "../../context";
+import { SelectOptionProps } from "../../types";
 
 export const IdentitySelectCardSection: React.FC<{
   selectedCraft: string;
@@ -144,6 +145,27 @@ export const IdentitySelectCardSection: React.FC<{
     getNFTCrafting();
   }, [selectedCraft]);
 
+  const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
+  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
+  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
+  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
+  const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
+  const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
+
+  useEffect(() => {
+    if (statusContext && allRaritiesContext) {
+      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
+        return {checked: false, value: v.id.toString(), label: v.name}
+      }))
+
+    }
+  }, [statusContext, allRaritiesContext])
+
+
   return (
     <SelectCardSectionWrapper>
       {selectedCraft === "crafting" && (
@@ -155,14 +177,14 @@ export const IdentitySelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
@@ -236,14 +258,14 @@ export const IdentitySelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
@@ -319,14 +341,14 @@ export const IdentitySelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>
@@ -399,14 +421,14 @@ export const IdentitySelectCardSection: React.FC<{
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={allRaritiesContext}
+                    options={optionsRarities}
                     placeholder="All Rarities"
                   />
                 </SelectBoxWrapper>
                 <SelectBoxWrapper>
                   <SelectBox
                     isFilter
-                    newData={statusContext}
+                    options={optionsStatus}
                     placeholder="Status"
                   />
                 </SelectBoxWrapper>

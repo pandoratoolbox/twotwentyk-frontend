@@ -32,7 +32,6 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
   border,
   isFilter,
   onChange,
-  newData,
   onSelect,
   clear,
 }) => {
