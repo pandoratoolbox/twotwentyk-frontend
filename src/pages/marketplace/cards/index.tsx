@@ -18,7 +18,7 @@ import { EmptyCards } from "../../app/category/styles";
 import { Button, Loader } from "../../../components";
 import { useNavigate } from "react-router-dom";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
-import { getMarketplaceList } from "../../../actions/marketplace_listing";
+import { RequestSearchMarketplaceListingParams, getMarketplaceList } from "../../../actions/marketplace_listing";
 import { useMyInfoContext, useMyOfferContext } from "../../../context";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -35,11 +35,11 @@ export const MarketplacePage: React.FC = () => {
   const { myInfoContext } = useMyInfoContext();
   const [selectedId, setSelectedId] = useState<number | string>("");
   const [selectedNftCollectionId, setSelectedNftCollectionId] = useState<number>(1);
-  const [selectedNftTypeIds, setSelectedNftTypeIds] = useState<number[] | null>([3]);
-  const [selectedStatus, setSelectedStatus] = useState<number[] | null>([0]);
+  const [selectedNftTypeIds, setSelectedNftTypeIds] = useState<number[]>([3,4]);
+  const [selectedStatus, setSelectedStatus] = useState<number[]>([0]);
 
   useEffect(() => {
-    getPageData();
+    getPageData({nft_collection_id: selectedNftCollectionId, nft_type_ids: selectedNftTypeIds, status: selectedStatus});
   }, []);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
@@ -53,11 +53,12 @@ export const MarketplacePage: React.FC = () => {
     setSelectedId("");
   };
 
-  const getPageData = async () => {
+  const getPageData = async (params: RequestSearchMarketplaceListingParams) => {
     setIsLoading(true);
     
     if (selectedNftTypeIds) {
-      const response = await getMarketplaceList(selectedNftCollectionId, selectedNftTypeIds, 20);
+      console.log(selectedNftTypeIds)
+      const response = await getMarketplaceList(params);
 
       if (response?.data) {
         setNftMarketplaceData(response?.data);
@@ -110,13 +111,15 @@ export const MarketplacePage: React.FC = () => {
               <MFilterSection
               onSelectNftCollection={(selected) => {
                 setSelectedNftCollectionId(selected)
+                console.log(selected)
               }}
               onSelectStatus={(selected) => {
                 setSelectedStatus(selected)
               }}
               onSelectCardTypes={(selected) => {
+                console.log({page: true, selected})
                 setSelectedNftTypeIds(selected)
-                getPageData()
+                getPageData({nft_collection_id:selectedNftCollectionId, nft_type_ids:selected, status:selectedStatus})
               }}
               />
               <MCardGridSection

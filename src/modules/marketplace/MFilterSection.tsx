@@ -14,7 +14,7 @@ import {
 } from "../../context";
 import { SelectOptionProps } from "../../types";
 
-export const MFilterSection: React.FC<{ page?: string, onSelectTrigger?: (selected: number[] | null) => void, onSelectCategory?: (selected: number[] | null) => void, onSelectCardTypes?: (selected: number[] | null) => void, onSelectNftCollection?: (selected: number) => void, onSelectStatus?: (selected: number[] | null) => void, onSelectRarity?: (selected: number[] | null) => void }> = ({ page, onSelectCardTypes, onSelectCategory, onSelectNftCollection, onSelectRarity, onSelectStatus, onSelectTrigger }) => {
+export const MFilterSection: React.FC<{ page?: string, onSelectTrigger?: (selected: number[]) => void, onSelectCategory?: (selected: number[]) => void, onSelectCardTypes?: (selected: number[] ) => void, onSelectNftCollection?: (selected: number) => void, onSelectStatus?: (selected: number[]) => void, onSelectRarity?: (selected: number[]) => void }> = ({ page, onSelectCardTypes, onSelectCategory, onSelectNftCollection, onSelectRarity, onSelectStatus, onSelectTrigger }) => {
   const { marketCardTypesContext } = useMarketCardTypesContext();
   const { cardTypesContext } = useCardTypesContext();
   const { allRaritiesContext } = useAllRaritiesContext();
@@ -60,6 +60,7 @@ export const MFilterSection: React.FC<{ page?: string, onSelectTrigger?: (select
   }, [statusContext, categoriesContext, allRaritiesContext, cardTypesContext, marketCardTypesContext, triggersContext])
 
   const handleOptionSelect = (filterType: string, selected: string[]) => {
+    console.log({filterType, selected})
     switch (filterType) {
       case "Collections":
         onSelectNftCollection && onSelectNftCollection(Number(selected[0]))
@@ -77,6 +78,7 @@ export const MFilterSection: React.FC<{ page?: string, onSelectTrigger?: (select
         onSelectRarity && onSelectRarity(selected.map(v => {return Number(v)}))
         break
       case "Card Types":
+        console.log("Card types")
        onSelectCardTypes && onSelectCardTypes(selected.map(v => {return Number(v)}))
        break
     }

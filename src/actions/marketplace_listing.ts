@@ -1,14 +1,23 @@
 import api from "../config/api";
 import { MarketplaceListObjectParams } from "../types/actions";
 
-export const getMarketplaceList = async (
-  nft_collection_id: number,
-  nft_type_ids: number[],
-  limit: number
-) => {
+export interface RequestSearchMarketplaceListingParams {
+  rarity?: number[];
+  status?: number[];
+  nft_type_ids: number[];
+  nft_collection_id: number;
+  limit?: number;
+  offset?: number;
+}
+
+export const getMarketplaceList = async (params: RequestSearchMarketplaceListingParams) => {
+  if (!params.limit) params.limit = 20;
+  if (!params.offset) params.offset = 0;
+  if (!params.rarity) params.rarity = [0,1,2];
+  if (!params.status) params.status = [0,1];
   try {
     const res = await api.get(
-      `/marketplace_listing?nft_type_ids=${nft_type_ids.join(",")}&limit=${limit}&nft_collection_id=${nft_collection_id}`
+      `/marketplace_listing?nft_type_ids=${params.nft_type_ids.join(",")}&limit=${params.limit}&nft_collection_id=${params.nft_collection_id}&rarity=${params.rarity.join(",")}&offset=${params.offset}&status=${params.status.join(",")}`
     );
     return { success: true, data: res.data };
   } catch (error) {

@@ -40,7 +40,7 @@ export const MarketplacePredictionPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList(1, [7], 20);
+    const response = await getMarketplaceList({nft_collection_id: 1, nft_type_ids: [7]});
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);
@@ -59,7 +59,13 @@ export const MarketplacePredictionPage: React.FC = () => {
           <MarketplacePageContainer>
             <h2>Predictions</h2>
             <MarketplaceContentWrapper>
-              <MFilterSection page="predictions" />
+              <MFilterSection page="predictions" 
+              // onSelectTrigger={}
+              // onSelectCategory={}
+              // onSelectRarity={}
+              // onSelectStatus={}
+              // onSelectNftCollection={}
+              />
               <MCardGridSection
                 data={nftMarketplaceData}
                 onCardClick={handleCardClick}

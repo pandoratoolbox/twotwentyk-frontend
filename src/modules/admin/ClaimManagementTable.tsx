@@ -16,7 +16,6 @@ import {
   TableActions,
   TableFilter,
 } from "./styles";
-import { claimManage } from "./data";
 import {
   IconApprove,
   IconArrowDown,
@@ -28,52 +27,26 @@ import {
   IconTableSort,
   IconThreeDot,
 } from "../../components";
+import { IClaim } from "../../models/claim";
 
-export const ClaimManagementTable: React.FC<{ filterValue: string }> = ({
-  filterValue,
+export const ClaimManagementTable: React.FC<{ allData: IClaim[], onApprove: (claim: IClaim) => void , onReject: (claim: IClaim) => void, onApproveSelected: (rows: IClaim[]) => void, onRejectSelected: (rows: IClaim[]) => void}> = ({
+  allData,
+  onApprove,
+  onReject,
+  onRejectSelected,
+  onApproveSelected
 }) => {
   const [tableData, setTableData] = useState<any>([]);
-  const [allData, setAllData] = useState<any>([]);
-  const [filteredData, setFilteredData] = useState<any>([]);
+  // const [allData, setAllData] = useState<any>([]);
+  const [filteredData, setFilteredData] = useState<IClaim[]>([]);
   const [pageNumber, setPageNumber] = useState(1);
   const [totalPage, setTotalPage] = useState(1);
   const [sortKey, setSortKey] = useState({ name: "", count: 0 });
   const [selectedRows, setSelectedRows] = useState<Array<number>>([]);
-
-  useEffect(() => {
-    setAllData(claimManage.map((item, key) => ({ ...item, id: key })));
-  }, []);
-
+ 
   useEffect(() => {
     setFilteredData(allData);
   }, [allData]);
-
-  useEffect(() => {
-    if (filterValue) {
-      setFilteredData(
-        allData
-          .map((item: any) => ({
-            ...item,
-            statusStr:
-              item.status === 0
-                ? "requested"
-                : item.status === 1
-                ? "approved"
-                : "rejected",
-          }))
-          .filter(
-            (f: any) =>
-              f.date.toLowerCase().includes(filterValue.toLowerCase()) ||
-              f.predictions.toLowerCase().includes(filterValue.toLowerCase()) ||
-              f.user.toLowerCase().includes(filterValue.toLowerCase()) ||
-              f.statusStr.toLowerCase().includes(filterValue.toLowerCase())
-          )
-      );
-    } else {
-      setFilteredData(allData);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [filterValue]);
 
   useEffect(() => {
     setTotalPage(Math.ceil(filteredData.length / 15));
@@ -114,13 +87,37 @@ export const ClaimManagementTable: React.FC<{ filterValue: string }> = ({
     }
   };
 
-  const handleApprove = (rows: Array<number>) => {
-    console.log(rows);
+  const handleApprove = (claim: IClaim) => {
+    onApprove(claim)
   };
 
-  const handleReject = (rows: Array<number>) => {
-    console.log(rows);
+  const handleReject = (claim: IClaim) => {
+    onReject(claim)
   };
+
+  const handleApproveSelected = () => {
+    let rows: IClaim[] = [];
+    selectedRows.forEach((id) => {
+      let claim = allData.find((f) => f.id === id);
+      if (claim) {
+        rows.push(claim);
+      }
+    });
+
+    onApproveSelected(rows);
+  }
+
+  const handleRejectSelected = () => {
+    let rows: IClaim[] = [];
+    selectedRows.forEach((id) => {
+      let claim = allData.find((f) => f.id === id);
+      if (claim) {
+        rows.push(claim);
+      }
+    });
+
+    onRejectSelected(rows);
+  }
 
   return (
     <ClaimManagementTableWrapper>
@@ -149,11 +146,11 @@ export const ClaimManagementTable: React.FC<{ filterValue: string }> = ({
           </CheckAllBox>
           {selectedRows.length > 0 && (
             <TableActions>
-              <div onClick={() => handleApprove(selectedRows)}>
+              <div onClick={() => handleApproveSelected}>
                 <IconApprove /> <span>Approve</span>
               </div>
               <div>
-                <IconReject onClick={() => handleReject(selectedRows)} />{" "}
+                <IconReject onClick={() => handleRejectSelected} />{" "}
                 <span>Reject</span>
               </div>
             </TableActions>
@@ -240,13 +237,13 @@ export const ClaimManagementTable: React.FC<{ filterValue: string }> = ({
               <td>
                 <TableActionButtonWrapper>
                   <TableActionButton
-                    onClick={() => handleApprove([item.id])}
+                    onClick={() => handleApprove(item)}
                     className={`approve ${item.status !== 0 && "disabled"}`}
                   >
                     Approve
                   </TableActionButton>
                   <TableActionButton
-                    onClick={() => handleReject([item.id])}
+                    onClick={() => handleReject(item)}
                     className={`reject  ${item.status !== 0 && "disabled"}`}
                   >
                     Reject
