@@ -65,17 +65,13 @@ export const TriggerFilterSection: React.FC<{
         })
       );
 
-      setOptionsCategories(Array.from((categoriesContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
-
-      // setOptionsTiers(Array.from((tiersContext as Map<number, {id: number, name: string}>).values()).map(v => {
-      //   return {checked: false, value: v.id.toString(), label: v.name}
-      // }))
-
-      setOptionsTriggers(Array.from((triggersContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+      setOptionsTiers(
+        Array.from(
+          (tiersContext as Map<number, { id: number; name: string }>).values()
+        ).map((v) => {
+          return { checked: false, value: v?.id?.toString(), label: v?.name };
+        })
+      );
     }
   }, [
     statusContext,
