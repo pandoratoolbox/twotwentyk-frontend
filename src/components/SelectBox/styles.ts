@@ -72,7 +72,7 @@ export const SelectOptionsWrapper = styled.div<{ open?: boolean }>`
   }
 `;
 
-export const OptionItem = styled.label`
+export const OptionItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;

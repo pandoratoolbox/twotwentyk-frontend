@@ -14,7 +14,7 @@ import { IconArrowDown } from "../Icons";
 import { SelectBoxProps } from "../../types";
 import { Button } from "../Button";
 
-export const SelectBox: React.FC<SelectBoxProps> = ({
+export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
   placeholder,
   label,
   value,
@@ -59,14 +59,16 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
     value: string
   ) => {
     const isChecked = e.target.checked;
-    if (isChecked) {
-      setSelectedOptions((prevOptions) => [...prevOptions, value]);
-    } else {
-      setSelectedOptions((prevOptions) =>
-        prevOptions.filter((option) => option !== value)
-      );
-    }
+    setSelectedOptions((prevOptions) => {
+      if (isChecked) {
+        return [...prevOptions, value];
+      } else {
+        return prevOptions.filter((option) => option !== value);
+      }
+    });
   };
+
+  console.log(selectedOptions);
 
   return (
     <SelectBoxWrapper ref={optionRef}>
@@ -97,11 +99,8 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
           <>
             <OptionGroup>
               {options &&
-                options.map(v => (
-                  <OptionItem
-                    htmlFor={v.value}
-                    key={v.value}
-                  >
+                options.map((v) => (
+                  <OptionItem key={v.value}>
                     <span>{v.label}</span>
                     <CheckboxWrapper>
                       <input
@@ -109,11 +108,11 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
                         type="checkbox"
                         value={v.label as string}
                         checked={selectedOptions.includes(v.value as string)}
-                        onChange={(e) => handleCheckboxChange(e, v.value as string)}
+                        onChange={(e) =>
+                          handleCheckboxChange(e, v.value as string)
+                        }
                       />
-                      <label
-                        htmlFor={v.value}
-                      ></label>
+                      <label htmlFor={v.value}></label>
                     </CheckboxWrapper>
                   </OptionItem>
                 ))}
@@ -153,4 +152,4 @@ export const SelectBox: React.FC<SelectBoxProps> = ({
       </SelectOptionsWrapper>
     </SelectBoxWrapper>
   );
-};
+});
