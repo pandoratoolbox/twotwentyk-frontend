@@ -57,7 +57,7 @@ export const DatesPage: React.FC = () => {
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
   const [filters, setFilters] = useState<DateFilters>({
-    card_types: [0, 1],
+    card_types: [3, 4],
     card_series_id: null,
     rarities: null,
     status: null,
@@ -164,7 +164,7 @@ export const DatesPage: React.FC = () => {
 
     let n: (INftCardDayMonth | INftCardYear )[]  = []
 
-    if (filters.card_types.includes(0)) {
+    if (filters.card_types.includes(3)) {
       let dayMonthFilters: NftCardDayMonthFilters = {
         rarities: newFilters.rarities,
         card_series_id: newFilters.card_series_id,
@@ -180,7 +180,7 @@ export const DatesPage: React.FC = () => {
       }
     }
 
-    if (filters.card_types.includes(1)) {
+    if (filters.card_types.includes(4)) {
       let yearFilters: NftCardYearFilters = {
         card_series_id: newFilters.card_series_id,
         year: null,
