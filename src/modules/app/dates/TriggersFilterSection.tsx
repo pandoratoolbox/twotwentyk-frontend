@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { FilterGroupWrapper, FilterSectionWrapper, SortButton } from "./styles";
 import { IconSort, SelectBox } from "../../../components";
 import {
@@ -20,39 +20,66 @@ export const TriggerFilterSection: React.FC<{
   const { tiersContext } = useTiersContext();
 
   const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
-  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
-  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
-  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
+  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>(
+    []
+  );
   const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
-  const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
+  const [optionsCategories, setOptionsCategories] = useState<
+    SelectOptionProps[]
+  >([]);
 
   useEffect(() => {
-    if (statusContext && allRaritiesContext && collectionOption && categoriesContext && triggersContext && tiersContext) {
-      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+    if (
+      statusContext &&
+      allRaritiesContext &&
+      collectionOption &&
+      categoriesContext &&
+      triggersContext &&
+      tiersContext
+    ) {
+      setOptionsStatus(
+        Array.from(
+          (statusContext as Map<number, { id: number; name: string }>).values()
+        ).map((v) => {
+          return { checked: false, value: v?.id?.toString(), label: v.name };
+        })
+      );
 
-      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+      setOptionsRarities(
+        Array.from(
+          (
+            allRaritiesContext as Map<number, { id: number; name: string }>
+          ).values()
+        ).map((v) => {
+          return { checked: false, value: v?.id?.toString(), label: v.name };
+        })
+      );
 
-      setOptionsCollection(Array.from((collectionOption as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+      setOptionsCategories(
+        Array.from(
+          (
+            categoriesContext as Map<number, { id: number; name: string }>
+          ).values()
+        ).map((v) => {
+          return { checked: false, value: v?.id?.toString(), label: v.name };
+        })
+      );
 
-      setOptionsCategories(Array.from((categoriesContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
-
-      // setOptionsTiers(Array.from((tiersContext as Map<number, {id: number, name: string}>).values()).map(v => {
-      //   return {checked: false, value: v.id.toString(), label: v.name}
-      // }))
-
-      setOptionsTriggers(Array.from((triggersContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+      setOptionsTiers(
+        Array.from(
+          (tiersContext as Map<number, { id: number; name: string }>).values()
+        ).map((v) => {
+          return { checked: false, value: v?.id?.toString(), label: v?.name };
+        })
+      );
     }
-  }, [statusContext, allRaritiesContext, categoriesContext, triggersContext, tiersContext])
+  }, [
+    statusContext,
+    allRaritiesContext,
+    categoriesContext,
+    triggersContext,
+    tiersContext,
+  ]);
 
   return (
     <FilterSectionWrapper>
@@ -66,8 +93,8 @@ export const TriggerFilterSection: React.FC<{
         />
         <SelectBox
           isFilter
-          options={optionsTriggers}
-          placeholder="Trigger"
+          options={optionsCategories}
+          placeholder="Categories"
           onClick={onClick}
         />
         <SelectBox

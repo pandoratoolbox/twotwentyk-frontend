@@ -25,15 +25,6 @@ import {
   NftCardDayMonthFilters,
   NftCardYearFilters,
 } from "../../../models/filters";
-import {
-  getFilterCardType,
-  getFilterRarities,
-  getFilterStatus,
-  getFilterCollection,
-  getFilterCategory,
-  getFilterPackType,
-  getFilterTriggerType,
-} from "../../../actions/filtering";
 import api from "../../../config/api";
 import { NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_YEAR } from "../../../models/nft";
 import { toast, ToastContainer } from "react-toastify";
@@ -118,6 +109,7 @@ export const DatesPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
+    console.log(filterType, selectedOptions)
     // for loader
     setNftCardDayMonthData([]);
     setIsLoadingFilter(true);
