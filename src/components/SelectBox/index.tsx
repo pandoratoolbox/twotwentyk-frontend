@@ -50,6 +50,7 @@ export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
 
   const handleFilterClick = async (filterType: string) => {
     onClick && onClick(filterType, selectedOptions);
+    console.log(selectedOptions)
 
     setIsOption(false);
   };

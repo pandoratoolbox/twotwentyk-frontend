@@ -53,14 +53,14 @@ export const TriggersPage: React.FC = () => {
   const [modal, setModal] = useState(false);
 
   const handleSellConfirm = async (
-    id: number | string,
-    collection_id: string | number,
-    price: string | number
+    id: number,
+    collection_id: number,
+    price: number
   ) => {
     const newMarketplace = {
-      nft_collection_id: collection_id,
-      nft_id: id,
-      price: price,
+      nft_type_id: collection_id,
+      nft_card_trigger_id: id,
+      price: price*100,
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {

@@ -69,15 +69,15 @@ export const CategoriesPage: React.FC = () => {
   }, []);
 
   const handleSellConfirm = async (
-    id: number | string,
-    collection_id: string | number,
-    price: string | number,
+    id: number,
+    collection_id: number,
+    price: number,
     // card: INftCardCategory | INftCardCrafting | INftCardDayMonth | INftCardYear | INftCardPrediction | INftCardIdentity | INftCardTrigger
   ) => {
     const newMarketplace = {
-      nft_collection_id: collection_id,
-      nft_id: id,
-      price: price,
+      nft_type_id: collection_id,
+      nft_card_category_id: id,
+      price: price*100,
     };
 
 
