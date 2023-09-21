@@ -13,6 +13,7 @@ import {
   Input,
   SocialButtonsGroup,
 } from "../../components";
+import axios from "axios";
 import { signupFormValidation } from "../../utils";
 import { register } from "../../actions";
 import { ToastContainer, toast } from "react-toastify";
@@ -27,11 +28,15 @@ export const SignUpForm: React.FC = () => {
     const { isValid, errors } = signupFormValidation(form);
     setError(errors);
     if (isValid) {
-      const res = await register({ ...form });
-      if (res.success) {
-        navigate("/check-email?type=signup");
-      } else {
-        toast.error(res.message);
+      try {
+        const res = await register({ ...form });
+        if (res.success) {
+          navigate("/check-email?type=signup");
+        } else {
+          toast.error(res.message);
+        }
+      } catch (error) {
+        console.error("Error signing up:", error);
       }
     }
   };
