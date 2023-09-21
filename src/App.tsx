@@ -40,10 +40,23 @@ import {
 } from "./pages";
 import { AppWrapper } from "./context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
+import { ToastContainer } from "react-toastify";
 
 const App: React.FC = () => {
   return (
     <>
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <GoogleOAuthProvider clientId="620329827727-t3sttbu6556u69ebv50fmt5rda85drp0.apps.googleusercontent.com">
         <Router>
           <AppWrapper>
