@@ -36,9 +36,11 @@ export interface NftCardPredictionFilters {
 }
 
 export interface NftCardTriggerFilters {
+  card_series_id: number | null;
+  nft_collection_id: number | null;
   status: number[] | null;
   rarities: number[] | null;
-  categories: number[] | null;
+  triggers: number[] | null;
   tiers: string[] | null;
 }
 

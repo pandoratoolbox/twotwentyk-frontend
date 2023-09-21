@@ -87,7 +87,10 @@ export const TriggersPage: React.FC = () => {
     tiers: null,
     rarities: null,
     status: null,
-    categories: null,
+    nft_collection_id: 1,
+    // categories: null,
+    triggers: null,
+    card_series_id: 1
   });
 
   // filter option click
@@ -95,16 +98,21 @@ export const TriggersPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
+    console.log("click");
 
     setIsLoadingFilter(true);
 
     let newFilters: NftCardTriggerFilters = {
-      categories: filters.categories,
+      // categories: filters.categories,
       status: filters.status,
+      triggers: filters.triggers,
       rarities: filters.rarities,
       tiers: filters.tiers,
+      nft_collection_id: 1,
+      card_series_id: 1
     };
 
+    console.log(filterType);
 
     switch (filterType) {
       case "Trigger Tier":
@@ -112,11 +120,11 @@ export const TriggersPage: React.FC = () => {
           return v;
         });
         break;
-      case "Categories":
-        newFilters.categories = selectedOptions.map((v) => {
-          return Number(v);
-        });
-        break;
+      // case "Categories":
+      //   newFilters.categories = selectedOptions.map((v) => {
+      //     return v;
+      //   });
+      //   break;
       case "All Rarities":
         newFilters.rarities = selectedOptions.map((v) => {
           return Number(v);
