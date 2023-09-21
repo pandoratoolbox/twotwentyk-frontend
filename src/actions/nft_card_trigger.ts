@@ -8,10 +8,14 @@ export const getMyNftCardTrigger = async (filters: NftCardTriggerFilters | null)
   
       if (filters) {
   
-        if (filters.categories) {
-          q_params.append("categories", filters.categories.join(","));
+        if (filters.card_series_id) {
+          q_params.append("card_series_id", filters.card_series_id.toString());
         }
   
+        if (filters.triggers) {
+          q_params.append("triggers", filters.triggers.join(","));
+        }
+        
         if (filters.tiers) {
           q_params.append("tiers", filters.tiers.join(","));
         }
