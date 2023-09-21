@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
+import axios from "axios";
 import {
   ForgotPasswordText,
   FormActionText,
@@ -26,17 +27,27 @@ export const SignInForm: React.FC = () => {
   const handleSignIn = async () => {
     const { isValid, errors } = signinFormValidation(form);
     setError(errors);
+
     if (isValid) {
-      const res = await signin({
-        username: form.email,
-        password: form.password,
-      });
-      if (res.success) {
-        localStorage.setItem("auth", res.token);
-        api.defaults.headers.common["Authorization"] = `Bearer ${res.token}`;
-        navigate("/dashboard");
-      } else {
-        toast.error(res.message);
+      try {
+        const response = await axios.post("/api/signin", {
+          username: form.email,
+          password: form.password,
+        });
+
+        const { data } = response;
+
+        if (data.success) {
+          localStorage.setItem("auth", data.token);
+          axios.defaults.headers.common[
+            "Authorization"
+          ] = `Bearer ${data.token}`;
+          navigate("/dashboard");
+        } else {
+          // toast.error(data.message);
+        }
+      } catch (error) {
+        console.error('An error occurred:', error);
       }
     }
   };
@@ -47,18 +58,6 @@ export const SignInForm: React.FC = () => {
 
   return (
     <AuthFormWrapper>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <AuthFormTitle>Log In</AuthFormTitle>
       <SocialButtonsGroup authType="Login" />
       <AuthFormGroup>
