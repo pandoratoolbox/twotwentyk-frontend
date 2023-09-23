@@ -30,7 +30,7 @@ export const SignInForm: React.FC = () => {
 
     if (isValid) {
       try {
-        const response = await axios.post("/api/signin", {
+        const response = await api.post("/auth/login", {
           username: form.email,
           password: form.password,
         });
@@ -46,8 +46,9 @@ export const SignInForm: React.FC = () => {
         } else {
           // toast.error(data.message);
         }
-      } catch (error) {
-        console.error('An error occurred:', error);
+      } catch (error: any) {
+        console.error('An error occurred:', error.response.data);
+        // toast.error(error.response.data)
       }
     }
   };

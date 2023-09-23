@@ -3,8 +3,17 @@ import { toast } from 'react-toastify'; // Import toast from react-toastify
 
 const token = localStorage.getItem("auth") || "";
 
+
+// Create an instance of axios
+const api = axios.create({
+  baseURL: "https://twotwentyk-api.pandoratoolbox.com",
+  headers: {
+    "Content-Type": "application/json",
+  },
+});
+
 // Add a response interceptor
-axios.interceptors.response.use(function (response) {
+api.interceptors.response.use(function (response) {
   // Any status code that lie within the range of 2xx cause this function to trigger
   // Do something with response data
   return response;
@@ -16,7 +25,7 @@ axios.interceptors.response.use(function (response) {
     const { status, data } = error.response;
     
     // Display a toast with the error message
-    toast.error(`Error ${status}: ${data?.message}`);
+    toast.error(`Error ${status}: ${data}`);
   } else if (error.request) {
     // The request was made, but no response was received
     toast.error('Network error. Please check your internet connection.');
@@ -28,13 +37,6 @@ axios.interceptors.response.use(function (response) {
   return Promise.reject(error);
 });
 
-// Create an instance of axios
-const api = axios.create({
-  baseURL: "https://twotwentyk-api.pandoratoolbox.com",
-  headers: {
-    "Content-Type": "application/json",
-  },
-});
 
 if (token !== "") {
   api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
