@@ -166,7 +166,12 @@ export const CategoriesPage: React.FC = () => {
               </DatePageTitleWrapper>
               <DatePageContent>
                 <ButtonGroup>
-                  <Button className="buy-button">Buy Cards</Button>
+                  <Button
+                    className="buy-button"
+                    onClick={() => navigate("/marketplace")}
+                  >
+                    Buy Cards
+                  </Button>
                   <Button
                     className="buy-button"
                     onClick={() => navigate("/buy")}
