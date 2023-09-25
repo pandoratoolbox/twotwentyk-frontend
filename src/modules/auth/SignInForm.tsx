@@ -36,10 +36,9 @@ export const SignInForm: React.FC = () => {
         });
 
         const { data } = response;
-
-        if (data.success) {
+        if (data) {
           localStorage.setItem("auth", data.token);
-          axios.defaults.headers.common[
+          api.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${data.token}`;
           navigate("/dashboard");
