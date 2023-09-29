@@ -87,7 +87,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({
       <ItemInfo>
         <p>
           {label}
-          {isRequired ? "" : <span>{"(Optional)"}</span>}
+          {isRequired ? " * " : ""}
         </p>
         {type === "password" ? (
           <input type="password" readOnly value={value} />

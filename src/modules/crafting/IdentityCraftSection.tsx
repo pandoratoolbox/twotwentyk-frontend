@@ -93,6 +93,29 @@ export const IdentityCraftSection: React.FC<{
           prediction.
         </p>
         <CraftCardGroup>
+          <CraftCardWrapper key="crafting">
+            <h6>Crafting</h6>
+            {selectedCards.crafting != null ? (
+              <CraftCard
+                onClick={() => onCraftChanged("crafting")}
+                bg={"/assets/nfts/1.png"}
+                className="crafting-card"
+              >
+                {selectedCards.crafting.rarity === 0 && <span>Common</span>}
+                {selectedCards.crafting.rarity === 1 && <span>Uncommon</span>}
+                {selectedCards.crafting.rarity === 2 && <span>Rare</span>}
+                <p>Crafting</p>
+              </CraftCard>
+            ) : (
+              // <EmptyCraftCard
+              //   active={selectedCraft === "crafting" ? "true" : undefined}
+              //   onClick={() => onCraftChanged("crafting")}
+              // />
+              <EmptyCraftCardWrapper onClick={() => onCraftChanged("crafting")}>
+                <img src="/assets/empty-crafting.png" alt="" />
+              </EmptyCraftCardWrapper>
+            )}
+          </CraftCardWrapper>
           <CraftCardWrapper key="dayMonth">
             <h6>Day/Month</h6>
             {selectedCards.dayMonth != null ? (
@@ -163,29 +186,6 @@ export const IdentityCraftSection: React.FC<{
               //   onClick={() => onCraftChanged("category")}
               // />
               <EmptyCraftCardWrapper onClick={() => onCraftChanged("category")}>
-                <img src="/assets/empty-crafting.png" alt="" />
-              </EmptyCraftCardWrapper>
-            )}
-          </CraftCardWrapper>
-          <CraftCardWrapper key="crafting">
-            <h6>Crafting</h6>
-            {selectedCards.crafting != null ? (
-              <CraftCard
-                onClick={() => onCraftChanged("crafting")}
-                bg={"/assets/nfts/1.png"}
-                className="crafting-card"
-              >
-                {selectedCards.crafting.rarity === 0 && <span>Common</span>}
-                {selectedCards.crafting.rarity === 1 && <span>Uncommon</span>}
-                {selectedCards.crafting.rarity === 2 && <span>Rare</span>}
-                <p>Crafting</p>
-              </CraftCard>
-            ) : (
-              // <EmptyCraftCard
-              //   active={selectedCraft === "crafting" ? "true" : undefined}
-              //   onClick={() => onCraftChanged("crafting")}
-              // />
-              <EmptyCraftCardWrapper onClick={() => onCraftChanged("crafting")}>
                 <img src="/assets/empty-crafting.png" alt="" />
               </EmptyCraftCardWrapper>
             )}
