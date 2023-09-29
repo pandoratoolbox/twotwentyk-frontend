@@ -67,10 +67,9 @@ export const MobileMenu: React.FC<{
           <HeaderLogo />
 
           <MobileMenuNavbar>
-            {headerData
-              .filter((f) => f.label !== "")
+            {headerData?.filter((f) => f.label !== "")
               .map((item, key) => (
-                <>
+                <React.Fragment key={key}>
                   <MobileMenuItem
                     key={key}
                     onClick={
@@ -100,7 +99,7 @@ export const MobileMenu: React.FC<{
                       ))}
                     </MobileSubMenuWrapper>
                   )}
-                </>
+                </React.Fragment>
               ))}
             {localStorage.getItem("auth") ? (
               <>

@@ -116,7 +116,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
         onClick={handleGoogleClick}
       />
       <FacebookLogin
-        appId="1088597931155576"
+        appId="1206500170741412"
         // autoLoad={true}
         fields="name,email,picture"
         callback={(res) => onFacebookAuthClicked(res, authType)}

@@ -18,15 +18,6 @@ import { useNavigate } from "react-router-dom";
 import { getMyNftCardTrigger } from "../../../actions/nft_card_trigger";
 import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
-import {
-  getFilterCardType,
-  getFilterRarities,
-  getFilterStatus,
-  getFilterCollection,
-  getFilterCategory,
-  getFilterPackType,
-  getFilterTriggerType,
-} from "../../../actions/filtering";
 import { NftCardTriggerFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
 export const TriggersPage: React.FC = () => {
@@ -96,8 +87,10 @@ export const TriggersPage: React.FC = () => {
     tiers: null,
     rarities: null,
     status: null,
-    card_series_id: null,
+    nft_collection_id: 1,
+    // categories: null,
     triggers: null,
+    card_series_id: 1
   });
 
   // filter option click
@@ -105,15 +98,21 @@ export const TriggersPage: React.FC = () => {
     filterType: string,
     selectedOptions: string[]
   ) => {
+    console.log("click");
+
     setIsLoadingFilter(true);
 
     let newFilters: NftCardTriggerFilters = {
-      card_series_id: filters.card_series_id,
+      // categories: filters.categories,
       status: filters.status,
       triggers: filters.triggers,
       rarities: filters.rarities,
       tiers: filters.tiers,
+      nft_collection_id: 1,
+      card_series_id: 1
     };
+
+    console.log(filterType);
 
     switch (filterType) {
       case "Trigger Tier":
@@ -121,13 +120,13 @@ export const TriggersPage: React.FC = () => {
           return v;
         });
         break;
+      // case "Categories":
+      //   newFilters.categories = selectedOptions.map((v) => {
+      //     return v;
+      //   });
+      //   break;
       case "All Rarities":
         newFilters.rarities = selectedOptions.map((v) => {
-          return Number(v);
-        });
-        break;
-      case "Trigger":
-        newFilters.triggers = selectedOptions.map((v) => {
           return Number(v);
         });
         break;
@@ -135,9 +134,6 @@ export const TriggersPage: React.FC = () => {
         newFilters.status = selectedOptions.map((v) => {
           return Number(v);
         });
-        break;
-      case "Collections":
-        newFilters.card_series_id = Number(selectedOptions[0]);
         break;
     }
 

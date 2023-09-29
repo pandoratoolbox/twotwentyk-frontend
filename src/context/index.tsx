@@ -58,8 +58,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [myOfferContext, setMyOfferContext] = useState<any>();
   const [categoriesContext, setCategoriesContext] =
     useState<Map<number, ICategory>>();
-    const [tiersContext, setTiersContext] =
-    useState<Map<string,string>>(new Map<string,string>([["minor_1","minor_1"],["minor_2","minor_2"],["major","major"]]));
+  const [tiersContext, setTiersContext] = useState<Map<number, ITier>>();
   const [triggersContext, setTriggersContext] =
     useState<Map<number, ITrigger>>();
   const [celebritiesContext, setCelebritiesContext] =
@@ -90,7 +89,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     useState<Map<number, ICategory>>();
   const [statusContext, setStatusContext] = useState<Map<number, ICategory>>();
   const [inventoryNFTsContext, setInventoryNftsContext] = useState<any>();
-
 
   const tiersValue = useMemo(
     () => ({ tiersContext, setTiersContext }),
@@ -233,7 +231,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     //   ])
     // );
 
-
     setMarketCardTypesContext(
       new Map<number, ICategory>([
         [0, { id: 0, name: "Day/Month" }],
@@ -264,6 +261,13 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       ])
     );
 
+    setTiersContext(
+      new Map<number, ITier>([
+        [0, { id: "minor_1", name: "Minor 1" }],
+        [1, { id: "minor_2", name: "Minor 2" }],
+        [3, { id: "major", name: "Major" }],
+      ])
+    );
     const triggersData = await getTriggers();
     if (triggersData.data) {
       let triggers = new Map<number, ITrigger>();
@@ -314,20 +318,15 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       "moonpay-script",
       () => {
         console.log("moonpay script loaded!");
-
-
-        
       }
     );
-    
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname]);
 
   // useExternalScripts("https://static.moonpay.com/web-sdk/v1/moonpay-web-sdk.min.js")
 
-
-
-  const addScript = (src: string, id: string, onLoad: ()=>void) => {
+  const addScript = (src: string, id: string, onLoad: () => void) => {
     const existing = document.getElementById(id);
     if (existing) {
       return existing;
@@ -349,43 +348,45 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   return (
     <TiersContext.Provider value={tiersValue}>
-    <MonthContext.Provider value={monthValue}>
-      <AuthContext.Provider value={authValue}>
-        <CategoriesContext.Provider value={categoriesValue}>
-          <TriggersContext.Provider value={triggersValue}>
-            <CelebritiesContext.Provider value={celebritiesValue}>
-              <MarketCardTypesContext.Provider value={marketCardTypeValue}>
-                <CardTypesContext.Provider value={cardTypeValue}>
-                  <AllRaritiesContext.Provider value={allRaritiesValue}>
-                    <StatusContext.Provider value={statusValue}>
-                      <FeedContext.Provider value={feedValue}>
-                        <MyFeedContext.Provider value={myFeedValue}>
-                          <MyInfoContext.Provider value={myInfoValue}>
-                            <MyNFTsContext.Provider value={myNFTsValue}>
-                              <InventoryNftsContext.Provider
-                                value={inventoryNFTsValue}
-                              >
-                                <MarketplaceListContext.Provider
-                                  value={marketplaceListValue}
+      <MonthContext.Provider value={monthValue}>
+        <AuthContext.Provider value={authValue}>
+          <CategoriesContext.Provider value={categoriesValue}>
+            <TriggersContext.Provider value={triggersValue}>
+              <CelebritiesContext.Provider value={celebritiesValue}>
+                <MarketCardTypesContext.Provider value={marketCardTypeValue}>
+                  <CardTypesContext.Provider value={cardTypeValue}>
+                    <AllRaritiesContext.Provider value={allRaritiesValue}>
+                      <StatusContext.Provider value={statusValue}>
+                        <FeedContext.Provider value={feedValue}>
+                          <MyFeedContext.Provider value={myFeedValue}>
+                            <MyInfoContext.Provider value={myInfoValue}>
+                              <MyNFTsContext.Provider value={myNFTsValue}>
+                                <InventoryNftsContext.Provider
+                                  value={inventoryNFTsValue}
                                 >
-                                  <MyOfferContext.Provider value={myOfferValue}>
-                                    {children}
-                                  </MyOfferContext.Provider>
-                                </MarketplaceListContext.Provider>
-                              </InventoryNftsContext.Provider>
-                            </MyNFTsContext.Provider>
-                          </MyInfoContext.Provider>
-                        </MyFeedContext.Provider>
-                      </FeedContext.Provider>
-                    </StatusContext.Provider>
-                  </AllRaritiesContext.Provider>
-                </CardTypesContext.Provider>
-              </MarketCardTypesContext.Provider>
-            </CelebritiesContext.Provider>
-          </TriggersContext.Provider>
-        </CategoriesContext.Provider>
-      </AuthContext.Provider>
-    </MonthContext.Provider>
+                                  <MarketplaceListContext.Provider
+                                    value={marketplaceListValue}
+                                  >
+                                    <MyOfferContext.Provider
+                                      value={myOfferValue}
+                                    >
+                                      {children}
+                                    </MyOfferContext.Provider>
+                                  </MarketplaceListContext.Provider>
+                                </InventoryNftsContext.Provider>
+                              </MyNFTsContext.Provider>
+                            </MyInfoContext.Provider>
+                          </MyFeedContext.Provider>
+                        </FeedContext.Provider>
+                      </StatusContext.Provider>
+                    </AllRaritiesContext.Provider>
+                  </CardTypesContext.Provider>
+                </MarketCardTypesContext.Provider>
+              </CelebritiesContext.Provider>
+            </TriggersContext.Provider>
+          </CategoriesContext.Provider>
+        </AuthContext.Provider>
+      </MonthContext.Provider>
     </TiersContext.Provider>
   );
 };
@@ -393,7 +394,6 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 export const useTiersContext = () => {
   return useContext(TiersContext);
 };
-
 
 export const useAuthContext = () => {
   return useContext(AuthContext);
