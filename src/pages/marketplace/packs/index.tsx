@@ -33,7 +33,7 @@ export const MarketplacePacksPage: React.FC = () => {
     null
   );
   const [selectedNftCollectionId, setSelectedNftCollectionId] =
-    useState<number>(0);
+    useState<number>(1);
   const [selectedRarity, setSelectedRarity] = useState<number[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<number[]>([]);
 
@@ -50,6 +50,7 @@ export const MarketplacePacksPage: React.FC = () => {
   const getPageData = async (params: RequestSearchMarketplaceListingParams) => {
     setIsLoading(true);
     params.nft_type_ids = [0];
+    params.nft_collection_id = selectedNftCollectionId;
     const response = await getMarketplaceList(params);
 
     if (response?.data) {
