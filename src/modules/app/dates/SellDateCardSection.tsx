@@ -164,6 +164,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               category={item?.category}
               rarity={item?.rarity}
               image={item?.image}
+              position=""
             />
           ) : cardType === "cardPacks" ? (
             <CardPack item={item} rarity={item?.rarity} image={item?.image} />
@@ -176,6 +177,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               category={item?.category}
               rarity={item?.rarity}
               isNotHover={true}
+              position=""
             />
           )}
         </PreviewCardWrapper>
@@ -323,7 +325,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           <PropertiesContent>
             <PriceItem>
               <p>Asking price</p>
-              <span>{priceValue} USD</span>
+              <p className='hello' >{priceValue} USD</p>
             </PriceItem>
             <PriceItem>
               <p>Marketplace fee (5%)</p>

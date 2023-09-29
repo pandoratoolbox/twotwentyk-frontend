@@ -104,6 +104,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               category={item?.category}
               rarity={item?.rarity}
               image={item?.image}
+              position=""
             />
           ) : cardType === "cardPacks" ? (
             <CardPack item={item} rarity={item?.rarity} image={item?.image} />
@@ -116,6 +117,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               category={item?.category}
               rarity={item?.rarity}
               isNotHover={true}
+              position=""
             />
           )}
         </PreviewCardWrapper>

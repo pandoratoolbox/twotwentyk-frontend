@@ -119,6 +119,10 @@ export const Rarity = styled.div`
   color: #fff;
   padding: 0 13px;
   /* background: #615e5e; */
+
+  @media (min-width:425px){
+    max-width: 60px !important;
+  }
 `;
 
 export const StatusWrapper = styled.div`

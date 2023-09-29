@@ -93,6 +93,7 @@ export const DatesPage: React.FC = () => {
       if (res.status === 200) {
         toast.success("You listed a card for sale!");
         setModal(true)
+        setIsView("")
       }
     } catch (e: any) {
       toast.error(e.response.data);

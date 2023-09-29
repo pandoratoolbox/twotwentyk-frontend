@@ -38,6 +38,9 @@ export const PredictionCardWrapper = styled.div<{
       }
     }
   `}
+  @media (max-width:425px){
+    padding: 0;
+  }
 `;
 
 export const CardTopWrapper = styled.div`

@@ -22,6 +22,7 @@ export const DateCard: React.FC<DateCardProps> = ({
   image,
   day,
   month,
+  position = '',
   id = 0,
   is_crafted,
   owner_id,
@@ -58,7 +59,7 @@ export const DateCard: React.FC<DateCardProps> = ({
               <div className="bg-black">
                 <IconUser2 />
               </div>
-              <TooltipContent className="tooltip-content">
+              <TooltipContent position={position} className="tooltip-content">
                 <div>
                   <h3>Identity Matches</h3>
                   <TooltipItem>Tom Brady</TooltipItem>
