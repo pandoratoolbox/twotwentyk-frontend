@@ -83,7 +83,8 @@ export const DatesPage: React.FC = () => {
       let res = await api.post(`/marketplace_listing`, params);
       if (res.status === 200) {
         toast.success("You listed a card for sale!");
-        setModal(true);
+        setModal(true)
+        setIsView("")
       }
     } catch (e: any) {
       toast.error(e.response.data);

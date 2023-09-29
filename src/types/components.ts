@@ -111,6 +111,7 @@ export type DateCardProps = {
   rarity: number;
   is_crafted?: boolean;
   image: string;
+  position:string;
   isNotHover?: boolean;
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;

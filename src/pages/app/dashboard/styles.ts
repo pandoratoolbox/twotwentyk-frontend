@@ -75,6 +75,9 @@ export const CardTitle = styled.div`
     font-style: normal;
     font-weight: 300;
     text-transform: uppercase;
+    @media (max-width: 425px){
+      font-size:20px
+    }
   }
 `;
 

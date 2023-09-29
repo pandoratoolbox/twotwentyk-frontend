@@ -29,6 +29,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
       {cardType === "date" &&
         data?.map((item, key) => (
           <DateCard
+            position={key%2 == 0 ? 'left' : 'right'}
             key={key}
             item={item}
             {...item}

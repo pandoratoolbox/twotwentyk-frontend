@@ -106,7 +106,7 @@ export const CardTooltip = styled.div`
   }
 `;
 
-export const TooltipContent = styled.div`
+export const TooltipContent = styled.div<{ position:string}>`
   h3 {
     font-weight: 600;
     font-size: 16px;
@@ -121,7 +121,8 @@ export const TooltipContent = styled.div`
   opacity: 0;
   visibility: hidden;
   background-color: #fff;
-  right: -10px;
+  right: ${ ({position})=> position === 'left' ? '-100px' : '0px' };
+  left: ${ ({position})=> position === 'right' ? '-200px' : '0px' };
   top: 20px;
   z-index: 10;
   width: 255px;

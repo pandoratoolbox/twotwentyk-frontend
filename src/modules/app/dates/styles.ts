@@ -212,17 +212,19 @@ export const PropertiesContent = styled.div`
 
 export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   display: flex;
+  flex-wrap: wrap;
+  flex-direction:row;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
-  height: 45px;
+  min-height: 45px;
   line-height: 15px;
   text-transform: capitalize;
   padding: ${({ nfttrigger }) => (nfttrigger ? "0 10px" : "none")};
   p {
     font-weight: 600;
   }
-  span {
+  p hello {
     font-weight: 300;
   }
 `;
@@ -230,9 +232,11 @@ export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
 export const PriceItem = styled.div`
   font-weight: 600;
   font-size: 12px;
-  height: 33px;
+  min-height: 33px;
   line-height: 15px;
-  display: flex;
+  display: grid;
+  grid-template-columns: minmax(50%, 1fr) minmax(200px, 1fr);
+  overflow-wrap: break-word;
   justify-content: space-between;
   span.weak {
     font-weight: 400;
