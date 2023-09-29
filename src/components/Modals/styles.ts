@@ -509,3 +509,61 @@ export const CraftPredictionModalWrapper = styled.div`
     max-width: 273px;
   }
 `;
+
+export const OpenCardPackModalWrapper = styled.div`
+  padding-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  h3 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 24px;
+    max-width: 273px;
+  }
+`;
+
+export const OpenCard = styled.div`
+  position: relative;
+  width: 300px;
+  height: 500px;
+  perspective: 800px;
+`;
+
+export const OpenCardContent = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  &.active {
+    transform: rotateY(180deg);
+    transition: transform 0.5s;
+  }
+`;
+
+export const FrontBackCard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+
+  &.back {
+    transform: rotateY(180deg);
+  }
+
+  .gif {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    img {
+      width: 80%;
+    }
+  }
+`;

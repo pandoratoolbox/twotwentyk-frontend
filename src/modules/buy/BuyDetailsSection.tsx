@@ -36,7 +36,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
   onClose,
   cardSeries,
   rarity,
-  onBuyClick
+  onBuyClick,
 }) => {
   const [step, setStep] = useState(0);
   const [confirm, setConfirm] = useState(false);
@@ -85,7 +85,6 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
             onCardClick={() => {}}
             cardSeries={cardSeries}
             rarity={rarity}
-
           />
           <PropertiesWrapper>
             <PropertiesHeader>
@@ -126,12 +125,24 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
 
           <BuyCounterWrapper>
             <p>
-              Price <span>${cardSeries.cost_usd/100} USD</span>
+              Price <span>${cardSeries.cost_usd / 100} USD</span>
             </p>
             <Counter>
-              <div onClick={() => {if (quantity > 1) setQuantity(quantity-1)}}>-</div>
+              <div
+                onClick={() => {
+                  if (quantity > 1) setQuantity(quantity - 1);
+                }}
+              >
+                -
+              </div>
               <span>{quantity}</span>
-              <div onClick={() => {setQuantity(quantity+1)}}>+</div>
+              <div
+                onClick={() => {
+                  setQuantity(quantity + 1);
+                }}
+              >
+                +
+              </div>
             </Counter>
           </BuyCounterWrapper>
 
@@ -143,7 +154,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
             <PropertiesContent>
               <PropertyItem>
                 <p>Asking price</p>
-                <span>${cardSeries.cost_usd/100} USD</span>
+                <span>${cardSeries.cost_usd / 100} USD</span>
               </PropertyItem>
               <PropertyItem>
                 <p>Quantity</p>
@@ -153,7 +164,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
           </PropertiesWrapper>
           <TotalPrice>
             <p>Total</p>
-            <span>${quantity*cardSeries.cost_usd/100}</span>
+            <span>${(quantity * cardSeries.cost_usd) / 100}</span>
           </TotalPrice>
           <Button className="buy-confirm-button" onClick={handleBuy}>
             Buy Now
@@ -175,7 +186,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
                 </div>
                 <div>
                   <p>Total Price</p>
-                  <span>${quantity*cardSeries.cost_usd/100} USD</span>
+                  <span>${(quantity * cardSeries.cost_usd) / 100} USD</span>
                 </div>
               </div>
             </SummaryContent>
@@ -198,13 +209,13 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
         onBuyClick={handleBalanceBuy}
         open={useBalance}
         onClose={() => setUseBalance(false)}
-        price={quantity*cardSeries.cost_usd/100}
+        price={(quantity * cardSeries.cost_usd) / 100}
       />
       <BalanceBuyConfirmModal
-      price={quantity*cardSeries.cost_usd/100}
-        onConfirm={()=>{
-          onBuyClick(cardSeries, quantity, 1)
-          setBalanceConfirm(false)
+        price={(quantity * cardSeries.cost_usd) / 100}
+        onConfirm={() => {
+          onBuyClick(cardSeries, quantity, 1);
+          setBalanceConfirm(false);
         }}
         open={balanceConfirm}
         onClose={() => setBalanceConfirm(false)}
