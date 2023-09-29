@@ -76,7 +76,7 @@ import { ICardCollection } from "../../../models/card_collection";
                 )}
               </td>
               <td>
-                <span>{item.status === 0 ? "Upload the required metadata." : item.status === 1 ? "Complete collection configuration." : "The collection is live."}</span>
+                <span>{item.status === 0 ? "Upload the required metadata." : item.status === 1 ? "Complete collection configuration." : item.status === 2 ? "The collection is ready to go live." : "The collection is live."}</span>
               </td>
               <td>
                 <TrashIcon />
