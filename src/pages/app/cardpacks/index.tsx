@@ -29,7 +29,7 @@ import {
 import { EmptyCards as LoginCard } from "../dates/styles";
 import { DatePageContent } from "../category/styles";
 import { ICardSeries } from "../../../models/card_series";
-import { ICardPack } from "../../../models/card_pack";
+import { ICardPack, ICardPackCards } from "../../../models/card_pack";
 import api from "../../../config/api";
 import { toast, ToastContainer } from "react-toastify";
 import { OpenCardPackModal } from "../../../components/Modals/OpenCardPackModal";
@@ -42,8 +42,10 @@ export const CardPackPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
-  const [openCard, setOpenCard] = useState(false);
-
+  const [openCard, setOpenCard] = useState({
+    open: false,
+    cardsToAnimation: {} as ICardPackCards,
+  });
   const [nftCardPack, setNftCardPack] = useState<ICardPack[] | null>(null);
 
   const getPageData = async () => {
@@ -90,15 +92,19 @@ export const CardPackPage: React.FC = () => {
 
   const handleCraft = async (id: string | number) => {
     // navigate("/crafting/identities");
-    setOpenCard(true);
+    console.log(id);
     try {
       let res = await api.post(`/card_pack/${id}/open`);
       if (res.status === 200) {
         toast.success("You opened a card pack!");
-
-        console.log(nftCardPack, res);
+        console.log(nftCardPack);
+        console.log(res);
         let n = nftCardPack?.filter((v) => v.id !== id);
         if (n) setNftCardPack(n);
+        setOpenCard({
+          open: true,
+          cardsToAnimation: res?.data,
+        });
       } else throw res.data;
     } catch (e: any) {
       toast.error(e);
@@ -153,7 +159,11 @@ export const CardPackPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      <OpenCardPackModal open={openCard} onClose={() => setOpenCard(false)} />
+      <OpenCardPackModal
+        open={openCard.open}
+        onClose={() => setOpenCard({ open: false, cardsToAnimation: {} })}
+        cardsToAnimation={openCard.cardsToAnimation}
+      />
       {currentUser ? (
         nftCardPack && nftCardPack?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>

@@ -12,7 +12,7 @@ export interface ICardPackCards {
   category: NftCardCategory[];
   trigger: NftCardTrigger[];
   year: NftCardYear[];
-  dayMonth: NftCardDayMonth[];
+  day_month: NftCardDayMonth[];
 }
 
 export interface ICardPack {

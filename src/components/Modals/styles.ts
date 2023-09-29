@@ -98,6 +98,7 @@ export const CraftIdentifyModalWrapper = styled.div`
 export const CraftIdentifyModalHeader = styled.div`
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
   padding: 30px 35px;
   p {
@@ -513,8 +514,10 @@ export const CraftPredictionModalWrapper = styled.div`
 export const OpenCardPackModalWrapper = styled.div`
   padding-top: 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: center;
+  justify-content: center;
+  gap: 4rem;
   h3 {
     text-align: center;
     font-size: 16px;
