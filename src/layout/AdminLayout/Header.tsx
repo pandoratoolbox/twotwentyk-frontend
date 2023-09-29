@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AdminHeaderContainer,
   AdminHeaderWrapper,
@@ -13,9 +13,28 @@ import {
   IconAlarmOutlined,
   IconArrowDown,
 } from "../../components";
+import { useMyInfoContext } from "../../context";
+import { useNavigate } from "react-router-dom";
 
 export const AdminHeader: React.FC = () => {
   const [filter, setFilter] = useState("");
+  const {myInfoContext} = useMyInfoContext();
+  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    if (!localStorage.getItem("auth")) {
+      navigate("/login")
+    }
+
+    if (myInfoContext) {
+      setUsername(myInfoContext.username);
+      if (!myInfoContext.role_ids.includes(999)) {
+        navigate("/")
+      }
+    }
+  }, [myInfoContext]);
+
   return (
     <AdminHeaderWrapper>
       <LogoWrapper>TwoTwentyK</LogoWrapper>
@@ -34,7 +53,7 @@ export const AdminHeader: React.FC = () => {
             </AlarmIconWrapper>
             <AdminInfo>
               <img src="/assets/nfts/1.png" alt="" />
-              <p>Username</p>
+              <p>{username}</p>
               <IconArrowDown />
             </AdminInfo>
           </AdminInfoWrapper>

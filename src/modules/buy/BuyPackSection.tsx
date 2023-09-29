@@ -72,7 +72,7 @@ export const BuyPackSection: React.FC = () => {
           let s = v
           // s.card_collection = undefined;
           let o = m.get(v.card_collection_id);
-          if (o) {
+          if (o && o.card_series) {
             o.card_series.push(s);
             m.set(v.card_collection_id, o);
           } else {
@@ -150,7 +150,7 @@ export const BuyPackSection: React.FC = () => {
                 }}
                 className="mySwiper"
               >
-                {item.card_series.map((item, key) => (
+                {item.card_series && item.card_series.map((item, key) => (
                   <SwiperSlide key={key}>
                     <BuyCard
                       cardSeries={item}

@@ -1656,6 +1656,11 @@
   resolved "https://registry.npmjs.org/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
+"@moonpay/moonpay-js@^0.0.7":
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/@moonpay/moonpay-js/-/moonpay-js-0.0.7.tgz#c927f0f88878263ae86c26acba8cc6147dde146f"
+  integrity sha512-dvuB26VKx8CawDSyipBv8sv6Ogk4TrjEw/qf8KGaIwacc7zQeAmM4BS1/p1WT5/eXRgbR7uK3OohfKKXiov9Wg==
+
 "@nicolo-ribaudo/chokidar-2@2.1.8-no-fsevents.3":
   version "2.1.8-no-fsevents.3"
   resolved "https://registry.npmjs.org/@nicolo-ribaudo/chokidar-2/-/chokidar-2-2.1.8-no-fsevents.3.tgz"

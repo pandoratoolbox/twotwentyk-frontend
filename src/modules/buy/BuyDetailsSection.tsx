@@ -95,7 +95,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
             <PropertiesContent>
               <PropertyItem>
                 <p>Pack Rarity</p>
-                <span>{cardSeries.rarity}</span>
+                <span>{cardSeries.name}</span>
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>

@@ -115,7 +115,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
         socialType="Google"
         onClick={handleGoogleClick}
       />
-      <FacebookLogin
+      {/* <FacebookLogin
         appId="1206500170741412"
         // autoLoad={true}
         fields="name,email,picture"
@@ -127,7 +127,7 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
             onClick={renderProps.onClick}
           />
         )}
-      />
+      /> */}
       <AppleLogin
         usePopup={true}
         clientId={APPLE_CLIENT_ID}

@@ -134,7 +134,7 @@ export const ClaimManagementTable: React.FC<{ allData: IClaim[], onApprove: (cla
               }
             >
               {selectedRows.length === 0 && <IconCheckboxFalse />}
-              {selectedRows.length === filteredData.length && (
+              {selectedRows.length === filteredData.length && filteredData.length !== 0 && (
                 <IconCheckboxTrue />
               )}
               {selectedRows.length > 0 &&
@@ -203,7 +203,7 @@ export const ClaimManagementTable: React.FC<{ allData: IClaim[], onApprove: (cla
           </tr>
         </CMTableHeaderWrapper>
         <CMTableBodyWrapper>
-          {tableData.map((item: any, key: number) => (
+          {tableData.map((item: IClaim, key: number) => (
             <tr key={key}>
               <td>
                 <span
@@ -211,7 +211,7 @@ export const ClaimManagementTable: React.FC<{ allData: IClaim[], onApprove: (cla
                     setSelectedRows((prev) =>
                       prev.filter((f) => f === item.id).length > 0
                         ? prev.filter((f) => f !== item.id)
-                        : [...prev, item.id]
+                        : [...prev, Number(item.id)]
                     )
                   }
                 >
@@ -222,9 +222,9 @@ export const ClaimManagementTable: React.FC<{ allData: IClaim[], onApprove: (cla
                   )}
                 </span>
               </td>
-              <td>{item.date}</td>
-              <td>{item.predictions}</td>
-              <td>{item.user}</td>
+              <td>{item.created_at?.toLocaleString("en-US")}</td>
+              <td>Prediction info</td>
+              <td>{item.claimer?.username}</td>
               <td>
                 {item.status === 0 && "Requested"}
                 {item.status === 1 && (

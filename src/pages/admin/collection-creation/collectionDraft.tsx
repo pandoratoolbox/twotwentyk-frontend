@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AdminSearchInput,
   IconArrowUp,
@@ -14,9 +14,28 @@ import {
   CollectionHead,
   PageActionWrapper,
 } from "./styles";
+import api from "../../../config/api";
+import { useNavigate, useParams } from "react-router-dom";
+import { ICardCollection } from "../../../models/card_collection";
 
 export const CollectionDraft: React.FC = () => {
+  const navigate = useNavigate();
+  const params = useParams();
   const [filterValue, setFilterValue] = useState("");
+const [collection, setCollection] = useState<ICardCollection>();
+
+useEffect(() => {
+  api.get(`/card_collection/${params.collection_id}`).then((response) => {
+    setCollection(response.data);
+    if (response.data.status !== 1) {
+      navigate("/admin/collection")
+    }
+  }
+  ).catch((error) => {
+    console.log(error);
+  });
+}
+, [params]);
 
   return (
     <AdminLayout>
@@ -30,7 +49,7 @@ export const CollectionDraft: React.FC = () => {
         </PageActionWrapper>
         <CollectionHead>
           <div>
-            <h1>Conception Collection </h1>
+            <h1>{collection ? collection.name : ""} </h1>
             <IconArrowUp />
           </div>
 

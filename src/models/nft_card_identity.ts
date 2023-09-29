@@ -1,55 +1,55 @@
-import { IUser, User } from "./user";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
+import { IUser, User } from "./user";
 
 export interface INftCardIdentity {
-  id: number;
-  year?: number;
+  is_crafted?: boolean;
   owner_id?: number;
-  owner?: IUser;
+  celebrity_name?: string;
   marketplace_listing?: IMarketplaceListing[];
-  card_series_id?: number;
   card_series?: ICardSeries;
+  owner?: IUser;
+  id?: number;
   month?: number;
   day?: number;
-  is_crafted?: boolean;
-  celebrity_name?: string;
+  year?: number;
   category?: string;
   rarity?: number;
+  card_series_id?: number;
 }
 
 export class NftCardIdentity {
-  id?: number;
-  year?: number;
+  is_crafted?: boolean;
   owner_id?: number;
-  owner?: User;
+  celebrity_name?: string;
   marketplace_listing?: MarketplaceListing[];
-  card_series_id?: number;
   card_series?: CardSeries;
+  owner?: User;
+  id?: number;
   month?: number;
   day?: number;
-  is_crafted?: boolean;
-  celebrity_name?: string;
+  year?: number;
   category?: string;
   rarity?: number;
+  card_series_id?: number;
 
   constructor(data: INftCardIdentity) {
-    this.id = data.id;
-    this.year = data.year;
+    this.is_crafted = data.is_crafted;
     this.owner_id = data.owner_id;
-    this.owner = data.owner ? new User(data.owner) : undefined;
+    this.celebrity_name = data.celebrity_name;
     this.marketplace_listing = data.marketplace_listing?.map((i) => {
       return new MarketplaceListing(i);
     });
-    this.card_series_id = data.card_series_id;
     this.card_series = data.card_series
       ? new CardSeries(data.card_series)
       : undefined;
+    this.owner = data.owner ? new User(data.owner) : undefined;
+    this.id = data.id;
     this.month = data.month;
     this.day = data.day;
-    this.is_crafted = data.is_crafted;
-    this.celebrity_name = data.celebrity_name;
+    this.year = data.year;
     this.category = data.category;
     this.rarity = data.rarity;
+    this.card_series_id = data.card_series_id;
   }
 }

@@ -3,7 +3,6 @@ import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
 
 export interface INftCardCrafting {
-  id?: number;
   is_crafted?: boolean;
   owner_id?: number;
   rarity?: number;
@@ -11,10 +10,10 @@ export interface INftCardCrafting {
   owner?: IUser;
   marketplace_listing?: IMarketplaceListing[];
   card_series?: ICardSeries;
+  id?: number;
 }
 
 export class NftCardCrafting {
-  id?: number;
   is_crafted?: boolean;
   owner_id?: number;
   rarity?: number;
@@ -22,9 +21,9 @@ export class NftCardCrafting {
   owner?: User;
   marketplace_listing?: MarketplaceListing[];
   card_series?: CardSeries;
+  id?: number;
 
   constructor(data: INftCardCrafting) {
-    this.id = data.id;
     this.is_crafted = data.is_crafted;
     this.owner_id = data.owner_id;
     this.rarity = data.rarity;
@@ -36,5 +35,6 @@ export class NftCardCrafting {
     this.card_series = data.card_series
       ? new CardSeries(data.card_series)
       : undefined;
+    this.id = data.id;
   }
 }

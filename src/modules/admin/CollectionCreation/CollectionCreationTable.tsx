@@ -8,8 +8,15 @@ import {
   CCTableHeaderWrapper,
   CCTableBodyWrapper,
 } from "./styles";
+import { ICardCollection } from "../../../models/card_collection";
 
-const CollectionCreationTable = () => {
+  const CollectionCreationTable : React.FC<{
+    data: ICardCollection[];
+    onClick: (collection: ICardCollection) => void;
+  }> = ({
+  data,
+  onClick
+}) => {
   const [allData, setAllData] = useState<any>([]);
   const [sortKey, setSortKey] = useState({ name: "", count: 0 });
 
@@ -51,25 +58,25 @@ const CollectionCreationTable = () => {
           </tr>
         </CCTableHeaderWrapper>
         <CCTableBodyWrapper>
-          {allData.map((item: any, key: number) => (
-            <tr key={key}>
+          {data.map((item: ICardCollection, key: number) => (
+            <tr style={item.status === 0 || item.status === 1 ? {cursor: "pointer" } : {}} key={key} onClick={(e) => {onClick(item)}}>
               <td>{item.name}</td>
               <td>
-                {item.status === 0 && (
+                {item.status === 3 && (
                   <AdminBadge color="#05BD7B">Live</AdminBadge>
                 )}
                 {item.status === 1 && (
                   <AdminBadge color="#0EA5E9">Draft</AdminBadge>
                 )}
-                {item.status === 2 && (
+                {item.status === 0 && (
                   <AdminBadge color="#FF6D6D">MetaData Needed</AdminBadge>
                 )}
-                {item.status === 3 && (
+                {item.status === 2 && (
                   <AdminBadge color="#E3A31C">Ready</AdminBadge>
                 )}
               </td>
               <td>
-                <span> {item.details}</span>
+                <span>{item.status === 0 ? "Upload the required metadata." : item.status === 1 ? "Complete collection configuration." : "The collection is live."}</span>
               </td>
               <td>
                 <TrashIcon />

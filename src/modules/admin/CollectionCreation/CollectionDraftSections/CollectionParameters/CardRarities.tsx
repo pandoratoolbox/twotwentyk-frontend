@@ -81,7 +81,7 @@ const CardRarities = () => {
               ) : (
                 <span>{rarity?.name}</span>
               )}
-              <EntryAction>
+              {/* <EntryAction>
                 {editMode[rarity.id] ? (
                   <SaveButton onClick={() => handleSaveClick(rarity.id)}>
                     Save
@@ -95,17 +95,17 @@ const CardRarities = () => {
                   </button>
                 )}
                 <TrashIcon />
-              </EntryAction>
+              </EntryAction> */}
             </li>
           ))}
         </Entries>
       </CardBody>
-      <CardFooter>
+      {/* <CardFooter>
         <div className="newEntry">
           <span>+</span>
           <p>New entry</p>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };

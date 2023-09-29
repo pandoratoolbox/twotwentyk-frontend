@@ -76,7 +76,7 @@ export const ClaimManagementPage: React.FC = () => {
     try {
       let res = await api.put(`/claim`, {
         status: 1,
-        ids: claims.map((item) => item.id),
+        ids: claims.filter(v => v.status === 0).map((item) => item.id),
       });
       if (res.status === 200) {
         fetchData();
@@ -88,7 +88,7 @@ export const ClaimManagementPage: React.FC = () => {
 
   const handleRejectSelected = async (claims: IClaim[]) => {
     try {
-      let ids = claims.map((item) => item.id);
+      let ids = claims.filter(v => v.status === 0).map((item) => item.id);
       let res = await api.put(`/claim`, {
         status: 2,
         ids: ids,
@@ -114,14 +114,14 @@ export const ClaimManagementPage: React.FC = () => {
   return (
     <AdminLayout>
       <ClaimManagementPageWrapper>
-        <h1>Claim Management</h1>
+        <h1>Event Validation</h1>
         <PageActionWrapper>
           <AdminSearchInput
             onChange={(e) => setFilterValue(e.target.value)}
             value={filterValue}
             bg="white"
           />
-          <CreateButton>Create Post</CreateButton>
+          {/* <CreateButton>Create Post</CreateButton> */}
         </PageActionWrapper>
         <ClaimManagementTable allData={claims} onApprove={handleApprove} onApproveSelected={handleApproveSelected} onReject={handleReject} onRejectSelected={handleRejectSelected} />
       </ClaimManagementPageWrapper>

@@ -133,19 +133,19 @@ const App: React.FC = () => {
               {/* Profile Routes */}
               {/* Admin Routes */}
               <Route
-                path="/admin/collection-creation"
+                path="/admin/collection"
                 element={<CollectionCreationPage />}
               />
               <Route
-                path="/admin/collection-creation/draft"
+                path="/admin/collection/:collection_id/config"
                 element={<CollectionDraft />}
               />
               <Route
-                path="/admin/collection-creation/metadata"
+                path="/admin/collection/:collection_id/upload"
                 element={<CollectionMetaData />}
               />
               <Route
-                path="/admin/claim-management"
+                path="/admin/event-validation"
                 element={<ClaimManagementPage />}
               />
               <Route

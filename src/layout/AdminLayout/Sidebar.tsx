@@ -6,16 +6,16 @@ import { useLocation, useNavigate } from "react-router-dom";
 const sidebarItems = [
   {
     label: "Collection Creation",
-    to: "/admin/collection-creation",
+    to: "/admin/collection",
   },
   {
-    label: "Claim Management",
-    to: "/admin/claim-management",
+    label: "Event Validation",
+    to: "/admin/event-validation",
   },
-  {
-    label: "User Management",
-    to: "/admin/user-management",
-  },
+  // {
+  //   label: "User Management",
+  //   to: "/admin/user-management",
+  // },
 ];
 
 export const AdminSidebar: React.FC = () => {

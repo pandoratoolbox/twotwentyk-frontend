@@ -83,7 +83,7 @@ const CardTypes = () => {
               ) : (
                 <span>{type?.name}</span>
               )}
-              <EntryAction>
+              {/* <EntryAction>
                 {editMode[type.id] ? (
                   <SaveButton onClick={() => handleSaveClick(type.id)}>
                     Save
@@ -97,17 +97,17 @@ const CardTypes = () => {
                   </button>
                 )}
                 <TrashIcon />
-              </EntryAction>
+              </EntryAction> */}
             </li>
           ))}
         </Entries>
       </CardBody>
-      <CardFooter>
+      {/* <CardFooter>
         <div className="newEntry">
           <span>+</span>
           <p>New entry</p>
         </div>
-      </CardFooter>
+      </CardFooter> */}
     </Card>
   );
 };
