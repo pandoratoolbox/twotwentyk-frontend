@@ -318,7 +318,7 @@ const Premium = () => {
   return (
     <Card>
       <CardHeader>
-        Trigger prize pool amounts <IconArrowUp />
+        Trigger probability <IconArrowUp />
       </CardHeader>
       <CardBody>
         <Tabs>

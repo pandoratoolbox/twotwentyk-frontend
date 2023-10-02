@@ -17,6 +17,7 @@ import {
   CardTableTh,
   SaveButton,
 } from "../styles";
+import { CardTypeValue, ICardSeries, ICardCollection } from "../../../../../models/collection";
 
 type CollapsedRows = {
   [key: number]: boolean;
@@ -42,7 +43,7 @@ const CollapsibleRow = ({
   startEditing,
   updateRowData,
 }: {
-  rowData: RowItem;
+  rowData: ICardSeries;
   isExpanded: boolean;
   toggleCollapse: (rowId: number) => void;
   isEditing: boolean;
@@ -50,26 +51,51 @@ const CollapsibleRow = ({
   updateRowData: (rowId: number, updatedData: any) => void;
 }) => {
   const {
-    rowId,
-    packType,
-    cardsPerPack,
-    packsQty,
-    price,
-    guarRarity,
-    guarQtyRarity,
-    cardType,
-    guarQtyCardType,
+    id,
+    name, //tier
+    cards_per_pack,
+    card_pack_quantity,
+    cost_usd,
   } = rowData;
+  
+  const guaranteed: CardTypeValue = {
+    core: {
+      day_month: 0,
+      year: 0,
+      trigger: {
+        amount: 0,
+      },
+      category: 0,
+      crafting: 0,
+    },
+    premium: {
+      day_month: 0,
+      year: 0,
+      trigger: {
+        amount: 0,
+      },
+      category: 0,
+      crafting: 0,
+    },
+    elite: {
+      day_month: 0,
+      year: 0,
+      trigger: {
+        amount: 0,
+      },
+      category: 0,
+      crafting: 0,
+    },
+  }
+  const calculateTotalGuaranteed = (v: CardTypeValue) => {
+    return v.category + v.day_month + v.year + v.trigger.amount;
+  }
+
 
   const [formData, setFormData] = useState({
-    packType: packType,
-    cardsPerPack: cardsPerPack,
-    packsQty: packsQty,
-    price: price,
-    guarRarity: guarRarity,
-    guarQtyRarity: guarQtyRarity,
-    cardType: cardType,
-    guarQtyCardType: guarQtyCardType,
+    cardsPerPack: cards_per_pack,
+    packsQty: card_pack_quantity,
+    price: cost_usd,
   });
 
   const handleSelectChange = (
@@ -81,32 +107,20 @@ const CollapsibleRow = ({
       ...prevFormData,
       [name]: value,
     }));
-    updateRowData(rowId, { ...rowData, [name]: value });
+    updateRowData(id ? id : 0, { ...rowData, [name]: value });
   };
 
   // save handle
   const handleSave = () => {
-    toggleCollapse(rowId);
-    updateRowData(rowId, rowData);
+    toggleCollapse(id ? id : 0);
+    updateRowData(id ? id : 0, rowData);
     startEditing(null);
   };
 
   return (
     <CardTableTr className={isExpanded ? "rowCollapsed" : ""}>
       <CardTableTd>
-        {isEditing ? (
-          <select
-            name="packType"
-            value={formData?.packType}
-            onChange={handleSelectChange}
-          >
-            <option value="Standard">Standard</option>
-            <option value="Uncommon">Uncommon</option>
-            <option value="Rare">Rare</option>
-          </select>
-        ) : (
-          packType
-        )}
+          {name}
       </CardTableTd>
       <CardTableTd>
         {isEditing ? (
@@ -118,7 +132,7 @@ const CollapsibleRow = ({
             name="cardsPerPack"
           />
         ) : (
-          cardsPerPack
+          cards_per_pack
         )}
       </CardTableTd>
       <CardTableTd>
@@ -138,7 +152,7 @@ const CollapsibleRow = ({
             // }
           />
         ) : (
-          packsQty
+          card_pack_quantity
         )}
       </CardTableTd>
       <CardTableTd>
@@ -146,47 +160,27 @@ const CollapsibleRow = ({
           <input
             className="input-number"
             type="number"
-            value={price}
+            value={cost_usd}
             onChange={handleSelectChange}
             name="price"
           />
         ) : (
-          `$${price}`
+          `$${cost_usd}`
         )}
       </CardTableTd>
+
+      {/* <div id="guaranteed"> */}
       <CardTableTd>
-        {isEditing ? (
-          <select
-            name="guarRarity"
-            value={formData?.guarRarity}
-            onChange={handleSelectChange}
-          >
-            <option value="Core">Core</option>
-            <option value="Uncommon">Uncommon</option>
-            <option value="Rare">Rare</option>
-          </select>
-        ) : (
-          guarRarity
-        )}
+        Core
       </CardTableTd>
       <CardTableTd>
-        {isEditing ? (
-          <input
-            className="input-number"
-            type="number"
-            value={formData?.guarQtyRarity}
-            onChange={handleSelectChange}
-            name="guarQtyRarity"
-          />
-        ) : (
-          guarQtyRarity
-        )}
+          {calculateTotalGuaranteed(guaranteed.core)}
       </CardTableTd>
       <CardTableTd className="col-btn">
         {!isEditing && (
           <button
             className={isExpanded ? "expanded" : "collapsed"}
-            onClick={() => toggleCollapse(rowId)}
+            onClick={() => toggleCollapse(id ? id : 0)}
           >
             See Details
           </button>
@@ -197,16 +191,18 @@ const CollapsibleRow = ({
             isExpanded ? "expanded" : "collapsed"
           }`}
         >
-          {cardType?.map((type, index) => (
-            <li key={index}>{type}</li>
-          ))}
+            <li key={0}>Day & Month</li>
+            <li key={1}>Year</li>
+            <li key={2}>Trigger</li>
+            <li key={3}>Category</li>
+            <li key={4}>Crafting</li>
         </ul>
       </CardTableTd>
       <CardTableTd className="col-btn">
         {!isEditing && (
           <button
             className={isExpanded ? "expanded" : "collapsed"}
-            onClick={() => toggleCollapse(rowId)}
+            onClick={() => toggleCollapse(id ? id : 0)}
           >
             {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
           </button>
@@ -217,23 +213,22 @@ const CollapsibleRow = ({
             isExpanded ? "expanded" : "collapsed"
           }`}
         >
-          {guarQtyCardType?.map((qty, index) =>
-            isEditing ? (
-              <li key={index} className="edit-list">
+          { isEditing ? (
+              <li key={0} className="edit-list">
                 <input
                   className="input-number"
                   type="number"
-                  value={qty}
+                  value={guaranteed.core.day_month}
                   onChange={handleSelectChange}
-                  name={cardType[index]}
+                  name={"day_month"}
                 />
               </li>
             ) : (
-              <li key={index}>{qty}</li>
-            )
-          )}
+              <li key={0}>{guaranteed.core.day_month}</li>
+            )}
         </ul>
       </CardTableTd>
+      {/* </div> */}
       <CardTableTd className="col-action">
         {isEditing ? (
           <>
@@ -247,8 +242,8 @@ const CollapsibleRow = ({
             <button
               className="svg-btn"
               onClick={() => {
-                toggleCollapse(rowId);
-                startEditing(rowId);
+                toggleCollapse(id ? id : 0);
+                startEditing(id ? id : 0);
               }}
             >
               <PencilAlt />
@@ -291,7 +286,13 @@ const rowDataList = [
   },
 ];
 
-const CardPackValue = () => {
+const CardPackValue: React.FC<{
+  collection: ICardCollection;
+  onChange: (data: ICardCollection) => void;
+}> = ({
+  collection,
+  onChange
+}) => {
   const [collapsedRows, setCollapsedRows] = useState<CollapsedRows>({});
   const [editingRow, setEditingRow] = useState<number | null>(null);
 
@@ -325,13 +326,13 @@ const CardPackValue = () => {
             </CardTableTr>
           </CardTableHead>
           <CardTableBody>
-            {rowDataList.map((rowData) => (
+            {collection.card_series && collection.card_series.map((rowData) => (
               <CollapsibleRow
-                key={rowData.rowId}
+                key={rowData.id}
                 rowData={rowData}
-                isExpanded={collapsedRows[rowData.rowId]}
+                isExpanded={rowData.id ? collapsedRows[rowData.id] : false}
                 toggleCollapse={toggleCollapse}
-                isEditing={rowData.rowId === editingRow}
+                isEditing={rowData.id === editingRow}
                 startEditing={setEditingRow}
                 updateRowData={updateRowData}
               />

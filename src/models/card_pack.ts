@@ -8,11 +8,11 @@ import { NftCardYear } from "./nft_card_year";
 import { NftCardDayMonth } from "./nft_card_day_month";
 
 export interface ICardPackCards {
-  crafting: NftCardCrafting[];
-  category: NftCardCategory[];
-  trigger: NftCardTrigger[];
-  year: NftCardYear[];
-  day_month: NftCardDayMonth[];
+  crafting?: NftCardCrafting[];
+  category?: NftCardCategory[];
+  trigger?: NftCardTrigger[];
+  year?: NftCardYear[];
+  day_month?: NftCardDayMonth[];
 }
 
 export interface ICardPack {

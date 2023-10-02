@@ -13,6 +13,7 @@ import {
   SaveButton,
   Tabs,
 } from "../styles";
+import { ICardCollection } from "../../../../../models/collection";
 
 type RowItem = {
   rowId: number;
@@ -103,7 +104,11 @@ const CollapsibleRow = ({
   );
 };
 
-const Standard = () => {
+const Standard = ({
+  collection
+}: {
+  collection: ICardCollection
+}) =>  {
   const [editingRow, setEditingRow] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("Day & Month");
 
@@ -198,7 +203,7 @@ const Standard = () => {
   return (
     <Card>
       <CardHeader>
-        Trigger prize pool amounts <IconArrowUp />
+        Probabilities <IconArrowUp />
       </CardHeader>
       <CardBody>
         <Tabs>

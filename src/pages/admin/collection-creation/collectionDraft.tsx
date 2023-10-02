@@ -16,7 +16,7 @@ import {
 } from "./styles";
 import api from "../../../config/api";
 import { useNavigate, useParams } from "react-router-dom";
-import { ICardCollection } from "../../../models/card_collection";
+import { ICardCollection } from "../../../models/collection";
 
 export const CollectionDraft: React.FC = () => {
   const navigate = useNavigate();
@@ -37,9 +37,15 @@ useEffect(() => {
 }
 , [params]);
 
+const handleChange = (e: any) => {
+  
+}
+
+
   return (
     <AdminLayout>
-      <CollectionCreationPageWrapper>
+      {
+      collection && (<CollectionCreationPageWrapper>
         <PageActionWrapper>
           <AdminSearchInput
             onChange={(e) => setFilterValue(e.target.value)}
@@ -49,7 +55,7 @@ useEffect(() => {
         </PageActionWrapper>
         <CollectionHead>
           <div>
-            <h1>{collection ? collection.name : ""} </h1>
+            <h1>{collection.name} </h1>
             <IconArrowUp />
           </div>
 
@@ -60,8 +66,9 @@ useEffect(() => {
           </div>
         </CollectionHead>
 
-        <CollectionDraftSections />
-      </CollectionCreationPageWrapper>
+        <CollectionDraftSections collection={collection} onChange={handleChange} />
+      </CollectionCreationPageWrapper>)
+}
     </AdminLayout>
   );
 };

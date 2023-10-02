@@ -14,8 +14,12 @@ import {
   CDCollectionParameterWrapper,
   FooterButtons,
 } from "./styles";
+import { ICardCollection } from "../../../../models/collection";
 
-const CollectionDraftSections = () => {
+const CollectionDraftSections: React.FC<{collection: ICardCollection, onChange: (data: ICardCollection) => void}> = ({
+  onChange,
+  collection
+}) => {
   return (
     <CDContainerWrapper>
       <CDCollectionParameterWrapper>
@@ -27,21 +31,21 @@ const CollectionDraftSections = () => {
           <CardTypes />
           <CardRarities />
         </div>
-        <CardPackValue />
-        <TriggerPrizePool />
+        <CardPackValue collection={collection} onChange={onChange} />
+        <TriggerPrizePool collection={collection}/>
 
         <CDHead>
           <h3>Card rarity probability per pack </h3>
           <IconArrowUp />
         </CDHead>
-        <Standard />
+        <Standard collection={collection}/>
         <Premium />
         <Elite />
       </CDCollectionParameterWrapper>
       <FooterButtons>
-        <button className="btn-submit">Submit</button>
-        <button className="btn-save">Save as Draft</button>
-        <button className="btn-discard">Discard</button>
+        <button className="btn-submit" onClick={() => {}}>Submit</button>
+        <button className="btn-save" onClick={() => {}}>Save as Draft</button>
+        <button className="btn-discard" onClick={() => {}}>Discard</button>
       </FooterButtons>
     </CDContainerWrapper>
   );

@@ -12,6 +12,7 @@ import {
   CardTableTh,
   SaveButton,
 } from "../styles";
+import { ICardCollection } from "../../../../../models/collection";
 
 type RowItem = {
   rowId: number;
@@ -93,7 +94,11 @@ const CollapsibleRow = ({
   );
 };
 
-const TriggerPrizePool = () => {
+const TriggerPrizePool = ({
+  collection
+}: {
+  collection: ICardCollection
+}) =>  {
   const [editingRow, setEditingRow] = useState<number | null>(null);
 
   // Sample data for your rows
