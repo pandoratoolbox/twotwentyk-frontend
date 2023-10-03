@@ -190,10 +190,29 @@ export const CardTableHead = styled.thead`
   width: 100%;
   border-bottom: 1px solid #f1f5f9;
   background: #f8fafc;
+  &.subTableHeadForPadding {
+    border-bottom: none;
+    background: none;
+    tr {
+      td:first-child,
+      th:first-child {
+        padding-left: 8px;
+      }
+    }
+  }
 `;
 
 export const CardTableBody = styled.tbody`
   width: 100%;
+
+  &.subTableBody {
+    tr {
+      td:first-child,
+      th:first-child {
+        padding-left: 8px;
+      }
+    }
+  }
 `;
 
 export const CardTableTr = styled.tr`
@@ -202,8 +221,14 @@ export const CardTableTr = styled.tr`
     border-bottom: 1px solid #f1f5f9;
     height: 51px;
   }
-  &.rowCollapsed td {
+  td {
     vertical-align: top;
+  }
+
+  .subTableHead th {
+    visibility: hidden;
+    line-height: 0;
+    padding: 0 20px;
   }
 `;
 
@@ -262,6 +287,10 @@ export const CardTableTd = styled.td`
           input.input-number {
             max-width: 65px;
           }
+        }
+
+        &:first-child{
+          padding-top: 0;
         }
       }
     }
@@ -322,6 +351,9 @@ export const CardTableTd = styled.td`
     &.input-number {
       max-width: 85px;
     }
+  }
+  &.childTable {
+    padding: 0;
   }
 `;
 

@@ -17,7 +17,12 @@ import {
   CardTableTh,
   SaveButton,
 } from "../styles";
-import { CardTypeValue, ICardSeries, ICardCollection } from "../../../../../models/collection";
+import {
+  CardTypeValue,
+  ICardSeries,
+  ICardCollection,
+  CardSeriesGuaranteed,
+} from "../../../../../models/collection";
 
 type CollapsedRows = {
   [key: number]: boolean;
@@ -57,40 +62,46 @@ const CollapsibleRow = ({
     card_pack_quantity,
     cost_usd,
   } = rowData;
-  
-  const guaranteed: CardTypeValue = {
-    core: {
-      day_month: 0,
-      year: 0,
-      trigger: {
-        amount: 0,
+
+  const guaranteed = [
+    {
+      core: {
+        day_month: 0,
+        year: 0,
+        trigger: {
+          amount: 0,
+        },
+        category: 0,
+        crafting: 0,
       },
-      category: 0,
-      crafting: 0,
     },
-    premium: {
-      day_month: 0,
-      year: 0,
-      trigger: {
-        amount: 0,
+    {
+      premium: {
+        day_month: 0,
+        year: 0,
+        trigger: {
+          amount: 0,
+        },
+        category: 0,
+        crafting: 0,
       },
-      category: 0,
-      crafting: 0,
     },
-    elite: {
-      day_month: 0,
-      year: 0,
-      trigger: {
-        amount: 0,
+    {
+      elite: {
+        day_month: 0,
+        year: 0,
+        trigger: {
+          amount: 0,
+        },
+        category: 0,
+        crafting: 0,
       },
-      category: 0,
-      crafting: 0,
     },
-  }
+  ];
+
   const calculateTotalGuaranteed = (v: CardTypeValue) => {
     return v.category + v.day_month + v.year + v.trigger.amount;
-  }
-
+  };
 
   const [formData, setFormData] = useState({
     cardsPerPack: cards_per_pack,
@@ -119,9 +130,7 @@ const CollapsibleRow = ({
 
   return (
     <CardTableTr className={isExpanded ? "rowCollapsed" : ""}>
-      <CardTableTd>
-          {name}
-      </CardTableTd>
+      <CardTableTd>{name}</CardTableTd>
       <CardTableTd>
         {isEditing ? (
           <input
@@ -169,66 +178,224 @@ const CollapsibleRow = ({
         )}
       </CardTableTd>
 
-      {/* <div id="guaranteed"> */}
-      <CardTableTd>
-        Core
-      </CardTableTd>
-      <CardTableTd>
-          {calculateTotalGuaranteed(guaranteed.core)}
-      </CardTableTd>
-      <CardTableTd className="col-btn">
-        {!isEditing && (
-          <button
-            className={isExpanded ? "expanded" : "collapsed"}
-            onClick={() => toggleCollapse(id ? id : 0)}
-          >
-            See Details
-          </button>
-        )}
+      <CardTableTd className="childTable">
+        <CardTable>
+          <thead className="subTableHead">
+            <CardTableTr>
+              <CardTableTh>guar. rarity</CardTableTh>
+              <CardTableTh>guar. QTY/rarity</CardTableTh>
+              <CardTableTh>card type</CardTableTh>
+              <CardTableTh>guar. QTY/card type</CardTableTh>
+            </CardTableTr>
+          </thead>
+          <CardTableBody className="subTableBody">
+            {guaranteed.map((item, index) => {
+              const categoryKey = Object.keys(item)[0];
+              const categoryData = (item as any)[categoryKey] as CardTypeValue;
 
-        <ul
-          className={`collapsible-row-content ${
-            isExpanded ? "expanded" : "collapsed"
-          }`}
-        >
-            <li key={0}>Day & Month</li>
-            <li key={1}>Year</li>
-            <li key={2}>Trigger</li>
-            <li key={3}>Category</li>
-            <li key={4}>Crafting</li>
-        </ul>
-      </CardTableTd>
-      <CardTableTd className="col-btn">
-        {!isEditing && (
-          <button
-            className={isExpanded ? "expanded" : "collapsed"}
-            onClick={() => toggleCollapse(id ? id : 0)}
-          >
-            {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
-          </button>
-        )}
+              return (
+                <CardTableTr key={index}>
+                  <CardTableTd>{categoryKey}</CardTableTd>
+                  <CardTableTd>
+                    {calculateTotalGuaranteed(categoryData)}
+                  </CardTableTd>
 
-        <ul
-          className={`collapsible-row-content ${
-            isExpanded ? "expanded" : "collapsed"
-          }`}
-        >
-          { isEditing ? (
-              <li key={0} className="edit-list">
-                <input
-                  className="input-number"
-                  type="number"
-                  value={guaranteed.core.day_month}
-                  onChange={handleSelectChange}
-                  name={"day_month"}
-                />
-              </li>
-            ) : (
-              <li key={0}>{guaranteed.core.day_month}</li>
-            )}
-        </ul>
+                  <CardTableTd className="col-btn">
+                    {index === 0 && !isEditing && (
+                      <button
+                        className={isExpanded ? "expanded" : "collapsed"}
+                        onClick={() => toggleCollapse(id ? id : 0)}
+                      >
+                        See Details
+                      </button>
+                    )}
+
+                    <ul
+                      className={`collapsible-row-content ${
+                        isExpanded ? "expanded" : "collapsed"
+                      }`}
+                    >
+                      <li key={0}>Day & Month</li>
+                      <li key={1}>Year</li>
+                      <li key={2}>Trigger</li>
+                      <li key={3}>Category</li>
+                      <li key={4}>Crafting</li>
+                    </ul>
+                  </CardTableTd>
+                  <CardTableTd className="col-btn">
+                    {index === 0 && !isEditing && (
+                      <button
+                        className={isExpanded ? "expanded" : "collapsed"}
+                        onClick={() => toggleCollapse(id ? id : 0)}
+                      >
+                        {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
+                      </button>
+                    )}
+
+                    <ul
+                      className={`collapsible-row-content ${
+                        isExpanded ? "expanded" : "collapsed"
+                      }`}
+                    >
+                      {isEditing ? (
+                        <>
+                          <li key={0} className="edit-list">
+                            <input
+                              className="input-number"
+                              type="number"
+                              value={categoryData.day_month}
+                              onChange={handleSelectChange}
+                              name={"day_month"}
+                            />
+                          </li>
+                          <li key={1} className="edit-list">
+                            <input
+                              className="input-number"
+                              type="number"
+                              value={categoryData.year}
+                              onChange={handleSelectChange}
+                              name={"year"}
+                            />
+                          </li>
+                          <li key={2} className="edit-list">
+                            <input
+                              className="input-number"
+                              type="number"
+                              value={categoryData.trigger.amount}
+                              onChange={handleSelectChange}
+                              name={"trigger"}
+                            />
+                          </li>
+                          <li key={3} className="edit-list">
+                            <input
+                              className="input-number"
+                              type="number"
+                              value={categoryData.category}
+                              onChange={handleSelectChange}
+                              name={"category"}
+                            />
+                          </li>
+                          <li key={4} className="edit-list">
+                            <input
+                              className="input-number"
+                              type="number"
+                              value={categoryData.crafting}
+                              onChange={handleSelectChange}
+                              name={"crafting"}
+                            />
+                          </li>
+                        </>
+                      ) : (
+                        <li key={0}>{categoryData.day_month}</li>
+                      )}
+                    </ul>
+                  </CardTableTd>
+                </CardTableTr>
+              );
+            })}
+            {/* <CardTableTr> */}
+            {/* <CardTableTd>0</CardTableTd>
+              <CardTableTd className="col-btn">
+                {!isEditing && (
+                  <button
+                    className={isExpanded ? "expanded" : "collapsed"}
+                    onClick={() => toggleCollapse(id ? id : 0)}
+                  >
+                    See Details
+                  </button>
+                )}
+
+                <ul
+                  className={`collapsible-row-content ${
+                    isExpanded ? "expanded" : "collapsed"
+                  }`}
+                >
+                  <li key={0}>Day & Month</li>
+                  <li key={1}>Year</li>
+                  <li key={2}>Trigger</li>
+                  <li key={3}>Category</li>
+                  <li key={4}>Crafting</li>
+                </ul>
+              </CardTableTd>
+              <CardTableTd className="col-btn">
+                {!isEditing && (
+                  <button
+                    className={isExpanded ? "expanded" : "collapsed"}
+                    onClick={() => toggleCollapse(id ? id : 0)}
+                  >
+                    {isExpanded ? <IconArrowUp /> : <IconArrowDown />}
+                  </button>
+                )}
+
+                <ul
+                  className={`collapsible-row-content ${
+                    isExpanded ? "expanded" : "collapsed"
+                  }`}
+                >
+                  {isEditing ? (
+                    <li key={0} className="edit-list">
+                      <input
+                        className="input-number"
+                        type="number"
+                        value={2}
+                        // value={guaranteed[0].core.day_month}
+                        onChange={handleSelectChange}
+                        name={"day_month"}
+                      />
+                    </li>
+                  ) : (
+                    <li key={0}>0</li>
+                    // <li key={0}>{guaranteed[0].core.day_month}</li>
+                  )}
+                </ul>
+              </CardTableTd>
+            </CardTableTr>
+            <CardTableTr> */}
+            {/* <CardTableTd>Core</CardTableTd> */}
+
+            {/* <CardTableTd>{calculateTotalGuaranteed(guaranteed[0].core)}</CardTableTd> */}
+            {/* <CardTableTd>0</CardTableTd>
+              <CardTableTd className="col-btn">
+                <ul
+                  className={`collapsible-row-content ${
+                    isExpanded ? "expanded" : "collapsed"
+                  }`}
+                >
+                  <li key={0}>Day & Month</li>
+                  <li key={1}>Year</li>
+                  <li key={2}>Trigger</li>
+                  <li key={3}>Category</li>
+                  <li key={4}>Crafting</li>
+                </ul>
+              </CardTableTd>
+              <CardTableTd className="col-btn">
+                <ul
+                  className={`collapsible-row-content ${
+                    isExpanded ? "expanded" : "collapsed"
+                  }`}
+                >
+                  {isEditing ? (
+                    <li key={0} className="edit-list">
+                      <input
+                        className="input-number"
+                        type="number"
+                        value={2}
+                        // value={guaranteed[0].core.day_month}
+                        onChange={handleSelectChange}
+                        name={"day_month"}
+                      />
+                    </li>
+                  ) : (
+                    <li key={0}>0</li>
+                    // <li key={0}>{guaranteed[0].core.day_month}</li>
+                  )}
+                </ul>
+              </CardTableTd> */}
+            {/* </CardTableTr> */}
+          </CardTableBody>
+        </CardTable>
       </CardTableTd>
-      {/* </div> */}
+
       <CardTableTd className="col-action">
         {isEditing ? (
           <>
@@ -257,7 +424,6 @@ const CollapsibleRow = ({
     </CardTableTr>
   );
 };
-
 
 // Sample data for your rows
 const rowDataList = [
@@ -289,10 +455,7 @@ const rowDataList = [
 const CardPackValue: React.FC<{
   collection: ICardCollection;
   onChange: (data: ICardCollection) => void;
-}> = ({
-  collection,
-  onChange
-}) => {
+}> = ({ collection, onChange }) => {
   const [collapsedRows, setCollapsedRows] = useState<CollapsedRows>({});
   const [editingRow, setEditingRow] = useState<number | null>(null);
 
@@ -309,7 +472,9 @@ const CardPackValue: React.FC<{
 
   return (
     <Card>
-      <CardHeader>Card Pack Values/Specification <IconArrowUp /> </CardHeader>
+      <CardHeader>
+        Card Pack Values/Specification <IconArrowUp />{" "}
+      </CardHeader>
       <CardBody>
         <CardTable>
           <CardTableHead>
@@ -318,25 +483,37 @@ const CardPackValue: React.FC<{
               <CardTableTh>CARDS PER PACK</CardTableTh>
               <CardTableTh>PACKS QTY</CardTableTh>
               <CardTableTh>price </CardTableTh>
-              <CardTableTh>guar. rarity</CardTableTh>
-              <CardTableTh>guar. QTY/rarity</CardTableTh>
+              <CardTableTh>
+                <CardTable>
+                  <CardTableHead className="subTableHeadForPadding">
+                    <CardTableTr>
+                      <CardTableTh>guar. rarity</CardTableTh>
+                      <CardTableTh>guar. QTY/rarity</CardTableTh>
+                      <CardTableTh>card type</CardTableTh>
+                      <CardTableTh>guar. QTY/card type</CardTableTh>
+                    </CardTableTr>
+                  </CardTableHead>
+                </CardTable>
+              </CardTableTh>
+              {/* <CardTableTh>guar. QTY/rarity</CardTableTh>
               <CardTableTh>card type</CardTableTh>
-              <CardTableTh>guar. QTY/card type</CardTableTh>
+              <CardTableTh>guar. QTY/card type</CardTableTh> */}
               <CardTableTh></CardTableTh>
             </CardTableTr>
           </CardTableHead>
           <CardTableBody>
-            {collection.card_series && collection.card_series.map((rowData) => (
-              <CollapsibleRow
-                key={rowData.id}
-                rowData={rowData}
-                isExpanded={rowData.id ? collapsedRows[rowData.id] : false}
-                toggleCollapse={toggleCollapse}
-                isEditing={rowData.id === editingRow}
-                startEditing={setEditingRow}
-                updateRowData={updateRowData}
-              />
-            ))}
+            {collection.card_series &&
+              collection.card_series.map((rowData) => (
+                <CollapsibleRow
+                  key={rowData.id}
+                  rowData={rowData}
+                  isExpanded={rowData.id ? collapsedRows[rowData.id] : false}
+                  toggleCollapse={toggleCollapse}
+                  isEditing={rowData.id === editingRow}
+                  startEditing={setEditingRow}
+                  updateRowData={updateRowData}
+                />
+              ))}
           </CardTableBody>
         </CardTable>
       </CardBody>

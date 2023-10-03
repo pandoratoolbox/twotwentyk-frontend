@@ -74,6 +74,7 @@ export interface CardTypeValue {
         id?: number;
     };
     year: number;
+    crafting: number;
 }
 interface RarityValues {
     core: number;
