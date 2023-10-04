@@ -437,6 +437,21 @@ export const IconArrowDown: React.FC<SVGAttributes> = () => (
   </svg>
 );
 
+export const IconArrowBack: React.FC<SVGAttributes> = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="20"
+    viewBox="0 0 20 20"
+    fill="none"
+  >
+    <path
+      d="M16.6668 9.16657V10.8332H6.6668L11.2501 15.4166L10.0668 16.5999L3.4668 9.9999L10.0668 3.3999L11.2501 4.58324L6.6668 9.16657H16.6668Z"
+      fill="#FEFEFE"
+    />
+  </svg>
+);
+
 export const IconArrowUp: React.FC<SVGAttributes> = () => (
   <svg
     width="10"

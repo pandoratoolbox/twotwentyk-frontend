@@ -24,6 +24,19 @@ export const DatePageTitleWrapper = styled.div`
   background: url("/assets/title-bg.png") no-repeat;
   background-size: 100% 100%;
   height: 114px;
+  position: relative;
+
+  .reveal-button {
+    position: absolute;
+    width: fit-content;
+    right: 40px;
+    border-radius: 100px;
+    border: 2px solid #0e4fbc;
+    background: #fff;
+    box-shadow: 0px 1px 25px 0px rgba(0, 0, 0, 0.2);
+    color: #0e4fbc;
+    padding: 16px 42px;
+  }
   & > h3 {
     color: #fff;
     font-family: vipnagorgialla;

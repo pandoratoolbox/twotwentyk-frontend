@@ -32,7 +32,7 @@ import { ICardSeries } from "../../../models/card_series";
 import { ICardPack, ICardPackCards } from "../../../models/card_pack";
 import api from "../../../config/api";
 import { toast, ToastContainer } from "react-toastify";
-import { OpenCardPackModal } from "../../../components/Modals/OpenCardPackModal";
+import OpenCardPack from "../../../modules/app/dates/OpenCardPack";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -99,8 +99,8 @@ export const CardPackPage: React.FC = () => {
         toast.success("You opened a card pack!");
         console.log(nftCardPack);
         console.log(res);
-        let n = nftCardPack?.filter((v) => v.id !== id);
-        if (n) setNftCardPack(n);
+        // let n = nftCardPack?.filter((v) => v.id !== id);
+        // if (n) setNftCardPack(n);
         setOpenCard({
           open: true,
           cardsToAnimation: res?.data,
@@ -144,6 +144,7 @@ export const CardPackPage: React.FC = () => {
     }
     setIsLoadingFilter(false);
   };
+
   return (
     <AppLayout>
       <ToastContainer
@@ -159,35 +160,54 @@ export const CardPackPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      <OpenCardPackModal
-        open={openCard.open}
-        onClose={() => setOpenCard({ open: false, cardsToAnimation: {} })}
-        cardsToAnimation={openCard.cardsToAnimation}
-      />
       {currentUser ? (
         nftCardPack && nftCardPack?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
-                <h3>Card Packs</h3>
+                {openCard.open ? (
+                  <>
+                    <h3>OPENING CARD PACK</h3>
+                    <Button
+                      className="reveal-button"
+                      // onClick={() => navigate("/buy")}
+                    >
+                      Reveal All
+                    </Button>
+                  </>
+                ) : (
+                  <h3>Card Packs</h3>
+                )}
               </DatePageTitleWrapper>
               <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/buy")}
-                  >
-                    Buy Packs
-                  </Button>
-                </ButtonGroup>
-                <CardPackFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+                {!openCard.open && (
+                  <>
+                    <ButtonGroup>
+                      <Button
+                        className="buy-button"
+                        onClick={() => navigate("/buy")}
+                      >
+                        Buy Packs
+                      </Button>
+                    </ButtonGroup>
+                    <CardPackFilterSection onClick={handleOptionClick} />
+                  </>
+                )}
+
+                {!isLoadingFilter && !openCard.open ? (
                   <CardGridSection
                     cardType="cardPacks"
                     data={nftCardPack}
                     onCraft={handleCraft}
                     onSell={handleSell}
                     onView={handleView}
+                  />
+                ) : openCard.open ? (
+                  <OpenCardPack
+                    cardsToAnimation={openCard.cardsToAnimation}
+                    onClose={() =>
+                      setOpenCard({ open: false, cardsToAnimation: {} })
+                    }
                   />
                 ) : (
                   <Loader />

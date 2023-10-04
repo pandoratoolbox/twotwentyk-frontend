@@ -213,7 +213,7 @@ export const PropertiesContent = styled.div`
 export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   display: flex;
   flex-wrap: wrap;
-  flex-direction:row;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   font-size: 12px;
@@ -311,4 +311,85 @@ export const SetPriceWrapper = styled.div`
   .sell-confirm-button {
     margin: 13px 0 0;
   }
+`;
+
+export const OpenCardPackModalWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 4rem;
+  h3 {
+    text-align: center;
+    font-size: 16px;
+    font-weight: 500;
+    line-height: 22px;
+    margin-bottom: 24px;
+    max-width: 273px;
+  }
+`;
+
+export const OpenCard = styled.div`
+  position: relative;
+  width: 300px;
+  height: 300px;
+  perspective: 800px;
+`;
+
+export const OpenCardContent = styled.div`
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.5s;
+  transform-style: preserve-3d;
+  &.active {
+    transform: rotateY(180deg);
+    transition: transform 0.5s;
+  }
+`;
+
+export const FrontBackCard = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  backface-visibility: hidden;
+
+  &.back {
+    transform: rotateY(180deg);
+  }
+
+  .gif {
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    width: 100%;
+    img {
+      width: 80%;
+    }
+  }
+`;
+
+export const BackCardPacks = styled.button`
+  cursor: pointer;
+  display: inline-flex;
+  padding: 16px 24px;
+  align-items: center;
+  gap: 8px;
+  border-radius: 100px;
+  border: 2px solid #1440b3;
+  background: #0e4fbc;
+  box-shadow: 0px 2px 25px 0px rgba(0, 0, 0, 0.2);
+  color: #fff;
+  text-align: center;
+  font-family: Montserrat;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: normal;
+  letter-spacing: 0.7px;
+  text-transform: uppercase;
+  margin-top: 40px;
 `;
