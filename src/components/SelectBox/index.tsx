@@ -50,7 +50,6 @@ export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
 
   const handleFilterClick = async (filterType: string) => {
     onClick && onClick(filterType, selectedOptions);
-    console.log(selectedOptions)
 
     setIsOption(false);
   };
@@ -68,8 +67,6 @@ export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
       }
     });
   };
-
-  console.log(selectedOptions);
 
   return (
     <SelectBoxWrapper ref={optionRef}>
@@ -101,11 +98,12 @@ export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
             <OptionGroup>
               {options &&
                 options.map((v) => (
-                  <OptionItem key={v.value}>
+                  <OptionItem key={`${v.value}-${v.label}`}>
                     <span>{v.label}</span>
                     <CheckboxWrapper>
                       <input
-                        id={v.value}
+                        key={`checkbox-${v.value}-${v.label}`}
+                        id={`checkbox-${v.value}-${v.label}`}
                         type="checkbox"
                         value={v.label as string}
                         checked={selectedOptions.includes(v.value as string)}
@@ -113,7 +111,7 @@ export const SelectBox: React.FC<SelectBoxProps> = React.memo(({
                           handleCheckboxChange(e, v.value as string)
                         }
                       />
-                      <label htmlFor={v.value}></label>
+                      <label htmlFor={`checkbox-${v.value}-${v.label}`}></label>
                     </CheckboxWrapper>
                   </OptionItem>
                 ))}
