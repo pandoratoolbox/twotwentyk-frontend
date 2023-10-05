@@ -5,3 +5,4 @@ export * from "./marketplace_listing";
 export * from "./trigger";
 export * from "./celebrity";
 export * from "./category";
+export * from "./claim"
