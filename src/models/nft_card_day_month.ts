@@ -1,6 +1,7 @@
 import { IUser, User } from "./user";
 import { ICardSeries, CardSeries } from "./card_series";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
+import { CardImages } from "./nft";
 
 export interface INftCardDayMonth {
   rarity?: number;
@@ -13,6 +14,8 @@ export interface INftCardDayMonth {
   id?: number;
   is_crafted?: boolean;
   marketplace_listing?: IMarketplaceListing[];
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardDayMonth {

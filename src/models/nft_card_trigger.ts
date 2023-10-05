@@ -1,5 +1,6 @@
 import { ICardSeries, CardSeries } from "./card_series";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
+import { CardImages } from "./nft";
 import { IUser, User } from "./user";
 
 export interface INftCardTrigger {
@@ -13,6 +14,8 @@ export interface INftCardTrigger {
   rarity?: number;
   tier?: string;
   owner?: IUser;
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardTrigger {

@@ -17,3 +17,9 @@ export {
     NFT_TYPE_ID_TRIGGER,
     NFT_TYPE_ID_YEAR
 }
+
+export interface CardImages {
+    card_front?: string;
+    card_back?: string;
+    animation?: string;
+}

@@ -1,6 +1,7 @@
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { IUser, User } from "./user";
 import { ICardSeries, CardSeries } from "./card_series";
+import { CardImages } from "./nft";
 
 export interface INftCardYear {
   owner_id?: number;
@@ -12,6 +13,8 @@ export interface INftCardYear {
   card_series_id?: number;
   owner?: IUser;
   card_series?: ICardSeries;
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardYear {

@@ -1,6 +1,7 @@
 import { IUser, User } from "./user";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
+import { CardImages } from "./nft";
 
 export interface INftCardCategory {
   rarity?: number;
@@ -12,6 +13,8 @@ export interface INftCardCategory {
   card_series?: ICardSeries;
   category?: string;
   owner_id?: number;
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardCategory {

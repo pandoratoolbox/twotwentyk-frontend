@@ -1,6 +1,7 @@
 import { IUser, User } from "./user";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
+import { CardImages } from "./nft";
 
 export interface INftCardCrafting {
   is_crafted?: boolean;
@@ -11,6 +12,8 @@ export interface INftCardCrafting {
   marketplace_listing?: IMarketplaceListing[];
   card_series?: ICardSeries;
   id?: number;
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardCrafting {
