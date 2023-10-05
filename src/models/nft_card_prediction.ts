@@ -1,6 +1,7 @@
 import { IUser, User } from "./user";
 import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
+import { CardImages } from "./nft";
 
 export interface INftCardPrediction {
   is_claimed?: boolean;
@@ -13,6 +14,8 @@ export interface INftCardPrediction {
   owner_id?: number;
   rarity?: number;
   card_series_id?: number;
+  created_at: string | number | Date;
+  images?: CardImages;
 }
 
 export class NftCardPrediction {
