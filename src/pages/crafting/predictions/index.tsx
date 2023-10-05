@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { AppLayout } from "../../../layout/AppLayout";
 import {
   CraftLeftWrapper,
@@ -39,6 +39,7 @@ export const CraftingPredictionsPage: React.FC = () => {
     identity: null,
     triggers: null,
   });
+  const inCrafting = useRef<boolean>(false)
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -107,6 +108,9 @@ export const CraftingPredictionsPage: React.FC = () => {
   };
 
   const craftPrediction = async () => {
+    if (inCrafting.current) {
+      return
+    }
     if (selectedCards.identity === null) {
       toast.error("Select an Identity card");
       return;
@@ -135,6 +139,7 @@ export const CraftingPredictionsPage: React.FC = () => {
       nft_card_identity_id: Number(selectedCards.identity.id),
       nft_card_crafting_id: Number(selectedCards.crafting?.id),
     };
+    inCrafting.current = true
     const res = await craftingPrediction(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
@@ -142,6 +147,7 @@ export const CraftingPredictionsPage: React.FC = () => {
     } else {
       toast.error(res.message);
     }
+    inCrafting.current = false
   };
 
   const [craftPopup, setCraftPopup] = useState<boolean>(false);
