@@ -26,7 +26,7 @@ api.interceptors.response.use(function (response) {
     const { status, data } = error.response;
     
     // Display a toast with the error message
-    // toast.error(`Error ${status}: ${data}`);
+    toast.error(`Error ${status}: ${data}`);
   } else if (error.request) {
     // The request was made, but no response was received
     toast.error('Network error. Please check your internet connection.');
