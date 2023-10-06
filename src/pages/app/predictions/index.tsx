@@ -31,8 +31,6 @@ import { NftCardPredictionFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
 import { ClaimSubmitModal } from "../../../components/Modals/ClaimSubmitModal";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
-import { toast } from "react-toastify";
-import { submitClaim } from "../../../actions";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -168,19 +166,10 @@ export const PredictionsPage: React.FC = () => {
     setIsLoadingFilter(false);
   };
 
-  const handleClaim = async (predictionId: number, triggerId: number) => {
-    const res = await submitClaim(predictionId, triggerId);
-    if (res.success) {
-      toast.success("Claimed Successfully.");
-    } else {
-      toast.error(res.message);
-    }
-  }
-
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal"/>
-      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} handleClaim={handleClaim} key="claim-submit-modal"/>
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
       {currentUser ? (
         predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
