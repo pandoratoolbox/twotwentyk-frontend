@@ -41,7 +41,6 @@ export const ClaimSubmitModal: React.FC<ClaimModalProps> = ({
   }
 
   const handleSubmitButton = () => {
-    console.log({ triggerId, cardPrediction })
     if (cardPrediction?.id && triggerId !== -1) {
       handleClaim(cardPrediction.id, triggerId);
     }
