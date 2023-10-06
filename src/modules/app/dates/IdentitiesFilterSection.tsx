@@ -48,18 +48,21 @@ export const IdentitiesFilterSection: React.FC<{
           options={optionsRarities}
           placeholder="All Rarities"
           onClick={onClick}
+          key="all-rarities"
         />
 
         <SelectBox
           options={optionsCollection}
           placeholder="Collections"
           onClick={onClick}
+          key="collections"
         />
         <SelectBox
           isFilter
           placeholder="Category"
           options={optionsCategories}
           onClick={onClick}
+          key="category"
         />
 
         <SelectBox
@@ -67,6 +70,7 @@ export const IdentitiesFilterSection: React.FC<{
           options={optionsStatus}
           placeholder="Status"
           onClick={onClick}
+          key="status"
         />
         <SortButton>
           <IconSort />
