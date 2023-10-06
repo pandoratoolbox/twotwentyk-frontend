@@ -52,7 +52,6 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
   const [clearSelect, setClearSelect] = useState<boolean>(true);
-
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
       Number(v.value)
@@ -86,8 +85,9 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       setIdentityMatches(matches);
     }
   }, [celebritiesContext]);
-
+  
   console.log({celebrity_name})
+  console.log({item, myInfoContext, buy: item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id})
 
   image = "/assets/nfts/new4.png";
   return (
@@ -168,13 +168,12 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {cardType==="prediction" && <CardButton onClick={() => {}}>Add Trigger</CardButton>}
           {cardType==="prediction" && onClaimSubmit && <CardButton onClick={() => onClaimSubmit(item)}>Submit Claim</CardButton>}
-          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {item?.owner_id !== myInfoContext?.id && onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}          
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
               {item?.is_listed ? (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+                item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id ? <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton> : <></>
               ) : (
                 <CardButton onClick={() => onCard(item, "offer")}>
                   Make an Offer
