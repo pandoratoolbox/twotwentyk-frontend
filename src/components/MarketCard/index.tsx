@@ -9,7 +9,7 @@ import {
   StatusWrapper,
 } from "./styles";
 import { CardButton } from "../DateCard/styles";
-import { useMonthContext } from "../../context";
+import { useMonthContext, useMyInfoContext } from "../../context";
 
 export const MarketCard: React.FC<MarketCardProps> = ({
   // id,
@@ -24,6 +24,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
   onCard,
 }) => {
   const { monthContext } = useMonthContext();
+  const { myInfoContext } = useMyInfoContext();
 
   // console.log(item, type);
   const image = "/assets/nfts/new3.png";
@@ -121,23 +122,23 @@ export const MarketCard: React.FC<MarketCardProps> = ({
         ? onCard && (
             <CardOverlay className="overlay">
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {type === "Category" && (
+              {type === "Category" && item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id && (
                 <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
               )}
-              {(type === "Day/Month" || type === "Year") && (
+              {(type === "Day/Month" || type === "Year") && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
                 <CardButton onClick={() => onCard(item, "sell")}>
                   Sell
                 </CardButton>
               )}
-              {(type === "Crafting" || type === "Trigger") && (
+              {(type === "Crafting" || type === "Trigger") && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
                 <CardButton onClick={() => onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
               )}
-              {item.is_listed && (
+              {item.is_listed && item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id && (
                 <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
               )}
-              {!item.is_listed && (
+              {!item.is_listed && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
                 <CardButton onClick={() => onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
