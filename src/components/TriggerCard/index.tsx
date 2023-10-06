@@ -47,7 +47,7 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
             <IconBag />
           </CardTooltip>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {!is_crafted && onCraft && (
+          {onCraft && (
             <CardButton onClick={() => onCraft(item)}>
               Craft Prediction
             </CardButton>
