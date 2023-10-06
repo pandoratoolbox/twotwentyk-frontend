@@ -86,8 +86,6 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-  console.log({celebrity_name})
-
   image = "/assets/nfts/new4.png";
   return (
     <PredictionCardWrapper
