@@ -62,6 +62,15 @@ export const updateMyInfo = async (arg: { [key: string]: string }) => {
     }
 };
 
+export const verifyPassword = async (arg: { [key: string]: string }) => {
+    try {
+        const res = await api.post("/me/verify_password", { ...arg });
+        return { success: res.data.success };
+    } catch (error) {
+        return { success: false, message: "Server Error!" };
+    }
+};
+
 export const getMyNFTs = async (token: string) => {
     const myNFTsData = {
         nft_card_category_data: nft_card_category_data.filter(
