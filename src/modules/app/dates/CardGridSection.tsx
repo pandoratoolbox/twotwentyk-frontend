@@ -12,6 +12,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onCraft,
   onSell,
   onView,
+  onClaimSubmit
 }) => {
   return (
     <CardGridWrapper>
@@ -67,12 +68,13 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             cardType={cardType}
             height={293}
             isNotHover={true}
-            key={key}
+            key={`${cardType}-${key}`}
             item={item}
             {...item}
             // onCraft={onCraft}
             onView={onView}
             onSell={onSell}
+            onClaimSubmit={onClaimSubmit}
           />
         ))}
     </CardGridWrapper>
