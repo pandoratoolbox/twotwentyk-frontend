@@ -180,7 +180,7 @@ export const PredictionsPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal"/>
-      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} handleClaim={handleClaim} key="claim-submit-modal"/>
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
       {currentUser ? (
         predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>

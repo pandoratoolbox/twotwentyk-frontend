@@ -38,6 +38,7 @@ import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { getMyNftCardPrediction } from "../../../actions/nft_card_prediction";
 import api from "../../../config/api";
 import { IArticle } from "../../../models/article";
+import { ClaimSubmitModal } from "../../../components/Modals/ClaimSubmitModal";
 
 export const DashboardPage: React.FC = () => {
   const navigate = useNavigate();
@@ -222,9 +223,20 @@ export const DashboardPage: React.FC = () => {
   //   }
   // }, [window.MoonPayWebSdk])
 
+  const [openClaimModal, setOpenClaimModal] = useState(false)
+  const [cardPrediction, setCardPrediction] = useState<INftCardPrediction>()
+
+  const onClickSubmitClaim = (cardPrediction: INftCardPrediction) => {
+    if (cardPrediction.nft_card_triggers?.length) {
+      setOpenClaimModal(true)
+      setCardPrediction(cardPrediction)
+    }
+  }
+
   return (
     <AppLayout>
-      <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+      <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal" />
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
 
       <ToastContainer
         position="top-right"
@@ -345,7 +357,8 @@ export const DashboardPage: React.FC = () => {
                         key={key}
                         onSell={handleSell}
                         cardType="prediction"
-                        onView={handleView}
+                        onView={handleView}                        
+                        onClaimSubmit={() => onClickSubmitClaim(item)}
                       />
                     ))}
                 </DashboardCardGrid>

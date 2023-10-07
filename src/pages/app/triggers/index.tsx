@@ -75,7 +75,7 @@ export const TriggersPage: React.FC = () => {
   };
 
   const handleCraft = (item: any) => {
-    navigate("/crafting/predictions?id=" + item?.id);
+    navigate(`/crafting/predictions?id=${item?.id}&selectedCraft=trigger`);
   };
 
   const handleSell = (item: any) => {
