@@ -36,9 +36,9 @@ export const register = async ({
         const errorRes = error?.response?.data;
         let errorMsg = "Server Error!";
         if (String(errorRes).search("user_email_key") !== -1)
-            errorMsg = "This email is already taken.";
+            errorMsg = "Already in use, try a different email or Log In.";
         if (String(errorRes).search("user_username_key") !== -1)
-            errorMsg = "This username is already taken.";
+            errorMsg = "Already in use, try a different username.";
 
         return { success: false, message: errorMsg };
     }
