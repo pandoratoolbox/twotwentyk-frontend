@@ -48,7 +48,7 @@ export const BuyPackSection: React.FC = () => {
         setDetailsView(false);
       }
     } catch (e: any) {
-      toast.error(e);
+      console.log(e);
     }
   };
 

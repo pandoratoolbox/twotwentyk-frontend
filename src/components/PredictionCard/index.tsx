@@ -46,6 +46,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onCard,
   onView,
   onBuy,
+  onClaimSubmit,
 }) => {
   const { monthContext } = useMonthContext();
   const { celebritiesContext } = useCelebritiesContext();
@@ -84,6 +85,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       setIdentityMatches(matches);
     }
   }, [celebritiesContext]);
+
+  console.log({celebrity_name})
 
   image = "/assets/nfts/new4.png";
   return (
@@ -162,6 +165,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
             </CardButton>
           )}
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
+          {cardType==="prediction" && <CardButton onClick={() => {}}>Add Trigger</CardButton>}
+          {cardType==="prediction" && onClaimSubmit && <CardButton onClick={() => onClaimSubmit(item)}>Submit Claim</CardButton>}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
           {onCard && (
