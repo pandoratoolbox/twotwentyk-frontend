@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Input } from "../../../components";
 import { ProfileEditContainer } from ".";
 import { InputGroup } from "./styles";
@@ -12,6 +12,7 @@ export const ChangePassword: React.FC<{
   onFinish: (newPassword: string) => void;
   onBack: () => void;
 }> = ({ password, onFinish, onBack, section }) => {
+ 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     cPassword: "",
@@ -23,6 +24,12 @@ export const ChangePassword: React.FC<{
     nPassword: "",
     rPassword: "",
   });
+
+  useEffect(()=>{
+    if(password ==null || password==''){
+       password = form.cPassword;
+    }
+  },[form.cPassword])
 
   const handleContinue = async () => {
     if (step === 0) {
@@ -52,10 +59,11 @@ export const ChangePassword: React.FC<{
     }
   };
 
+
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
   return (
     <ProfileEditContainer onBack={onBack} section={section}>
       <ToastContainer
@@ -70,6 +78,7 @@ export const ChangePassword: React.FC<{
         pauseOnHover
         theme="dark"
       />
+     
       {step === 0 && (
         <>
           <Input
