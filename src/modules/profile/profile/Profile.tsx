@@ -24,7 +24,7 @@ export const Profile: React.FC<ProfileProps> = ({
   //for logout
   const handleLogout = () => {
     localStorage.removeItem("auth");
-    navigate("/profile")
+    navigate("/dashboard/home")
   };
 
   return (

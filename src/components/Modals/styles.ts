@@ -79,6 +79,35 @@ export const SellConfirmModalWrapper = styled.div`
   }
 `;
 
+export const ClaimModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 32px;
+
+  div {
+
+    h3 {
+      // color: #0f4fba;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32px;
+      margin-bottom: 20px;
+    }
+  
+    p {
+      // color: rgba(15, 79, 186, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: center;
+      max-width: 299px;
+    }
+  }
+
+`;
+
 export const CraftIdentifyModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
