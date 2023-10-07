@@ -66,3 +66,7 @@ p {
   color: #0e4fbc !important ;
   background: #fff !important;
 }
+
+.setText {
+  text-align: center;
+}
