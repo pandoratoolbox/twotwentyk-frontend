@@ -17,7 +17,7 @@ import {
   CardOverlayWrapper,
 } from "../DateCard/styles";
 import { PredictionCardProps, SelectOptionProps } from "../../types";
-import { useMonthContext, useCelebritiesContext } from "../../context";
+import { useMonthContext, useCelebritiesContext, useMyInfoContext } from "../../context";
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
@@ -49,6 +49,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onClaimSubmit,
 }) => {
   const { monthContext } = useMonthContext();
+  const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
   const [clearSelect, setClearSelect] = useState<boolean>(true);
 
@@ -167,8 +168,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {cardType==="prediction" && <CardButton onClick={() => {}}>Add Trigger</CardButton>}
           {cardType==="prediction" && onClaimSubmit && <CardButton onClick={() => onClaimSubmit(item)}>Submit Claim</CardButton>}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id !== myInfoContext?.id && onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>

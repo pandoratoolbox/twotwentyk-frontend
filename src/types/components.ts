@@ -188,7 +188,6 @@ export type ClaimModalProps = {
   isMarket?: boolean;
   isOffer?: boolean;
   cardPrediction?: INftCardPrediction;
-  handleClaim: (predictionId: number, triggerId:number) => void;
 } & ModalProps;
 
 export type CraftIdentityModalProps = {

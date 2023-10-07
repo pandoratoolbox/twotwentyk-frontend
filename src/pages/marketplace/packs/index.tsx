@@ -38,9 +38,8 @@ export const MarketplacePacksPage: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<number[]>([]);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
-    console.log(item);
-
     setSide(action);
+    setSelectedItem(item)
   };
 
   const handleSideClose = () => {

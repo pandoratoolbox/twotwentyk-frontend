@@ -14,6 +14,7 @@ import {
 } from "../PredictionCard/styles";
 import { IconBag } from "../Icons";
 import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { useMyInfoContext } from "../../context";
 
 export const TriggerCard: React.FC<TriggerCardProps> = ({
   item,
@@ -29,6 +30,7 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
   onSell,
   onView,
 }) => {
+  const { myInfoContext } = useMyInfoContext();
   image = "/assets/nfts/new4.png";
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
@@ -52,7 +54,7 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
               Craft Prediction
             </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>
