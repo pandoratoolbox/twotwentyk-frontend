@@ -16,6 +16,7 @@ import {
   getTriggers,
   getCelebrities,
   getCategories,
+  getCardSeriesData,
 } from "../actions";
 import { ITier } from "../models/tier";
 import { IArticle } from "../models/article";
@@ -23,6 +24,7 @@ import { ITrigger } from "../models/trigger";
 import { ICategory } from "../models/category";
 import { ICelebrity } from "../models/celebrity";
 import { IUser } from "../models/user";
+import { ICardSeries } from "../models/card_series";
 
 const AuthContext = createContext<any>({});
 const FeedContext = createContext<any>([]);
@@ -41,6 +43,7 @@ const TriggersContext = createContext<any>([]);
 const TiersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
+const CardSeriesContext = createContext<any>([]);
 
 export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
@@ -89,6 +92,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     useState<Map<number, ICategory>>();
   const [statusContext, setStatusContext] = useState<Map<number, ICategory>>();
   const [inventoryNFTsContext, setInventoryNftsContext] = useState<any>();
+  const [cardSeriesContext, setCardSeriesContext] = useState<ICardSeries[]>()
 
   const tiersValue = useMemo(
     () => ({ tiersContext, setTiersContext }),
@@ -173,6 +177,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     [inventoryNFTsContext]
   );
 
+  const cardSeriesContextValue = useMemo(
+    () => ({ cardSeriesContext, setCardSeriesContext }),
+    [myOfferContext]
+  );
+
   const setContext = async () => {
     const token = localStorage.auth;
     if (token) {
@@ -214,6 +223,9 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
+
+      const cardSeriesData = await getCardSeriesData();
+      if (cardSeriesData.data) setCardSeriesContext(cardSeriesData.data);
     } else {
       setAuthContext({
         ...authContext,
@@ -370,7 +382,9 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                                     <MyOfferContext.Provider
                                       value={myOfferValue}
                                     >
-                                      {children}
+                                      <CardSeriesContext.Provider value={cardSeriesContextValue}>
+                                        {children}
+                                      </CardSeriesContext.Provider>
                                     </MyOfferContext.Provider>
                                   </MarketplaceListContext.Provider>
                                 </InventoryNftsContext.Provider>
@@ -449,4 +463,8 @@ export const useCategoriesContext = () => {
 
 export const useMyOfferContext = () => {
   return useContext(MyOfferContext);
+};
+
+export const useCardSeriesContext = () => {
+  return useContext(CardSeriesContext);
 };
