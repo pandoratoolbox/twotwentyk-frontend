@@ -467,3 +467,7 @@ export const useCategoriesContext = () => {
 export const useMyOfferContext = () => {
   return useContext(MyOfferContext);
 };
+
+export const useCardCollectionContext = () => {
+  return useContext(CardCollectionContext);
+};
