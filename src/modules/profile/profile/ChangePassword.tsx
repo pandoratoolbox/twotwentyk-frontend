@@ -33,7 +33,7 @@ export const ChangePassword: React.FC<{
 
   const handleContinue = async () => {
     if (step === 0) {
-        const verifyRes = await verifyPassword({ password: form.cPassword});
+        const verifyRes = await verifyPassword({ password: password});
       if (verifyRes.success) { 
         setStep((prev) => prev + 1);
       } else {
