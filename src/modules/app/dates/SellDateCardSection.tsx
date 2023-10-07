@@ -126,14 +126,14 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           {cardType === "trigger"
             ? "Trigger"
             : cardType === "identity"
-            ? "Identity"
-            : cardType === "prediction"
-            ? "Prediction"
-            : cardType === "category"
-            ? "Category"
-            : cardType === "cardPacks"
-            ? "Card Pack"
-            : "Date Card"}
+              ? "Identity"
+              : cardType === "prediction"
+                ? "Prediction"
+                : cardType === "category"
+                  ? "Category"
+                  : cardType === "cardPacks"
+                    ? "Card Pack"
+                    : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
@@ -205,10 +205,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
             {cardType === "identity" ? (
               <PropertyItem>
                 <p>Day/Month</p>
-                <span>{`${item?.day} ${
-                  monthContext &&
+                <span>{`${item?.day} ${monthContext &&
                   (monthContext as Map<number, string>).get(item?.month)
-                }`}</span>
+                  }`}</span>
               </PropertyItem>
             ) : cardType === "date" ? (
               <PropertyItem>
@@ -231,10 +230,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 <p>{item?.day ? "Day/Month" : "Year"}</p>
                 <span>
                   {item?.day
-                    ? `${item?.day} ${
-                        monthContext &&
-                        (monthContext as Map<number, string>).get(item?.month)
-                      }`
+                    ? `${item?.day} ${monthContext &&
+                    (monthContext as Map<number, string>).get(item?.month)
+                    }`
                     : item?.year}
                 </span>
               </PropertyItem>
@@ -250,19 +248,19 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 {cardType === "trigger"
                   ? "Trigger"
                   : cardType === "identity"
-                  ? "Category"
-                  : cardType === "cardPacks"
-                  ? "Collection"
-                  : null}
+                    ? "Category"
+                    : cardType === "cardPacks"
+                      ? "Collection"
+                      : null}
               </p>
               <span>
                 {cardType === "trigger"
                   ? item?.trigger
                   : cardType === "identity"
-                  ? item?.category
-                  : cardType === "cardPacks"
-                  ? item?.collection
-                  : null}
+                    ? item?.category
+                    : cardType === "cardPacks"
+                      ? item?.collection
+                      : null}
               </span>
             </PropertyItem>
             {cardType === "identity" && (
@@ -314,7 +312,12 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           <p>Enter the listing price for your card</p>
           <Input
             value={priceValue}
-            onChange={(e) => handlePriceChange(e.target.value)}
+            onChange={(e) => {
+              let result = e.target.value.replace(/[a-z]/gi, '');
+              if (result == '') {
+                handlePriceChange('$1')
+              } else handlePriceChange(result)
+            }}
           />
         </SetPriceWrapper>
         <PropertiesWrapper>
