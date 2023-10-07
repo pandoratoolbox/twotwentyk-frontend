@@ -16,6 +16,7 @@ import {
   Button,
   DateCard,
   IconArrowDown,
+  IconArrowUp,
   Input,
   PredictionCard,
   CardPack,
@@ -43,6 +44,8 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   const [priceValue, setPriceValue] = useState<string>("$1");
   const [totalPrice, setTotalPrice] = useState<number>(1);
   const [nftCollectionId, setNftCollectionID] = useState<number>(0);
+  const [showHideProp, setShowHideProp] = useState<boolean>(true);
+  const [showHideSummary, setShowHideSummary] = useState<boolean>(true);
 
   const calculateMarketplaceFee = (priceValue: string) => {
     const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
@@ -117,6 +120,15 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
     }
   }, [triggersContext, item]);
 
+
+  const showHidePropFC = () => {
+    setShowHideProp(!showHideProp)
+  }
+
+  const showHideSummaryFC = () => {
+    setShowHideSummary(!showHideSummary)
+  }
+
   return (
     <ViewDateCardWrapper isview={isView ? "true" : undefined}>
       <ViewDateCardContainer>
@@ -126,14 +138,14 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           {cardType === "trigger"
             ? "Trigger"
             : cardType === "identity"
-            ? "Identity"
-            : cardType === "prediction"
-            ? "Prediction"
-            : cardType === "category"
-            ? "Category"
-            : cardType === "cardPacks"
-            ? "Card Pack"
-            : "Date Card"}
+              ? "Identity"
+              : cardType === "prediction"
+                ? "Prediction"
+                : cardType === "category"
+                  ? "Category"
+                  : cardType === "cardPacks"
+                    ? "Card Pack"
+                    : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
@@ -182,164 +194,172 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           )}
         </PreviewCardWrapper>
         <PropertiesWrapper>
-          <PropertiesHeader>
+          <PropertiesHeader onClick={() => showHidePropFC()}>
             <span>Properties</span>
-            <IconArrowDown />
+            { showHideProp ? <IconArrowDown /> : <IconArrowUp /> }
           </PropertiesHeader>
-          <PropertiesContent>
-            {cardType === "identity" || cardType === "prediction" ? (
+          {
+            showHideProp &&
+            <PropertiesContent >
+              {cardType === "identity" || cardType === "prediction" ? (
+                <PropertyItem>
+                  <p>Celebrity</p>
+                  <span>{item?.celebrity_name}</span>
+                </PropertyItem>
+              ) : null}
               <PropertyItem>
-                <p>Celebrity</p>
-                <span>{item?.celebrity_name}</span>
-              </PropertyItem>
-            ) : null}
-            <PropertyItem>
-              <p>Rarity</p>
-              <span>
-                {item?.rarity === 0 && "Common"}
-                {item?.rarity === 1 && "Uncommon"}
-                {item?.rarity === 2 && "Rare"}
-              </span>
-            </PropertyItem>
-
-            {cardType === "identity" ? (
-              <PropertyItem>
-                <p>Day/Month</p>
-                <span>{`${item?.day} ${
-                  monthContext &&
-                  (monthContext as Map<number, string>).get(item?.month)
-                }`}</span>
-              </PropertyItem>
-            ) : cardType === "date" ? (
-              <PropertyItem>
-                <p>Type</p>
-                <span>{item?.day ? "Day/Month" : "Year"}</span>
-              </PropertyItem>
-            ) : null}
-            {cardType === "trigger" ? (
-              <PropertyItem>
-                <p>Tire</p>
-                <span>{item?.tier}</span>
-              </PropertyItem>
-            ) : cardType === "identity" ? (
-              <PropertyItem>
-                <p>Year</p>
-                <span>{item?.year}</span>
-              </PropertyItem>
-            ) : cardType === "date" ? (
-              <PropertyItem>
-                <p>{item?.day ? "Day/Month" : "Year"}</p>
+                <p>Rarity</p>
                 <span>
-                  {item?.day
-                    ? `${item?.day} ${
-                        monthContext &&
-                        (monthContext as Map<number, string>).get(item?.month)
+                  {item?.rarity === 0 && "Common"}
+                  {item?.rarity === 1 && "Uncommon"}
+                  {item?.rarity === 2 && "Rare"}
+                </span>
+              </PropertyItem>
+
+              {cardType === "identity" ? (
+                <PropertyItem>
+                  <p>Day/Month</p>
+                  <span>{`${item?.day} ${monthContext &&
+                    (monthContext as Map<number, string>).get(item?.month)
+                    }`}</span>
+                </PropertyItem>
+              ) : cardType === "date" ? (
+                <PropertyItem>
+                  <p>Type</p>
+                  <span>{item?.day ? "Day/Month" : "Year"}</span>
+                </PropertyItem>
+              ) : null}
+              {cardType === "trigger" ? (
+                <PropertyItem>
+                  <p>Tire</p>
+                  <span>{item?.tier}</span>
+                </PropertyItem>
+              ) : cardType === "identity" ? (
+                <PropertyItem>
+                  <p>Year</p>
+                  <span>{item?.year}</span>
+                </PropertyItem>
+              ) : cardType === "date" ? (
+                <PropertyItem>
+                  <p>{item?.day ? "Day/Month" : "Year"}</p>
+                  <span>
+                    {item?.day
+                      ? `${item?.day} ${monthContext &&
+                      (monthContext as Map<number, string>).get(item?.month)
                       }`
-                    : item?.year}
-                </span>
-              </PropertyItem>
-            ) : cardType === "category" ? (
-              <PropertyItem>
-                <p>Category</p>
-                <span>{item?.category}</span>
-              </PropertyItem>
-            ) : null}
+                      : item?.year}
+                  </span>
+                </PropertyItem>
+              ) : cardType === "category" ? (
+                <PropertyItem>
+                  <p>Category</p>
+                  <span>{item?.category}</span>
+                </PropertyItem>
+              ) : null}
 
-            <PropertyItem>
-              <p>
-                {cardType === "trigger"
-                  ? "Trigger"
-                  : cardType === "identity"
-                  ? "Category"
-                  : cardType === "cardPacks"
-                  ? "Collection"
-                  : null}
-              </p>
-              <span>
-                {cardType === "trigger"
-                  ? item?.trigger
-                  : cardType === "identity"
-                  ? item?.category
-                  : cardType === "cardPacks"
-                  ? item?.collection
-                  : null}
-              </span>
-            </PropertyItem>
-            {cardType === "identity" && (
               <PropertyItem>
-                <p>Collection</p>
+                <p>
+                  {cardType === "trigger"
+                    ? "Trigger"
+                    : cardType === "identity"
+                      ? "Category"
+                      : cardType === "cardPacks"
+                        ? "Collection"
+                        : null}
+                </p>
                 <span>
-                  {item?.card_series_id ? item?.card_series_id : "N/A"}
+                  {cardType === "trigger"
+                    ? item?.trigger
+                    : cardType === "identity"
+                      ? item?.category
+                      : cardType === "cardPacks"
+                        ? item?.collection
+                        : null}
                 </span>
               </PropertyItem>
-            )}
-            {cardType === "prediction" && filteredTriggers && (
-              <>
-                <PropertiesHeader noborder={"true"}>
-                  <span>Triggers</span>
-                  <span>{filteredTriggers?.length}</span>
-                </PropertiesHeader>
-                {filteredTriggers.map((item: ITrigger, key: number) => (
-                  <PropertyItem key={key} nfttrigger={"true"}>
-                    <p>{item.tier}</p>
+              {cardType === "identity" && (
+                <PropertyItem>
+                  <p>Collection</p>
+                  <span>
+                    {item?.card_series_id ? item?.card_series_id : "N/A"}
+                  </span>
+                </PropertyItem>
+              )}
+              {cardType === "prediction" && filteredTriggers && (
+                <>
+                  <PropertiesHeader noborder={"true"}>
+                    <span>Triggers</span>
+                    <span>{filteredTriggers?.length}</span>
+                  </PropertiesHeader>
+                  {filteredTriggers.map((item: ITrigger, key: number) => (
+                    <PropertyItem key={key} nfttrigger={"true"}>
+                      <p>{item.tier}</p>
 
-                    <span>{item.name}</span>
+                      <span>{item.name}</span>
+                    </PropertyItem>
+                  ))}
+                </>
+              )}
+              {cardType === "cardPacks" && (
+                <>
+                  <PropertiesHeader>
+                    <span>Pack Contents</span>
+                    <IconArrowDown />
+                  </PropertiesHeader>
+                  <PropertyItem>
+                    <p>6 Cards</p>
                   </PropertyItem>
-                ))}
-              </>
-            )}
-            {cardType === "cardPacks" && (
-              <>
-                <PropertiesHeader>
-                  <span>Pack Contents</span>
-                  <IconArrowDown />
-                </PropertiesHeader>
-                <PropertyItem>
-                  <p>6 Cards</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>3 Guaranteed Core Cards</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>2 Core cards with chance of Uncommon Card</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>1 Crafting Card</p>
-                </PropertyItem>
-              </>
-            )}
-          </PropertiesContent>
+                  <PropertyItem>
+                    <p>3 Guaranteed Core Cards</p>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>2 Core cards with chance of Uncommon Card</p>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>1 Crafting Card</p>
+                  </PropertyItem>
+                </>
+              )}
+            </PropertiesContent>
+          }
         </PropertiesWrapper>
         <SetPriceWrapper>
           <p>Enter the listing price for your card</p>
           <Input
             value={priceValue}
-            onChange={(e) => handlePriceChange(e.target.value)}
+            onChange={(e) => {
+              let result = e.target.value.replace(/[a-z]/gi, '');
+              if (result == '') {
+                handlePriceChange('$1')
+              } else handlePriceChange(result)
+            }}
           />
         </SetPriceWrapper>
         <PropertiesWrapper>
-          <PropertiesHeader>
+          <PropertiesHeader onClick={() => showHideSummaryFC()}>
             <span>Price Summary</span>
-            <IconArrowDown />
+            { showHideSummary ? <IconArrowDown /> : <IconArrowUp /> }
           </PropertiesHeader>
-          <PropertiesContent>
-            <PriceItem>
-              <p>Asking price</p>
-              <p className='hello' >{priceValue} USD</p>
-            </PriceItem>
-            <PriceItem>
-              <p>Marketplace fee (5%)</p>
-              <span className="weak">{`$${calculateMarketplaceFee(
-                priceValue
-              )} USD`}</span>
-            </PriceItem>
-            <PriceItem>
-              <p>Prize Pool Replenishment Fee (5%)</p>
-              <span className="weak">{`$${calculatePrizePoolFee(
-                priceValue
-              )} USD`}</span>
-            </PriceItem>
-          </PropertiesContent>
+          {
+            showHideSummary && <PropertiesContent>
+              <PriceItem>
+                <p>Asking price</p>
+                <p className='hello' >{priceValue} USD</p>
+              </PriceItem>
+              <PriceItem>
+                <p>Marketplace fee (5%)</p>
+                <span className="weak">{`$${calculateMarketplaceFee(
+                  priceValue
+                )} USD`}</span>
+              </PriceItem>
+              <PriceItem>
+                <p>Prize Pool Replenishment Fee (5%)</p>
+                <span className="weak">{`$${calculatePrizePoolFee(
+                  priceValue
+                )} USD`}</span>
+              </PriceItem>
+            </PropertiesContent>
+          }
           <PropertiesContent>
             <PriceItem>
               <p>Net amount to seller</p>
