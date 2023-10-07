@@ -43,7 +43,10 @@ const TriggersContext = createContext<any>([]);
 const TiersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
-const CardSeriesContext = createContext<any>([]);
+const CardSeriesContext = createContext<{ cardSeriesContext: ICardSeries[] | undefined; setCardSeriesContext: React.Dispatch<React.SetStateAction<ICardSeries[] | undefined>> }>({
+  cardSeriesContext: [], 
+  setCardSeriesContext: () => {}
+});
 
 export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   children,
@@ -179,7 +182,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
   const cardSeriesContextValue = useMemo(
     () => ({ cardSeriesContext, setCardSeriesContext }),
-    [myOfferContext]
+    [cardSeriesContext]
   );
 
   const setContext = async () => {
