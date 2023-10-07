@@ -20,6 +20,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
   onClose,
   open,
   page,
+  collection,
 }) => {
   // for check rarity
   const checkRarity = (selectedItem: any) => {
@@ -92,6 +93,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
 
     return undefined;
   };
+
   return (
     <MSidebarWrapper open={open}>
       <MSidebarContainer>
@@ -136,7 +138,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>
-                <span></span>
+                <span>{collection}</span>
               </PropertyItem>
             </PropertiesContent>
           </PropertiesWrapper>
@@ -198,7 +200,10 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
               </PropertyItem>
               <PropertyItem>
                 <p>Day/Month</p>
-                <span>{selectedItem?.nft_card_identity?.day}/{selectedItem?.nft_card_identity?.month}</span>
+                <span>
+                  {selectedItem?.nft_card_identity?.day}/
+                  {selectedItem?.nft_card_identity?.month}
+                </span>
               </PropertyItem>
               <PropertyItem>
                 <p>Year</p>
@@ -210,7 +215,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>
-                <span></span>
+                <span>{collection}</span>
               </PropertyItem>
             </PropertiesContent>
           </PropertiesWrapper>
@@ -236,7 +241,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>
-                <span></span>
+                <span>{collection}</span>
               </PropertyItem>
             </PropertiesContent>
           </PropertiesWrapper>

@@ -111,7 +111,6 @@ export const ClaimModalWrapper = styled.div`
     flex-direction: row;
     justify-content: center;
   }
-
 `;
 
 export const CraftIdentifyModalWrapper = styled.div`

@@ -2,6 +2,7 @@ export interface ITrigger {
   id?: number;
   name?: string;
   tier?: string;
+  eligible_categories?: string[];
 }
 
 export class Trigger {
