@@ -24,11 +24,11 @@ export const ChangeUsername: React.FC<{
     } else {
       const res = await updateMyInfo(
         section === "Add Name" ? { name: input } : { username: input }
-      );
+      );      
       if (res.success) {
         onFinish(input);
       } else {
-        toast.error(res.message);
+        toast.error('This username is already taken');
       }
     }
   };
