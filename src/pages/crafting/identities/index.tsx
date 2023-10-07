@@ -63,6 +63,9 @@ export const CraftingIdentitesPage: React.FC = () => {
     year: null,
   });
 
+  const [clickedNft, setClickedNft] = useState<INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear>()
+  const [clickedCraft, setClickedCraft] = useState("crafting")
+
   const loadMyNfts = async () => {
     try {
       let crafting = await getMyNftCardCrafting(null);
@@ -108,11 +111,14 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   }, [params]);
 
-  const handleCardClick = (key: string | number | null) => {
+  const handleCardClick = (key: string | number | null, item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear) => {
     if (key === clickedCard) {
       setClickedCard(-1);
+      setClickedNft(undefined)
     } else {
       setClickedCard(key);
+      setClickedNft(item)
+      setClickedCraft(selectedCraft)
     }
   };
 
@@ -277,7 +283,8 @@ export const CraftingIdentitesPage: React.FC = () => {
               <CardPreviewSection
                 page="identity"
                 clickedCard={clickedCard}
-                selectedCraft={selectedCraft}
+                selectedCraft={clickedCraft}
+                clickedNft={clickedNft}
               />
             </CraftRightWrapper>
           </>

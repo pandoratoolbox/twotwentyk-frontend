@@ -133,10 +133,11 @@ export const CardPreviewSection: React.FC<{
               {/* <IconArrowDown /> */}
             </PropertiesHeader>
             <PropertiesContent>
-              {selectedCraft === "crafting" && clickedNft && <CraftingContent item={clickedNft} />}
-              {selectedCraft === "trigger" && clickedNft && <TriggerContent item={clickedNft} />}
-              {selectedCraft === "identity" && clickedNft && <IdentityContent item={clickedNft} />}
-              {!clickedNft && <NoContent />}
+              {clickedNft ? <>
+                {selectedCraft === "trigger" && <TriggerContent item={clickedNft} />}
+                {selectedCraft === "identity" && <IdentityContent item={clickedNft} />}
+                {selectedCraft !== "identity" && selectedCraft !== "trigger" && <CraftingContent item={clickedNft} craft={selectedCraft}/>}              
+              </> : <NoContent />}
             </PropertiesContent>
           </PropertiesWrapper>
         </>
@@ -235,7 +236,7 @@ const TriggerContent = ({ item }: { item: INftCardTrigger }) => {
   </>
 }
 
-const CraftingContent = ({ item }: { item: INftCardIdentity }) => {
+const CraftingContent = ({ item, craft }: { craft: string; item: INftCardIdentity }) => {
   const { cardSeriesContext } = useCardSeriesContext()
   const collection = cardSeriesContext?.find(value => value.id === item.card_series_id)?.card_collection?.name
   const rarity = item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common"
@@ -244,7 +245,7 @@ const CraftingContent = ({ item }: { item: INftCardIdentity }) => {
     <>
       <PropertyItem>
         <p>Type</p>
-        <span>Crafting</span>
+        <span>{craft}</span>
       </PropertyItem>
       <PropertyItem>
         <p>Collection</p>
