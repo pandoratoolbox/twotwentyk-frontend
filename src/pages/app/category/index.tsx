@@ -163,30 +163,54 @@ export const CategoriesPage: React.FC = () => {
               <h3>Category Cards</h3>
             </DatePageTitleWrapper>
             <DatePageContent>
-              <ButtonGroup>
-                <Button
-                  className="buy-button"
-                  onClick={() => navigate("/marketplace")}
-                >
-                  Buy Cards
-                </Button>
-                <Button className="buy-button" onClick={() => navigate("/buy")}>
-                  Buy Packs
-                </Button>
-              </ButtonGroup>
-
-              <CategoryFilterSection onClick={handleOptionClick} />
               {!isLoadingFilter && nftCardCategoryData ? (
-                <CardGridSection
-                  cardType="category"
-                  data={nftCardCategoryData}
-                  // data={[]}
-                  onCraft={handleCraft}
-                  onSell={handleSell}
-                  onView={handleView}
-                />
-              ) : (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+
+                  <CategoryFilterSection onClick={handleOptionClick} />
+
+                  <CardGridSection
+                    cardType="category"
+                    data={nftCardCategoryData}
+                    // data={[]}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading ? (
                 <Loader />
+              ) : (
+                <EmptyCards>
+                  <h3>No Category Cards</h3>
+                  <p>It looks like you don’t have any category cards yet.  </p>
+                  <Button
+                    className="buy-button"
+                    onClick={() => navigate("/marketplace")}
+                  >
+                    Buy Cards
+                  </Button>
+                  <Button
+                    className="buy-button"
+                    variant="outlined"
+                    onClick={() => navigate("/buy")}
+                  >
+                    Buy Packs
+                  </Button>
+                </EmptyCards>
               )}
             </DatePageContent>
             {nftCardCategoryData && nftCardCategoryData?.length > 0 ? (
@@ -205,9 +229,9 @@ export const CategoriesPage: React.FC = () => {
                   onClose={() => setIsView("")}
                 />
               </>
-            ) : (
+            ) : isLoadingFilter ? (
               <h1 className="setText">No Records Found</h1>
-            )}
+            ) : null}
           </DatePageContainer>
         </DatesPageWrapper>
       ) : (
