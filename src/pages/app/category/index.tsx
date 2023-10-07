@@ -77,7 +77,7 @@ export const CategoriesPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: collection_id,
       nft_card_category_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
 
 
