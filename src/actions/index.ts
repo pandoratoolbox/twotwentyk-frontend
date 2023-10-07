@@ -6,3 +6,4 @@ export * from "./trigger";
 export * from "./celebrity";
 export * from "./category";
 export * from "./claim"
+export * from "./card_collection"
