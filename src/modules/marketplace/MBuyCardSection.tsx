@@ -81,7 +81,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       }
     } catch (e: any) {
       console.log(e);
-      toast.error(e.response.data);
+      // toast.error(e.response.data);
     }
   };
 
