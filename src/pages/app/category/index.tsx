@@ -158,8 +158,9 @@ export const CategoriesPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        nftCardCategoryData && nftCardCategoryData?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
+        // nftCardCategoryData && nftCardCategoryData?.length > 0 ? (
+          !isLoading ? 
+          (<DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>
               <DatePageTitleWrapper>
                 <h3>Category Cards</h3>
@@ -183,7 +184,7 @@ export const CategoriesPage: React.FC = () => {
                 {!isLoadingFilter ? (
                   <CardGridSection
                     cardType="category"
-                    data={nftCardCategoryData}
+                    data={nftCardCategoryData as any[]}
                     // data={[]}
                     onCraft={handleCraft}
                     onSell={handleSell}
@@ -208,27 +209,29 @@ export const CategoriesPage: React.FC = () => {
               </DatePageContent>
             </DatePageContainer>
           </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Category Cards</h3>
-            <p>It looks like you don’t have any category cards yet.  </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Buy Cards
-            </Button>
-            <Button
-              className="buy-button"
-              variant="outlined"
-              onClick={() => navigate("/buy")}
-            >
-              Buy Packs
-            </Button>
-          </EmptyCards>
-        ) : (
+        ) : 
+        // !isLoading ? (
+        //   <EmptyCards>
+        //     <h3>No Category Cards</h3>
+        //     <p>It looks like you don’t have any category cards yet.  </p>
+        //     <Button
+        //       className="buy-button"
+        //       onClick={() => navigate("/marketplace")}
+        //     >
+        //       Buy Cards
+        //     </Button>
+        //     <Button
+        //       className="buy-button"
+        //       variant="outlined"
+        //       onClick={() => navigate("/buy")}
+        //     >
+        //       Buy Packs
+        //     </Button>
+        //   </EmptyCards>
+        // ) : 
+        
           <Loader />
-        )
+        
       ) : (
         <LoginCards className="login">
           <p className="login">Log in to start playing</p>
