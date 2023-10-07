@@ -77,7 +77,7 @@ export const IdentitiesPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 6,
       nft_card_identity_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {

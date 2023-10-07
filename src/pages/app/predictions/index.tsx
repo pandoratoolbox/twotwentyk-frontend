@@ -84,7 +84,7 @@ export const PredictionsPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 7,
       nft_card_prediction_id: id,
-      price: price * 100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
