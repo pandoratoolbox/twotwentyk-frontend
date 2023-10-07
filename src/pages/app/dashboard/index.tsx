@@ -125,6 +125,10 @@ export const DashboardPage: React.FC = () => {
     setIsView("sell");
   };
 
+  const handleCraft = (item: any) => {
+    if (item?.id) navigate(`/crafting/predictions?selectedCraft=identity&id=${item.id}`)
+  }
+
   const loadIdentities = async () => {
     setIsLoadingIdentity(true);
     let p_resp = await getMyNftCardIdentity(null);
@@ -285,6 +289,7 @@ export const DashboardPage: React.FC = () => {
                         onSell={handleSell}
                         cardType="identity"
                         onView={handleView}
+                        onCraft={handleCraft}
                       />
                     ))}
                 </DashboardCardGrid>
