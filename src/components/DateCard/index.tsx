@@ -15,7 +15,7 @@ import {
   CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import { useMonthContext } from "../../context";
+import { useMonthContext, useMyInfoContext } from "../../context";
 import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
 export const DateCard: React.FC<DateCardProps> = ({
   item,
@@ -34,6 +34,7 @@ export const DateCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const { monthContext } = useMonthContext();
+  const { myInfoContext } = useMyInfoContext();
 
   image = "/assets/nfts/new4.png";
   return (
@@ -87,9 +88,7 @@ export const DateCard: React.FC<DateCardProps> = ({
                 Craft Identity
               </CardButton>
             )}
-            {onSell && (
-              <CardButton onClick={() => onSell(item)}>Sell</CardButton>
-            )}
+            {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           </CardButtonGroup>
         </CardOverlayWrapper>
       </DateCardWrapper>

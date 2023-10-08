@@ -106,6 +106,11 @@ export const ClaimModalWrapper = styled.div`
     }
   }
 
+  .prediction-modal-card-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
 `;
 
 export const CraftIdentifyModalWrapper = styled.div`

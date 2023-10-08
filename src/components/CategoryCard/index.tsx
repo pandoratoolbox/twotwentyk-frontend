@@ -16,6 +16,7 @@ import {
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
 import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { useMyInfoContext } from "../../context";
 
 export const CategoryCard: React.FC<DateCardProps> = ({
   item,
@@ -31,6 +32,8 @@ export const CategoryCard: React.FC<DateCardProps> = ({
   onSell,
   onView,
 }) => {
+  const { myInfoContext } = useMyInfoContext();
+  
   image = "/assets/nfts/new4.png";
   return (
     <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
@@ -81,7 +84,7 @@ export const CategoryCard: React.FC<DateCardProps> = ({
               Craft Identity
             </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>
