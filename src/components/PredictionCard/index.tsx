@@ -17,7 +17,7 @@ import {
   CardOverlayWrapper,
 } from "../DateCard/styles";
 import { PredictionCardProps, SelectOptionProps } from "../../types";
-import { useMonthContext, useCelebritiesContext } from "../../context";
+import { useMonthContext, useCelebritiesContext, useMyInfoContext } from "../../context";
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
@@ -49,6 +49,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onClaimSubmit,
 }) => {
   const { monthContext } = useMonthContext();
+  const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
   const [clearSelect, setClearSelect] = useState<boolean>(true);
 

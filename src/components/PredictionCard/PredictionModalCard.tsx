@@ -1,7 +1,5 @@
-import { PredictionCard } from ".";
 import { INftCardTrigger } from "../../models/nft_card_trigger";
 import { PredictionModalCardWrapper } from "./styles";
-import React, { useState } from "react";
 import {
 
   CardBottomWrapper,
@@ -12,14 +10,17 @@ import {
 import {
   CardModalOverlayWrapper,
 } from "../DateCard/styles";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper, Rarity } from "../MarketCard/styles";
 const image = "/assets/nfts/new4.png";
 
 export const PredictionModalCard: React.FC<{ nftCardTrigger: INftCardTrigger; triggerId: number; index: number; setTriggerId: (value: number) => void }> = ({
   nftCardTrigger, triggerId, setTriggerId, index
 }) => {
   const handleClick = () => {
-    nftCardTrigger?.id && setTriggerId(nftCardTrigger.id)
+    if (nftCardTrigger?.id) {
+      if (triggerId === nftCardTrigger.id) setTriggerId(-1)
+      else setTriggerId(nftCardTrigger.id)
+    }
   }
   return (
     <PredictionModalCardWrapper onClick={handleClick}>

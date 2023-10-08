@@ -84,7 +84,7 @@ export const PredictionsPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 7,
       nft_card_prediction_id: id,
-      price: price * 100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
@@ -180,7 +180,7 @@ export const PredictionsPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal"/>
-      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} handleClaim={handleClaim} key="claim-submit-modal"/>
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
       {currentUser ? (
         predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>

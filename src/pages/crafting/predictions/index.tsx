@@ -21,24 +21,30 @@ import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardCrafting } from "../../../models/nft_card_crafting";
 import { PredictionCraftSection } from "../../../modules/crafting/PredictionCraftSection";
 import { PredictionSelectCardSection } from "../../../modules/crafting/PredictionSelectCardSection";
+import { getMyNftCardCrafting } from "../../../actions/nft_card_crafting";
+import { getMyNftCardTrigger } from "../../../actions/nft_card_trigger";
+import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
+
+interface ISelectedCards {
+  crafting: INftCardCrafting | null;
+  identity: INftCardIdentity | null;
+  triggers: Array<INftCardTrigger> | null;
+}
 
 export const CraftingPredictionsPage: React.FC = () => {
   const location = useLocation();
-  const params = new URLSearchParams(location.search);
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [selectedCraft, setSelectedCraft] = useState("crafting");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
   const [selectedCard, setSelectedCard] = useState<number | string | null>(-1);
-  const [selectedCards, setSelectedCards] = useState<{
-    crafting: INftCardCrafting | null;
-    identity: INftCardIdentity | null;
-    triggers: Array<INftCardTrigger> | null;
-  }>({
+  const [selectedCards, setSelectedCards] = useState<ISelectedCards>({
     crafting: null,
     identity: null,
     triggers: null,
   });
+  const [clickedNft, setClickedNft] = useState<INftCardCrafting | INftCardIdentity | INftCardTrigger>()
+  const [clickedCraft, setClickedCraft] = useState("crafting")
   const inCrafting = useRef<boolean>(false)
 
   useEffect(() => {
@@ -46,16 +52,46 @@ export const CraftingPredictionsPage: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (params.get("id")) {
-      setClickedCard(params.get("id"));
-    }
-  }, [params]);
+    const params = new URLSearchParams(location.search);
+    if (params.get("selectedCraft") && params.get("id")) {
+      const getNFTCrafting = async () => {
+        const idd = params.get("id")
+        const craft = params.get("selectedCraft") as string
 
-  const handleCardClick = (key: string | number | null) => {
+        if (craft === "crafting") {
+          const response = await getMyNftCardCrafting(null);
+          if (response.data?.length) {
+            const crafting = response.data.find((value) => value?.id?.toString() === idd)
+            setSelectedCards({ crafting } as ISelectedCards)
+          }
+        } else if (craft === "trigger") {
+          const response = await getMyNftCardTrigger(null);
+          if (response.data) {
+            const triggers = response.data.filter((value) => value?.id?.toString() === idd)
+            setSelectedCards({ triggers } as ISelectedCards)
+          }
+        } else if (craft === "identity") {
+          const response = await getMyNftCardIdentity(null);
+          if (response.data) {
+            const identity = response.data.find((value) => value?.id?.toString() === idd)
+            setSelectedCards({ identity } as ISelectedCards)
+          }
+        }
+        setSelectedCraft(selectedCraft)
+        setClickedCard(idd);
+      };
+      getNFTCrafting()
+    }
+  }, [location.search]);
+
+  const handleCardClick = (key: string | number | null, item: INftCardCrafting | INftCardIdentity | INftCardTrigger) => {
     if (key === clickedCard) {
       setClickedCard(-1);
+      setClickedNft(undefined)
     } else {
       setClickedCard(key);
+      setClickedNft(item)
+      setClickedCraft(selectedCraft)
     }
   };
 
@@ -206,7 +242,8 @@ export const CraftingPredictionsPage: React.FC = () => {
               <CardPreviewSection
                 page="prediction"
                 clickedCard={clickedCard}
-                selectedCraft={selectedCraft}
+                selectedCraft={clickedCraft}
+                clickedNft={clickedNft}
               />
             </CraftRightWrapper>
           </>

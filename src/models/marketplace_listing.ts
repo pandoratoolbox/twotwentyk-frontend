@@ -43,7 +43,7 @@ export class MarketplaceListing {
   price?: number;
   nft_card_crafting_id?: number;
   nft_card_trigger_id?: number;
-  nft_collection_id?: number;
+  card_collection_id?: number;
   nft_card_day_month?: NftCardDayMonth;
   nft_card_prediction?: NftCardPrediction;
   nft_card_year?: NftCardYear;
@@ -70,7 +70,7 @@ export class MarketplaceListing {
     this.price = data.price;
     this.nft_card_crafting_id = data.nft_card_crafting_id;
     this.nft_card_trigger_id = data.nft_card_trigger_id;
-    this.nft_collection_id = data.nft_type_id;
+    this.card_collection_id = data.nft_type_id;
     this.nft_card_day_month = data.nft_card_day_month
       ? new NftCardDayMonth(data.nft_card_day_month)
       : undefined;

@@ -12,6 +12,7 @@ import {
 } from "../DateCard/styles";
 import { CardPacksCardProps } from "../../types";
 import { CardImgWrapper, Rarity } from "../MarketCard/styles";
+import { useMyInfoContext } from "../../context";
 
 export const CardPack: React.FC<CardPacksCardProps> = ({
   item,
@@ -23,6 +24,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
   onView,
   onOpen,
 }) => {
+  const { myInfoContext } = useMyInfoContext();
   image = "/assets/nfts/new2.png";
   return (
     <PredictionCardWrapper height={height} bg={image}>
@@ -46,7 +48,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
         <CardButtonGroup>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {onOpen && <CardButton onClick={() => onOpen(item.id)}>Open</CardButton>}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

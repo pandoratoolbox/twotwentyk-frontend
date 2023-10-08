@@ -77,7 +77,7 @@ export const IdentitiesPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 6,
       nft_card_identity_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
@@ -91,8 +91,8 @@ export const IdentitiesPage: React.FC = () => {
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/predictions?id=" + id);
+  const handleCraft = (item: any) => {
+    if (item?.id) navigate(`/crafting/predictions?selectedCraft=identity&id=${item.id}`);
   };
 
   const handleSell = (item: any) => {

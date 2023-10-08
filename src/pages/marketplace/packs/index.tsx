@@ -38,9 +38,8 @@ export const MarketplacePacksPage: React.FC = () => {
   const [selectedStatus, setSelectedStatus] = useState<number[]>([]);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
-    console.log(item);
-
     setSide(action);
+    setSelectedItem(item)
   };
 
   const handleSideClose = () => {
@@ -50,7 +49,7 @@ export const MarketplacePacksPage: React.FC = () => {
   const getPageData = async (params: RequestSearchMarketplaceListingParams) => {
     setIsLoading(true);
     params.nft_type_ids = [0];
-    params.nft_collection_id = selectedNftCollectionId;
+    params.card_collection_id = selectedNftCollectionId;
     const response = await getMarketplaceList(params);
 
     if (response?.data) {
@@ -63,7 +62,7 @@ export const MarketplacePacksPage: React.FC = () => {
     getPageData({
       nft_type_ids: [0],
       limit: 20,
-      nft_collection_id: selectedNftCollectionId,
+      card_collection_id: selectedNftCollectionId,
       rarity: selectedRarity,
       status: selectedStatus,
     });
@@ -81,7 +80,7 @@ export const MarketplacePacksPage: React.FC = () => {
                 onSelectRarity={(selected) => {
                   setSelectedRarity(selected);
                   getPageData({
-                    nft_collection_id: selectedNftCollectionId,
+                    card_collection_id: selectedNftCollectionId,
                     rarity: selected,
                     status: selectedStatus,
                   } as RequestSearchMarketplaceListingParams);
@@ -89,7 +88,7 @@ export const MarketplacePacksPage: React.FC = () => {
                 onSelectNftCollection={(selected) => {
                   setSelectedNftCollectionId(selected);
                   getPageData({
-                    nft_collection_id: selected,
+                    card_collection_id: selected,
                     rarity: selectedRarity,
                     status: selectedStatus,
                     nft_type_ids: [0],
@@ -98,7 +97,7 @@ export const MarketplacePacksPage: React.FC = () => {
                 onSelectStatus={(selected) => {
                   setSelectedStatus(selected);
                   getPageData({
-                    nft_collection_id: selectedNftCollectionId,
+                    card_collection_id: selectedNftCollectionId,
                     rarity: selectedRarity,
                     status: selected,
                     nft_type_ids: [0],

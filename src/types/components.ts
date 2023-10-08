@@ -188,7 +188,6 @@ export type ClaimModalProps = {
   isMarket?: boolean;
   isOffer?: boolean;
   cardPrediction?: INftCardPrediction;
-  handleClaim: (predictionId: number, triggerId:number) => void;
 } & ModalProps;
 
 export type CraftIdentityModalProps = {
@@ -298,7 +297,7 @@ export type NotificationProps = {
 
 // export type forItem = {
 //   nft_card_prediction_id?: number;
-//   nft_collection_id?: number;
+//   card_collection_id?: number;
 //   owner?: any;
 //   nft_card_day_month?: any;
 //   nft_card_trigger?: any;
