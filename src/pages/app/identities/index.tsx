@@ -91,8 +91,8 @@ export const IdentitiesPage: React.FC = () => {
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/predictions?id=" + id);
+  const handleCraft = (item: any) => {
+    if (item?.id) navigate(`/crafting/predictions?selectedCraft=identity&id=${item.id}`);
   };
 
   const handleSell = (item: any) => {
