@@ -248,11 +248,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
 
     setMarketCardTypesContext(
       new Map<number, ICategory>([
-        [0, { id: 0, name: "Day/Month" }],
-        [1, { id: 1, name: "Year" }],
-        [2, { id: 2, name: "Trigger" }],
-        [3, { id: 3, name: "Category" }],
-        [4, { id: 4, name: "Crafting" }],
+        [3, { id: 3, name: "Day/Month" }],
+        [4, { id: 4, name: "Year" }],
+        [5, { id: 5, name: "Trigger" }],
+        [2, { id: 2, name: "Category" }],
+        [1, { id: 1, name: "Crafting" }],
       ])
     );
 

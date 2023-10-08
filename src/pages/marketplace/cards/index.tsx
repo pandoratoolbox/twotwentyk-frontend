@@ -42,7 +42,7 @@ export const MarketplacePage: React.FC = () => {
   const [selectedNftCollectionId, setSelectedNftCollectionId] =
     useState<number>(1);
   const [selectedNftTypeIds, setSelectedNftTypeIds] = useState<number[]>([
-    3, 4,
+    1, 2, 3, 4, 5,
   ]);
   const [selectedStatus, setSelectedStatus] = useState<number[]>([0]);
 
