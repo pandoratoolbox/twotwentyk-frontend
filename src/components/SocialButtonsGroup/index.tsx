@@ -24,8 +24,8 @@ export const SocialButtonsGroup: React.FC<SocialButtonsGroupProps> = ({
   const handleAppleAuth = async (res: any) => {
     console.log(res);
     try {
-      let resp = await api.post("/auth/apple", { id_token: res.id_token });
-      console.log(resp);
+      let resp = await api.post("/auth/apple", { id_token: res.authorization.id_token });
+      console.log('res of appel token:', resp);
       if (resp) {
         if (resp.data.token) {
           localStorage.setItem("auth", resp.data.token);
