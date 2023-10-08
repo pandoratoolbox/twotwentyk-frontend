@@ -287,7 +287,7 @@ export const SelectButton = styled.div<{ disabled: boolean }>`
 `;
 
 export const CardPreviewSectionWrapper = styled.div`
-  padding: 38px 46px;
+  padding: 24px 40px 48px;
   flex: 1;
   overflow-y: auto;
   background: #eff8ff;
@@ -308,9 +308,10 @@ export const CardPreviewSectionWrapper = styled.div`
     color: #0e4fbc;
     font-family: vipnagorgialla;
     font-size: 24px;
+    line-height: 28.8px;
     font-weight: 400;
     text-transform: uppercase;
-    margin-bottom: 29px;
+    margin-bottom: 16px;
   }
 `;
 
