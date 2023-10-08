@@ -93,7 +93,7 @@ export const IdentityMatchListSection: React.FC<{
           }
           if (selectedCards.dayMonth) {
             if (
-              selectedCards.dayMonth.month !== v.birth_month &&
+              selectedCards.dayMonth.month !== v.birth_month ||
               selectedCards.dayMonth.day !== v.birth_day
             ) {
               return;
