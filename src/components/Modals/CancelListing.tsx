@@ -23,7 +23,7 @@ export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; 
                 {!isContinue && <SaleNotification continueSale={() => setIsContinue(true)} />}
                 {isContinue && !isCancel && <IdentityInfo cancelListing={() => setIsCancel(true)} identityNft={identityNft} />}
                 {isCancel && !confirm && <CancelListing onCancelListing={() => setConfirm(true)} />}
-                {confirm && <Confirm onConfirm={() => {}} />}
+                {confirm && <Confirm onConfirm={() => onClose()} />}
             </ModalWrapper>
         </>
     );
