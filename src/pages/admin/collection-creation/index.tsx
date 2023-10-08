@@ -10,22 +10,13 @@ import {
 import { useNavigate } from "react-router-dom";
 import api from "../../../config/api";
 import { ICardCollection } from "../../../models/card_collection";
+import { useCardCollectionContext } from "../../../context";
 
 export const CollectionCreationPage: React.FC = () => {
   const [filterValue, setFilterValue] = useState("");
-  const [collections, setCollections] = useState([]); // [Collection]
+  const { cardCollectionContext } = useCardCollectionContext()
   
   const navigate = useNavigate();
-
-  const listCollections = () => {
-    api.get("/card_collection")
-    .then((response) => {
-      setCollections(response.data)
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
 
   const handleCreateCollection = () => {
     api.post("/card_collection", {})
@@ -51,11 +42,6 @@ export const CollectionCreationPage: React.FC = () => {
     }
   }
 
-
-
-  useEffect(() => {
-    listCollections()
-  }, []);
   return (
     <AdminLayout>
       <CollectionCreationPageWrapper>
@@ -68,7 +54,7 @@ export const CollectionCreationPage: React.FC = () => {
           />
           <CreateButton onClick={() => {handleCreateCollection()}}>Add New Collection</CreateButton>
         </PageActionWrapper>
-        <CollectionCreationTable data={collections} onClick={handleClick} />
+        <CollectionCreationTable data={cardCollectionContext ?? []} onClick={handleClick} />
       </CollectionCreationPageWrapper>
     </AdminLayout>
   );
