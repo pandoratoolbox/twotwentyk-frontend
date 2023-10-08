@@ -13,7 +13,7 @@ export interface INftCardPrediction {
   card_series?: ICardSeries;
   id?: number;
   celebrity_name?: string;
-  nft_card_identity?: INftCardIdentity;
+  nft_identity?: INftCardIdentity;
   owner_id?: number;
   rarity?: number;
   card_series_id?: number;
