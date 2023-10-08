@@ -43,38 +43,40 @@ export const CraftingPredictionsPage: React.FC = () => {
     identity: null,
     triggers: null,
   });
+  const [clickedNft, setClickedNft] = useState<INftCardCrafting | INftCardIdentity | INftCardTrigger>()
+  const [clickedCraft, setClickedCraft] = useState("crafting")
   const inCrafting = useRef<boolean>(false)
-  
+
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
-  
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("selectedCraft") && params.get("id")) {
-      const getNFTCrafting = async () => {        
+      const getNFTCrafting = async () => {
         const idd = params.get("id")
-        const craft = params.get("selectedCraft") as string 
+        const craft = params.get("selectedCraft") as string
 
         if (craft === "crafting") {
           const response = await getMyNftCardCrafting(null);
           if (response.data?.length) {
             const crafting = response.data.find((value) => value?.id?.toString() === idd)
-            setSelectedCards({crafting} as ISelectedCards)
+            setSelectedCards({ crafting } as ISelectedCards)
           }
         } else if (craft === "trigger") {
           const response = await getMyNftCardTrigger(null);
           if (response.data) {
             const triggers = response.data.filter((value) => value?.id?.toString() === idd)
-            setSelectedCards({triggers} as ISelectedCards)
+            setSelectedCards({ triggers } as ISelectedCards)
           }
         } else if (craft === "identity") {
           const response = await getMyNftCardIdentity(null);
           if (response.data) {
             const identity = response.data.find((value) => value?.id?.toString() === idd)
-            setSelectedCards({identity} as ISelectedCards)
-          }          
-        }        
+            setSelectedCards({ identity } as ISelectedCards)
+          }
+        }
         setSelectedCraft(selectedCraft)
         setClickedCard(idd);
       };
@@ -82,11 +84,14 @@ export const CraftingPredictionsPage: React.FC = () => {
     }
   }, [location.search]);
 
-  const handleCardClick = (key: string | number | null) => {
+  const handleCardClick = (key: string | number | null, item: INftCardCrafting | INftCardIdentity | INftCardTrigger) => {
     if (key === clickedCard) {
       setClickedCard(-1);
+      setClickedNft(undefined)
     } else {
       setClickedCard(key);
+      setClickedNft(item)
+      setClickedCraft(selectedCraft)
     }
   };
 
@@ -237,7 +242,8 @@ export const CraftingPredictionsPage: React.FC = () => {
               <CardPreviewSection
                 page="prediction"
                 clickedCard={clickedCard}
-                selectedCraft={selectedCraft}
+                selectedCraft={clickedCraft}
+                clickedNft={clickedNft}
               />
             </CraftRightWrapper>
           </>
