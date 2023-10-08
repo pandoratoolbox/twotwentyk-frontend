@@ -31,6 +31,7 @@ import {
 import { identitiesData } from "./data";
 import { NftCardIdentityFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
+import { CancelListingModal } from "../../../components/Modals/CancelListing";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
@@ -40,6 +41,7 @@ export const IdentitiesPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(false)
   const [selectedItem, setSelectedItem] = useState(null);
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,6 +159,7 @@ export const IdentitiesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+      <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} />
       {currentUser ? (
         identityNfts && identityNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
