@@ -4,6 +4,7 @@ import { IMarketplaceListing } from "../models/marketplace_listing";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
 import { INftCardDayMonth } from "../models/nft_card_day_month";
+import { INftCardIdentity } from "../models/nft_card_identity";
 import { INftCardPrediction } from "../models/nft_card_prediction";
 import { INftCardYear } from "../models/nft_card_year";
 import { CardActionTypes } from "./common";
@@ -87,6 +88,7 @@ export type PredictionCardProps = {
   onSell?: (id: number) => void;
   onBuy?: (id: number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
+  onCancel?: (data: INftCardIdentity) => void;
 } & IMarketplaceListing;
 
 export type FeedItemProps = {
@@ -146,6 +148,7 @@ export type DateCardGridProps = {
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
+  onCancel?: (data: INftCardIdentity) => void;
 };
 
 export type ViewDateCardProps = {

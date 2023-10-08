@@ -41,11 +41,12 @@ export const IdentitiesPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
-  const [cancelModal, setCancelModal] = useState(false)
+  const [cancelModal, setCancelModal] = useState(true)
   const [selectedItem, setSelectedItem] = useState(null);
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+  const [cancelIdentityNft, setCancelIdentityNft] = useState<INftCardIdentity>()
 
   useEffect(() => {
     if (params.get("id")) {
@@ -101,6 +102,11 @@ export const IdentitiesPage: React.FC = () => {
     setSelectedItem(item);
     setIsView("sell");
   };
+
+  const handleCancel = (item: INftCardIdentity) => {
+    setCancelIdentityNft(item)
+    setCancelModal(true)
+  }
 
   const [filters, setFilters] = useState<NftCardIdentityFilters>({
     card_series_id: null,
@@ -159,7 +165,7 @@ export const IdentitiesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} />
+      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} identityNft={cancelIdentityNft}/>}
       {currentUser ? (
         identityNfts && identityNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
@@ -184,6 +190,7 @@ export const IdentitiesPage: React.FC = () => {
                     onSell={handleSell}
                     cardType="identity"
                     onView={handleView}
+                    onCancel={handleCancel}
                   />
                 ) : (
                   <Loader />

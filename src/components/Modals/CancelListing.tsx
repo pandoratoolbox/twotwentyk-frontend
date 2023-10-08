@@ -5,10 +5,12 @@ import { Button } from "../Button";
 import { PredictionModalCard } from "../PredictionCard/PredictionModalCard";
 import { submitClaim } from "../../actions";
 import { IconArrowDown1, IconConfirmBlue } from "../Icons";
+import { INftCardIdentity } from "../../models/nft_card_identity";
 const image = "/assets/nfts/new2.png";
-export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; }> = ({
+export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; identityNft: INftCardIdentity }> = ({
     open,
     onClose,
+    identityNft
 }) => {
 
     const [isContinue, setIsContinue] = useState(false)
@@ -19,7 +21,7 @@ export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; 
         <>
             <ModalWrapper open={open} onClose={onClose} width={isContinue && !isCancel ? 717 : 391}>
                 {!isContinue && <SaleNotification continueSale={() => setIsContinue(true)} />}
-                {isContinue && !isCancel && <IdentityInfo cancelListing={() => setIsCancel(true)} />}
+                {isContinue && !isCancel && <IdentityInfo cancelListing={() => setIsCancel(true)} identityNft={identityNft} />}
                 {isCancel && !confirm && <CancelListing onCancelListing={() => setConfirm(true)} />}
                 {confirm && <Confirm onConfirm={() => {}} />}
             </ModalWrapper>
@@ -78,7 +80,8 @@ const Confirm = ({ onConfirm }: { onConfirm: () => void }) => {
     )
 }
 
-const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
+const IdentityInfo = ({ cancelListing, identityNft }: { cancelListing: () => void, identityNft: INftCardIdentity }) => {
+    
     return <IdentityInfoWrapper>
         <div className="image-container">
             <img src={image} alt="" />
@@ -89,7 +92,7 @@ const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
                 IDENTITY FOR SALE
             </h3>
             <div className="contents-wrapper">
-                <h4>Tom Brady</h4>
+                <h4>{identityNft?.celebrity_name ?? ""}</h4>
                 <div className="property">
                     <span>Properties</span>
                     <IconArrowDown1 />
@@ -100,7 +103,7 @@ const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
                             Day/Month
                         </span>
                         <span>
-                            Value/Value
+                            {`${identityNft?.day ?? " "}/${identityNft?.month ?? " "}`}
                         </span>
                     </div>
                     <div className="content-row">
@@ -108,7 +111,7 @@ const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
                             Year
                         </span>
                         <span>
-                            2023
+                            {identityNft?.year ?? ""}
                         </span>
                     </div>
                     <div className="content-row">
@@ -116,7 +119,7 @@ const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
                             Category
                         </span>
                         <span>
-                            Sports Series 
+                            {identityNft?.category ?? ""}
                         </span>
                     </div>
                     <div className="content-row">
@@ -124,14 +127,14 @@ const IdentityInfo = ({ cancelListing }: { cancelListing: () => void }) => {
                             Collection
                         </span>
                         <span>
-                            Conception
+                            {identityNft.card_series?.card_collection?.name ?? ""}
                         </span>
                     </div>
                 </div>
             </div>
             <div className="listing-price">
                 <div className="current-price">Current listing Price</div>
-                <div>1,140 USD</div>
+                <div>{identityNft.card_series?.cost_usd?.toString()} USD</div>
             </div>
             <ButtonGroup>
                 <Button onClick={() => cancelListing()}>Cancel Listing</Button>

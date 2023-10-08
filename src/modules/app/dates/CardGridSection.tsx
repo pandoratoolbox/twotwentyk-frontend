@@ -13,7 +13,8 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onSell,
   onView,
   onClaimSubmit,
-  buttonText
+  buttonText,
+  onCancel
 }) => {
   console.log("buttonText====",buttonText);
   return (
@@ -78,6 +79,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onView={onView}
             onSell={onSell}
             onClaimSubmit={onClaimSubmit}
+            onCancel={onCancel}
           />
         ))}
     </CardGridWrapper>

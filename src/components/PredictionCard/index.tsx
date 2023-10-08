@@ -47,6 +47,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
   onClaimSubmit,
+  onCancel
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
@@ -216,6 +217,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           )}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {onCancel && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
