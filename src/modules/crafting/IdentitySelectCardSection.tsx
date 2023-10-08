@@ -30,7 +30,7 @@ export const IdentitySelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
-  onCardClicked: (key: number | string) => void;
+  onCardClicked: (key: number | string,  item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
   onSelectCardCategory: (card: INftCardCategory) => void;
   onSelectCardDayMonth: (card: INftCardDayMonth) => void;
@@ -199,7 +199,7 @@ export const IdentitySelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}
@@ -280,7 +280,7 @@ export const IdentitySelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}
@@ -363,7 +363,7 @@ export const IdentitySelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}
@@ -443,7 +443,7 @@ export const IdentitySelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}

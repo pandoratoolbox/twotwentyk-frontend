@@ -180,6 +180,9 @@ export const ViewDateCardContainer = styled.div`
 export const PropertiesWrapper = styled.div`
   margin-top: 16px;
   width: 100%;
+  background-color: white;
+  padding: 24px;
+  border-radius: 8px;
 `;
 
 export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
@@ -193,9 +196,9 @@ export const PropertiesHeader = styled.div<{ noborder?: boolean | string }>`
   border-bottom: ${({ noborder }) =>
     noborder ? "none" : "1px solid #00000022"};
   span {
-    font-weight: 700;
-    font-size: 14px;
-    line-height: 17px;
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
   }
 `;
 
@@ -216,13 +219,18 @@ export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
-  font-size: 12px;
   min-height: 45px;
-  line-height: 15px;
+  font-size: 14px;
+  line-height: 17px;
   text-transform: capitalize;
+  font: Montserrat;
+  border-top: 0.5px solid rgba(0.0549, 0.3098, 0.7373, 0.05);
   padding: ${({ nfttrigger }) => (nfttrigger ? "0 10px" : "none")};
   p {
     font-weight: 600;
+  }
+  span {
+    font-weight: 500;
   }
   p hello {
     font-weight: 300;

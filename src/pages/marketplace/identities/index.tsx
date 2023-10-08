@@ -47,7 +47,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList({nft_collection_id: 1, nft_type_ids: [6]});
+    const response = await getMarketplaceList({card_collection_id: 1, nft_type_ids: [6]});
 
     if (response?.data) {
       setNftMarketplaceData(response?.data);
