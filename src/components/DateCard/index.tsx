@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState} from "react";
 import { DateCardProps } from "../../types";
 import {
   CardButton,
@@ -15,8 +15,9 @@ import {
   CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import { useMonthContext, useMyInfoContext } from "../../context";
+import { useCelebritiesContext, useMonthContext, useMyInfoContext } from "../../context";
 import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { ICelebrity } from "../../models/celebrity";
 export const DateCard: React.FC<DateCardProps> = ({
   item,
   image,
@@ -35,6 +36,15 @@ export const DateCard: React.FC<DateCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
+  const { celebritiesContext } = useCelebritiesContext();
+
+  const [identityMatches, setIdentityMatches] = useState<ICelebrity[]>([]);
+
+  useEffect(() => {
+    if (celebritiesContext && day && month) {
+      setIdentityMatches(Array.from((celebritiesContext as Map<number, ICelebrity>).values()).filter((v: ICelebrity) => v.birth_day === day && v.birth_month === month))
+    }
+  }, [celebritiesContext, day, month]);
 
   image = "/assets/nfts/new4.png";
   return (
@@ -63,6 +73,9 @@ export const DateCard: React.FC<DateCardProps> = ({
               <TooltipContent position={position} className="tooltip-content">
                 <div>
                   <h3>Identity Matches</h3>
+                  {identityMatches && identityMatches.map((v) => (<TooltipItem>
+                    {v.name}
+                  </TooltipItem>))}
                   <TooltipItem>Tom Brady</TooltipItem>
                   <TooltipItem>Brad Pitt</TooltipItem>
                   <TooltipItem>Emma Watson</TooltipItem>
