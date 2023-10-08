@@ -34,7 +34,7 @@ export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
-  onCardClicked: (key: number | string) => void;
+  onCardClicked: (key: number | string, item: INftCardCrafting | INftCardIdentity | INftCardTrigger) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
   onSelectCardTrigger: (card: INftCardTrigger) => void;
   onSelectCardIdentity: (card: INftCardIdentity) => void;
@@ -164,7 +164,7 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}
@@ -244,7 +244,7 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}
@@ -345,7 +345,7 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
+                      onClick={() => onCardClicked(Number(item.id), item)}
                       bg="/assets/nfts/1.png"
                     >
                       {item.rarity === 0 && <span>Common</span>}

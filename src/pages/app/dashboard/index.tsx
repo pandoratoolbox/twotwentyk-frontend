@@ -101,7 +101,7 @@ export const DashboardPage: React.FC = () => {
     price: string | number
   ) => {
     const newMarketplace = {
-      nft_collection_id: collection_id,
+      card_collection_id: collection_id,
       nft_id: id,
       price: Math.round((typeof price === 'string' ? parseFloat(price) : price ) * 100),
     };
@@ -124,6 +124,10 @@ export const DashboardPage: React.FC = () => {
     setCardType(item?.triggers ? "prediction" : "identity");
     setIsView("sell");
   };
+
+  const handleCraft = (item: any) => {
+    if (item?.id) navigate(`/crafting/predictions?selectedCraft=identity&id=${item.id}`)
+  }
 
   const loadIdentities = async () => {
     setIsLoadingIdentity(true);
@@ -285,6 +289,7 @@ export const DashboardPage: React.FC = () => {
                         onSell={handleSell}
                         cardType="identity"
                         onView={handleView}
+                        onCraft={handleCraft}
                       />
                     ))}
                 </DashboardCardGrid>

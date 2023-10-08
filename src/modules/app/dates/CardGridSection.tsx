@@ -71,7 +71,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             key={`${cardType}-${key}`}
             item={item}
             {...item}
-            // onCraft={onCraft}
+            onCraft={onCraft}
             onView={onView}
             onSell={onSell}
             onClaimSubmit={onClaimSubmit}
