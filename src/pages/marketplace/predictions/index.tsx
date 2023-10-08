@@ -81,7 +81,7 @@ export const MarketplacePredictionPage: React.FC = () => {
           </p>
           <Button
             className="buy-button"
-            onClick={() => navigate("/marketplace")}
+            onClick={() => navigate("/dashboard/predictions")}
           >
             Sell Card
           </Button>

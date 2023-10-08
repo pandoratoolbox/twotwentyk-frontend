@@ -119,6 +119,7 @@ export type DateCardProps = {
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
   item?: any;
+  buttonText?:any;
 };
 
 export type TriggerCardProps = {
@@ -140,6 +141,7 @@ export type DateCardGridProps = {
   data?: Array<any>;
   identityData?: Array<any>;
   cardType?: string;
+  buttonText?:any;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;

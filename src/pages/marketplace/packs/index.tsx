@@ -119,7 +119,7 @@ export const MarketplacePacksPage: React.FC = () => {
           </p>
           <Button
             className="buy-button"
-            onClick={() => navigate("/marketplace")}
+            onClick={() => navigate("/dashboard/packs")}
           >
             Sell Card
           </Button>

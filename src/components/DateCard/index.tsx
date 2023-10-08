@@ -33,7 +33,9 @@ export const DateCard: React.FC<DateCardProps> = ({
   onCraft,
   onSell,
   onView,
+  buttonText
 }) => {
+  console.log("buttonText====",buttonText);
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
@@ -58,11 +60,16 @@ export const DateCard: React.FC<DateCardProps> = ({
             {rarity === 2 && <Rarity>Rare</Rarity>}
           </>
         </CardImgWrapper>
+
         {day && monthContext && (
           <CardBottomWrapper>
             {day} {(monthContext as Map<number, string>).get(month)}
           </CardBottomWrapper>
         )}
+        <CardBottomWrapper>
+        {buttonText && buttonText!='' ? buttonText :day &&  (monthContext as Map<number, string>).get(month)
+        }
+        </CardBottomWrapper>
         {item?.year && <CardBottomWrapper>{item?.year}</CardBottomWrapper>}
         <CardOverlayWrapper className="overlay">
           <CardButtonGroup>

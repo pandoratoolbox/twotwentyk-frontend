@@ -7,3 +7,4 @@ export * from "./TriggersFilterSection";
 export * from "./PredictionsFilterSection";
 export * from "./IdentitiesFilterSection";
 export * from "./CardPackFilterSection";
+export * from "./CraftingFilterSection";
