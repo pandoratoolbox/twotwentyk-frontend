@@ -101,7 +101,7 @@ export const DashboardPage: React.FC = () => {
     price: string | number
   ) => {
     const newMarketplace = {
-      nft_collection_id: collection_id,
+      card_collection_id: collection_id,
       nft_id: id,
       price: Math.round((typeof price === 'string' ? parseFloat(price) : price ) * 100),
     };

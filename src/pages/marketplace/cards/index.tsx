@@ -48,7 +48,7 @@ export const MarketplacePage: React.FC = () => {
 
   useEffect(() => {
     getPageData({
-      nft_collection_id: selectedNftCollectionId,
+      card_collection_id: selectedNftCollectionId,
       nft_type_ids: selectedNftTypeIds,
       status: selectedStatus,
     });
@@ -139,7 +139,7 @@ export const MarketplacePage: React.FC = () => {
                 onSelectCardTypes={(selected) => {
                   setSelectedNftTypeIds(selected);
                   getPageData({
-                    nft_collection_id: selectedNftCollectionId,
+                    card_collection_id: selectedNftCollectionId,
                     nft_type_ids: selected,
                     status: selectedStatus,
                   });
