@@ -47,7 +47,7 @@ const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
 const CardCollectionContext = createContext<{ cardCollectionContext: ICardCollection[] | undefined; setCardCollectionContext: React.Dispatch<React.SetStateAction<ICardCollection[] | undefined>> }>({
   cardCollectionContext: [], 
-  setCardCollectionContext: () => {});
+  setCardCollectionContext: () => {}});
 const CardSeriesContext = createContext<{ cardSeriesContext: ICardSeries[] | undefined; setCardSeriesContext: React.Dispatch<React.SetStateAction<ICardSeries[] | undefined>> }>({
   cardSeriesContext: [], 
   setCardSeriesContext: () => {}
