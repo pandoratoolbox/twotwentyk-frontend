@@ -59,9 +59,9 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     );
 
     if (c) {
-      let res = await updateMyNftCardIdentity(c?.id , c?.name);
+      let res = await updateMyNftCardIdentity(c?.id, c?.name);
       if (res.success) {
-        console.log("identity updated")
+        console.log("identity updated");
       }
     }
   };
@@ -87,7 +87,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-  console.log({celebrity_name})
+  console.log({ celebrity_name });
 
   image = "/assets/nfts/new4.png";
   return (
@@ -144,44 +144,39 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       )} */}
 
       {celebrity_name ? (
-        <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+        <>
+          <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+          {cardType === "prediction" && (
+            <CardTooltip>
+              <span className="triggerT">
+                {triggers && triggers?.length > 0
+                  ? `${triggers.length}T`
+                  : "#T"}
+              </span>
+              <TooltipContent className="tooltip-content">
+                <div>
+                  <h3>Triggers</h3>
+                  {triggers &&
+                    triggers?.map((item: string, key: number) => (
+                      <TooltipItem key={key}>{item}</TooltipItem>
+                    ))}
+                </div>
+              </TooltipContent>
+            </CardTooltip>
+          )}
+        </>
       ) : (
-        <CardBottomWrapper>
-          {identityMatches && (
-            <SelectOption
-              options={identityMatches}
-              placeholder="Identity Matches"
-              clear={clearSelect}
-              onSelect={chooseCelebrity}
-            />
-          )}
-        </CardBottomWrapper>
-      )}
-
-      <CardOverlayWrapper className="overlay">
-        <CardButtonGroup>
-          {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(item)}>
-              Craft Prediction
-            </CardButton>
-          )}
-          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {cardType==="prediction" && <CardButton onClick={() => {}}>Add Trigger</CardButton>}
-          {cardType==="prediction" && onClaimSubmit && <CardButton onClick={() => onClaimSubmit(item)}>Submit Claim</CardButton>}
-          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {item?.owner_id !== myInfoContext?.id && onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
-          {onCard && (
-            <>
-              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {item?.is_listed ? (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
-              ) : (
-                <CardButton onClick={() => onCard(item, "offer")}>
-                  Make an Offer
-                </CardButton>
-              )}
-            </>
-          )}
+        <>
+          <CardBottomWrapper>
+            {identityMatches && (
+              <SelectOption
+                options={identityMatches}
+                placeholder="Identity Matches"
+                clear={clearSelect}
+                onSelect={chooseCelebrity}
+              />
+            )}
+          </CardBottomWrapper>
           {cardType === "prediction" && (
             <CardTooltip>
               <span>
@@ -199,6 +194,39 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
                 </div>
               </TooltipContent>
             </CardTooltip>
+          )}
+        </>
+      )}
+
+      <CardOverlayWrapper className="overlay">
+        <CardButtonGroup>
+          {!is_crafted && onCraft && (
+            <CardButton onClick={() => onCraft(item)}>
+              Craft Prediction
+            </CardButton>
+          )}
+          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
+          {cardType === "prediction" && (
+            <CardButton onClick={() => {}}>Add Trigger</CardButton>
+          )}
+          {cardType === "prediction" && onClaimSubmit && (
+            <CardButton onClick={() => onClaimSubmit(item)}>
+              Submit Claim
+            </CardButton>
+          )}
+          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
+          {onCard && (
+            <>
+              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
+              {item?.is_listed ? (
+                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+              ) : (
+                <CardButton onClick={() => onCard(item, "offer")}>
+                  Make an Offer
+                </CardButton>
+              )}
+            </>
           )}
         </CardButtonGroup>
       </CardOverlayWrapper>
