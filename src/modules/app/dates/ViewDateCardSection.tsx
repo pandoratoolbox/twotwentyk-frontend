@@ -18,7 +18,7 @@ import {
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
-import { useMonthContext, useTriggersContext } from "../../../context";
+import { useMonthContext, useTriggersContext,useTriggersByNameContext } from "../../../context";
 import { ITrigger } from "../../../models/trigger";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
@@ -31,6 +31,13 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { triggersContext } = useTriggersContext();
+  const { triggersByNameContext }  = useTriggersByNameContext();
+
+  let triggerCategories:any=null;
+  if(item && triggersByNameContext && item.trigger){
+     triggerCategories = (triggersByNameContext as Map<any, any>).get(item?.trigger);
+  }
+
 
   const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(
     null
@@ -133,6 +140,14 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                 <span>{item?.celebrity_name}</span>
               </PropertyItem>
             ) : null}
+
+            <PropertyItem>
+              <p>Category</p>
+              <span>
+              {triggerCategories && triggerCategories.eligible_categories ? triggerCategories.eligible_categories.join(","):"Any"}
+              </span>
+            </PropertyItem>
+
             <PropertyItem>
               <p>Rarity</p>
               <span>

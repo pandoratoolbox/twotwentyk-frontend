@@ -38,6 +38,7 @@ const StatusContext = createContext<any>([]);
 const CategoriesContext = createContext<any>([]);
 const CelebritiesContext = createContext<any>([]);
 const TriggersContext = createContext<any>([]);
+const TriggersByNameContext = createContext<any>([]);
 const TiersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
@@ -64,6 +65,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
   const [celebritiesContext, setCelebritiesContext] =
     useState<Map<number, ICelebrity>>();
   const [marketplaceListContext, setMarketplaceListContext] = useState<any>([]);
+  const [triggersByNameContext, setTriggersByNameContext] = useState<any>([]);
 
   const [monthContext, setMonthContext] = useState<Map<number, string>>(
     new Map<number, string>([
@@ -173,6 +175,11 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     [inventoryNFTsContext]
   );
 
+  const triggerNameValues = useMemo(
+    () => ({ triggersByNameContext, setTriggersByNameContext }),
+    [triggersByNameContext && triggersByNameContext.length]
+  )
+
   const setContext = async () => {
     const token = localStorage.auth;
     if (token) {
@@ -271,12 +278,17 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     const triggersData = await getTriggers();
     if (triggersData.data) {
       let triggers = new Map<number, ITrigger>();
-      triggersData.data.forEach((v) => {
+      let triggersByNames:any = new Map<number,ITrigger>();
+      triggersData.data.forEach((v:any) => {
         if (v.id) {
           triggers.set(v.id, v);
+          triggersByNames.set(v.name,v);
         }
       });
+
+      console.log("triggersByNames====",triggersByNames);
       setTriggersContext(triggers);
+      setTriggersByNameContext(triggersByNames);
     }
 
     const celebritiesData = await getCelebrities();
@@ -289,6 +301,8 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       });
       setCelebritiesContext(celebrities);
     }
+
+
 
     const categoriesData = await getCategories();
     if (categoriesData.data) {
@@ -351,7 +365,8 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       <MonthContext.Provider value={monthValue}>
         <AuthContext.Provider value={authValue}>
           <CategoriesContext.Provider value={categoriesValue}>
-            <TriggersContext.Provider value={triggersValue}>
+          <TriggersContext.Provider value={triggersValue}>
+            <TriggersByNameContext.Provider value={triggerNameValues}>
               <CelebritiesContext.Provider value={celebritiesValue}>
                 <MarketCardTypesContext.Provider value={marketCardTypeValue}>
                   <CardTypesContext.Provider value={cardTypeValue}>
@@ -383,6 +398,7 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                   </CardTypesContext.Provider>
                 </MarketCardTypesContext.Provider>
               </CelebritiesContext.Provider>
+              </TriggersByNameContext.Provider>
             </TriggersContext.Provider>
           </CategoriesContext.Provider>
         </AuthContext.Provider>
@@ -437,6 +453,10 @@ export const useStatusContext = () => {
 
 export const useTriggersContext = () => {
   return useContext(TriggersContext);
+};
+
+export const useTriggersByNameContext = () => {
+  return useContext(TriggersByNameContext);
 };
 
 export const useCelebritiesContext = () => {
