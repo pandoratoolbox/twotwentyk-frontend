@@ -10,6 +10,7 @@ export const headerData = [
       { label: "Triggers", to: "triggers" },
       { label: "Predictions", to: "predictions" },
       { label: "Card Packs", to: "packs" },
+      { label: "Crafting", to: "crafting" },
     ],
   },
   {

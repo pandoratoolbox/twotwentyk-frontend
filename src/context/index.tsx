@@ -16,6 +16,7 @@ import {
   getTriggers,
   getCelebrities,
   getCategories,
+  getCardCollectionData,
   getCardSeriesData,
 } from "../actions";
 import { ITier } from "../models/tier";
@@ -24,6 +25,7 @@ import { ITrigger } from "../models/trigger";
 import { ICategory } from "../models/category";
 import { ICelebrity } from "../models/celebrity";
 import { IUser } from "../models/user";
+import { ICardCollection } from "../models/card_collection";
 import { ICardSeries } from "../models/card_series";
 
 const AuthContext = createContext<any>({});
@@ -43,6 +45,9 @@ const TriggersContext = createContext<any>([]);
 const TiersContext = createContext<any>([]);
 const InventoryNftsContext = createContext<any>([]);
 const MyOfferContext = createContext<any>([]);
+const CardCollectionContext = createContext<{ cardCollectionContext: ICardCollection[] | undefined; setCardCollectionContext: React.Dispatch<React.SetStateAction<ICardCollection[] | undefined>> }>({
+  cardCollectionContext: [], 
+  setCardCollectionContext: () => {}});
 const CardSeriesContext = createContext<{ cardSeriesContext: ICardSeries[] | undefined; setCardSeriesContext: React.Dispatch<React.SetStateAction<ICardSeries[] | undefined>> }>({
   cardSeriesContext: [], 
   setCardSeriesContext: () => {}
@@ -95,7 +100,13 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
     useState<Map<number, ICategory>>();
   const [statusContext, setStatusContext] = useState<Map<number, ICategory>>();
   const [inventoryNFTsContext, setInventoryNftsContext] = useState<any>();
-  const [cardSeriesContext, setCardSeriesContext] = useState<ICardSeries[]>()
+  const [cardCollectionContext, setCardCollectionContext] = useState<ICardCollection[]>();
+  const [cardSeriesContext, setCardSeriesContext] = useState<ICardSeries[]>();
+  
+  const cardCollectionValue = useMemo(
+    () => ({ cardCollectionContext, setCardCollectionContext }),
+    [cardCollectionContext]
+  );
 
   const tiersValue = useMemo(
     () => ({ tiersContext, setTiersContext }),
@@ -227,6 +238,9 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
       const myFeedData = await getPersonalizedFeed();
       if (myFeedData.data) setMyFeedContext(myFeedData.data);
 
+      const cardCollectionData = await getCardCollectionData();
+      if (cardCollectionData.data) setCardCollectionContext(cardCollectionData.data);
+      
       const cardSeriesData = await getCardSeriesData();
       if (cardSeriesData.data) setCardSeriesContext(cardSeriesData.data);
     } else {
@@ -386,7 +400,9 @@ export const AppWrapper: React.FC<React.HTMLAttributes<HTMLElement>> = ({
                                       value={myOfferValue}
                                     >
                                       <CardSeriesContext.Provider value={cardSeriesContextValue}>
-                                        {children}
+                                          <CardCollectionContext.Provider value={cardCollectionValue}>
+                                            {children}
+                                          </CardCollectionContext.Provider>              
                                       </CardSeriesContext.Provider>
                                     </MyOfferContext.Provider>
                                   </MarketplaceListContext.Provider>
@@ -468,6 +484,10 @@ export const useMyOfferContext = () => {
   return useContext(MyOfferContext);
 };
 
+export const useCardCollectionContext = () => {
+  return useContext(CardCollectionContext);
+}
+    
 export const useCardSeriesContext = () => {
   return useContext(CardSeriesContext);
 };

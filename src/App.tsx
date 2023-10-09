@@ -33,6 +33,7 @@ import {
   CardPackPage,
   MyOfferPage,
   CollectionCreationPage,
+  CraftingPage,
   CollectionDraft,
   CollectionMetaData,
   ClaimManagementPage,
@@ -90,6 +91,7 @@ const App: React.FC = () => {
                 element={<PredictionsPage />}
               />
               <Route path="/dashboard/packs" element={<CardPackPage />} />
+              <Route path="/dashboard/crafting" element={<CraftingPage />} />
               <Route path="/dashboard/myoffer" element={<MyOfferPage />} />
               {/* Dashboard Routes */}
               {/* Crafting Routes */}

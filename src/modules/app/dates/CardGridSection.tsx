@@ -18,7 +18,9 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onSell,
   onView,
   onClaimSubmit,
+  buttonText
 }) => {
+  console.log("buttonText====",buttonText);
   return (
     <CardGridWrapper>
       {cardType === "category" &&
@@ -42,6 +44,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onCraft={onCraft}
             onView={onView}
             onSell={onSell}
+            buttonText={buttonText}
           />
         ))}
       {cardType === "trigger" &&

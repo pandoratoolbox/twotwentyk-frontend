@@ -50,7 +50,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
     const response = await getMarketplaceList({card_collection_id: 1, nft_type_ids: [6]});
 
     if (response?.data) {
-      setNftMarketplaceData(response?.data);
+      setNftMarketplaceData(response?.data); 
     }
     setIsLoading(false);
   };
@@ -89,11 +89,11 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
       ) : !isLoading ? (
         <EmptyCards>
           <p style={{ maxWidth: "253px" }}>
-            Wow, can you believe no one wants to sell even a single card?
+            Wow, can you believe no one wants to sell even a single card? 
           </p>
           <Button
             className="buy-button"
-            onClick={() => navigate("/marketplace")}
+            onClick={() => navigate("/dashboard/identities")}
           >
             Sell Card
           </Button>

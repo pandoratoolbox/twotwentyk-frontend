@@ -147,7 +147,27 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       )} */}
 
       {celebrity_name ? (
-        <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+        <>
+          <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+          {cardType === "prediction" && (
+            <CardTooltip>
+              <span className="triggerT">
+                {triggers && triggers?.length > 0
+                  ? `${triggers.length}T`
+                  : "#T"}
+              </span>
+              <TooltipContent className="tooltip-content">
+                <div>
+                  <h3>Triggers</h3>
+                  {triggers &&
+                    triggers?.map((item: string, key: number) => (
+                      <TooltipItem key={key}>{item}</TooltipItem>
+                    ))}
+                </div>
+              </TooltipContent>
+            </CardTooltip>
+          )}
+        </>
       ) : (
         <CardBottomWrapper>
           {identityMatches && (
