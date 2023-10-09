@@ -152,7 +152,7 @@ export type DateCardGridProps = {
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
-  onCancel?: (data: INftCardIdentity) => void;
+  onCancel?: (data: INftCardIdentity | INftCardPrediction | ICardPack) => void;
 };
 
 export type ViewDateCardProps = {

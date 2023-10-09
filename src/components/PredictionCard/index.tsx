@@ -218,7 +218,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           )}
           {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
           {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
-          {onCancel && status === 1 && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
+          {onCancel && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>

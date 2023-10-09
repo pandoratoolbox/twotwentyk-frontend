@@ -51,7 +51,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
           {onOpen && <CardButton onClick={() => onOpen(item.id)}>Open</CardButton>}
           {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {onCancel && status === 1 && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
+          {onCancel && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>
