@@ -15,6 +15,7 @@ import {
   useStatusContext,
   useAllRaritiesContext,
   useCelebritiesContext,
+  useCardCollectionContext,
 } from "../../context";
 import { EmptyCards } from "../../pages/app/category/styles";
 import { useNavigate } from "react-router-dom";
@@ -54,6 +55,7 @@ export const PredictionSelectCardSection: React.FC<{
     const { statusContext } = useStatusContext();
     const { allRaritiesContext } = useAllRaritiesContext();
     const { celebritiesContext } = useCelebritiesContext();
+    const { cardCollectionContext } = useCardCollectionContext();
 
     const [isLoadingCrafting, setIsLoadingCrafting] = useState(true);
     const [isLoadingIdentity, setIsLoadingIdentity] = useState(true);
@@ -72,13 +74,14 @@ export const PredictionSelectCardSection: React.FC<{
     >(null);
     const [rarities, setRarity] = useState<number[]>([])
     const [status, setStatus] = useState<number[]>([])
+    const [collection, setCollection] = useState<number>()
 
     const filter = useMemo(() => {
       return {
         rarities,
-        status
+        card_collection_id: collection
       }
-    }, [rarities, status])
+    }, [rarities, collection])
 
     const getNFTCrafting = async () => {
       setIsLoadingCrafting(true);
@@ -108,7 +111,7 @@ export const PredictionSelectCardSection: React.FC<{
 
     useEffect(() => {
       setRarity([])
-      setStatus([])
+      setCollection(undefined)
     }, [selectedCraft])
 
     useEffect(() => {
@@ -137,9 +140,15 @@ export const PredictionSelectCardSection: React.FC<{
 
 
     useEffect(() => {
-      if (statusContext && allRaritiesContext) {
-        setOptionsStatus(Array.from((statusContext as Map<number, { id: number, name: string }>).values()).map(v => {
-          return { checked: false, value: v.id.toString(), label: v.name }
+      if (statusContext && cardCollectionContext) {
+        // setOptionsStatus(Array.from((statusContext as Map<number, { id: number, name: string }>).values()).map(v => {
+        //   return { checked: false, value: v.id.toString(), label: v.name }
+        // }))
+        setOptionsCollection(cardCollectionContext.map((v) => {
+          return {
+            value: v.id?.toString(),
+            label: v.name
+          } as SelectOptionProps
         }))
 
         setOptionsRarities(Array.from((allRaritiesContext as Map<number, { id: number, name: string }>).values()).map(v => {
@@ -147,11 +156,12 @@ export const PredictionSelectCardSection: React.FC<{
         }))
 
       }
-    }, [statusContext, allRaritiesContext])
+    }, [cardCollectionContext, allRaritiesContext])
 
     const handleClick = (filterType: string, selectedOptions: string[]) => {
       if (filterType === "All Rarities") setRarity(selectedOptions.map(v => Number(v)));
       if (filterType === "Status") setStatus(selectedOptions.map(v => Number(v)))
+      if (filterType === "Collections") setCollection(selectedOptions.length && Number(selectedOptions[0]))
     }
 
 
@@ -173,9 +183,8 @@ export const PredictionSelectCardSection: React.FC<{
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
                     <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
@@ -255,9 +264,8 @@ export const PredictionSelectCardSection: React.FC<{
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
                     <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
@@ -358,9 +366,8 @@ export const PredictionSelectCardSection: React.FC<{
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
                     <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>

@@ -23,7 +23,7 @@ import { INftCardCrafting } from "../../models/nft_card_crafting";
 import { INftCardDayMonth } from "../../models/nft_card_day_month";
 import { INftCardYear } from "../../models/nft_card_year";
 import { INftCardCategory } from "../../models/nft_card_category";
-import { useMonthContext } from "../../context";
+import { useMonthContext, useCardCollectionContext } from "../../context";
 import { SelectOptionProps } from "../../types";
 import { NftCardCategoryFilters, NftCardCraftingFilters, NftCardDayMonthFilters, NftCardYearFilters } from "../../models/filters";
 import { randomInt } from "crypto";
@@ -65,12 +65,14 @@ export const IdentitySelectCardSection: React.FC<{
 }) => {
     const { statusContext } = useStatusContext();
     const { allRaritiesContext } = useAllRaritiesContext();
+    const { cardCollectionContext } = useCardCollectionContext();
     const [isLoadingCrating, setIsLoadingCrating] = useState(true);
     const [isLoadingDayMonth, setIsLoadingDayMonth] = useState(true);
     const [isLoadingYear, setIsLoadingYear] = useState(true);
     const [isLoadingCategory, setIsLoadingCategory] = useState(true);
     const [rarities, setRarity] = useState<number[]>([])
     const [status, setStatus] = useState<number[]>([])
+    const [collection, setCollection] = useState<number>()
 
     const { monthContext } = useMonthContext();
 
@@ -115,9 +117,9 @@ export const IdentitySelectCardSection: React.FC<{
     const filter = useMemo(() => {
       return {
         rarities,
-        status
+        card_collection_id: collection
       }
-    }, [rarities, status])
+    }, [rarities, collection])
 
     const getNFTCrafting = async (filter: any) => {
       setIsLoadingCrating(true);
@@ -154,7 +156,7 @@ export const IdentitySelectCardSection: React.FC<{
 
     useEffect(() => {
       setRarity([])
-      setStatus([])
+      setCollection(undefined)
     }, [selectedCraft])
 
     useEffect(() => {
@@ -169,9 +171,15 @@ export const IdentitySelectCardSection: React.FC<{
     const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
 
     useEffect(() => {
-      if (statusContext && allRaritiesContext) {
-        setOptionsStatus(Array.from((statusContext as Map<number, { id: number, name: string }>).values()).map(v => {
-          return { checked: false, value: v.id.toString(), label: v.name }
+      if (statusContext && cardCollectionContext) {
+        // setOptionsStatus(Array.from((statusContext as Map<number, { id: number, name: string }>).values()).map(v => {
+        //   return { checked: false, value: v.id.toString(), label: v.name }
+        // }))
+        setOptionsCollection(cardCollectionContext.map((v) => {
+          return {
+            value: v.id?.toString(),
+            label: v.name
+          } as SelectOptionProps
         }))
 
         setOptionsRarities(Array.from((allRaritiesContext as Map<number, { id: number, name: string }>).values()).map(v => {
@@ -179,11 +187,12 @@ export const IdentitySelectCardSection: React.FC<{
         }))
 
       }
-    }, [statusContext, allRaritiesContext])
+    }, [cardCollectionContext, allRaritiesContext])
 
     const handleClick = (filterType: string, selectedOptions: string[]) => {
       if (filterType === "All Rarities") setRarity(selectedOptions.map(v => Number(v)));
       if (filterType === "Status") setStatus(selectedOptions.map(v => Number(v)))
+      if (filterType === "Collections") setCollection(selectedOptions.length && Number(selectedOptions[0]))
     }
 
 
@@ -204,10 +213,9 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                    <SelectBox                      
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
@@ -287,10 +295,9 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                    <SelectBox                      
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
@@ -372,10 +379,9 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                    <SelectBox                      
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
@@ -454,10 +460,9 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox
-                      isFilter
-                      options={optionsStatus}
-                      placeholder="Status"
+                    <SelectBox                      
+                      options={optionsCollection}
+                      placeholder="Collections"
                       onClick={handleClick}
                     />
                   </SelectBoxWrapper>
