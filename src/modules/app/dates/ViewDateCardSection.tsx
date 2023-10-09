@@ -78,7 +78,9 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                 : cardType === "category"
                   ? "Category"
                   : cardType === "cardPacks"
-                    ? "Card Pack"
+                    ? "Card Pack" 
+                    : cardType === "crafting"
+                    ? "Crafting"
                     : "Date Card"}
         </h2>
         <PreviewCardWrapper>
