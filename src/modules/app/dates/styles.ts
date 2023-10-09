@@ -413,3 +413,66 @@ export const BackCardPacks = styled.button`
   text-transform: uppercase;
   margin-top: 40px;
 `;
+
+export const CardTooltip = styled.div<{
+  dashbordstyle?: string;
+}>`
+  position: sticky;
+  bottom: 20px;
+  right: 20px;
+  &.left {
+    left: 4px;
+    right: auto;
+  }
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  &:hover {
+    .tooltip-content {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  span {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 500;
+    height: 10px;
+  }
+`;
+
+export const TooltipContent = styled.div`
+  h3 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 24px;
+    margin: 0 10px 5px;
+  }
+  & > div {
+    overflow-y: scroll;
+    height: 100%;
+  }
+  position: absolute;
+  opacity: 0;
+  visibility: hidden;
+  background-color: #fff;
+  right: -10px;
+  top: -164px;
+  z-index: 10;
+  width: 226px;
+  height: 151px;
+  box-shadow: 0px 0px 24px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  padding: 15px 12px;
+`;
+
+export const TooltipItem = styled.div`
+  padding: 5px 0;
+  margin: 0 10px;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 24px;
+`;

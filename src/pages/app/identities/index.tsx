@@ -155,6 +155,47 @@ export const IdentitiesPage: React.FC = () => {
     setIsLoadingFilter(false);
   };
 
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await getMyNftCardIdentity(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setIdentityNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await getMyNftCardIdentity(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setIdentityNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await getMyNftCardIdentity(null);
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.rarity - a.rarity);
+        setIdentityNfts(response?.data);
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -175,7 +216,10 @@ export const IdentitiesPage: React.FC = () => {
                       Craft Identity
                     </Button>
                   </ButtonGroup>
-                  <IdentitiesFilterSection onClick={handleOptionClick} />
+                  <IdentitiesFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     identityData={identityNfts}
                     onCraft={handleCraft}
@@ -194,7 +238,10 @@ export const IdentitiesPage: React.FC = () => {
                       Craft Identity
                     </Button>
                   </ButtonGroup>
-                  <IdentitiesFilterSection onClick={handleOptionClick} />
+                  <IdentitiesFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     identityData={identityNfts}
                     onCraft={handleCraft}
