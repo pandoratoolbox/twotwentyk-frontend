@@ -45,6 +45,10 @@ export const ModalContainer = styled.div<{ width?: number }>`
   &.removePadding {
     padding: 0;
   }
+
+  &.smallPadding {
+    padding: 20px;
+  }
 `;
 
 export const CloseButton = styled.div`

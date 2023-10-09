@@ -29,7 +29,7 @@ export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; 
 
     return (
         <>
-            <ModalWrapper open={open} onClose={handleClose} width={isContinue && !isCancel ? 717 : 391}>
+            <ModalWrapper open={open} onClose={handleClose} width={isContinue && !isCancel ? 717 : 391} paddingClass={`${isContinue && !isCancel ? "smallPadding" : ""}`}>
                 {!isContinue && <SaleNotification continueSale={() => setIsContinue(true)} cardType={cardType} />}
                 {isContinue && !isCancel && <NftCardInfo cancelListing={() => setIsCancel(true)} nftCard={nftCard} cardType={cardType} />}
                 {isCancel && !confirm && <CancelListing onCancelListing={() => setConfirm(true)} />}
