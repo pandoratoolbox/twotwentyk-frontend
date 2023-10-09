@@ -108,20 +108,6 @@ export const DateCard: React.FC<DateCardProps> = ({
                     identityMatches.map((v) => (
                       <TooltipItem>{v.name}</TooltipItem>
                     ))}
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Brad Pitt</TooltipItem>
-                  <TooltipItem>Emma Watson</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Michael B. Jordan</TooltipItem>
-                  <TooltipItem>Kid Rock</TooltipItem>
-                  <TooltipItem>Barack Obama</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Brad Pitt</TooltipItem>
-                  <TooltipItem>Emma Watson</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Michael B. Jordan</TooltipItem>
-                  <TooltipItem>Kid Rock</TooltipItem>
-                  <TooltipItem>Barack Obama</TooltipItem>
                 </div>
               </TooltipContent>
             </CardTooltip>
