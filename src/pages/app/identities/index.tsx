@@ -32,6 +32,8 @@ import { identitiesData } from "./data";
 import { NftCardIdentityFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
 import { CancelListingModal } from "../../../components/Modals/CancelListing";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+import { ICardPack } from "../../../models/card_pack";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
@@ -103,8 +105,8 @@ export const IdentitiesPage: React.FC = () => {
     setIsView("sell");
   };
 
-  const handleCancel = (item: INftCardIdentity) => {
-    setCancelIdentityNft(item)
+  const handleCancel = (item: INftCardIdentity | INftCardPrediction | ICardPack) => {
+    setCancelIdentityNft(item as INftCardIdentity)
     setCancelModal(true)
   }
 
@@ -165,7 +167,7 @@ export const IdentitiesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} identityNft={cancelIdentityNft}/>}
+      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelIdentityNft} cardType="Identity"/>}
       {currentUser ? (
         identityNfts && identityNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>

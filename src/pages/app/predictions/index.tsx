@@ -33,6 +33,8 @@ import { ClaimSubmitModal } from "../../../components/Modals/ClaimSubmitModal";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { toast } from "react-toastify";
 import { submitClaim } from "../../../actions";
+import { CancelListingModal } from "../../../components/Modals/CancelListing";
+import { ICardPack } from "../../../models/card_pack";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -46,6 +48,8 @@ export const PredictionsPage: React.FC = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+  const [cancelNftCard, setCancelNftCard] = useState<INftCardPrediction>()
+  const [cancelModal, setCancelModal] = useState(true)
 
   useEffect(() => {
     if (params.get("id")) {
@@ -177,10 +181,16 @@ export const PredictionsPage: React.FC = () => {
     }
   }
 
+  const handleCancel = (item: INftCardPrediction | INftCardPrediction | ICardPack) => {
+    setCancelNftCard(item as INftCardPrediction)
+    setCancelModal(true)
+  }
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal"/>
       <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
+      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Prediction"/>}
       {currentUser ? (
         predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
@@ -206,6 +216,7 @@ export const PredictionsPage: React.FC = () => {
                     cardType="prediction"
                     onClaimSubmit={onClickSubmitClaim}
                     onView={handleView}
+                    onCancel={handleCancel}
                   />
                 ) : (
                   <Loader />

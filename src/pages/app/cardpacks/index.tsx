@@ -33,6 +33,8 @@ import { ICardPack, ICardPackCards } from "../../../models/card_pack";
 import api from "../../../config/api";
 import { toast, ToastContainer } from "react-toastify";
 import OpenCardPack from "../../../modules/app/dates/OpenCardPack";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+import { CancelListingModal } from "../../../components/Modals/CancelListing";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
@@ -47,6 +49,8 @@ export const CardPackPage: React.FC = () => {
     cardsToAnimation: {} as ICardPackCards,
   });
   const [nftCardPack, setNftCardPack] = useState<ICardPack[] | null>(null);
+  const [cancelNftCard, setCancelNftCard] = useState<ICardPack>()
+  const [cancelModal, setCancelModal] = useState(true)
 
   const getPageData = async () => {
     setIsLoading(true);
@@ -145,6 +149,11 @@ export const CardPackPage: React.FC = () => {
     setIsLoadingFilter(false);
   };
 
+  const handleCancel = (item: INftCardPrediction | INftCardPrediction | ICardPack) => {
+    setCancelNftCard(item as ICardPack)
+    setCancelModal(true)
+  }
+
   return (
     <AppLayout>
       <ToastContainer
@@ -160,6 +169,7 @@ export const CardPackPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Card Pack"/>}
       {currentUser ? (
         nftCardPack && nftCardPack?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
@@ -201,6 +211,7 @@ export const CardPackPage: React.FC = () => {
                     onCraft={handleCraft}
                     onSell={handleSell}
                     onView={handleView}
+                    onCancel={handleCancel}
                   />
                 ) : openCard.open ? (
                   <OpenCardPack

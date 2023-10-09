@@ -64,6 +64,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onOpen={onCraft}
             onView={onView}
             onSell={onSell}
+            onCancel={onCancel}
           />
         ))}
       {identityData &&
