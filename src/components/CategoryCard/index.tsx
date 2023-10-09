@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DateCardProps } from "../../types";
 import {
   CardButton,
@@ -14,7 +14,8 @@ import {
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
 import { CardImgWrapper } from "../MarketCard/styles";
-import { useMyInfoContext } from "../../context";
+import { useCelebritiesContext, useMyInfoContext } from "../../context";
+import { ICelebrity } from "../../models/celebrity";
 
 export const CategoryCard: React.FC<DateCardProps> = ({
   item,
@@ -31,14 +32,36 @@ export const CategoryCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const { myInfoContext } = useMyInfoContext();
+  const { celebritiesContext } = useCelebritiesContext();
+  const [identityMatches, setIdentityMatches] = useState<ICelebrity[]>([]);
 
+  useEffect(() => {
+    if (celebritiesContext && category) {
+      setIdentityMatches(
+        Array.from(
+          (celebritiesContext as Map<number, ICelebrity>).values()
+        ).filter(
+          (v: ICelebrity) => v.category === category
+        )
+      );
+    }
+
+  }, [celebritiesContext, category])
 
   function formatCategory(category: string) {
     const words = category.split(' ');
-  
+
     const formattedCategory = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
-  
+
     return formattedCategory;
+  }
+
+  const captilizeEachLetterOfWord = (data: string) => {
+    let words = data.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1) + " "
+    }
+    return words
   }
 
   return (
@@ -64,20 +87,13 @@ export const CategoryCard: React.FC<DateCardProps> = ({
             <TooltipContent className="tooltip-content">
               <div>
                 <h3>Identity Matches</h3>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Brad Pitt</TooltipItem>
-                <TooltipItem>Emma Watson</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Michael B. Jordan</TooltipItem>
-                <TooltipItem>Kid Rock</TooltipItem>
-                <TooltipItem>Barack Obama</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Brad Pitt</TooltipItem>
-                <TooltipItem>Emma Watson</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Michael B. Jordan</TooltipItem>
-                <TooltipItem>Kid Rock</TooltipItem>
-                <TooltipItem>Barack Obama</TooltipItem>
+                {
+                  identityMatches && identityMatches.map((v) => (
+                    <TooltipItem>
+                      {captilizeEachLetterOfWord(v.name)}
+                    </TooltipItem>
+                  ))
+                }
               </div>
             </TooltipContent>
           </CardTooltip>

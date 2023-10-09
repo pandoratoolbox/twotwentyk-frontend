@@ -25,9 +25,8 @@ const getImagePath = (
   const raritySuffix =
     rarity === 0 ? "Core" : rarity === 1 ? "Rare" : "Uncommon";
   const dateType = isYear ? "Year" : "Month-Day";
-  return `/assets/nfts/rarity/${
-    itemYear ? dateType : category
-  }-${raritySuffix}-copy.png`;
+  return `/assets/nfts/rarity/${itemYear ? dateType : category
+    }-${raritySuffix}-copy.png`;
 };
 
 export const DateCard: React.FC<DateCardProps> = ({
@@ -97,34 +96,22 @@ export const DateCard: React.FC<DateCardProps> = ({
         {item?.year && <CardBottomWrapper>{item?.year}</CardBottomWrapper>}
         <CardOverlayWrapper className="overlay">
           <CardButtonGroup>
-            <CardTooltip>
-              <div className="bg-black">
-                <IconUser2 />
-              </div>
-              <TooltipContent position={position} className="tooltip-content">
-                <div>
-                  <h3>Identity Matches</h3>
-                  {identityMatches &&
-                    identityMatches.map((v) => (
-                      <TooltipItem>{v.name}</TooltipItem>
-                    ))}
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Brad Pitt</TooltipItem>
-                  <TooltipItem>Emma Watson</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Michael B. Jordan</TooltipItem>
-                  <TooltipItem>Kid Rock</TooltipItem>
-                  <TooltipItem>Barack Obama</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Brad Pitt</TooltipItem>
-                  <TooltipItem>Emma Watson</TooltipItem>
-                  <TooltipItem>Tom Brady</TooltipItem>
-                  <TooltipItem>Michael B. Jordan</TooltipItem>
-                  <TooltipItem>Kid Rock</TooltipItem>
-                  <TooltipItem>Barack Obama</TooltipItem>
+            {
+              buttonText !== "Crafting" && <CardTooltip>
+                <div className="bg-black">
+                  <IconUser2 />
                 </div>
-              </TooltipContent>
-            </CardTooltip>
+                <TooltipContent position={position} className="tooltip-content">
+                  <div>
+                    <h3>Identity Matches</h3>
+                    {identityMatches &&
+                      identityMatches.map((v) => (
+                        <TooltipItem>{v.name}</TooltipItem>
+                      ))}
+                  </div>
+                </TooltipContent>
+              </CardTooltip>
+            }
             {onView && (
               <CardButton onClick={() => onView(item)}>View</CardButton>
             )}

@@ -162,22 +162,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           )}
           {item?.owner_id !== myInfoContext?.id && onBuy && (
             <CardButton onClick={() => onBuy(item)}>Buy</CardButton>
-          )}
-
-          <CardTooltip>
-            <span>
-              {triggers && triggers?.length > 0 ? `${triggers.length}T` : "#T"}
-            </span>
-            <TooltipContent className="tooltip-content">
-              <div>
-                <h3>Triggers</h3>
-                {triggers &&
-                  triggers?.map((item: string, key: number) => (
-                    <TooltipItem key={key}>{item}</TooltipItem>
-                  ))}
-              </div>
-            </TooltipContent>
-          </CardTooltip>
+          )}u
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>
