@@ -107,20 +107,19 @@ export const CategoriesPage: React.FC = () => {
     rarities: null,
     status: null,
   });
+
   // filter option click
   const handleOptionClick = async (
     filterType: string,
     selectedOptions: string[]
   ) => {
     setIsLoadingFilter(true);
-
     let newFilters: NftCardCategoryFilters = {
       card_series_id: filters.card_series_id,
       status: filters.status,
       rarities: filters.rarities,
       categories: filters.categories,
     };
-
     switch (filterType) {
       case "Category":
         newFilters.categories = selectedOptions.map((v) => {
@@ -141,13 +140,58 @@ export const CategoriesPage: React.FC = () => {
         newFilters.card_series_id = Number(selectedOptions[0]);
         break;
     }
+
     setFilters(newFilters);
+
     let res = await getMyNftCardCategory(newFilters);
     if (res?.data) {
       setNftCardCategoryData(res?.data as INftCardCategory[]);
     }
+
     setIsLoadingFilter(false);
   };
+
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await getMyNftCardCategory(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setNftCardCategoryData(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await getMyNftCardCategory(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setNftCardCategoryData(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await getMyNftCardCategory(null);
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.rarity - a.rarity);
+        setNftCardCategoryData(response?.data);
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -176,7 +220,10 @@ export const CategoriesPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CategoryFilterSection onClick={handleOptionClick} />
+                  <CategoryFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     cardType="category"
                     data={nftCardCategoryData}
@@ -204,7 +251,10 @@ export const CategoriesPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CategoryFilterSection onClick={handleOptionClick} />
+                  <CategoryFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     cardType="category"
                     data={nftCardCategoryData}
