@@ -1,4 +1,4 @@
-import React, { useEffect, useState} from "react";
+import React, { useEffect, useState } from "react";
 import { DateCardProps } from "../../types";
 import {
   CardButton,
@@ -11,9 +11,10 @@ import {
 } from "./styles";
 import { CardBottomWrapper } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-<<<<<<< HEAD
-import { useMonthContext, useMyInfoContext } from "../../context";
+import { useMonthContext, useMyInfoContext, useCelebritiesContext } from "../../context";
 import { CardImgWrapper } from "../MarketCard/styles";
+
+import { ICelebrity } from "../../models/celebrity";
 
 const getImagePath = (
   itemYear: any,
@@ -29,11 +30,6 @@ const getImagePath = (
   }-${raritySuffix}-copy.png`;
 };
 
-=======
-import { useCelebritiesContext, useMonthContext, useMyInfoContext } from "../../context";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
-import { ICelebrity } from "../../models/celebrity";
->>>>>>> fbccb720957c6d6315586e68ccc675ea2d52fae7
 export const DateCard: React.FC<DateCardProps> = ({
   item,
   image,
@@ -49,13 +45,28 @@ export const DateCard: React.FC<DateCardProps> = ({
   onCraft,
   onSell,
   onView,
-  buttonText
+  buttonText,
 }) => {
   console.log("buttonText====", buttonText);
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const isYear = Boolean(item?.year);
   const imagePath = getImagePath(item?.year, rarity, "Month-Day", isYear);
+  const { celebritiesContext } = useCelebritiesContext();
+
+  const [identityMatches, setIdentityMatches] = useState<ICelebrity[]>([]);
+
+  useEffect(() => {
+    if (celebritiesContext && day && month) {
+      setIdentityMatches(
+        Array.from(
+          (celebritiesContext as Map<number, ICelebrity>).values()
+        ).filter(
+          (v: ICelebrity) => v.birth_day === day && v.birth_month === month
+        )
+      );
+    }
+  }, [celebritiesContext, day, month]);
 
   return (
     item?.id && (
@@ -72,15 +83,16 @@ export const DateCard: React.FC<DateCardProps> = ({
           </div>
         </CardImgWrapper>
 
-
-        {buttonText && buttonText != undefined && buttonText != '' ? (
-          <CardBottomWrapper>
-            {buttonText}
-          </CardBottomWrapper>) : day && monthContext && (
+        {buttonText && buttonText != undefined && buttonText != "" ? (
+          <CardBottomWrapper>{buttonText}</CardBottomWrapper>
+        ) : (
+          day &&
+          monthContext && (
             <CardBottomWrapper>
               {day} {(monthContext as Map<number, string>).get(month)}
             </CardBottomWrapper>
-          )}
+          )
+        )}
 
         {item?.year && <CardBottomWrapper>{item?.year}</CardBottomWrapper>}
         <CardOverlayWrapper className="overlay">
@@ -92,9 +104,10 @@ export const DateCard: React.FC<DateCardProps> = ({
               <TooltipContent position={position} className="tooltip-content">
                 <div>
                   <h3>Identity Matches</h3>
-                  {identityMatches && identityMatches.map((v) => (<TooltipItem>
-                    {v.name}
-                  </TooltipItem>))}
+                  {identityMatches &&
+                    identityMatches.map((v) => (
+                      <TooltipItem>{v.name}</TooltipItem>
+                    ))}
                   <TooltipItem>Tom Brady</TooltipItem>
                   <TooltipItem>Brad Pitt</TooltipItem>
                   <TooltipItem>Emma Watson</TooltipItem>
