@@ -119,6 +119,7 @@ export type DateCardProps = {
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
   item?: any;
+  buttonText?:any;
 };
 
 export type TriggerCardProps = {
@@ -140,6 +141,7 @@ export type DateCardGridProps = {
   data?: Array<any>;
   identityData?: Array<any>;
   cardType?: string;
+  buttonText?:any;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
@@ -297,7 +299,7 @@ export type NotificationProps = {
 
 // export type forItem = {
 //   nft_card_prediction_id?: number;
-//   nft_collection_id?: number;
+//   card_collection_id?: number;
 //   owner?: any;
 //   nft_card_day_month?: any;
 //   nft_card_trigger?: any;

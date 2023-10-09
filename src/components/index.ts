@@ -14,6 +14,7 @@ export * from "./Modals";
 export * from "./NotificationItem";
 export * from "./Notify";
 export * from "./PredictionCard";
+export * from "./IdentityCard";
 export * from "./SelectBox";
 export * from "./SocialAuthButton";
 export * from "./SocialButtonsGroup";

@@ -87,7 +87,7 @@ export const TriggersPage: React.FC = () => {
     tiers: null,
     rarities: null,
     status: null,
-    nft_collection_id: 1,
+    card_collection_id: 1,
     // categories: null,
     triggers: null,
     card_series_id: 1,
@@ -108,7 +108,7 @@ export const TriggersPage: React.FC = () => {
       triggers: filters.triggers,
       rarities: filters.rarities,
       tiers: filters.tiers,
-      nft_collection_id: 1,
+      card_collection_id: 1,
       card_series_id: 1,
     };
 

@@ -48,7 +48,7 @@ export const MFilterSection: React.FC<{ page?: string, onSelectTrigger?: (select
       return {checked: false, value: v.id.toString(), label: v.name}
     }))
 
-    setOptionsCardTypes(Array.from((cardTypesContext as Map<number, {id: number, name: string}>).values()).map(v => {
+    setOptionsCardTypes(Array.from((marketCardTypesContext as Map<number, {id: number, name: string}>).values()).map(v => {
       return {checked: false, value: v.id.toString(), label: v.name}
     }))
 

@@ -17,6 +17,7 @@ import {
   FeedItem,
   MarketCard,
   PredictionCard,
+  IdentityCard,
   SellConfirmModal,
   Loader,
   DashboardTitleBG,
@@ -101,7 +102,7 @@ export const DashboardPage: React.FC = () => {
     price: string | number
   ) => {
     const newMarketplace = {
-      nft_collection_id: collection_id,
+      card_collection_id: collection_id,
       nft_id: id,
       price: Math.round((typeof price === 'string' ? parseFloat(price) : price ) * 100),
     };
@@ -275,7 +276,7 @@ export const DashboardPage: React.FC = () => {
                   {identityNfts
                     ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                     .map((item: any, key: number) => (
-                      <PredictionCard
+                      <IdentityCard
                         dashbordstyle={"true"}
                         height={"225"}
                         isNotHover={true}

@@ -34,7 +34,10 @@ export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
-  onCardClicked: (key: number | string) => void;
+  onCardClicked: (
+    key: number | string,
+    item: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  ) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
   onSelectCardTrigger: (card: INftCardTrigger) => void;
   onSelectCardIdentity: (card: INftCardIdentity) => void;
@@ -111,25 +114,51 @@ export const PredictionSelectCardSection: React.FC<{
   };
 
   const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
-  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
-  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
-  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
+  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>(
+    []
+  );
+  const [optionsCollection, setOptionsCollection] = useState<
+    SelectOptionProps[]
+  >([]);
+  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>(
+    []
+  );
   const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
-  const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
+  const [optionsCategories, setOptionsCategories] = useState<
+    SelectOptionProps[]
+  >([]);
 
   useEffect(() => {
     if (statusContext && allRaritiesContext) {
-      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
+      setOptionsStatus(
+        Array.from(
+          (statusContext as Map<number, { id: number; name: string }>).values()
+        ).map((v) => {
+          return { checked: false, value: v.id.toString(), label: v.name };
+        })
+      );
 
-      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
-
+      setOptionsRarities(
+        Array.from(
+          (
+            allRaritiesContext as Map<number, { id: number; name: string }>
+          ).values()
+        ).map((v) => {
+          return { checked: false, value: v.id.toString(), label: v.name };
+        })
+      );
     }
-  }, [statusContext, allRaritiesContext])
+  }, [statusContext, allRaritiesContext]);
 
+  function checkRarity(rarity: number) {
+    if (rarity === 0) {
+      return "Core";
+    } else if (rarity === 1) {
+      return "Rare";
+    } else if (rarity === 2) {
+      return "Uncommon";
+    }
+  }
 
   return (
     <SelectCardSectionWrapper>
@@ -164,20 +193,22 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
-                      bg="/assets/nfts/1.png"
+                      onClick={() => onCardClicked(Number(item.id), item)}
                     >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
+                      {item.rarity || item.rarity === 0 ? (
+                        <img
+                          src={`/assets/nfts/rarity/Crafting-${checkRarity(
+                            item?.rarity
+                          )}-copy.png`}
+                          alt="nft"
+                        />
+                      ) : null}
                       <p>Crafting</p>
                     </CraftCard>
                     <SelectButton
                       className="select-button"
                       disabled={
                         clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
                       }
                       onClick={
                         clickedCard !== item.id || selectedCard === item.id
@@ -244,12 +275,34 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
-                      bg="/assets/nfts/1.png"
+                      className="crafting-card"
+                      onClick={() => onCardClicked(Number(item.id), item)}
                     >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
+                      {item.rarity || item.rarity === 0 ? (
+                        <>
+                          <img
+                            src={`/assets/nfts/rarity/Identity-Card-Blank-${checkRarity(
+                              item?.rarity
+                            )}.png`}
+                            alt="nft"
+                          />
+                          <div className="info-nft info-nft-identity">
+                            <img
+                              src={`/assets/nfts/rarity/${checkRarity(
+                                item?.rarity
+                              )}-Torso.gif`}
+                              alt="gif"
+                            />
+
+                            <div className="nft-info-detail">
+                              <h4 className="date">
+                                {item?.day} {item?.month} {item?.year}
+                              </h4>
+                              <h4>{item?.category}</h4>
+                            </div>
+                          </div>
+                        </>
+                      ) : null}
 
                       {item?.celebrity_name ? (
                         <p>{item.celebrity_name}</p>
@@ -276,8 +329,6 @@ export const PredictionSelectCardSection: React.FC<{
                       className="select-button"
                       disabled={
                         clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
                       }
                       onClick={
                         clickedCard !== item.id || selectedCard === item.id
@@ -345,20 +396,24 @@ export const PredictionSelectCardSection: React.FC<{
                     active={clickedCard === item.id ? "true" : undefined}
                   >
                     <CraftCard
-                      onClick={() => onCardClicked(Number(item.id))}
-                      bg="/assets/nfts/1.png"
+                      onClick={() => onCardClicked(Number(item.id), item)}
                     >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
+                      {item.rarity || item.rarity === 0 ? (
+                        <>
+                          <img
+                            src={`/assets/nfts/rarity/Trigger-${checkRarity(
+                              item?.rarity
+                            )}-No-Text.png`}
+                            alt="nft"
+                          />
+                        </>
+                      ) : null}
                       <p>{item.trigger}</p>
                     </CraftCard>
                     <SelectButton
                       className="select-button"
                       disabled={
                         clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
                       }
                       onClick={
                         clickedCard !== item.id || selectedCard === item.id

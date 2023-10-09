@@ -1,18 +1,12 @@
 import { styled } from "styled-components";
 
-export const DateCardWrapper = styled.div<{ bg: string; isnothover?: string }>`
+export const DateCardWrapper = styled.div<{ isnothover?: string }>`
   padding: 23px 25px;
 
   text-transform: capitalize;
   cursor: pointer;
   width: 100%;
-  /* height: 293px;*/
   position: relative;
-  /* background: ${({ bg }) =>
-    bg
-      ? `url(${bg}) no-repeat, #CDCDCD`
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"}; */
-  /* background-blend-mode: luminosity, normal; */
   background-position: center;
   background-size: cover;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
@@ -121,7 +115,7 @@ export const CardTooltip = styled.div`
   }
 `;
 
-export const TooltipContent = styled.div<{ position:string}>`
+export const TooltipContent = styled.div<{ position: string }>`
   h3 {
     font-weight: 600;
     font-size: 16px;
@@ -136,8 +130,8 @@ export const TooltipContent = styled.div<{ position:string}>`
   opacity: 0;
   visibility: hidden;
   background-color: #fff;
-  right: ${ ({position})=> position === 'left' ? '-100px' : '0px' };
-  left: ${ ({position})=> position === 'right' ? '-200px' : '0px' };
+  right: ${({ position }) => (position === "left" ? "-100px" : "0px")};
+  left: ${({ position }) => (position === "right" ? "-200px" : "0px")};
   top: 20px;
   z-index: 10;
   width: 255px;

@@ -25,13 +25,62 @@ export const CardWrapper = styled.div`
   }
 `;
 
-export const CardImgWrapper = styled.div`
+export const CardImgWrapper = styled.div<{
+  dashbordstyle?: boolean;
+}>`
   position: relative;
   display: flex;
   width: 100%;
   img {
     width: 100%;
     height: auto;
+  }
+  .info-nft {
+    position: relative;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    &.info-nft-day-month {
+      top: 50%;
+    }
+    &.info-nft-prediction {
+      top: 43%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      img {
+        width: 4vw;
+      }
+      h4 {
+        font-size: ${({ dashbordstyle }) =>
+          dashbordstyle
+            ? "clamp(0.6rem, 2vw, 0.8rem)"
+            : "clamp(0.8rem, 2vw, 1rem)"};
+      }
+    }
+    &.info-nft-identity {
+      top: 50%;
+
+      img {
+        width: 10vw;
+      }
+      .nft-info-detail {
+        position: absolute;
+        transform: translate(-12%, -40%);
+        left: 14%;
+        bottom: 0;
+        width: 180px;
+      }
+    }
+
+    &.info-nft-trigger {
+      bottom: 15%;
+      width: 75%;
+       h4 {
+        font-size: clamp(0.6rem, 2vw, 0.8rem);
+      }
+    }
   }
 `;
 
@@ -120,7 +169,7 @@ export const Rarity = styled.div`
   padding: 0 13px;
   /* background: #615e5e; */
 
-  @media (min-width:425px){
+  @media (min-width: 425px) {
     max-width: 60px !important;
   }
 `;

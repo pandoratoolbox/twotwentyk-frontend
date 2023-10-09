@@ -3,6 +3,7 @@ import { IMarketplaceListing, MarketplaceListing } from "./marketplace_listing";
 import { ICardSeries, CardSeries } from "./card_series";
 import { CardImages } from "./nft";
 import { INftCardTrigger } from "./nft_card_trigger";
+import { INftCardIdentity } from "./nft_card_identity";
 
 export interface INftCardPrediction {
   is_claimed?: boolean;
@@ -12,6 +13,7 @@ export interface INftCardPrediction {
   card_series?: ICardSeries;
   id?: number;
   celebrity_name?: string;
+  nft_identity?: INftCardIdentity;
   owner_id?: number;
   rarity?: number;
   card_series_id?: number;

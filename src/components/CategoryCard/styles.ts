@@ -1,16 +1,10 @@
 import { styled } from "styled-components";
 
-export const DateCardWrapper = styled.div<{ bg: string; isnothover?: string }>`
+export const DateCardWrapper = styled.div<{ isnothover?: string }>`
   padding: 23px 25px;
   cursor: pointer;
   width: 100%;
-  /* height: 293px; */
   position: relative;
-  /* background: ${({ bg }) =>
-    bg
-      ? `url(${bg}) no-repeat, #CDCDCD`
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), url(.png), #FFFFFF"};
-  background-blend-mode: luminosity, normal; */
   background-position: center;
   background-size: cover;
   box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.05);
