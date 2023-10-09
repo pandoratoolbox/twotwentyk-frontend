@@ -16,17 +16,19 @@ export const FilterGroupWrapper = styled.div`
   & > :not(:first-child) {
     margin-left: 18px;
   }
+  @media screen and (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
   @media screen and (max-width: 1024px) {
     display: grid;
-    /* grid-area: ; */
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     grid-gap: 20px 24px;
     & > :not(:first-child) {
       margin-left: 0px;
     }
   }
   @media screen and (max-width: 650px) {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(1, 1fr);
   }
   @media screen and (max-width: 425px) {
     grid-template-columns: 1fr;
@@ -123,11 +125,14 @@ export const CardGridWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   grid-gap: 24px;
-  @media screen and (max-width: 1024px) {
+  @media screen and (max-width: 1200px) {
     grid-template-columns: repeat(3, 1fr);
   }
-  @media screen and (max-width: 650px) {
+  @media screen and (max-width: 1024px) {
     grid-template-columns: repeat(2, 1fr);
+  }
+  @media screen and (max-width: 650px) {
+    grid-template-columns: repeat(1, 1fr);
   }
   @media screen and (max-width: 375px) {
     grid-template-columns: 1fr;
@@ -365,6 +370,10 @@ export const FrontBackCard = styled.div`
   width: 100%;
   backface-visibility: hidden;
 
+  img {
+    width: 100%;
+  }
+
   &.back {
     transform: rotateY(180deg);
   }
@@ -374,6 +383,9 @@ export const FrontBackCard = styled.div`
     justify-content: center;
     position: absolute;
     width: 100%;
+    h3{
+      margin: 0;
+    }
     img {
       width: 80%;
     }

@@ -250,7 +250,7 @@ export const CraftingPage: React.FC = () => {
                 <CraftingFilterSection onClick={handleOptionClick} />
                 {!isLoadingFilter ? (
                   <CardGridSection
-                    cardType="date"
+                    cardType="crafting"
                     buttonText={"Crafting"}
                     data={nftCraftingData}
                     onCraft={handleCraft}
