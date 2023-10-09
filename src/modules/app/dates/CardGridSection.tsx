@@ -1,7 +1,12 @@
 import React from "react";
 import { CardGridWrapper } from "./styles";
 import { DateCardGridProps } from "../../../types";
-import { DateCard, PredictionCard, CardPack } from "../../../components";
+import {
+  DateCard,
+  PredictionCard,
+  CardPack,
+  IdentityCard,
+} from "../../../components";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { TriggerCard } from "../../../components/TriggerCard";
 
@@ -12,7 +17,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onCraft,
   onSell,
   onView,
-  onClaimSubmit
+  onClaimSubmit,
 }) => {
   return (
     <CardGridWrapper>
@@ -30,7 +35,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
       {cardType === "date" &&
         data?.map((item, key) => (
           <DateCard
-            position={key%2 == 0 ? 'left' : 'right'}
+            position={key % 2 === 0 ? "left" : "right"}
             key={key}
             item={item}
             {...item}
@@ -62,9 +67,25 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onSell={onSell}
           />
         ))}
-      {identityData &&
+      {cardType === "prediction" &&
         identityData?.map((item, key) => (
           <PredictionCard
+            cardType={cardType}
+            height={293}
+            isNotHover={true}
+            key={`${cardType}-${key}`}
+            item={item}
+            {...item}
+            onCraft={onCraft}
+            onView={onView}
+            onSell={onSell}
+            onClaimSubmit={onClaimSubmit}
+          />
+        ))}
+
+      {cardType === "identity" &&
+        identityData?.map((item, key) => (
+          <IdentityCard
             cardType={cardType}
             height={293}
             isNotHover={true}

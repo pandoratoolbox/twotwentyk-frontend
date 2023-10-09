@@ -20,6 +20,7 @@ export const EmptyCraftCardWrapper = styled.div`
   img {
     width: 100%;
     height: 100%;
+    object-fit: fill;
   }
   &::after {
     content: "";
@@ -107,7 +108,7 @@ export const CraftCardGroup = styled.div`
   padding: 0 10px 20px;
   padding-top: 30px;
   display: flex;
-
+  justify-content: space-around;
   overflow: auto;
   align-items: flex-end;
   & > :not(:first-child) {
@@ -210,14 +211,13 @@ export const CraftingCardWrapper = styled.div<{ active?: string }>`
   } */
 `;
 
-export const CraftCard = styled.div<{ bg: string }>`
+export const CraftCard = styled.div<{}>`
   text-transform: capitalize;
   position: relative;
   width: 100%;
   height: 220px;
   border-radius: 5px;
   background-blend-mode: luminosity, normal;
-  background: ${({ bg }) => `url(${bg}) no-repeat, #fff`};
   background-size: cover;
   background-position: center;
   &.preview {
@@ -228,10 +228,55 @@ export const CraftCard = styled.div<{ bg: string }>`
   }
   &.crafting-card {
     width: 100%;
-    height: 178px;
+    // height: 178px;
     border: 1.61734px solid rgba(0, 0, 0, 0.25);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.17);
     border-radius: 5px;
+    .info-nft {
+      position: relative;
+      text-align: center;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      &.info-nft-day-month {
+        top: 50%;
+      }
+      &.info-nft-prediction {
+        top: 43%;
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        img {
+          width: 4vw;
+        }
+        h4 {
+          font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+      }
+      &.info-nft-identity {
+        top: 50%;
+        width: 100%;
+        img {
+          width: 5vw;
+        }
+        .nft-info-detail {
+          width: 100%;
+          position: absolute;
+          // transform: translate(-12%, -40%);
+          // left: 14%;
+          bottom: 0;
+          // width: 180px;
+        }
+      }
+
+      &.info-nft-trigger {
+        bottom: 15%;
+        width: 75%;
+        h4 {
+          font-size: clamp(0.6rem, 2vw, 0.8rem);
+        }
+      }
+    }
   }
   img {
     width: 100%;

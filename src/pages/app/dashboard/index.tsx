@@ -17,6 +17,7 @@ import {
   FeedItem,
   MarketCard,
   PredictionCard,
+  IdentityCard,
   SellConfirmModal,
   Loader,
   DashboardTitleBG,
@@ -275,7 +276,7 @@ export const DashboardPage: React.FC = () => {
                   {identityNfts
                     ?.slice(0, 4) //////////////////// Have to add some filter by collection id
                     .map((item: any, key: number) => (
-                      <PredictionCard
+                      <IdentityCard
                         dashbordstyle={"true"}
                         height={"225"}
                         isNotHover={true}

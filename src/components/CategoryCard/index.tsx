@@ -11,11 +11,9 @@ import {
 } from "./styles";
 import {
   CardBottomWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
 import { useMyInfoContext } from "../../context";
 
 export const CategoryCard: React.FC<DateCardProps> = ({
@@ -33,23 +31,28 @@ export const CategoryCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const { myInfoContext } = useMyInfoContext();
+
+
+  function formatCategory(category: string) {
+    const words = category.split(' ');
   
-  image = "/assets/nfts/new4.png";
+    const formattedCategory = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+  
+    return formattedCategory;
+  }
+
   return (
-    <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
-      {/* <CardTopWrapper>
-        <div></div>
-        {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-      </CardTopWrapper> */}
+    <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
       <CardImgWrapper>
-        <img src={image} alt="nft" />
-        <>
-          {rarity === 0 && <Rarity>Common</Rarity>}
-          {rarity === 1 && <Rarity>Uncommon</Rarity>}
-          {rarity === 2 && <Rarity>Rare</Rarity>}
-        </>
+        {rarity === 0 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Core.png`} alt="nft" />
+        )}
+        {rarity === 1 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Rare.png`} alt="nft" />
+        )}
+        {rarity === 2 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Uncommon.png`} alt="nft" />
+        )}
       </CardImgWrapper>
       <CardBottomWrapper>{category}</CardBottomWrapper>
       <CardOverlayWrapper className="overlay">
@@ -84,7 +87,9 @@ export const CategoryCard: React.FC<DateCardProps> = ({
               Craft Identity
             </CardButton>
           )}
-          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && (
+            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
+          )}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>

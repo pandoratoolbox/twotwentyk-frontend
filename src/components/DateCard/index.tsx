@@ -9,20 +9,31 @@ import {
   TooltipContent,
   TooltipItem,
 } from "./styles";
-import {
-  CardBottomWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
-} from "../PredictionCard/styles";
+import { CardBottomWrapper } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
 import { useMonthContext, useMyInfoContext } from "../../context";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
+
+const getImagePath = (
+  itemYear: any,
+  rarity: number,
+  category: string,
+  isYear: boolean
+) => {
+  const raritySuffix =
+    rarity === 0 ? "Core" : rarity === 1 ? "Rare" : "Uncommon";
+  const dateType = isYear ? "Year" : "Month-Day";
+  return `/assets/nfts/rarity/${
+    itemYear ? dateType : category
+  }-${raritySuffix}-copy.png`;
+};
+
 export const DateCard: React.FC<DateCardProps> = ({
   item,
   image,
   day,
   month,
-  position = '',
+  position = "",
   id = 0,
   is_crafted,
   owner_id,
@@ -35,18 +46,22 @@ export const DateCard: React.FC<DateCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
+  const isYear = Boolean(item?.year);
+  const imagePath = getImagePath(item?.year, rarity, "Month-Day", isYear);
 
-  image = "/assets/nfts/new4.png";
   return (
     item?.id && (
-      <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
+      <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
         <CardImgWrapper>
-          <img src={image} alt="nft" />
-          <>
-            {rarity === 0 && <Rarity>Common</Rarity>}
-            {rarity === 1 && <Rarity>Uncommon</Rarity>}
-            {rarity === 2 && <Rarity>Rare</Rarity>}
-          </>
+          <img src={imagePath} alt="nft" />
+          <div className="info-nft info-nft-day-month">
+            {day && monthContext && (
+              <h3>
+                {day} {(monthContext as Map<number, string>).get(month)}
+              </h3>
+            )}
+            {item?.year && <h3>{item?.year}</h3>}
+          </div>
         </CardImgWrapper>
         {day && monthContext && (
           <CardBottomWrapper>
@@ -88,7 +103,9 @@ export const DateCard: React.FC<DateCardProps> = ({
                 Craft Identity
               </CardButton>
             )}
-            {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+            {item?.owner_id === myInfoContext?.id && onSell && (
+              <CardButton onClick={() => onSell(item)}>Sell</CardButton>
+            )}
           </CardButtonGroup>
         </CardOverlayWrapper>
       </DateCardWrapper>
