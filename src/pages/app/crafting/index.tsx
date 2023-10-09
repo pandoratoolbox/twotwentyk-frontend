@@ -262,13 +262,13 @@ export const CraftingPage: React.FC = () => {
                 )}
 
                 <ViewDateCardSection
-                  cardType="date"
+                  cardType="crafting"
                   isView={isView === "view"}
                   item={selectedItem}
                   onClose={() => setIsView("")}
                 />
                 <SellDateCardSection
-                  cardType="date"
+                  cardType="crafting"
                   onSellConfirm={handleSellConfirm}
                   isView={isView === "sell"}
                   item={selectedItem}
