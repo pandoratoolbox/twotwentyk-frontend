@@ -157,7 +157,9 @@ export const TriggersPage: React.FC = () => {
               <h3>Triggers</h3>
             </DatePageTitleWrapper>
             <DatePageContent>
-              {!isLoadingFilter && nftCardTriggerData ? (
+              {!isLoadingFilter &&
+              nftCardTriggerData &&
+              nftCardTriggerData?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
@@ -183,9 +185,35 @@ export const TriggersPage: React.FC = () => {
                     onView={handleView}
                   />
                 </>
-              ) : !isLoading ? (
-                <Loader />
-              ) : (
+              ) : !isLoading &&
+                !isLoadingFilter &&
+                nftCardTriggerData?.length == 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <TriggerFilterSection onClick={handleOptionClick} />
+                  <CardGridSection
+                    data={nftCardTriggerData}
+                    // data={[]}
+                    cardType={"trigger"}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading && nftCardTriggerData == null ? (
                 <EmptyCards>
                   <div className="trigeres">
                     <h3>No Triggers</h3>
@@ -199,7 +227,9 @@ export const TriggersPage: React.FC = () => {
                     </Button>
                   </div>
                 </EmptyCards>
-              )}
+              ) : isLoading ? (
+                <Loader />
+              ) : null}
             </DatePageContent>
             {nftCardTriggerData && nftCardTriggerData?.length > 0 ? (
               <>

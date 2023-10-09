@@ -41,7 +41,9 @@ export const IdentitiesPage: React.FC = () => {
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[]>([]);
+  const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[] | null>(
+    null
+  );
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
 
@@ -57,7 +59,6 @@ export const IdentitiesPage: React.FC = () => {
 
   const getPageData = async () => {
     setIsLoading(true);
-
     const response = await getMyNftCardIdentity(null);
     if (response?.data) {
       setIdentityNfts(response.data);
@@ -151,7 +152,6 @@ export const IdentitiesPage: React.FC = () => {
     if (res?.data) {
       setIdentityNfts(res?.data as INftCardIdentity[]);
     }
-
     setIsLoadingFilter(false);
   };
 
@@ -165,7 +165,7 @@ export const IdentitiesPage: React.FC = () => {
               <h3>Identities</h3>
             </DatePageTitleWrapper>
             <DatePageContent>
-              {!isLoadingFilter && identityNfts ? (
+              {!isLoadingFilter && identityNfts && identityNfts?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
@@ -184,24 +184,45 @@ export const IdentitiesPage: React.FC = () => {
                     onView={handleView}
                   />
                 </>
-              ) : !isLoading ? (
-                <Loader />
-              ) : (
+              ) : !isLoading && !isLoadingFilter && identityNfts ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="craft-button"
+                      onClick={() => navigate("/crafting/identities")}
+                    >
+                      Craft Identity
+                    </Button>
+                  </ButtonGroup>
+                  <IdentitiesFilterSection onClick={handleOptionClick} />
+                  <CardGridSection
+                    identityData={identityNfts}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    cardType="identity"
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading && identityNfts == null ? (
                 <EmptyCards>
-                  <h3>No Identities Yet</h3>
-                  <p>
-                    Identities are cards created by combining a Day-Month card,
-                    a Year card and a Category card. Identities are combined
-                    with Trigger cards to craft Predictions.
-                  </p>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/crafting/identities")}
-                  >
-                    Craft Identity
-                  </Button>
+                  <div className="trigeres">
+                    <h3>No Identities Yet</h3>
+                    <p>
+                      Identities are cards created by combining a Day-Month
+                      card, a Year card and a Category card. Identities are
+                      combined with Trigger cards to craft Predictions.
+                    </p>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/crafting/identities")}
+                    >
+                      Craft Identity
+                    </Button>
+                  </div>
                 </EmptyCards>
-              )}
+              ) : isLoading ? (
+                <Loader />
+              ) : null}
             </DatePageContent>
             {identityNfts && identityNfts?.length > 0 ? (
               <>

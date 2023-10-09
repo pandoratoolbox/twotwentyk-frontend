@@ -11,7 +11,6 @@ import {
 import { Button, SellConfirmModal, Loader } from "../../../components";
 import {
   CardGridSection,
-
   CraftingFilterSection,
   SellDateCardSection,
   ViewDateCardSection,
@@ -56,8 +55,8 @@ export const CraftingPage: React.FC = () => {
   });
 
   const [nftCraftingData, setNftCraftingData] = useState<
-    (INftCardDayMonth | INftCardYear)[]
-  >([]);
+    (INftCardDayMonth | INftCardYear)[] | null
+  >(null);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -65,12 +64,13 @@ export const CraftingPage: React.FC = () => {
   }, []);
 
   const getCratfinData = async () => {
-    let response:any = await api.get(`/me/nft_card_crafting`);
+    setIsLoading(true);
+    let response: any = await api.get(`/me/nft_card_crafting`);
     if (response.status === 200) {
-      console.log("response.data===",response.data);
       setNftCraftingData(response.data);
     }
-  }
+    setIsLoading(false);
+  };
 
   const handleSellConfirm = async (
     id: number,
@@ -93,8 +93,8 @@ export const CraftingPage: React.FC = () => {
       let res = await api.post(`/marketplace_listing`, params);
       if (res.status === 200) {
         toast.success("You listed a card for sale!");
-        setModal(true)
-        setIsView("")
+        setModal(true);
+        setIsView("");
       }
     } catch (e: any) {
       toast.error(e.response.data);
@@ -122,7 +122,6 @@ export const CraftingPage: React.FC = () => {
   ) => {
     console.log(filterType, selectedOptions);
     // for loader
-    setNftCraftingData([]);
     setIsLoadingFilter(true);
 
     let newFilters: DateFilters = {
@@ -153,6 +152,7 @@ export const CraftingPage: React.FC = () => {
         break;
     }
 
+    setIsLoadingFilter(false);
     setFilters(newFilters);
   };
 
@@ -200,7 +200,7 @@ export const CraftingPage: React.FC = () => {
 
     //setNftCraftingData(n);
 
-    setIsLoadingFilter(false);
+    // setIsLoadingFilter(false);
   };
 
   // useEffect(() => {
@@ -224,31 +224,32 @@ export const CraftingPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-
       {currentUser ? (
-        nftCraftingData && nftCraftingData?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
-            <DatePageContainer>
-              <DatePageTitleWrapper>
-                <h3>Crafting</h3>
-              </DatePageTitleWrapper>
-              <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Buy Cards
-                  </Button>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/buy")}
-                  >
-                    Buy Packs
-                  </Button>
-                </ButtonGroup>
-                <CraftingFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+        <DatesPageWrapper isview={isView ? "true" : undefined}>
+          <DatePageContainer>
+            <DatePageTitleWrapper>
+              <h3>Crafting</h3>
+            </DatePageTitleWrapper>
+            <DatePageContent>
+              {!isLoadingFilter &&
+              nftCraftingData &&
+              nftCraftingData?.length > 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <CraftingFilterSection onClick={handleOptionClick} />
                   <CardGridSection
                     cardType="date"
                     buttonText={"Crafting"}
@@ -257,10 +258,60 @@ export const CraftingPage: React.FC = () => {
                     onSell={handleSell}
                     onView={handleView}
                   />
-                ) : (
-                  <Loader />
-                )}
-
+                </>
+              ) : !isLoading &&
+                !isLoadingFilter &&
+                nftCraftingData?.length == 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <CraftingFilterSection onClick={handleOptionClick} />
+                  <CardGridSection
+                    cardType="date"
+                    buttonText={"Crafting"}
+                    data={nftCraftingData}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading && nftCraftingData == null ? (
+                <EmptyCards>
+                  <div className="trigeres">
+                    <h3>No Date Cards</h3>
+                    <p>It looks like you don’t have any date cards yet. </p>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </div>
+                </EmptyCards>
+              ) : isLoading ? (
+                <Loader />
+              ) : null}
+            </DatePageContent>
+            {nftCraftingData && nftCraftingData?.length > 0 ? (
+              <>
                 <ViewDateCardSection
                   cardType="date"
                   isView={isView === "view"}
@@ -274,26 +325,14 @@ export const CraftingPage: React.FC = () => {
                   item={selectedItem}
                   onClose={() => setIsView("")}
                 />
-              </DatePageContent>
-            </DatePageContainer>
-          </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Date Cards</h3>
-            <p>It looks like you don’t have any date cards yet. </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Buy Cards
-            </Button>
-            <Button className="buy-button" onClick={() => navigate("/buy")}>
-              Buy Packs
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
+          </DatePageContainer>
+        </DatesPageWrapper>
       ) : (
         <EmptyCards className="login">
           <p className="login">Log in to start playing</p>

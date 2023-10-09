@@ -140,7 +140,7 @@ export const CardPackPage: React.FC = () => {
       res = await getFilterCollection(selectedOptions[0]);
     }
     if (res?.data) {
-      setNftCardPack(res?.data as ICardPack[]);
+      // setNftCardPack(res?.data as ICardPack[]);
     }
     setIsLoadingFilter(false);
   };

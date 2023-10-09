@@ -107,7 +107,6 @@ export const CategoriesPage: React.FC = () => {
     rarities: null,
     status: null,
   });
-
   // filter option click
   const handleOptionClick = async (
     filterType: string,
@@ -142,17 +141,13 @@ export const CategoriesPage: React.FC = () => {
         newFilters.card_series_id = Number(selectedOptions[0]);
         break;
     }
-
     setFilters(newFilters);
-
     let res = await getMyNftCardCategory(newFilters);
     if (res?.data) {
       setNftCardCategoryData(res?.data as INftCardCategory[]);
     }
-
     setIsLoadingFilter(false);
   };
-
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -219,27 +214,31 @@ export const CategoriesPage: React.FC = () => {
                     onView={handleView}
                   />
                 </>
-              ) : !isLoading && nftCardCategoryData?.length == 0 ? (
-                <Loader />
-              ) : (
+              ) : !isLoading && nftCardCategoryData == null ? (
                 <EmptyCards>
-                  <h3>No Category Cards</h3>
-                  <p>It looks like you don’t have any category cards yet.  </p>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Buy Cards
-                  </Button>
-                  <Button
-                    className="buy-button"
-                    variant="outlined"
-                    onClick={() => navigate("/buy")}
-                  >
-                    Buy Packs
-                  </Button>
+                  <div className="trigeres">
+                    <h3>No Category Cards</h3>
+                    <p>
+                      It looks like you don’t have any category cards yet.  
+                    </p>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      variant="outlined"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </div>
                 </EmptyCards>
-              )}
+              ) : isLoading ? (
+                <Loader />
+              ) : null}
             </DatePageContent>
             {nftCardCategoryData && nftCardCategoryData?.length > 0 ? (
               <>
