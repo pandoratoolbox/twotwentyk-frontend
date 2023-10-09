@@ -45,7 +45,7 @@ export const DatesPage: React.FC = () => {
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
   const [selectedItem, setSelectedItem] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
   const [filters, setFilters] = useState<DateFilters>({
     card_types: [3, 4],
@@ -83,8 +83,8 @@ export const DatesPage: React.FC = () => {
       let res = await api.post(`/marketplace_listing`, params);
       if (res.status === 200) {
         toast.success("You listed a card for sale!");
-        setModal(true)
-        setIsView("")
+        setModal(true);
+        setIsView("");
       }
     } catch (e: any) {
       toast.error(e.response.data);
@@ -142,21 +142,19 @@ export const DatesPage: React.FC = () => {
         newFilters.card_series_id = Number(selectedOptions[0]);
         break;
     }
-
     setFilters(newFilters);
   };
 
   // filter Api Call
   const handleFilterAPICall = async () => {
+    setIsLoading(true);
     let newFilters: DateFilters = {
       card_series_id: filters.card_series_id,
       status: filters.status,
       rarities: filters.rarities,
       card_types: filters.card_types,
     };
-
     let n: (INftCardDayMonth | INftCardYear)[] = [];
-
     if (filters.card_types.includes(3)) {
       let dayMonthFilters: NftCardDayMonthFilters = {
         rarities: newFilters.rarities,
@@ -168,11 +166,12 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card day-month data");
+        console.log("refreshed nft card day-month data", res.data);
         n.push(...res.data);
+      } else if (res.data && res.data.length == 0) {
+        setIsLoadingFilter(true);
       }
     }
-
     if (filters.card_types.includes(4)) {
       let yearFilters: NftCardYearFilters = {
         card_series_id: newFilters.card_series_id,
@@ -183,14 +182,16 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardYear(yearFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card year data");
+        console.log("refreshed nft card year data", res.data);
         n.push(...res.data);
+      } else if (res.data && res.data.length == 0) {
+        setIsLoadingFilter(true);
       }
     }
-
+    if (n && n.length > 0) {
+      setIsLoading(false);
+    }
     setNftCardDayMonthData(n);
-
-    setIsLoadingFilter(false);
   };
 
   useEffect(() => {
@@ -198,7 +199,11 @@ export const DatesPage: React.FC = () => {
       handleFilterAPICall();
     }
   }, [filters]);
+  console.log("setNftCardDayMonthData", nftCardDayMonthData);
 
+  console.log("filters", filters);
+  console.log("isLoading", isLoading);
+  console.log("setIsLoadingFilter", isLoadingFilter);
   return (
     <AppLayout>
       <ToastContainer
@@ -214,31 +219,31 @@ export const DatesPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-
       {currentUser ? (
-        nftCardDayMonthData && nftCardDayMonthData?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
-            <DatePageContainer>
-              <DatePageTitleWrapper>
-                <h3>Date Cards</h3>
-              </DatePageTitleWrapper>
-              <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Buy Cards
-                  </Button>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/buy")}
-                  >
-                    Buy Packs
-                  </Button>
-                </ButtonGroup>
-                <DatesFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+        <DatesPageWrapper isview={isView ? "true" : undefined}>
+          <DatePageContainer>
+            <DatePageTitleWrapper>
+              <h3>Date Cards</h3>
+            </DatePageTitleWrapper>
+            <DatePageContent>
+              {nftCardDayMonthData && nftCardDayMonthData?.length > 0 ? (
+                <>
+                  {" "}
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <DatesFilterSection onClick={handleOptionClick} />
                   <CardGridSection
                     cardType="date"
                     data={nftCardDayMonthData}
@@ -246,43 +251,75 @@ export const DatesPage: React.FC = () => {
                     onSell={handleSell}
                     onView={handleView}
                   />
-                ) : (
-                  <Loader />
-                )}
-
-                <ViewDateCardSection
-                  cardType="date"
-                  isView={isView === "view"}
-                  item={selectedItem}
-                  onClose={() => setIsView("")}
-                />
-                <SellDateCardSection
-                  cardType="date"
-                  onSellConfirm={handleSellConfirm}
-                  isView={isView === "sell"}
-                  item={selectedItem}
-                  onClose={() => setIsView("")}
-                />
-              </DatePageContent>
-            </DatePageContainer>
-          </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Date Cards</h3>
-            <p>It looks like you don’t have any date cards yet. </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/marketplace")}
-            >
-              Buy Cards
-            </Button>
-            <Button className="buy-button" onClick={() => navigate("/buy")}>
-              Buy Packs
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )
+                </>
+              ) : !isLoading ? (
+                <EmptyCards>
+                  <div className="trigeres">
+                    <h3>No Date Cards</h3>
+                    <p>It looks like you don’t have any date cards yet. </p>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </div>
+                </EmptyCards>
+              ) : isLoading && nftCardDayMonthData?.length == 0 ? (
+                <>
+                  {" "}
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <DatesFilterSection onClick={handleOptionClick} />
+                  <CardGridSection
+                    cardType="date"
+                    data={nftCardDayMonthData}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                </>
+              ) : (
+                <Loader />
+              )}
+              {isLoadingFilter ? (
+                <>
+                  <ViewDateCardSection
+                    cardType="date"
+                    isView={isView === "view"}
+                    item={selectedItem}
+                    onClose={() => setIsView("")}
+                  />
+                  <SellDateCardSection
+                    cardType="date"
+                    onSellConfirm={handleSellConfirm}
+                    isView={isView === "sell"}
+                    item={selectedItem}
+                    onClose={() => setIsView("")}
+                  />
+                </>
+              ) : null}
+            </DatePageContent>
+          </DatePageContainer>
+        </DatesPageWrapper>
       ) : (
         <EmptyCards className="login">
           <p className="login">Log in to start playing</p>

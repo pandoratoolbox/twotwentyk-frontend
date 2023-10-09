@@ -56,6 +56,14 @@ export const CategoryCard: React.FC<DateCardProps> = ({
     return formattedCategory;
   }
 
+  const captilizeEachLetterOfWord = (data: string) => {
+    let words = data.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1) + " "
+    }
+    return words
+  }
+
   return (
     <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
       <CardImgWrapper>
@@ -81,7 +89,9 @@ export const CategoryCard: React.FC<DateCardProps> = ({
                 <h3>Identity Matches</h3>
                 {
                   identityMatches && identityMatches.map((v) => (
-                    <TooltipItem>{v.name}</TooltipItem>
+                    <TooltipItem>
+                      {captilizeEachLetterOfWord(v.name)}
+                    </TooltipItem>
                   ))
                 }
               </div>
