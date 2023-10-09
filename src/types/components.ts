@@ -1,3 +1,4 @@
+import { ICardPack } from "../models/card_pack";
 import { ICardSeries } from "../models/card_series";
 import { ICelebrity } from "../models/celebrity";
 import { IMarketplaceListing } from "../models/marketplace_listing";
@@ -53,12 +54,14 @@ export type CardPacksCardProps = {
   owner_id?: number;
   rarity?: number;
   height?: number;
+  status?: number;
   image?: string;
   name?: string;
   isNotHover?: boolean;
   onView?: (id: number) => void;
   onSell?: (id: number) => void;
   onOpen?: (id: number) => void;
+  onCancel?: (data: ICardPack) => void;
 };
 
 export type PredictionCardProps = {
@@ -81,6 +84,7 @@ export type PredictionCardProps = {
   icon?: React.ReactNode;
   iconText?: string;
   isNotHover?: boolean;
+  status?: number;
   onClick?: () => void;
   onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
   onView?: (id: number) => void;
