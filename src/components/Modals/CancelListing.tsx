@@ -3,7 +3,7 @@ import { Modal as ModalWrapper } from "./Modal";
 import { ButtonGroup, CancelListingModalWrapper, IdentityInfoWrapper } from "./styles";
 import { Button } from "../Button";
 import { PredictionModalCard } from "../PredictionCard/PredictionModalCard";
-import { submitClaim } from "../../actions";
+import { submitClaim, updateMarketplaceListById } from "../../actions";
 import { IconArrowDown1, IconConfirmBlue } from "../Icons";
 import { INftCardIdentity } from "../../models/nft_card_identity";
 import { INftCardPrediction } from "../../models/nft_card_prediction";
@@ -27,12 +27,21 @@ export const CancelListingModal: React.FC<{ open: boolean; onClose: () => void; 
         onClose()
     }
 
+    const handleConfirm = async () => {
+        if (nftCard.id) {
+            const result = await updateMarketplaceListById(nftCard.id.toString(), {is_listed: false});
+            if (result.success) {
+                setConfirm(true)
+            }
+        }
+    }
+
     return (
         <>
             <ModalWrapper open={open} onClose={handleClose} width={isContinue && !isCancel ? 717 : 391} paddingClass={`${isContinue && !isCancel ? "smallPadding" : ""}`}>
                 {!isContinue && <SaleNotification continueSale={() => setIsContinue(true)} cardType={cardType} />}
                 {isContinue && !isCancel && <NftCardInfo cancelListing={() => setIsCancel(true)} nftCard={nftCard} cardType={cardType} />}
-                {isCancel && !confirm && <CancelListing onCancelListing={() => setConfirm(true)} />}
+                {isCancel && !confirm && <CancelListing onCancelListing={handleConfirm} />}
                 {confirm && <Confirm onConfirm={handleClose} />}
             </ModalWrapper>
         </>
