@@ -19,6 +19,7 @@ import {
   PredictionsPage,
   CommingSoonPage,
   NotFoundPage,
+  TermConditions,
   ProfilePage,
   ClaimsPage,
   TransactionsPage,
@@ -109,7 +110,12 @@ const App: React.FC = () => {
               />
               {/* Crafting Routes */}
               {/* Marketplace Routes */}
-              <Route path="/marketplace" element={<MarketplacePage />} />
+              <Route
+                path="/marketplace"
+                element={<Navigate to={"/marketplace/cards"} />}
+              />
+
+              <Route path="/marketplace/cards" element={<MarketplacePage />} />
               <Route
                 path="/marketplace/identities"
                 element={<MarketplaceIdentitiesPage />}
@@ -133,6 +139,11 @@ const App: React.FC = () => {
                 element={<TransactionsPage />}
               />
               {/* Profile Routes */}
+
+              {/* term conditions & privacy policy */}
+              <Route path="/term-conditions" element={<TermConditions />} />
+              {/* End term conditions & privacy policy */}
+
               {/* Admin Routes */}
               <Route
                 path="/admin/collection"

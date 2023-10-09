@@ -10,17 +10,10 @@ export const PredictionCardWrapper = styled.div<{
   cursor: pointer;
   position: relative;
   width: 100%;
-  // contain: content;
   border-radius: 6px;
   box-shadow: 0px 0px 15.3925px rgba(0, 0, 0, 0.05);
-  /* background: ${({ bg }) =>
-    bg
-      ? `url(${bg}) no-repeat, #CDCDCD `
-      : "linear-gradient(0deg, #CDCDCD, #CDCDCD), #FFFFFF;"};
-  background-blend-mode: luminosity;*/
   background-size: cover;
   background-position: center;
-  // height: ${({ height }) => (height ? height + "px" : "293px")};
   display: flex;
   flex-direction: column;
   justify-content: space-between;

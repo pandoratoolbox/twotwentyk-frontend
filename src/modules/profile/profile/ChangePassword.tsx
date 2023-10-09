@@ -13,6 +13,7 @@ export const ChangePassword: React.FC<{
   onFinish: (newPassword: string) => void;
   onBack: () => void;
 }> = ({ password, onFinish, onBack, section }) => {
+ 
   const [step, setStep] = useState(0);
   const [form, setForm] = useState({
     cPassword: "",
@@ -61,11 +62,9 @@ export const ChangePassword: React.FC<{
     }
   };
 
-
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
-
   return (
     <ProfileEditContainer onBack={onBack} section={section}>
       <ToastContainer
@@ -80,6 +79,7 @@ export const ChangePassword: React.FC<{
         pauseOnHover
         theme="dark"
       />
+     
       {step === 0 && (
         <>
           <Input

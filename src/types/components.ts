@@ -51,6 +51,7 @@ export type CardPacksCardProps = {
   is_opened?: boolean;
   owner_id?: number;
   rarity?: number;
+  tier?: number;
   height?: number;
   image?: string;
   name?: string;

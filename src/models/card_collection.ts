@@ -6,6 +6,8 @@ export interface ICardCollection {
   id?: number;
   trigger?: ITrigger[];
   celebrity?: ICelebrity[];
+  rarities: string[];
+  tiers: string[];
   agg_pack_path?: string;
   trigger_address?: string;
   day_month_address?: string;

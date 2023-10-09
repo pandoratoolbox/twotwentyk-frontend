@@ -145,6 +145,47 @@ export const CardPackPage: React.FC = () => {
     setIsLoadingFilter(false);
   };
 
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await getMyNftCardPack();
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setNftCardPack(response?.data.filter((v) => v.is_opened === false));
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await getMyNftCardPack();
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setNftCardPack(response?.data.filter((v) => v.is_opened === false));
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await getMyNftCardPack();
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.tier - a.tier);
+        setNftCardPack(response?.data.filter((v) => v.is_opened === false));
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <AppLayout>
       <ToastContainer
@@ -190,7 +231,10 @@ export const CardPackPage: React.FC = () => {
                         Buy Packs
                       </Button>
                     </ButtonGroup>
-                    <CardPackFilterSection onClick={handleOptionClick} />
+                    <CardPackFilterSection
+                      onClick={handleOptionClick}
+                      clickSelect={clickSelect}
+                    />
                   </>
                 )}
 

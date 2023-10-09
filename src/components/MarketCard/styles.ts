@@ -25,13 +25,81 @@ export const CardWrapper = styled.div`
   }
 `;
 
-export const CardImgWrapper = styled.div`
+export const CardImgWrapper = styled.div<{
+  dashbordstyle?: boolean;
+}>`
   position: relative;
   display: flex;
   width: 100%;
   img {
     width: 100%;
     height: auto;
+  }
+  .info-nft {
+    position: relative;
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100%;
+    &.info-nft-day-month {
+      top: 50%;
+    }
+    &.info-nft-prediction {
+      top: 43%;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      img {
+        width: 4vw;
+        margin: 0 auto;
+      }
+      h4 {
+        font-size: ${({ dashbordstyle }) =>
+          dashbordstyle
+            ? "clamp(0.6rem, 2vw, 0.8rem)"
+            : "clamp(0.8rem, 2vw, 1rem)"};
+      }
+      @media screen and (max-width: 1024px) {
+        img {
+          width: 15vw;
+        }
+      }
+    }
+    &.info-nft-identity {
+      top: 50%;
+
+      img {
+        width: 10vw;
+      }
+      .nft-info-detail {
+        position: absolute;
+        bottom: 0;
+        width: 100%;
+        h2 {
+          font-size: clamp(1.5rem, 2vw, 2rem);
+        }
+        h3 {
+          font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        img {
+          width: 30vw;
+        }
+      }
+    }
+
+    &.info-nft-trigger {
+      bottom: 15%;
+      width: 75%;
+      h4 {
+        font-size: clamp(0.6rem, 2vw, 0.8rem);
+      }
+    }
+    &.info-nft-cardPack {
+      top: 50%;
+    }
   }
 `;
 
@@ -120,7 +188,7 @@ export const Rarity = styled.div`
   padding: 0 13px;
   /* background: #615e5e; */
 
-  @media (min-width:425px){
+  @media (min-width: 425px) {
     max-width: 60px !important;
   }
 `;

@@ -7,13 +7,9 @@ import {
   CardTooltip,
   DateCardWrapper,
 } from "../DateCard/styles";
-import {
-  CardBottomWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
-} from "../PredictionCard/styles";
+import { CardBottomWrapper } from "../PredictionCard/styles";
 import { IconBag } from "../Icons";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
 import { useMyInfoContext } from "../../context";
 
 export const TriggerCard: React.FC<TriggerCardProps> = ({
@@ -31,16 +27,29 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
   onView,
 }) => {
   const { myInfoContext } = useMyInfoContext();
-  image = "/assets/nfts/new4.png";
+
+  console.log(item);
   return (
-    <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
+    <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
       <CardImgWrapper>
-        <img src={image} alt="nft" />
-        <>
-          {rarity === 0 && <Rarity>Common</Rarity>}
-          {rarity === 1 && <Rarity>Uncommon</Rarity>}
-          {rarity === 2 && <Rarity>Rare</Rarity>}
-        </>
+        {rarity === 0 && (
+          <img src="/assets/nfts/rarity/Trigger-Core-No-Text.png" alt="nft" />
+        )}
+        {rarity === 1 && (
+          <img src="/assets/nfts/rarity/Trigger-Rare-No-Text.png" alt="nft" />
+        )}
+        {rarity === 2 && (
+          <img
+            src="/assets/nfts/rarity/Trigger-Uncommon-No-Text.png"
+            alt="nft"
+          />
+        )}
+        {/* <div className="info-nft info-nft-trigger">
+          <h4>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Libero
+            veniam
+          </h4>
+        </div> */}
       </CardImgWrapper>
       <CardBottomWrapper>{trigger}</CardBottomWrapper>
       <CardOverlayWrapper className="overlay">
@@ -54,7 +63,9 @@ export const TriggerCard: React.FC<TriggerCardProps> = ({
               Craft Prediction
             </CardButton>
           )}
-          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && (
+            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
+          )}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>

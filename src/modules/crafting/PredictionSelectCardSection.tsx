@@ -35,7 +35,10 @@ export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
-  onCardClicked: (key: number | string, item: INftCardCrafting | INftCardIdentity | INftCardTrigger) => void;
+  onCardClicked: (
+    key: number | string,
+    item: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  ) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
   onSelectCardTrigger: (card: INftCardTrigger) => void;
   onSelectCardIdentity: (card: INftCardIdentity) => void;

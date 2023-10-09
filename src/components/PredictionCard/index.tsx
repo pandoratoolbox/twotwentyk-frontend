@@ -17,11 +17,14 @@ import {
   CardOverlayWrapper,
 } from "../DateCard/styles";
 import { PredictionCardProps, SelectOptionProps } from "../../types";
-import { useMonthContext, useCelebritiesContext, useMyInfoContext } from "../../context";
-import { SelectOption } from "../SelectBox/SelectOption";
+import {
+  useMonthContext,
+  useCelebritiesContext,
+  useMyInfoContext,
+} from "../../context";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -87,29 +90,44 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-  console.log({ celebrity_name });
-
-  image = "/assets/nfts/new4.png";
+  console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
       onClick={onClick}
-      bg={cardType === "prediction" ? image : ""}
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
-      <CardImgWrapper>
-        <img src={image} alt="nft" />
-        <>
-          {rarity === 0 && <Rarity>Common</Rarity>}
-          {rarity === 1 && <Rarity>Uncommon</Rarity>}
-          {rarity === 2 && <Rarity>Rare</Rarity>}
-        </>
-        {/* <Rarity>Uncommon</Rarity> */}
+      <CardImgWrapper dashbordstyle={dashbordstyle}>
+        {rarity === 0 && (
+          <img src="/assets/nfts/rarity/Prediction-Core.png" alt="nft" />
+        )}
+        {rarity === 1 && (
+          <img src="/assets/nfts/rarity/Prediction-Rare.png" alt="nft" />
+        )}
+        {rarity === 2 && (
+          <img src="/assets/nfts/rarity/Prediction-Uncommon.png" alt="nft" />
+        )}
+        <div className="info-nft info-nft-prediction">
+          <h4>{category}</h4>
+
+          {rarity === 0 && (
+            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
+          )}
+          {rarity === 1 && (
+            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
+          )}
+          {rarity === 2 && (
+            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
+          )}
+          <h4 className="date">03 06 1992</h4>
+        </div>
         {/* <StatusWrapper>
           {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
         </StatusWrapper> */}
       </CardImgWrapper>
+      <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+
       {/* <CardTopWrapper>
         <CardDateWrapper dashbordstyle={dashbordstyle}>
           {monthContext && day && (
@@ -122,82 +140,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
 
           {year && <span className="year">{year}</span>}
         </CardDateWrapper>
-        {rarity === 0 && (
-          <CardTypeWrapper dashbordstyle={dashbordstyle}>
-            Common
-          </CardTypeWrapper>
-        )}
-        {rarity === 1 && (
-          <CardTypeWrapper dashbordstyle={dashbordstyle}>
-            Uncommon
-          </CardTypeWrapper>
-        )}
-        {rarity === 2 && (
-          <CardTypeWrapper dashbordstyle={dashbordstyle}>Rare</CardTypeWrapper>
-        )}
       </CardTopWrapper> */}
-      {/* {category && (
-        <CardBodyWrapper>
-          <span></span>
-          <p>{category}</p>
-        </CardBodyWrapper>
-      )} */}
-
-      {celebrity_name ? (
-        <>
-          <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
-          {cardType === "prediction" && (
-            <CardTooltip>
-              <span className="triggerT">
-                {triggers && triggers?.length > 0
-                  ? `${triggers.length}T`
-                  : "#T"}
-              </span>
-              <TooltipContent className="tooltip-content">
-                <div>
-                  <h3>Triggers</h3>
-                  {triggers &&
-                    triggers?.map((item: string, key: number) => (
-                      <TooltipItem key={key}>{item}</TooltipItem>
-                    ))}
-                </div>
-              </TooltipContent>
-            </CardTooltip>
-          )}
-        </>
-      ) : (
-        <>
-          <CardBottomWrapper>
-            {identityMatches && (
-              <SelectOption
-                options={identityMatches}
-                placeholder="Identity Matches"
-                clear={clearSelect}
-                onSelect={chooseCelebrity}
-              />
-            )}
-          </CardBottomWrapper>
-          {cardType === "prediction" && (
-            <CardTooltip>
-              <span>
-                {triggers && triggers?.length > 0
-                  ? `${triggers.length}T`
-                  : "#T"}
-              </span>
-              <TooltipContent className="tooltip-content">
-                <div>
-                  <h3>Triggers</h3>
-                  {triggers &&
-                    triggers?.map((item: string, key: number) => (
-                      <TooltipItem key={key}>{item}</TooltipItem>
-                    ))}
-                </div>
-              </TooltipContent>
-            </CardTooltip>
-          )}
-        </>
-      )}
-
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {!is_crafted && onCraft && (
@@ -214,20 +157,12 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
               Submit Claim
             </CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
-          {onCard && (
-            <>
-              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {item?.is_listed ? (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
-              ) : (
-                <CardButton onClick={() => onCard(item, "offer")}>
-                  Make an Offer
-                </CardButton>
-              )}
-            </>
+          {item?.owner_id === myInfoContext?.id && onSell && (
+            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
           )}
+          {item?.owner_id !== myInfoContext?.id && onBuy && (
+            <CardButton onClick={() => onBuy(item)}>Buy</CardButton>
+          )}u
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>
