@@ -159,7 +159,7 @@ export const MarketplacePage: React.FC = () => {
           </p>
           <Button
             className="buy-button"
-            onClick={() => navigate("/dashboard/dates")}
+            onClick={() => navigate("/dashboard/categories")}
           >
             Sell Card
           </Button>
