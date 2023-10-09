@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   CardGridWrapper,
   CraftCard,
@@ -25,12 +25,14 @@ import { INftCardYear } from "../../models/nft_card_year";
 import { INftCardCategory } from "../../models/nft_card_category";
 import { useMonthContext } from "../../context";
 import { SelectOptionProps } from "../../types";
+import { NftCardCategoryFilters, NftCardCraftingFilters, NftCardDayMonthFilters, NftCardYearFilters } from "../../models/filters";
+import { randomInt } from "crypto";
 
 export const IdentitySelectCardSection: React.FC<{
   selectedCraft: string;
   clickedCard: number | string | null;
   selectedCard: number | string | null;
-  onCardClicked: (key: number | string,  item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear) => void;
+  onCardClicked: (key: number | string, item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear) => void;
   onSelectCardCrafting: (card: INftCardCrafting) => void;
   onSelectCardCategory: (card: INftCardCategory) => void;
   onSelectCardDayMonth: (card: INftCardDayMonth) => void;
@@ -61,437 +63,464 @@ export const IdentitySelectCardSection: React.FC<{
   onSelectCardDayMonth,
   onSelectCardYear,
 }) => {
-  const { statusContext } = useStatusContext();
-  const { allRaritiesContext } = useAllRaritiesContext();
-  const [isLoadingCrating, setIsLoadingCrating] = useState(true);
-  const [isLoadingDayMonth, setIsLoadingDayMonth] = useState(true);
-  const [isLoadingYear, setIsLoadingYear] = useState(true);
-  const [isLoadingCategory, setIsLoadingCategory] = useState(true);
+    const { statusContext } = useStatusContext();
+    const { allRaritiesContext } = useAllRaritiesContext();
+    const [isLoadingCrating, setIsLoadingCrating] = useState(true);
+    const [isLoadingDayMonth, setIsLoadingDayMonth] = useState(true);
+    const [isLoadingYear, setIsLoadingYear] = useState(true);
+    const [isLoadingCategory, setIsLoadingCategory] = useState(true);
+    const [rarities, setRarity] = useState<number[]>([])
+    const [status, setStatus] = useState<number[]>([])
 
-  const { monthContext } = useMonthContext();
+    const { monthContext } = useMonthContext();
 
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const setNftCardCraftingData = (data: INftCardCrafting[]) => {
-    setMyNfts({
-      dayMonth: myNfts.dayMonth,
-      year: myNfts.year,
-      category: myNfts.category,
-      crafting: myNfts.crafting,
-    });
-  };
+    const setNftCardCraftingData = (data: INftCardCrafting[]) => {
+      setMyNfts({
+        dayMonth: myNfts.dayMonth,
+        year: myNfts.year,
+        category: myNfts.category,
+        crafting: data,
+      });
+    };
 
-  const setNftCardCategoryData = (data: INftCardCategory[]) => {
-    setMyNfts({
-      dayMonth: myNfts.dayMonth,
-      year: myNfts.year,
-      category: data,
-      crafting: myNfts.crafting,
-    });
-  };
+    const setNftCardCategoryData = (data: INftCardCategory[]) => {
+      setMyNfts({
+        dayMonth: myNfts.dayMonth,
+        year: myNfts.year,
+        category: data,
+        crafting: myNfts.crafting,
+      });
+    };
 
-  const setNftCardDayMonthData = (data: INftCardDayMonth[]) => {
-    setMyNfts({
-      dayMonth: data,
-      year: myNfts.year,
-      category: myNfts.category,
-      crafting: myNfts.crafting,
-    });
-  };
+    const setNftCardDayMonthData = (data: INftCardDayMonth[]) => {
+      setMyNfts({
+        dayMonth: data,
+        year: myNfts.year,
+        category: myNfts.category,
+        crafting: myNfts.crafting,
+      });
+    };
 
-  const setNftCardYearData = (data: INftCardYear[]) => {
-    setMyNfts({
-      dayMonth: myNfts.dayMonth,
-      category: myNfts.category,
-      year: data,
-      crafting: myNfts.crafting,
-    });
-  };
+    const setNftCardYearData = (data: INftCardYear[]) => {
+      setMyNfts({
+        dayMonth: myNfts.dayMonth,
+        category: myNfts.category,
+        year: data,
+        crafting: myNfts.crafting,
+      });
+    };
 
-  const getNFTCrafting = async () => {
-    setIsLoadingCrating(true);
-    setIsLoadingDayMonth(true);
-    setIsLoadingYear(true);
-    setIsLoadingCategory(true);
-
-    if (selectedCraft === "crafting") {
-      const response = await getMyNftCardCrafting(null);
-      if (response.data) {
-        setNftCardCraftingData(response.data);
+    const filter = useMemo(() => {
+      return {
+        rarities,
+        status
       }
-      setIsLoadingCrating(false);
-    } else if (selectedCraft === "dayMonth") {
-      const response = await getMyNftCardDayMonth(null);
-      if (response.data) {
-        setNftCardDayMonthData(response.data);
+    }, [rarities, status])
+
+    const getNFTCrafting = async (filter: any) => {
+      setIsLoadingCrating(true);
+      setIsLoadingDayMonth(true);
+      setIsLoadingYear(true);
+      setIsLoadingCategory(true);
+
+      if (selectedCraft === "crafting") {
+        const response = await getMyNftCardCrafting(filter as NftCardCraftingFilters);
+        if (response.data) {
+          setNftCardCraftingData(response.data);
+        }
+        setIsLoadingCrating(false);
+      } else if (selectedCraft === "dayMonth") {
+        const response = await getMyNftCardDayMonth(filter as NftCardDayMonthFilters);
+        if (response.data) {
+          setNftCardDayMonthData(response.data);
+        }
+        setIsLoadingDayMonth(false);
+      } else if (selectedCraft === "year") {
+        const response = await getMyNftCardYear(filter as NftCardYearFilters);
+        if (response.data) {
+          setNftCardYearData(response.data);
+        }
+        setIsLoadingYear(false);
+      } else if (selectedCraft === "category") {
+        const response = await getMyNftCardCategory(filter as NftCardCategoryFilters);
+        if (response.data) {
+          setNftCardCategoryData(response.data);
+        }
+        setIsLoadingCategory(false);
       }
-      setIsLoadingDayMonth(false);
-    } else if (selectedCraft === "year") {
-      const response = await getMyNftCardYear(null);
-      if (response.data) {
-        setNftCardYearData(response.data);
+    };
+
+    useEffect(() => {
+      setRarity([])
+      setStatus([])
+    }, [selectedCraft])
+
+    useEffect(() => {
+      getNFTCrafting(filter);
+    }, [filter]);
+
+    const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
+    const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
+    const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
+    const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
+    const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
+    const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
+
+    useEffect(() => {
+      if (statusContext && allRaritiesContext) {
+        setOptionsStatus(Array.from((statusContext as Map<number, { id: number, name: string }>).values()).map(v => {
+          return { checked: false, value: v.id.toString(), label: v.name }
+        }))
+
+        setOptionsRarities(Array.from((allRaritiesContext as Map<number, { id: number, name: string }>).values()).map(v => {
+          return { checked: false, value: v.id.toString(), label: v.name }
+        }))
+
       }
-      setIsLoadingYear(false);
-    } else if (selectedCraft === "category") {
-      const response = await getMyNftCardCategory(null);
-      if (response.data) {
-        setNftCardCategoryData(response.data);
-      }
-      setIsLoadingCategory(false);
+    }, [statusContext, allRaritiesContext])
+
+    const handleClick = (filterType: string, selectedOptions: string[]) => {
+      if (filterType === "All Rarities") setRarity(selectedOptions.map(v => Number(v)));
+      if (filterType === "Status") setStatus(selectedOptions.map(v => Number(v)))
     }
+
+
+    return (
+      <SelectCardSectionWrapper>
+        {selectedCraft === "crafting" && (
+          <SelectCardSectionContainer>
+            {myNfts.crafting != null ? (
+              <>
+                <h2>Select a Crafting card</h2>
+                <FilterWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsRarities}
+                      placeholder="All Rarities"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsStatus}
+                      placeholder="Status"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SortButton>
+                    <IconSort />
+                  </SortButton>
+                </FilterWrapper>
+                <CardGridWrapper>
+                  {myNfts.crafting.map((item, key) => (
+                    <CraftingCardWrapper
+                      key={key}
+                      active={clickedCard === item.id ? "true" : undefined}
+                    >
+                      <CraftCard
+                        onClick={() => onCardClicked(Number(item.id), item)}
+                        bg="/assets/nfts/1.png"
+                      >
+                        {item.rarity === 0 && <span>Common</span>}
+                        {item.rarity === 1 && <span>Uncommon</span>}
+                        {item.rarity === 2 && <span>Rare</span>}
+                        <p>Crafting</p>
+                      </CraftCard>
+                      <SelectButton
+                        className="select-button"
+                        disabled={
+                          clickedCard !== item.id || selectedCard === item.id
+                          // ? "true"
+                          // : undefined
+                        }
+                        onClick={
+                          clickedCard !== item.id || selectedCard === item.id
+                            ? () => { }
+                            : () => onSelectCardCrafting(item)
+                        }
+                      >
+                        Select
+                      </SelectButton>
+                    </CraftingCardWrapper>
+                  ))}
+                </CardGridWrapper>
+              </>
+            ) : !isLoadingCrating ? (
+              <EmptyCards>
+                <h3>No {selectedCraft} Cards</h3>
+                <p style={{ maxWidth: "243px" }}>
+                  It looks like you don’t have any{" "}
+                  <span className="capitalize">{selectedCraft}</span> cards yet.
+                </p>
+                <Button className="buy-button" onClick={() => navigate("/buy")}>
+                  Buy Packs
+                </Button>
+                <Button
+                  className="buy-button"
+                  onClick={() => navigate("/marketplace")}
+                >
+                  Go to Marketplace
+                </Button>
+              </EmptyCards>
+            ) : (
+              <Loader />
+            )}
+          </SelectCardSectionContainer>
+        )}
+
+        {selectedCraft === "dayMonth" && (
+          <SelectCardSectionContainer>
+            {myNfts.dayMonth != null ? (
+              <>
+                <h2>Select a Day-Month card</h2>
+                <FilterWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsRarities}
+                      placeholder="All Rarities"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsStatus}
+                      placeholder="Status"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SortButton>
+                    <IconSort />
+                  </SortButton>
+                </FilterWrapper>
+                <CardGridWrapper>
+                  {myNfts.dayMonth.map((item, key) => (
+                    <CraftingCardWrapper
+                      key={key}
+                      active={clickedCard === item.id ? "true" : undefined}
+                    >
+                      <CraftCard
+                        onClick={() => onCardClicked(Number(item.id), item)}
+                        bg="/assets/nfts/1.png"
+                      >
+                        {item.rarity === 0 && <span>Common</span>}
+                        {item.rarity === 1 && <span>Uncommon</span>}
+                        {item.rarity === 2 && <span>Rare</span>}
+                        <p>
+                          {item.day}{" "}
+                          {(monthContext as Map<number, string>).get(item.month)}
+                        </p>
+                      </CraftCard>
+                      <SelectButton
+                        className="select-button"
+                        disabled={
+                          clickedCard !== item.id || selectedCard === item.id
+                          // ? "true"
+                          // : undefined
+                        }
+                        onClick={
+                          clickedCard !== item.id || selectedCard === item.id
+                            ? () => { }
+                            : () => onSelectCardDayMonth(item)
+                        }
+                      >
+                        Select
+                      </SelectButton>
+                    </CraftingCardWrapper>
+                  ))}
+                </CardGridWrapper>
+              </>
+            ) : !isLoadingDayMonth ? (
+              <EmptyCards>
+                <h3>No {selectedCraft} Cards</h3>
+                <p style={{ maxWidth: "243px" }}>
+                  It looks like you don’t have any{" "}
+                  <span className="capitalize">{selectedCraft}</span> cards yet.
+                </p>
+                <Button className="buy-button" onClick={() => navigate("/buy")}>
+                  Buy Packs
+                </Button>
+                <Button
+                  className="buy-button"
+                  onClick={() => navigate("/marketplace")}
+                >
+                  Go to Marketplace
+                </Button>
+              </EmptyCards>
+            ) : (
+              <Loader />
+            )}
+          </SelectCardSectionContainer>
+        )}
+        {selectedCraft === "year" && (
+          <SelectCardSectionContainer>
+            {myNfts.year != null ? (
+              <>
+                <h2>Select a Year card</h2>
+                <FilterWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsRarities}
+                      placeholder="All Rarities"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsStatus}
+                      placeholder="Status"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SortButton>
+                    <IconSort />
+                  </SortButton>
+                </FilterWrapper>
+                <CardGridWrapper>
+                  {myNfts.year.map((item, key) => (
+                    <CraftingCardWrapper
+                      key={key}
+                      active={clickedCard === item.id ? "true" : undefined}
+                    >
+                      <CraftCard
+                        onClick={() => onCardClicked(Number(item.id), item)}
+                        bg="/assets/nfts/1.png"
+                      >
+                        {item.rarity === 0 && <span>Common</span>}
+                        {item.rarity === 1 && <span>Uncommon</span>}
+                        {item.rarity === 2 && <span>Rare</span>}
+                        <p>{item.year}</p>
+                      </CraftCard>
+                      <SelectButton
+                        className="select-button"
+                        disabled={
+                          clickedCard !== item.id || selectedCard === item.id
+                          // ? "true"
+                          // : undefined
+                        }
+                        onClick={
+                          clickedCard !== item.id || selectedCard === item.id
+                            ? () => { }
+                            : () => onSelectCardYear(item)
+                        }
+                      >
+                        Select
+                      </SelectButton>
+                    </CraftingCardWrapper>
+                  ))}
+                </CardGridWrapper>
+              </>
+            ) : !isLoadingYear ? (
+              <EmptyCards>
+                <h3>No {selectedCraft} Cards</h3>
+                <p style={{ maxWidth: "243px" }}>
+                  It looks like you don’t have any{" "}
+                  <span className="capitalize">{selectedCraft}</span> cards yet.
+                </p>
+                <Button className="buy-button" onClick={() => navigate("/buy")}>
+                  Buy Packs
+                </Button>
+                <Button
+                  className="buy-button"
+                  onClick={() => navigate("/marketplace")}
+                >
+                  Go to Marketplace
+                </Button>
+              </EmptyCards>
+            ) : (
+              <Loader />
+            )}
+          </SelectCardSectionContainer>
+        )}
+        {selectedCraft === "category" && (
+          <SelectCardSectionContainer>
+            {myNfts.category != null ? (
+              <>
+                <h2>Select a Category card</h2>
+                <FilterWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsRarities}
+                      placeholder="All Rarities"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SelectBoxWrapper>
+                    <SelectBox
+                      isFilter
+                      options={optionsStatus}
+                      placeholder="Status"
+                      onClick={handleClick}
+                    />
+                  </SelectBoxWrapper>
+                  <SortButton>
+                    <IconSort />
+                  </SortButton>
+                </FilterWrapper>
+                <CardGridWrapper>
+                  {myNfts.category.map((item, key) => (
+                    <CraftingCardWrapper
+                      key={key}
+                      active={clickedCard === item.id ? "true" : undefined}
+                    >
+                      <CraftCard
+                        onClick={() => onCardClicked(Number(item.id), item)}
+                        bg="/assets/nfts/1.png"
+                      >
+                        {item.rarity === 0 && <span>Common</span>}
+                        {item.rarity === 1 && <span>Uncommon</span>}
+                        {item.rarity === 2 && <span>Rare</span>}
+                        <p>{item.category}</p>
+                      </CraftCard>
+                      <SelectButton
+                        className="select-button"
+                        disabled={
+                          clickedCard !== item.id || selectedCard === item.id
+                          // ? "true"
+                          // : undefined
+                        }
+                        onClick={
+                          clickedCard !== item.id || selectedCard === item.id
+                            ? () => { }
+                            : () => onSelectCardCategory(item)
+                        }
+                      >
+                        Select
+                      </SelectButton>
+                    </CraftingCardWrapper>
+                  ))}
+                </CardGridWrapper>
+              </>
+            ) : !isLoadingCategory ? (
+              <EmptyCards>
+                <h3>No {selectedCraft} Cards</h3>
+                <p style={{ maxWidth: "243px" }}>
+                  It looks like you don’t have any{" "}
+                  <span className="capitalize">{selectedCraft}</span> cards yet.
+                </p>
+                <Button className="buy-button" onClick={() => navigate("/buy")}>
+                  Buy Packs
+                </Button>
+                <Button
+                  className="buy-button"
+                  onClick={() => navigate("/marketplace")}
+                >
+                  Go to Marketplace
+                </Button>
+              </EmptyCards>
+            ) : (
+              <Loader />
+            )}
+          </SelectCardSectionContainer>
+        )}
+      </SelectCardSectionWrapper>
+    );
   };
-
-  useEffect(() => {
-    getNFTCrafting();
-  }, [selectedCraft]);
-
-  const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
-  const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
-  const [optionsCollection, setOptionsCollection] = useState<SelectOptionProps[]>([]);
-  const [optionsTriggers, setOptionsTriggers] = useState<SelectOptionProps[]>([]);
-  const [optionsTiers, setOptionsTiers] = useState<SelectOptionProps[]>([]);
-  const [optionsCategories, setOptionsCategories] = useState<SelectOptionProps[]>([]);
-
-  useEffect(() => {
-    if (statusContext && allRaritiesContext) {
-      setOptionsStatus(Array.from((statusContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
-
-      setOptionsRarities(Array.from((allRaritiesContext as Map<number, {id: number, name: string}>).values()).map(v => {
-        return {checked: false, value: v.id.toString(), label: v.name}
-      }))
-
-    }
-  }, [statusContext, allRaritiesContext])
-
-
-  return (
-    <SelectCardSectionWrapper>
-      {selectedCraft === "crafting" && (
-        <SelectCardSectionContainer>
-          {myNfts.crafting != null ? (
-            <>
-              <h2>Select a Crafting card</h2>
-              <FilterWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsRarities}
-                    placeholder="All Rarities"
-                  />
-                </SelectBoxWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsStatus}
-                    placeholder="Status"
-                  />
-                </SelectBoxWrapper>
-                <SortButton>
-                  <IconSort />
-                </SortButton>
-              </FilterWrapper>
-              <CardGridWrapper>
-                {myNfts.crafting.map((item, key) => (
-                  <CraftingCardWrapper
-                    key={key}
-                    active={clickedCard === item.id ? "true" : undefined}
-                  >
-                    <CraftCard
-                      onClick={() => onCardClicked(Number(item.id), item)}
-                      bg="/assets/nfts/1.png"
-                    >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
-                      <p>Crafting</p>
-                    </CraftCard>
-                    <SelectButton
-                      className="select-button"
-                      disabled={
-                        clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
-                      }
-                      onClick={
-                        clickedCard !== item.id || selectedCard === item.id
-                          ? () => {}
-                          : () => onSelectCardCrafting(item)
-                      }
-                    >
-                      Select
-                    </SelectButton>
-                  </CraftingCardWrapper>
-                ))}
-              </CardGridWrapper>
-            </>
-          ) : !isLoadingCrating ? (
-            <EmptyCards>
-              <h3>No {selectedCraft} Cards</h3>
-              <p style={{ maxWidth: "243px" }}>
-                It looks like you don’t have any{" "}
-                <span className="capitalize">{selectedCraft}</span> cards yet.
-              </p>
-              <Button className="buy-button" onClick={() => navigate("/buy")}>
-                Buy Packs
-              </Button>
-              <Button
-                className="buy-button"
-                onClick={() => navigate("/marketplace")}
-              >
-                Go to Marketplace
-              </Button>
-            </EmptyCards>
-          ) : (
-            <Loader />
-          )}
-        </SelectCardSectionContainer>
-      )}
-
-      {selectedCraft === "dayMonth" && (
-        <SelectCardSectionContainer>
-          {myNfts.dayMonth != null ? (
-            <>
-              <h2>Select a Day-Month card</h2>
-              <FilterWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsRarities}
-                    placeholder="All Rarities"
-                  />
-                </SelectBoxWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsStatus}
-                    placeholder="Status"
-                  />
-                </SelectBoxWrapper>
-                <SortButton>
-                  <IconSort />
-                </SortButton>
-              </FilterWrapper>
-              <CardGridWrapper>
-                {myNfts.dayMonth.map((item, key) => (
-                  <CraftingCardWrapper
-                    key={key}
-                    active={clickedCard === item.id ? "true" : undefined}
-                  >
-                    <CraftCard
-                      onClick={() => onCardClicked(Number(item.id), item)}
-                      bg="/assets/nfts/1.png"
-                    >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
-                      <p>
-                        {item.day}{" "}
-                        {(monthContext as Map<number, string>).get(item.month)}
-                      </p>
-                    </CraftCard>
-                    <SelectButton
-                      className="select-button"
-                      disabled={
-                        clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
-                      }
-                      onClick={
-                        clickedCard !== item.id || selectedCard === item.id
-                          ? () => {}
-                          : () => onSelectCardDayMonth(item)
-                      }
-                    >
-                      Select
-                    </SelectButton>
-                  </CraftingCardWrapper>
-                ))}
-              </CardGridWrapper>
-            </>
-          ) : !isLoadingDayMonth ? (
-            <EmptyCards>
-              <h3>No {selectedCraft} Cards</h3>
-              <p style={{ maxWidth: "243px" }}>
-                It looks like you don’t have any{" "}
-                <span className="capitalize">{selectedCraft}</span> cards yet.
-              </p>
-              <Button className="buy-button" onClick={() => navigate("/buy")}>
-                Buy Packs
-              </Button>
-              <Button
-                className="buy-button"
-                onClick={() => navigate("/marketplace")}
-              >
-                Go to Marketplace
-              </Button>
-            </EmptyCards>
-          ) : (
-            <Loader />
-          )}
-        </SelectCardSectionContainer>
-      )}
-      {selectedCraft === "year" && (
-        <SelectCardSectionContainer>
-          {myNfts.year != null ? (
-            <>
-              <h2>Select a Year card</h2>
-              <FilterWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsRarities}
-                    placeholder="All Rarities"
-                  />
-                </SelectBoxWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsStatus}
-                    placeholder="Status"
-                  />
-                </SelectBoxWrapper>
-                <SortButton>
-                  <IconSort />
-                </SortButton>
-              </FilterWrapper>
-              <CardGridWrapper>
-                {myNfts.year.map((item, key) => (
-                  <CraftingCardWrapper
-                    key={key}
-                    active={clickedCard === item.id ? "true" : undefined}
-                  >
-                    <CraftCard
-                      onClick={() => onCardClicked(Number(item.id), item)}
-                      bg="/assets/nfts/1.png"
-                    >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.year}</p>
-                    </CraftCard>
-                    <SelectButton
-                      className="select-button"
-                      disabled={
-                        clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
-                      }
-                      onClick={
-                        clickedCard !== item.id || selectedCard === item.id
-                          ? () => {}
-                          : () => onSelectCardYear(item)
-                      }
-                    >
-                      Select
-                    </SelectButton>
-                  </CraftingCardWrapper>
-                ))}
-              </CardGridWrapper>
-            </>
-          ) : !isLoadingYear ? (
-            <EmptyCards>
-              <h3>No {selectedCraft} Cards</h3>
-              <p style={{ maxWidth: "243px" }}>
-                It looks like you don’t have any{" "}
-                <span className="capitalize">{selectedCraft}</span> cards yet.
-              </p>
-              <Button className="buy-button" onClick={() => navigate("/buy")}>
-                Buy Packs
-              </Button>
-              <Button
-                className="buy-button"
-                onClick={() => navigate("/marketplace")}
-              >
-                Go to Marketplace
-              </Button>
-            </EmptyCards>
-          ) : (
-            <Loader />
-          )}
-        </SelectCardSectionContainer>
-      )}
-      {selectedCraft === "category" && (
-        <SelectCardSectionContainer>
-          {myNfts.category != null ? (
-            <>
-              <h2>Select a Category card</h2>
-              <FilterWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsRarities}
-                    placeholder="All Rarities"
-                  />
-                </SelectBoxWrapper>
-                <SelectBoxWrapper>
-                  <SelectBox
-                    isFilter
-                    options={optionsStatus}
-                    placeholder="Status"
-                  />
-                </SelectBoxWrapper>
-                <SortButton>
-                  <IconSort />
-                </SortButton>
-              </FilterWrapper>
-              <CardGridWrapper>
-                {myNfts.category.map((item, key) => (
-                  <CraftingCardWrapper
-                    key={key}
-                    active={clickedCard === item.id ? "true" : undefined}
-                  >
-                    <CraftCard
-                      onClick={() => onCardClicked(Number(item.id), item)}
-                      bg="/assets/nfts/1.png"
-                    >
-                      {item.rarity === 0 && <span>Common</span>}
-                      {item.rarity === 1 && <span>Uncommon</span>}
-                      {item.rarity === 2 && <span>Rare</span>}
-                      <p>{item.category}</p>
-                    </CraftCard>
-                    <SelectButton
-                      className="select-button"
-                      disabled={
-                        clickedCard !== item.id || selectedCard === item.id
-                        // ? "true"
-                        // : undefined
-                      }
-                      onClick={
-                        clickedCard !== item.id || selectedCard === item.id
-                          ? () => {}
-                          : () => onSelectCardCategory(item)
-                      }
-                    >
-                      Select
-                    </SelectButton>
-                  </CraftingCardWrapper>
-                ))}
-              </CardGridWrapper>
-            </>
-          ) : !isLoadingCategory ? (
-            <EmptyCards>
-              <h3>No {selectedCraft} Cards</h3>
-              <p style={{ maxWidth: "243px" }}>
-                It looks like you don’t have any{" "}
-                <span className="capitalize">{selectedCraft}</span> cards yet.
-              </p>
-              <Button className="buy-button" onClick={() => navigate("/buy")}>
-                Buy Packs
-              </Button>
-              <Button
-                className="buy-button"
-                onClick={() => navigate("/marketplace")}
-              >
-                Go to Marketplace
-              </Button>
-            </EmptyCards>
-          ) : (
-            <Loader />
-          )}
-        </SelectCardSectionContainer>
-      )}
-    </SelectCardSectionWrapper>
-  );
-};
