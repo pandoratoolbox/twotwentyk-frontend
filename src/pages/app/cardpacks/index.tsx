@@ -75,7 +75,7 @@ export const CardPackPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: collection_id,
       card_pack_id: id,
-      price: price * 100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {

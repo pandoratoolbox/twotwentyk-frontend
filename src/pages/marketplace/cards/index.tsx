@@ -18,7 +18,11 @@ import { EmptyCards } from "../../app/category/styles";
 import { Button, Loader } from "../../../components";
 import { useNavigate } from "react-router-dom";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
-import { RequestSearchMarketplaceListingParams, getMarketplaceList } from "../../../actions/marketplace_listing";
+import {
+  RequestSearchMarketplaceListingParams,
+  getMarketplaceList,
+  cardCollection,
+} from "../../../actions/marketplace_listing";
 import { useMyInfoContext, useMyOfferContext } from "../../../context";
 import { ToastContainer, toast } from "react-toastify";
 
@@ -28,18 +32,27 @@ export const MarketplacePage: React.FC = () => {
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
   const [selectedItem, setSelectedItem] = useState(null);
+  const [collection, setCollection] = useState(null);
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
   const { myOfferContext, setMyOfferContext } = useMyOfferContext();
   const { myInfoContext } = useMyInfoContext();
   const [selectedId, setSelectedId] = useState<number | string>("");
-  const [selectedNftCollectionId, setSelectedNftCollectionId] = useState<number>(1);
-  const [selectedNftTypeIds, setSelectedNftTypeIds] = useState<number[]>([3,4]);
+  const [selectedNftCollectionId, setSelectedNftCollectionId] =
+    useState<number>(1);
+  const [selectedNftTypeIds, setSelectedNftTypeIds] = useState<number[]>([
+    3, 4,
+  ]);
   const [selectedStatus, setSelectedStatus] = useState<number[]>([0]);
 
   useEffect(() => {
-    getPageData({nft_collection_id: selectedNftCollectionId, nft_type_ids: selectedNftTypeIds, status: selectedStatus});
+    getPageData({
+      nft_collection_id: selectedNftCollectionId,
+      nft_type_ids: selectedNftTypeIds,
+      status: selectedStatus,
+    });
+    getCollection();
   }, []);
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
@@ -55,9 +68,7 @@ export const MarketplacePage: React.FC = () => {
 
   const getPageData = async (params: RequestSearchMarketplaceListingParams) => {
     setIsLoading(true);
-    
     if (selectedNftTypeIds) {
-      console.log(selectedNftTypeIds)
       const response = await getMarketplaceList(params);
 
       if (response?.data) {
@@ -66,6 +77,16 @@ export const MarketplacePage: React.FC = () => {
     }
 
     setIsLoading(false);
+  };
+
+  const getCollection = async () => {
+    const response = await cardCollection();
+    if (response?.data) {
+      let n = response.data.find((i: any) => i.id == selectedNftCollectionId);
+      if (n) {
+        setCollection(n.name);
+      }
+    }
   };
 
   const handleOfferConfirm = () => {
@@ -109,18 +130,20 @@ export const MarketplacePage: React.FC = () => {
             <h2>Cards</h2>
             <MarketplaceContentWrapper>
               <MFilterSection
-              onSelectNftCollection={(selected) => {
-                setSelectedNftCollectionId(selected)
-                console.log(selected)
-              }}
-              onSelectStatus={(selected) => {
-                setSelectedStatus(selected)
-              }}
-              onSelectCardTypes={(selected) => {
-                console.log({page: true, selected})
-                setSelectedNftTypeIds(selected)
-                getPageData({nft_collection_id:selectedNftCollectionId, nft_type_ids:selected, status:selectedStatus})
-              }}
+                onSelectNftCollection={(selected) => {
+                  setSelectedNftCollectionId(selected);
+                }}
+                onSelectStatus={(selected) => {
+                  setSelectedStatus(selected);
+                }}
+                onSelectCardTypes={(selected) => {
+                  setSelectedNftTypeIds(selected);
+                  getPageData({
+                    nft_collection_id: selectedNftCollectionId,
+                    nft_type_ids: selected,
+                    status: selectedStatus,
+                  });
+                }}
               />
               <MCardGridSection
                 data={nftMarketplaceData}
@@ -150,6 +173,7 @@ export const MarketplacePage: React.FC = () => {
             open={side === "view"}
             selectedItem={selectedItem}
             onClose={handleSideClose}
+            collection={collection}
           />
           <MBuyCardSection
             open={side === "buy"}
@@ -157,17 +181,20 @@ export const MarketplacePage: React.FC = () => {
             onClose={handleSideClose}
             data={nftMarketplaceData}
             setData={setNftMarketplaceData}
+            collection={collection}
           />
           <MSellCardSection
             open={side === "sell"}
             onClose={handleSideClose}
             selectedItem={selectedItem}
+            collection={collection}
           />
           <MOfferCardSection
             open={side === "offer"}
             onConfirm={handleOfferConfirm}
             selectedItem={selectedItem}
             onClose={handleSideClose}
+            collection={collection}
           />
         </div>
       )}

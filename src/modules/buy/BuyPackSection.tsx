@@ -16,6 +16,8 @@ import { ICardSeries } from "../../models/card_series";
 import { toast, ToastContainer } from "react-toastify";
 import { ICardPack } from "../../models/card_pack";
 import { ICardCollection } from "../../models/card_collection";
+import { getMyInfo } from "../../actions";
+import { useMyInfoContext } from "../../context";
 
 export const BuyPackSection: React.FC = () => {
   const navigate = useNavigate();
@@ -28,6 +30,7 @@ export const BuyPackSection: React.FC = () => {
   const [cardCollectionList, setCardCollectionList] = useState<
     ICardCollection[]
   >([]);
+  const { setMyInfoContext } = useMyInfoContext()
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
@@ -44,11 +47,13 @@ export const BuyPackSection: React.FC = () => {
         payment_method_id,
       });
       if (res.data) {
+        const myinfo = await getMyInfo();
+        if (myinfo.data) setMyInfoContext(myinfo.data);
         toast.success(`You bought a ${cardSeries.card_collection ? cardSeries.card_collection.name : ""} ${cardSeries.name || "new"} card pack!`);
         setDetailsView(false);
       }
     } catch (e: any) {
-      toast.error(e);
+      console.log(e);
     }
   };
 
@@ -103,7 +108,7 @@ export const BuyPackSection: React.FC = () => {
 
   return (
     <BuyPackSectionWrapper isview={detailsView ? "true" : undefined}>
-            <ToastContainer
+      <ToastContainer
         position="top-right"
         autoClose={2000}
         hideProgressBar={false}
@@ -179,3 +184,4 @@ export const BuyPackSection: React.FC = () => {
     </BuyPackSectionWrapper>
   );
 };
+

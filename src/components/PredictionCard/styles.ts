@@ -43,6 +43,22 @@ export const PredictionCardWrapper = styled.div<{
   }
 `;
 
+export const PredictionModalCardWrapper = styled.div`
+  width: 194px;
+  height: 297px;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+
+  .prediction-trigger {
+    font-size: 14px;
+    line-height: 24px;
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 0;
+  }
+`
+
 export const CardTopWrapper = styled.div`
   display: flex;
   color: #fff;

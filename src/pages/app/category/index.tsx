@@ -77,7 +77,7 @@ export const CategoriesPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: collection_id,
       nft_card_category_id: id,
-      price: price * 100,
+      price: Math.round(price * 100),
     };
 
     const response = await newMarketplaceList(newMarketplace);
@@ -163,7 +163,9 @@ export const CategoriesPage: React.FC = () => {
               <h3>Category Cards</h3>
             </DatePageTitleWrapper>
             <DatePageContent>
-              {!isLoadingFilter && nftCardCategoryData ? (
+              {!isLoadingFilter &&
+              nftCardCategoryData &&
+              nftCardCategoryData?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
@@ -179,9 +181,7 @@ export const CategoriesPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-
                   <CategoryFilterSection onClick={handleOptionClick} />
-
                   <CardGridSection
                     cardType="category"
                     data={nftCardCategoryData}
@@ -191,7 +191,35 @@ export const CategoriesPage: React.FC = () => {
                     onView={handleView}
                   />
                 </>
-              ) : !isLoading ? (
+              ) : !isLoading &&
+                !isLoadingFilter &&
+                nftCardCategoryData?.length == 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <CategoryFilterSection onClick={handleOptionClick} />
+                  <CardGridSection
+                    cardType="category"
+                    data={nftCardCategoryData}
+                    // data={[]}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading && nftCardCategoryData?.length == 0 ? (
                 <Loader />
               ) : (
                 <EmptyCards>
@@ -230,7 +258,9 @@ export const CategoriesPage: React.FC = () => {
                 />
               </>
             ) : isLoadingFilter ? (
-              <h1 className="setText">No Records Found</h1>
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
             ) : null}
           </DatePageContainer>
         </DatesPageWrapper>

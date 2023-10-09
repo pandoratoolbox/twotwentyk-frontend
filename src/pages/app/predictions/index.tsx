@@ -29,6 +29,10 @@ import {
 } from "../../../actions/filtering";
 import { NftCardPredictionFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
+import { ClaimSubmitModal } from "../../../components/Modals/ClaimSubmitModal";
+import { INftCardTrigger } from "../../../models/nft_card_trigger";
+import { toast } from "react-toastify";
+import { submitClaim } from "../../../actions";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
@@ -69,6 +73,8 @@ export const PredictionsPage: React.FC = () => {
   }, []);
 
   const [modal, setModal] = useState(false);
+  const [openClaimModal, setOpenClaimModal] = useState(false);
+  const [cardPrediction, setCardPrediction] = useState<INftCardPrediction>();
 
   const handleSellConfirm = async (
     id: number,
@@ -78,7 +84,7 @@ export const PredictionsPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 7,
       nft_card_prediction_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
@@ -94,6 +100,13 @@ export const PredictionsPage: React.FC = () => {
 
   const handleCraft = (id: string | number) => {
     navigate("/crafting/predictions?id=" + id);
+  };
+
+  const onClickSubmitClaim = (cardPrediction: INftCardPrediction) => {
+    if (cardPrediction.nft_card_triggers?.length) {
+      setOpenClaimModal(true);
+      setCardPrediction(cardPrediction);
+    }
   };
 
   const handleSell = (item: any) => {
@@ -155,9 +168,28 @@ export const PredictionsPage: React.FC = () => {
     setIsLoadingFilter(false);
   };
 
+  const handleClaim = async (predictionId: number, triggerId: number) => {
+    const res = await submitClaim(predictionId, triggerId);
+    if (res.success) {
+      toast.success("Claimed Successfully.");
+    } else {
+      toast.error(res.message);
+    }
+  };
+
   return (
     <AppLayout>
-      <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+      <SellConfirmModal
+        open={modal}
+        onClose={() => setModal(false)}
+        key="sell-confirm-modal"
+      />
+      <ClaimSubmitModal
+        open={openClaimModal}
+        onClose={() => setOpenClaimModal(false)}
+        cardPrediction={cardPrediction}
+        key="claim-submit-modal"
+      />
       {currentUser ? (
         predictionNfts && predictionNfts?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
@@ -181,6 +213,7 @@ export const PredictionsPage: React.FC = () => {
                     onCraft={handleCraft}
                     onSell={handleSell}
                     cardType="prediction"
+                    onClaimSubmit={onClickSubmitClaim}
                     onView={handleView}
                   />
                 ) : (

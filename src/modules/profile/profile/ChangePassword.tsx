@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Button, Input } from "../../../components";
 import { ProfileEditContainer } from ".";
 import { InputGroup } from "./styles";
 import { resetPassFormValidation } from "../../../utils";
-import { updateMyInfo } from "../../../actions";
+import { updateMyInfo,verifyPassword } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
+import userEvent from "@testing-library/user-event";
 
 export const ChangePassword: React.FC<{
   password: string;
@@ -24,9 +25,16 @@ export const ChangePassword: React.FC<{
     rPassword: "",
   });
 
+  useEffect(()=>{
+    if(password=="" || password==null){
+        password = form.cPassword
+    }
+  },[form.cPassword])
+
   const handleContinue = async () => {
     if (step === 0) {
-      if (password === form.cPassword) {
+        const verifyRes = await verifyPassword({ password: form.cPassword});
+      if (verifyRes.success) { 
         setStep((prev) => prev + 1);
       } else {
         setError((prev) => ({ ...prev, cPassword: "Wrong Password!" }));
@@ -42,6 +50,7 @@ export const ChangePassword: React.FC<{
         nPassword: errors.password,
       }));
       if (isValid) {
+        
         const res = await updateMyInfo({ password: form.nPassword });
         if (res.success) {
           onFinish(form.nPassword);
@@ -51,6 +60,7 @@ export const ChangePassword: React.FC<{
       }
     }
   };
+
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));

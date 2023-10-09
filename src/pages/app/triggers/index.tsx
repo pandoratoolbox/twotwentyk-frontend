@@ -60,7 +60,7 @@ export const TriggersPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: collection_id,
       nft_card_trigger_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
@@ -75,7 +75,7 @@ export const TriggersPage: React.FC = () => {
   };
 
   const handleCraft = (item: any) => {
-    navigate("/crafting/predictions?id=" + item?.id);
+    navigate(`/crafting/predictions?id=${item?.id}&selectedCraft=trigger`);
   };
 
   const handleSell = (item: any) => {
@@ -90,7 +90,7 @@ export const TriggersPage: React.FC = () => {
     nft_collection_id: 1,
     // categories: null,
     triggers: null,
-    card_series_id: 1
+    card_series_id: 1,
   });
 
   // filter option click
@@ -109,7 +109,7 @@ export const TriggersPage: React.FC = () => {
       rarities: filters.rarities,
       tiers: filters.tiers,
       nft_collection_id: 1,
-      card_series_id: 1
+      card_series_id: 1,
     };
 
     console.log(filterType);
@@ -151,29 +151,29 @@ export const TriggersPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        nftCardTriggerData && nftCardTriggerData?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
-            <DatePageContainer>
-              <DatePageTitleWrapper>
-                <h3>Triggers</h3>
-              </DatePageTitleWrapper>
-              <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/marketplace")}
-                  >
-                    Buy Cards
-                  </Button>
-                  <Button
-                    className="buy-button"
-                    onClick={() => navigate("/buy")}
-                  >
-                    Buy Packs
-                  </Button>
-                </ButtonGroup>
-                <TriggerFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+        <DatesPageWrapper isview={isView ? "true" : undefined}>
+          <DatePageContainer>
+            <DatePageTitleWrapper>
+              <h3>Triggers</h3>
+            </DatePageTitleWrapper>
+            <DatePageContent>
+              {!isLoadingFilter && nftCardTriggerData ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/marketplace")}
+                    >
+                      Buy Cards
+                    </Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </ButtonGroup>
+                  <TriggerFilterSection onClick={handleOptionClick} />
                   <CardGridSection
                     data={nftCardTriggerData}
                     // data={[]}
@@ -182,9 +182,27 @@ export const TriggersPage: React.FC = () => {
                     onSell={handleSell}
                     onView={handleView}
                   />
-                ) : (
-                  <Loader />
-                )}
+                </>
+              ) : !isLoading ? (
+                <Loader />
+              ) : (
+                <EmptyCards>
+                  <div className="trigeres">
+                    <h3>No Triggers</h3>
+                    <p>It looks like you don’t have any triggers yet.   </p>
+                    <Button className="buy-button">Buy Cards</Button>
+                    <Button
+                      className="buy-button"
+                      onClick={() => navigate("/buy")}
+                    >
+                      Buy Packs
+                    </Button>
+                  </div>
+                </EmptyCards>
+              )}
+            </DatePageContent>
+            {nftCardTriggerData && nftCardTriggerData?.length > 0 ? (
+              <>
                 <ViewDateCardSection
                   isView={isView === "view"}
                   cardType="trigger"
@@ -198,21 +216,14 @@ export const TriggersPage: React.FC = () => {
                   item={selectedItem}
                   onClose={() => setIsView("")}
                 />
-              </DatePageContent>
-            </DatePageContainer>
-          </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Triggers</h3>
-            <p>It looks like you don’t have any triggers yet.   </p>
-            <Button className="buy-button">Buy Cards</Button>
-            <Button className="buy-button" onClick={() => navigate("/buy")}>
-              Buy Packs
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
+          </DatePageContainer>
+        </DatesPageWrapper>
       ) : (
         <EmptyCards className="login">
           <p className="login">Log in to start playing</p>

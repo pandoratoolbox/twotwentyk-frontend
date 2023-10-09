@@ -77,7 +77,7 @@ export const IdentitiesPage: React.FC = () => {
     const newMarketplace = {
       nft_type_id: 6,
       nft_card_identity_id: id,
-      price: price*100,
+      price: Math.round(price * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     if (response.success) {
@@ -91,8 +91,9 @@ export const IdentitiesPage: React.FC = () => {
     setIsView("view");
   };
 
-  const handleCraft = (id: string | number) => {
-    navigate("/crafting/predictions?id=" + id);
+  const handleCraft = (item: any) => {
+    if (item?.id)
+      navigate(`/crafting/predictions?selectedCraft=identity&id=${item.id}`);
   };
 
   const handleSell = (item: any) => {
@@ -158,23 +159,23 @@ export const IdentitiesPage: React.FC = () => {
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
-        identityNfts && identityNfts?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
-            <DatePageContainer>
-              <DatePageTitleWrapper>
-                <h3>Identities</h3>
-              </DatePageTitleWrapper>
-              <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="craft-button"
-                    onClick={() => navigate("/crafting/identities")}
-                  >
-                    Craft Identity
-                  </Button>
-                </ButtonGroup>
-                <IdentitiesFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+        <DatesPageWrapper isview={isView ? "true" : undefined}>
+          <DatePageContainer>
+            <DatePageTitleWrapper>
+              <h3>Identities</h3>
+            </DatePageTitleWrapper>
+            <DatePageContent>
+              {!isLoadingFilter && identityNfts ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="craft-button"
+                      onClick={() => navigate("/crafting/identities")}
+                    >
+                      Craft Identity
+                    </Button>
+                  </ButtonGroup>
+                  <IdentitiesFilterSection onClick={handleOptionClick} />
                   <CardGridSection
                     identityData={identityNfts}
                     onCraft={handleCraft}
@@ -182,9 +183,28 @@ export const IdentitiesPage: React.FC = () => {
                     cardType="identity"
                     onView={handleView}
                   />
-                ) : (
-                  <Loader />
-                )}
+                </>
+              ) : !isLoading ? (
+                <Loader />
+              ) : (
+                <EmptyCards>
+                  <h3>No Identities Yet</h3>
+                  <p>
+                    Identities are cards created by combining a Day-Month card,
+                    a Year card and a Category card. Identities are combined
+                    with Trigger cards to craft Predictions.
+                  </p>
+                  <Button
+                    className="buy-button"
+                    onClick={() => navigate("/crafting/identities")}
+                  >
+                    Craft Identity
+                  </Button>
+                </EmptyCards>
+              )}
+            </DatePageContent>
+            {identityNfts && identityNfts?.length > 0 ? (
+              <>
                 <ViewDateCardSection
                   isView={isView === "view"}
                   cardType="identity"
@@ -204,27 +224,14 @@ export const IdentitiesPage: React.FC = () => {
                     navigate("/dashboard/identities");
                   }}
                 />
-              </DatePageContent>
-            </DatePageContainer>
-          </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Identities Yet</h3>
-            <p>
-              Identities are cards created by combining a Day-Month card, a Year
-              card and a Category card. Identities are combined with Trigger
-              cards to craft Predictions.
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/crafting/identities")}
-            >
-              Craft Identity
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
+          </DatePageContainer>
+        </DatesPageWrapper>
       ) : (
         <EmptyCards className="login">
           <p className="login">Log in to start playing</p>

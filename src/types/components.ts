@@ -4,6 +4,7 @@ import { IMarketplaceListing } from "../models/marketplace_listing";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
 import { INftCardDayMonth } from "../models/nft_card_day_month";
+import { INftCardPrediction } from "../models/nft_card_prediction";
 import { INftCardYear } from "../models/nft_card_year";
 import { CardActionTypes } from "./common";
 
@@ -85,6 +86,7 @@ export type PredictionCardProps = {
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
   onBuy?: (id: number) => void;
+  onClaimSubmit?: (data: INftCardPrediction) => void;
 } & IMarketplaceListing;
 
 export type FeedItemProps = {
@@ -141,6 +143,7 @@ export type DateCardGridProps = {
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
+  onClaimSubmit?: (data: INftCardPrediction) => void;
 };
 
 export type ViewDateCardProps = {
@@ -178,6 +181,13 @@ export type SellModalProps = {
   onConfirm?: () => void;
   isMarket?: boolean;
   isOffer?: boolean;
+} & ModalProps;
+
+export type ClaimModalProps = {
+  onConfirm?: () => void;
+  isMarket?: boolean;
+  isOffer?: boolean;
+  cardPrediction?: INftCardPrediction;
 } & ModalProps;
 
 export type CraftIdentityModalProps = {
