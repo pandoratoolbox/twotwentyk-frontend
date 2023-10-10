@@ -418,7 +418,7 @@ export const PredictionSelectCardSection: React.FC<{
                 </FilterWrapper>
                 <CardGridWrapper>
                   {nftCardTriggerData.map((item, key) => (
-                    <DateCardWrapper isnothover="true" key={`trigger-${item.id}`}>
+                    <DateCardWrapper key={`trigger-${item.id}`}>
                       <CardImgWrapper>
                         {item.rarity === 0 && (
                           <img src="/assets/nfts/rarity/Trigger-Core-No-Text.png" alt="nft" />
@@ -438,7 +438,7 @@ export const PredictionSelectCardSection: React.FC<{
                         <CardButtonGroup>
 
 
-                          <CardButton onClick={() => onSelectCardTrigger(item)}>Sell</CardButton>
+                          <CardButton onClick={() => onSelectCardTrigger(item)}>Select</CardButton>
 
                         </CardButtonGroup>
                       </CardOverlayWrapper>
