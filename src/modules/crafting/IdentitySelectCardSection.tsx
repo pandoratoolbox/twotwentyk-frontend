@@ -27,6 +27,17 @@ import { useMonthContext, useCardCollectionContext } from "../../context";
 import { SelectOptionProps } from "../../types";
 import { NftCardCategoryFilters, NftCardCraftingFilters, NftCardDayMonthFilters, NftCardYearFilters } from "../../models/filters";
 import { randomInt } from "crypto";
+import { DateCardWrapper } from "../../components/DateCard/styles";
+import { CardImgWrapper } from "../../components/MarketCard/styles";
+import { CardBottomWrapper } from "../../components/PredictionCard/styles";
+import {
+  CardButton,
+  CardButtonGroup,
+  CardOverlayWrapper,
+  CardTooltip,
+  TooltipContent,
+  TooltipItem,
+} from "../../components/CraftingCard/styles";
 
 export const IdentitySelectCardSection: React.FC<{
   selectedCraft: string;
@@ -213,7 +224,7 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox                      
+                    <SelectBox
                       options={optionsCollection}
                       placeholder="Collections"
                       onClick={handleClick}
@@ -225,35 +236,77 @@ export const IdentitySelectCardSection: React.FC<{
                 </FilterWrapper>
                 <CardGridWrapper>
                   {myNfts.crafting.map((item, key) => (
-                    <CraftingCardWrapper
-                      key={key}
-                      active={clickedCard === item.id ? "true" : undefined}
-                    >
-                      <CraftCard
-                        onClick={() => onCardClicked(Number(item.id), item)}
-                        bg="/assets/nfts/1.png"
-                      >
-                        {item.rarity === 0 && <span>Common</span>}
-                        {item.rarity === 1 && <span>Uncommon</span>}
-                        {item.rarity === 2 && <span>Rare</span>}
-                        <p>Crafting</p>
-                      </CraftCard>
-                      <SelectButton
-                        className="select-button"
-                        disabled={
-                          clickedCard !== item.id || selectedCard === item.id
-                          // ? "true"
-                          // : undefined
-                        }
-                        onClick={
-                          clickedCard !== item.id || selectedCard === item.id
-                            ? () => { }
-                            : () => onSelectCardCrafting(item)
-                        }
-                      >
-                        Select
-                      </SelectButton>
-                    </CraftingCardWrapper>
+                    // <CraftingCardWrapper
+                    //   key={key}
+                    //   active={clickedCard === item.id ? "true" : undefined}
+                    // >
+                    //   <CraftCard
+                    //     onClick={() => onCardClicked(Number(item.id), item)}
+                    //     bg="/assets/nfts/1.png"
+                    //   >
+                    //     {item.rarity === 0 && <span>Common</span>}
+                    //     {item.rarity === 1 && <span>Uncommon</span>}
+                    //     {item.rarity === 2 && <span>Rare</span>}
+                    //     <p>Crafting</p>
+                    //   </CraftCard>
+                    //   <SelectButton
+                    //     className="select-button"
+                    //     disabled={
+                    //       clickedCard !== item.id || selectedCard === item.id
+                    //       // ? "true"
+                    //       // : undefined
+                    //     }
+                    //     onClick={
+                    //       clickedCard !== item.id || selectedCard === item.id
+                    //         ? () => { }
+                    //         : () => onSelectCardCrafting(item)
+                    //     }
+                    //   >
+                    //     Select
+                    //   </SelectButton>
+                    // </CraftingCardWrapper>
+                    <DateCardWrapper onClick={() => onCardClicked(Number(item.id), item)}>
+                      <CardImgWrapper>
+                        {item.rarity === 0 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Core-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                        {item.rarity === 1 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Rare-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                        {item.rarity === 2 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Uncommon-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                      </CardImgWrapper>
+                      
+                      <CardButtonGroup>
+                        <SelectButton
+                          className="select-button"
+                          disabled={
+                            clickedCard !== item.id || selectedCard === item.id
+                            // ? "true"
+                            // : undefined
+                          }
+                          onClick={
+                            clickedCard !== item.id || selectedCard === item.id
+                              ? () => { }
+                              : () => onSelectCardCrafting(item)
+                          }
+                        >
+                          Select
+                        </SelectButton>
+                      </CardButtonGroup>
+
+                      <CardOverlayWrapper />
+                    </DateCardWrapper>
                   ))}
                 </CardGridWrapper>
               </>
@@ -295,7 +348,7 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox                      
+                    <SelectBox
                       options={optionsCollection}
                       placeholder="Collections"
                       onClick={handleClick}
@@ -379,7 +432,7 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox                      
+                    <SelectBox
                       options={optionsCollection}
                       placeholder="Collections"
                       onClick={handleClick}
@@ -460,7 +513,7 @@ export const IdentitySelectCardSection: React.FC<{
                     />
                   </SelectBoxWrapper>
                   <SelectBoxWrapper>
-                    <SelectBox                      
+                    <SelectBox
                       options={optionsCollection}
                       placeholder="Collections"
                       onClick={handleClick}
