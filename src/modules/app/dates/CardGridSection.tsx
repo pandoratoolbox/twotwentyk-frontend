@@ -1,7 +1,13 @@
 import React from "react";
 import { CardGridWrapper } from "./styles";
 import { DateCardGridProps } from "../../../types";
-import { DateCard, PredictionCard, CardPack } from "../../../components";
+import {
+  DateCard,
+  PredictionCard,
+  CardPack,
+  IdentityCard,
+  CraftingCard,
+} from "../../../components";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { TriggerCard } from "../../../components/TriggerCard";
 
@@ -16,7 +22,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   buttonText,
   onCancel
 }) => {
-  console.log("buttonText====",buttonText);
+  console.log("buttonText====", buttonText);
   return (
     <CardGridWrapper>
       {cardType === "category" &&
@@ -33,7 +39,20 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
       {cardType === "date" &&
         data?.map((item, key) => (
           <DateCard
-            position={key%2 == 0 ? 'left' : 'right'}
+            position={key % 2 === 0 ? "left" : "right"}
+            key={key}
+            item={item}
+            {...item}
+            onCraft={onCraft}
+            onView={onView}
+            onSell={onSell}
+            buttonText={buttonText}
+          />
+        ))}
+      {cardType === "crafting" &&
+        data?.map((item, key) => (
+          <CraftingCard
+            position={key % 2 === 0 ? "left" : "right"}
             key={key}
             item={item}
             {...item}
@@ -67,7 +86,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onCancel={onCancel}
           />
         ))}
-      {identityData &&
+      {cardType === "prediction" &&
         identityData?.map((item, key) => (
           <PredictionCard
             cardType={cardType}
@@ -81,6 +100,22 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onSell={onSell}
             onClaimSubmit={onClaimSubmit}
             onCancel={onCancel}
+          />
+        ))}
+
+      {cardType === "identity" &&
+        identityData?.map((item, key) => (
+          <IdentityCard
+            cardType={cardType}
+            height={293}
+            isNotHover={true}
+            key={`${cardType}-${key}`}
+            item={item}
+            {...item}
+            onCraft={onCraft}
+            onView={onView}
+            onSell={onSell}
+            onClaimSubmit={onClaimSubmit}
           />
         ))}
     </CardGridWrapper>

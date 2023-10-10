@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { DateCardProps } from "../../types";
 import {
   CardButton,
@@ -11,12 +11,11 @@ import {
 } from "./styles";
 import {
   CardBottomWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
 } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
-import { useMyInfoContext } from "../../context";
+import { CardImgWrapper } from "../MarketCard/styles";
+import { useCelebritiesContext, useMyInfoContext } from "../../context";
+import { ICelebrity } from "../../models/celebrity";
 
 export const CategoryCard: React.FC<DateCardProps> = ({
   item,
@@ -33,23 +32,50 @@ export const CategoryCard: React.FC<DateCardProps> = ({
   onView,
 }) => {
   const { myInfoContext } = useMyInfoContext();
-  
-  image = "/assets/nfts/new4.png";
+  const { celebritiesContext } = useCelebritiesContext();
+  const [identityMatches, setIdentityMatches] = useState<ICelebrity[]>([]);
+
+  useEffect(() => {
+    if (celebritiesContext && category) {
+      setIdentityMatches(
+        Array.from(
+          (celebritiesContext as Map<number, ICelebrity>).values()
+        ).filter(
+          (v: ICelebrity) => v.category === category
+        )
+      );
+    }
+
+  }, [celebritiesContext, category])
+
+  function formatCategory(category: string) {
+    const words = category.split(' ');
+
+    const formattedCategory = words.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+
+    return formattedCategory;
+  }
+
+  const captilizeEachLetterOfWord = (data: string) => {
+    let words = data.split(" ");
+    for (let i = 0; i < words.length; i++) {
+      words[i] = words[i].charAt(0).toUpperCase() + words[i].slice(1) + " "
+    }
+    return words
+  }
+
   return (
-    <DateCardWrapper bg={image} isnothover={isNotHover ? "true" : undefined}>
-      {/* <CardTopWrapper>
-        <div></div>
-        {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-      </CardTopWrapper> */}
+    <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
       <CardImgWrapper>
-        <img src={image} alt="nft" />
-        <>
-          {rarity === 0 && <Rarity>Common</Rarity>}
-          {rarity === 1 && <Rarity>Uncommon</Rarity>}
-          {rarity === 2 && <Rarity>Rare</Rarity>}
-        </>
+        {rarity === 0 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Core.png`} alt="nft" />
+        )}
+        {rarity === 1 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Rare.png`} alt="nft" />
+        )}
+        {rarity === 2 && (
+          <img src={`/assets/nfts/rarity/${formatCategory(category)}-Uncommon.png`} alt="nft" />
+        )}
       </CardImgWrapper>
       <CardBottomWrapper>{category}</CardBottomWrapper>
       <CardOverlayWrapper className="overlay">
@@ -61,20 +87,13 @@ export const CategoryCard: React.FC<DateCardProps> = ({
             <TooltipContent className="tooltip-content">
               <div>
                 <h3>Identity Matches</h3>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Brad Pitt</TooltipItem>
-                <TooltipItem>Emma Watson</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Michael B. Jordan</TooltipItem>
-                <TooltipItem>Kid Rock</TooltipItem>
-                <TooltipItem>Barack Obama</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Brad Pitt</TooltipItem>
-                <TooltipItem>Emma Watson</TooltipItem>
-                <TooltipItem>Tom Brady</TooltipItem>
-                <TooltipItem>Michael B. Jordan</TooltipItem>
-                <TooltipItem>Kid Rock</TooltipItem>
-                <TooltipItem>Barack Obama</TooltipItem>
+                {
+                  identityMatches && identityMatches.map((v) => (
+                    <TooltipItem>
+                      {captilizeEachLetterOfWord(v.name)}
+                    </TooltipItem>
+                  ))
+                }
               </div>
             </TooltipContent>
           </CardTooltip>
@@ -84,7 +103,9 @@ export const CategoryCard: React.FC<DateCardProps> = ({
               Craft Identity
             </CardButton>
           )}
-          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && (
+            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
+          )}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </DateCardWrapper>

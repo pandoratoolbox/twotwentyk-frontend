@@ -66,9 +66,32 @@ p {
   color: #0e4fbc !important ;
   background: #fff !important;
 }
+.setText {
+  text-align: center;
+}
+
+.trigeres {
+  margin-left: 600px;
+}
 .triggerT {
   margin-top: 16px !important;
   z-index: 4;
   position: absolute;
   margin-right: 27px;
+}
+
+.Sort-Options .sOption {
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  padding: 7px;
+}
+
+.Sort-Options :hover {
+  background-color: #c9c9c9;
+}
+
+.OptionHeading span {
+  margin-left: 7px;
+  font-weight: bold !important;
 }

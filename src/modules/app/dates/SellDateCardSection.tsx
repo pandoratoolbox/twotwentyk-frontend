@@ -145,7 +145,9 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   ? "Category"
                   : cardType === "cardPacks"
                     ? "Card Pack"
-                    : "Date Card"}
+                    : cardType === "crafting"
+                      ? "Crafting"
+                      : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (

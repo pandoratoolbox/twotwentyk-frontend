@@ -96,9 +96,9 @@ export const SignUpForm: React.FC = () => {
         />
         <span>
           {"I am at least 21 years of age and agree to the "}
-          <a href="https://google.com">Terms & Conditions</a>
+          <Link to="/term-conditions">Terms & Conditions</Link>
           {" & "}
-          <a href="https://google.com">Privacy Policy</a>
+          <Link to="/privacy-policy">Privacy Policy</Link>
           {
             " of TwoTwenkyK and agree to  opt-in to receive TwoTwenkyK’s Newsletter and to receive email, alerts, news and other offers from TwoTwenkyK and/or its affiliated entities."
           }

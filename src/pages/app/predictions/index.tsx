@@ -42,9 +42,10 @@ export const PredictionsPage: React.FC = () => {
   const navigate = useNavigate();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
-  const [predictionNfts, setPredictionNfts] = useState<INftCardPrediction[]>(
-    []
-  );
+  const [predictionNfts, setPredictionNfts] = useState<
+    INftCardPrediction[] | null
+  >(null);
+
   const [selectedItem, setSelectedItem] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
@@ -68,7 +69,6 @@ export const PredictionsPage: React.FC = () => {
     if (response?.data) {
       setPredictionNfts(response.data);
     }
-
     setIsLoading(false);
   };
 
@@ -77,8 +77,8 @@ export const PredictionsPage: React.FC = () => {
   }, []);
 
   const [modal, setModal] = useState(false);
-  const [openClaimModal, setOpenClaimModal] = useState(false)
-  const [cardPrediction, setCardPrediction] = useState<INftCardPrediction>()
+  const [openClaimModal, setOpenClaimModal] = useState(false);
+  const [cardPrediction, setCardPrediction] = useState<INftCardPrediction>();
 
   const handleSellConfirm = async (
     id: number,
@@ -108,10 +108,10 @@ export const PredictionsPage: React.FC = () => {
 
   const onClickSubmitClaim = (cardPrediction: INftCardPrediction) => {
     if (cardPrediction.nft_card_triggers?.length) {
-      setOpenClaimModal(true)
-      setCardPrediction(cardPrediction)
+      setOpenClaimModal(true);
+      setCardPrediction(cardPrediction);
     }
-  }
+  };
 
   const handleSell = (item: any) => {
     setSelectedItem(item);
@@ -179,7 +179,48 @@ export const PredictionsPage: React.FC = () => {
     } else {
       toast.error(res.message);
     }
-  }
+  };
+
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.rarity - a.rarity);
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    }
+  };
 
   const handleCancel = (item: INftCardPrediction | INftCardPrediction | ICardPack) => {
     setCancelNftCard(item as INftCardPrediction)
@@ -192,23 +233,28 @@ export const PredictionsPage: React.FC = () => {
       <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
       {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Prediction"/>}
       {currentUser ? (
-        predictionNfts && predictionNfts?.length > 0 ? (
-          <DatesPageWrapper isview={isView ? "true" : undefined}>
-            <DatePageContainer>
-              <DatePageTitleWrapper>
-                <h3>Predictions</h3>
-              </DatePageTitleWrapper>
-              <DatePageContent>
-                <ButtonGroup>
-                  <Button
-                    className="craft-button"
-                    onClick={() => navigate("/crafting/predictions")}
-                  >
-                    Craft Prediction
-                  </Button>
-                </ButtonGroup>
-                <PredictionsFilterSection onClick={handleOptionClick} />
-                {!isLoadingFilter ? (
+        <DatesPageWrapper isview={isView ? "true" : undefined}>
+          <DatePageContainer>
+            <DatePageTitleWrapper>
+              <h3>Predictions</h3>
+            </DatePageTitleWrapper>
+            <DatePageContent>
+              {!isLoadingFilter &&
+              predictionNfts &&
+              predictionNfts?.length > 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="craft-button"
+                      onClick={() => navigate("/crafting/predictions")}
+                    >
+                      Craft Prediction
+                    </Button>
+                  </ButtonGroup>
+                  <PredictionsFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     identityData={predictionNfts}
                     onCraft={handleCraft}
@@ -218,9 +264,52 @@ export const PredictionsPage: React.FC = () => {
                     onView={handleView}
                     onCancel={handleCancel}
                   />
-                ) : (
-                  <Loader />
-                )}
+                </>
+              ) : !isLoading &&
+                !isLoadingFilter &&
+                predictionNfts?.length == 0 ? (
+                <>
+                  <ButtonGroup>
+                    <Button
+                      className="craft-button"
+                      onClick={() => navigate("/crafting/predictions")}
+                    >
+                      Craft Prediction
+                    </Button>
+                  </ButtonGroup>
+                  <PredictionsFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
+                  <CardGridSection
+                    identityData={predictionNfts}
+                    onCraft={handleCraft}
+                    onSell={handleSell}
+                    cardType="prediction"
+                    onClaimSubmit={onClickSubmitClaim}
+                    onView={handleView}
+                  />
+                </>
+              ) : !isLoading && predictionNfts == null ? (
+                <EmptyCards>
+                  <h3>No Predictions Yet</h3>
+                  <p>
+                    Predictions are created by combining an Identity and one or
+                    more Trigger cards
+                  </p>
+                  <Button
+                    className="buy-button"
+                    onClick={() => navigate("/crafting/identities")}
+                  >
+                    Craft Prediction
+                  </Button>
+                </EmptyCards>
+              ) : isLoading ? (
+                <Loader />
+              ) : null}
+            </DatePageContent>
+            {predictionNfts && predictionNfts?.length > 0 ? (
+              <>
                 <ViewDateCardSection
                   isView={isView === "view"}
                   cardType="prediction"
@@ -240,26 +329,14 @@ export const PredictionsPage: React.FC = () => {
                     navigate("/dashboard/predictions");
                   }}
                 />
-              </DatePageContent>
-            </DatePageContainer>
-          </DatesPageWrapper>
-        ) : !isLoading ? (
-          <EmptyCards>
-            <h3>No Predictions Yet</h3>
-            <p>
-              Predictions are created by combining an Identity and one or more
-              Trigger cards
-            </p>
-            <Button
-              className="buy-button"
-              onClick={() => navigate("/crafting/identities")}
-            >
-              Craft Prediction
-            </Button>
-          </EmptyCards>
-        ) : (
-          <Loader />
-        )
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
+          </DatePageContainer>
+        </DatesPageWrapper>
       ) : (
         <EmptyCards className="login">
           <p className="login">Log in to start playing</p>

@@ -9,12 +9,29 @@ import {
   BackCardPacks,
 } from "./styles";
 
+import { useMonthContext } from "../../../context";
+
 type Props = {
   cardsToAnimation: ICardPackCards;
   onClose: () => void;
 };
 
+const FrontCardComponent: React.FC<{ rarity: number }> = ({ rarity }) => (
+  <FrontBackCard className="front">
+    {rarity >= 0 && rarity <= 2 && (
+      <img
+        src={`/assets/nfts/rarity/${
+          rarity === 0 ? "Core" : rarity === 1 ? "Rare" : "Uncommon"
+        }-Card-Back.png`}
+        alt="nft"
+      />
+    )}
+  </FrontBackCard>
+);
+
 const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
+  const { monthContext } = useMonthContext();
+
   const [flipActive, setFlipActive] = useState({
     crafting: Array(cardsToAnimation.crafting?.length).fill(false),
     category: Array(cardsToAnimation.category?.length).fill(false),
@@ -22,7 +39,15 @@ const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
     day_month: Array(cardsToAnimation.day_month?.length).fill(false),
   });
 
-  //   console.log(cardsToAnimation);
+  function formatCategory(category: string) {
+    const words = category.split(" ");
+
+    const formattedCategory = words
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join("-");
+
+    return formattedCategory;
+  }
 
   return (
     <>
@@ -39,23 +64,27 @@ const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
             <OpenCardContent
               className={flipActive.crafting[index] ? "active" : ""}
             >
-              <FrontBackCard className="front">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271224792-d46756c4-7aa7-4739-9fdf-4ea909e153f5.svg"
-                  alt=""
-                />
-              </FrontBackCard>
+              {item?.rarity && <FrontCardComponent rarity={item?.rarity} />}
+
               <FrontBackCard className="back">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271226281-28d66500-a306-4cfa-af5d-9abd2a59203d.svg"
-                  alt=""
-                />
-                <div className="gif">
+                {item?.rarity === 0 && (
                   <img
-                    src="https://user-images.githubusercontent.com/29821340/271261346-7facc6f8-419c-40a5-b684-9a2f659c29e1.gif"
-                    alt=""
+                    src="/assets/nfts/rarity/Crafting-Core-copy.png"
+                    alt="nft"
                   />
-                </div>
+                )}
+                {item?.rarity === 1 && (
+                  <img
+                    src="/assets/nfts/rarity/Crafting-Rare-copy.png"
+                    alt="nft"
+                  />
+                )}
+                {item?.rarity === 2 && (
+                  <img
+                    src="/assets/nfts/rarity/Crafting-Uncommon-copy.png"
+                    alt="nft"
+                  />
+                )}
               </FrontBackCard>
             </OpenCardContent>
           </OpenCard>
@@ -73,23 +102,33 @@ const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
             <OpenCardContent
               className={flipActive.category[index] ? "active" : ""}
             >
-              <FrontBackCard className="front">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271224792-d46756c4-7aa7-4739-9fdf-4ea909e153f5.svg"
-                  alt=""
-                />
-              </FrontBackCard>
+              {item?.rarity && <FrontCardComponent rarity={item?.rarity} />}
+
               <FrontBackCard className="back">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271226281-28d66500-a306-4cfa-af5d-9abd2a59203d.svg"
-                  alt=""
-                />
-                <div className="gif">
+                {item?.rarity === 0 && item?.category && (
                   <img
-                    src="https://user-images.githubusercontent.com/29821340/271261346-7facc6f8-419c-40a5-b684-9a2f659c29e1.gif"
-                    alt=""
+                    src={`/assets/nfts/rarity/${formatCategory(
+                      item?.category
+                    )}-Core.png`}
+                    alt="nft"
                   />
-                </div>
+                )}
+                {item?.rarity === 1 && item?.category && (
+                  <img
+                    src={`/assets/nfts/rarity/${formatCategory(
+                      item?.category
+                    )}-Rare.png`}
+                    alt="nft"
+                  />
+                )}
+                {item?.rarity === 2 && item?.category && (
+                  <img
+                    src={`/assets/nfts/rarity/${formatCategory(
+                      item?.category
+                    )}-Uncommon.png`}
+                    alt="nft"
+                  />
+                )}
               </FrontBackCard>
             </OpenCardContent>
           </OpenCard>
@@ -105,22 +144,33 @@ const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
             }}
           >
             <OpenCardContent className={flipActive.year[index] ? "active" : ""}>
-              <FrontBackCard className="front">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271224792-d46756c4-7aa7-4739-9fdf-4ea909e153f5.svg"
-                  alt=""
-                />
-              </FrontBackCard>
+              {item?.rarity && <FrontCardComponent rarity={item?.rarity} />}
               <FrontBackCard className="back">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271226281-28d66500-a306-4cfa-af5d-9abd2a59203d.svg"
-                  alt=""
-                />
-                <div className="gif">
+                {item?.rarity === 0 && (
                   <img
-                    src="https://user-images.githubusercontent.com/29821340/271261346-7facc6f8-419c-40a5-b684-9a2f659c29e1.gif"
-                    alt=""
+                    src={`/assets/nfts/rarity/Month-Day-Core-copy.png`}
+                    alt="nft"
                   />
+                )}
+                {item?.rarity === 1 && (
+                  <img
+                    src={`/assets/nfts/rarity/Month-Day-Rare-copy.png`}
+                    alt="nft"
+                  />
+                )}
+                {item?.rarity === 2 && (
+                  <img
+                    src={`/assets/nfts/rarity/Month-Day-Uncommon-copy.png`}
+                    alt="nft"
+                  />
+                )}
+                <div className="gif">
+                  {item?.day && item?.month && monthContext && (
+                    <h3>
+                      {item?.day}{" "}
+                      {(monthContext as Map<number, string>).get(item.month)}
+                    </h3>
+                  )}
                 </div>
               </FrontBackCard>
             </OpenCardContent>
@@ -139,23 +189,27 @@ const OpenCardPack: React.FC<Props> = ({ cardsToAnimation, onClose }) => {
             <OpenCardContent
               className={flipActive.day_month[index] ? "active" : ""}
             >
-              <FrontBackCard className="front">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271224792-d46756c4-7aa7-4739-9fdf-4ea909e153f5.svg"
-                  alt=""
-                />
-              </FrontBackCard>
+              {item?.rarity && <FrontCardComponent rarity={item?.rarity} />}
               <FrontBackCard className="back">
-                <img
-                  src="https://user-images.githubusercontent.com/29821340/271226281-28d66500-a306-4cfa-af5d-9abd2a59203d.svg"
-                  alt=""
-                />
-                <div className="gif">
+                {item?.rarity === 0 && (
                   <img
-                    src="https://user-images.githubusercontent.com/29821340/271261346-7facc6f8-419c-40a5-b684-9a2f659c29e1.gif"
-                    alt=""
+                    src={`/assets/nfts/rarity/Year-Core-copy.png`}
+                    alt="nft"
                   />
-                </div>
+                )}
+                {item?.rarity === 1 && (
+                  <img
+                    src={`/assets/nfts/rarity/Year-Rare-copy.png`}
+                    alt="nft"
+                  />
+                )}
+                {item?.rarity === 2 && (
+                  <img
+                    src={`/assets/nfts/rarity/Year-Uncommon-copy.png`}
+                    alt="nft"
+                  />
+                )}
+                <div className="gif">{item?.year && <h3>{item?.year}</h3>}</div>
               </FrontBackCard>
             </OpenCardContent>
           </OpenCard>

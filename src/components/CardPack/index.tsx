@@ -4,14 +4,11 @@ import {
   CardTopWrapper,
   CardTypeWrapper,
   PredictionCardWrapper,
-  CardOverlayWrapper
+  CardOverlayWrapper,
 } from "./styles";
-import {
-  CardButton,
-  CardButtonGroup,
-} from "../DateCard/styles";
+import { CardButton, CardButtonGroup } from "../DateCard/styles";
 import { CardPacksCardProps } from "../../types";
-import { CardImgWrapper, Rarity } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
 import { useMyInfoContext } from "../../context";
 
 export const CardPack: React.FC<CardPacksCardProps> = ({
@@ -19,6 +16,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
   id = 0,
   image,
   rarity,
+  tier,
   height,
   status,
   onSell,
@@ -27,22 +25,37 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
   onCancel,
 }) => {
   const { myInfoContext } = useMyInfoContext();
-  image = "/assets/nfts/new2.png";
+  console.log(item);
   return (
-    <PredictionCardWrapper height={height} bg={image}>
+    <PredictionCardWrapper>
       <CardImgWrapper>
-        <img src={image} alt="nft" />
-        <>
-          {rarity === 0 && <Rarity>Common</Rarity>}
-          {rarity === 1 && <Rarity>Uncommon</Rarity>}
-          {rarity === 2 && <Rarity>Rare</Rarity>}
-        </>
+        {tier === 0 && (
+          <img
+            src="/assets/nfts/rarity/Standard-Pack-Background.png"
+            alt="nft"
+          />
+        )}
+        {tier === 1 && (
+          <img
+            src="/assets/nfts/rarity/Premium-Pack-Background.png"
+            alt="nft"
+          />
+        )}
+        {tier === 2 && (
+          <img src="/assets/nfts/rarity/Elite-Pack-Background.png" alt="nft" />
+        )}
+        <div className="info-nft info-nft-cardPack">
+          {tier === 0 && (
+            <img src="/assets/nfts/rarity/Standard-Egg-Animation-No-Bkgnd-Small.gif" alt="gif" />
+          )}
+          {tier === 1 && (
+            <img src="/assets/nfts/rarity/Premium-Egg-Animation-No-Bkgnd-Small.gif" alt="nft" />
+          )}
+          {tier === 2 && (
+            <img src="/assets/nfts/rarity/Elite-Egg-Animation-No-Bkgnd-Small.gif" alt="nft" />
+          )}
+        </div>
       </CardImgWrapper>
-      {/* <CardTopWrapper>
-        {rarity === 0 && <CardTypeWrapper>Common</CardTypeWrapper>}
-        {rarity === 1 && <CardTypeWrapper>Uncommon</CardTypeWrapper>}
-        {rarity === 2 && <CardTypeWrapper>Rare</CardTypeWrapper>}
-      </CardTopWrapper> */}
 
       <CardBottomWrapper>Card Pack</CardBottomWrapper>
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { CardGridWrapper } from "./styles";
-import { MarketCard, PredictionCard } from "../../components";
+import { MarketCard, PredictionCard, IdentityCard } from "../../components";
 // import { cardData, packData } from "./data";
 import { CardActionTypes } from "../../types";
 import { IMarketplaceListing } from "../../models/marketplace_listing";
@@ -21,18 +21,12 @@ export const MCardGridSection: React.FC<{
         ))}
       {page === "packs" &&
         data?.map((item, key) => (
-          <MarketCard
-            item={item}
-            // {...packData[key]}
-            key={key}
-            {...item}
-            onCard={onCardClick}
-          />
+          <MarketCard item={item} key={key} {...item} onCard={onCardClick} />
         ))}
       {page === "identities" &&
         data?.map((item, key) => {
           return (
-            <PredictionCard
+            <IdentityCard
               cardType={"identity"}
               isNotHover={true}
               item={item}

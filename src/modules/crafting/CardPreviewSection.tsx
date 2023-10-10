@@ -24,7 +24,7 @@ export const CardPreviewSection: React.FC<{
   selectedCraft: string;
   page: "identity" | "prediction";
   clickedCard: string | number | null;
-  clickedNft?: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  clickedNft?: INftCardCrafting | INftCardIdentity | INftCardTrigger;
 }> = ({ page, clickedCard, clickedNft, selectedCraft }) => {
   type CardProps = {
     id: number;
@@ -109,9 +109,9 @@ export const CardPreviewSection: React.FC<{
       {Number(clickedCard) > -1 ? (
         <>
           <CraftCard
-            bg={
-              nftData.filter((f: any) => f.id === Number(clickedCard))[0]?.image
-            }
+            // bg={
+            //   nftData.filter((f: any) => f.id === Number(clickedCard))[0]?.image
+            // }
             className="preview"
           >
             {nftData.filter((f: any) => f.id === Number(clickedCard))[0]
@@ -133,11 +133,25 @@ export const CardPreviewSection: React.FC<{
               {/* <IconArrowDown /> */}
             </PropertiesHeader>
             <PropertiesContent>
-              {clickedNft ? <>
-                {selectedCraft === "trigger" && <TriggerContent item={clickedNft} />}
-                {selectedCraft === "identity" && <IdentityContent item={clickedNft} />}
-                {selectedCraft !== "identity" && selectedCraft !== "trigger" && <CraftingContent item={clickedNft} craft={selectedCraft}/>}              
-              </> : <NoContent />}
+              {clickedNft ? (
+                <>
+                  {selectedCraft === "trigger" && (
+                    <TriggerContent item={clickedNft} />
+                  )}
+                  {selectedCraft === "identity" && (
+                    <IdentityContent item={clickedNft} />
+                  )}
+                  {selectedCraft !== "identity" &&
+                    selectedCraft !== "trigger" && (
+                      <CraftingContent
+                        item={clickedNft}
+                        craft={selectedCraft}
+                      />
+                    )}
+                </>
+              ) : (
+                <NoContent />
+              )}
             </PropertiesContent>
           </PropertiesWrapper>
         </>
@@ -165,81 +179,99 @@ const NoContent = () => {
       </PropertyItem>
     </>
   );
-}
+};
 
 const IdentityContent = ({ item }: { item: INftCardIdentity }) => {
-  const { cardSeriesContext } = useCardSeriesContext()
-  const collection = cardSeriesContext?.find(value => value.id === item.card_series_id)?.card_collection?.name
+  const { cardSeriesContext } = useCardSeriesContext();
+  const collection = cardSeriesContext?.find(
+    (value) => value.id === item.card_series_id
+  )?.card_collection?.name;
 
   const timestamp = item.created_at;
   const date = new Date(timestamp);
-  const month = date.toLocaleString('default', { month: 'long' });
+  const month = date.toLocaleString("default", { month: "long" });
   const day = date.getDate();
   const year = date.getFullYear();
-  const rarity = item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common"
+  const rarity =
+    item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common";
 
-  return <>
-    <PropertyItem>
-      <p>Type</p>
-      <span>Identity</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Day/Month</p>
-      <span>{`${month} ${day}`}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Year</p>
-      <span>{year ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Category</p>
-      <span>{item?.category ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Collection</p>
-      <span>{collection ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Rarity</p>
-      <span>{rarity}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Identity Match</p>
-      <span>{item?.celebrity_name ?? ""}</span>
-    </PropertyItem>
-  </>
-}
+  return (
+    <>
+      <PropertyItem>
+        <p>Type</p>
+        <span>Identity</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Day/Month</p>
+        <span>{`${month} ${day}`}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Year</p>
+        <span>{year ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Category</p>
+        <span>{item?.category ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Collection</p>
+        <span>{collection ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Rarity</p>
+        <span>{rarity}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Identity Match</p>
+        <span>{item?.celebrity_name ?? ""}</span>
+      </PropertyItem>
+    </>
+  );
+};
 
 const TriggerContent = ({ item }: { item: INftCardTrigger }) => {
-  const { cardSeriesContext } = useCardSeriesContext()
-  const collection = cardSeriesContext?.find(value => value.id === item.card_series_id)?.card_collection?.name
-  const rarity = item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common"
+  const { cardSeriesContext } = useCardSeriesContext();
+  const collection = cardSeriesContext?.find(
+    (value) => value.id === item.card_series_id
+  )?.card_collection?.name;
+  const rarity =
+    item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common";
 
+  return (
+    <>
+      <PropertyItem>
+        <p>Trigger</p>
+        <span>{item?.trigger ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Trigger Tier</p>
+        <span>{item?.tier ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Collection</p>
+        <span>{collection ?? ""}</span>
+      </PropertyItem>
+      <PropertyItem>
+        <p>Rarity</p>
+        <span>{rarity}</span>
+      </PropertyItem>
+    </>
+  );
+};
 
-  return <>
-    <PropertyItem>
-      <p>Trigger</p>
-      <span>{item?.trigger ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Trigger Tier</p>
-      <span>{item?.tier ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Collection</p>
-      <span>{collection ?? ""}</span>
-    </PropertyItem>
-    <PropertyItem>
-      <p>Rarity</p>
-      <span>{rarity}</span>
-    </PropertyItem>
-  </>
-}
-
-const CraftingContent = ({ item, craft }: { craft: string; item: INftCardIdentity }) => {
-  const { cardSeriesContext } = useCardSeriesContext()
-  const collection = cardSeriesContext?.find(value => value.id === item.card_series_id)?.card_collection?.name
-  const rarity = item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common"
+const CraftingContent = ({
+  item,
+  craft,
+}: {
+  craft: string;
+  item: INftCardIdentity;
+}) => {
+  const { cardSeriesContext } = useCardSeriesContext();
+  const collection = cardSeriesContext?.find(
+    (value) => value.id === item.card_series_id
+  )?.card_collection?.name;
+  const rarity =
+    item?.rarity === 2 ? "Rare" : item?.rarity === 1 ? "Uncommon" : "Common";
 
   return (
     <>
@@ -257,4 +289,4 @@ const CraftingContent = ({ item, craft }: { craft: string; item: INftCardIdentit
       </PropertyItem>
     </>
   );
-}
+};
