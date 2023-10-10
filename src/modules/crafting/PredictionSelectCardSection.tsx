@@ -31,6 +31,17 @@ import { SelectOptionProps } from "../../types";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { ICelebrity } from "../../models/celebrity";
 import { NftCardCraftingFilters, NftCardIdentityFilters, NftCardTriggerFilters } from "../../models/filters";
+import { DateCardWrapper } from "../../components/DateCard/styles";
+import { CardImgWrapper } from "../../components/MarketCard/styles";
+import { CardBottomWrapper, PredictionCardWrapper } from "../../components/IdentityCard/styles";
+import {
+  CardButton,
+  CardButtonGroup,
+  CardOverlayWrapper,
+  CardTooltip,
+  TooltipContent,
+  TooltipItem,
+} from "../../components/CraftingCard/styles";
 
 export const PredictionSelectCardSection: React.FC<{
   selectedCraft: string;
@@ -193,36 +204,47 @@ export const PredictionSelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {nftCardCraftingData.map((item, key) => (
-                    <CraftingCardWrapper
-                      key={key}
-                      active={clickedCard === item.id ? "true" : undefined}
-                    >
-                      <CraftCard
-                        onClick={() => onCardClicked(Number(item.id), item)}
-                        bg="/assets/nfts/1.png"
-                      >
-                        {item.rarity === 0 && <span>Common</span>}
-                        {item.rarity === 1 && <span>Uncommon</span>}
-                        {item.rarity === 2 && <span>Rare</span>}
-                        <p>Crafting</p>
-                      </CraftCard>
-                      <SelectButton
-                        className="select-button"
-                        disabled={
-                          clickedCard !== item.id || selectedCard === item.id
-                          // ? "true"
-                          // : undefined
-                        }
-                        onClick={
-                          clickedCard !== item.id || selectedCard === item.id
-                            ? () => { }
-                            : () => onSelectCardCrafting(item)
-                        }
-                      >
-                        Select
-                      </SelectButton>
-                    </CraftingCardWrapper>
+                  {nftCardCraftingData.map((item) => (
+                    <DateCardWrapper key={`craft-${item.id}`}>
+                      <CardImgWrapper>
+                        {item.rarity === 0 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Core-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                        {item.rarity === 1 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Rare-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                        {item.rarity === 2 && (
+                          <img
+                            src="/assets/nfts/rarity/Crafting-Uncommon-copy.png"
+                            alt="nft"
+                          />
+                        )}
+                      </CardImgWrapper>
+
+                      <CardOverlayWrapper className="overlay" onClick={() => onCardClicked(Number(item.id), item)}>
+                        <CardButtonGroup>
+                          <CardButton
+                            // disabled={
+                            //   clickedCard !== item.id || selectedCard === item.id
+                            // ? "true"
+                            // : undefined
+                            // }
+                            onClick={() => onSelectCardCrafting(item)
+                            }
+                          >
+                            Select
+                          </CardButton>
+                        </CardButtonGroup>
+                      </CardOverlayWrapper>
+
+                      <CardOverlayWrapper />
+                    </DateCardWrapper>
                   ))}
                 </CardGridWrapper>
               </>
@@ -274,56 +296,74 @@ export const PredictionSelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {nftCardIdentityData.map((item, key) => (
-                    <CraftingCardWrapper
-                      key={key}
-                      active={clickedCard === item.id ? "true" : undefined}
+                  {nftCardIdentityData.map((item) => (
+                    <PredictionCardWrapper
+                      cardType="identity"
+                      // onClick={onClick}
+                      height={293}
+                      isnothover="true"
+                      key={`identity-${item.id}`}
                     >
-                      <CraftCard
-                        onClick={() => onCardClicked(Number(item.id), item)}
-                        bg="/assets/nfts/1.png"
-                      >
-                        {item.rarity === 0 && <span>Common</span>}
-                        {item.rarity === 1 && <span>Uncommon</span>}
-                        {item.rarity === 2 && <span>Rare</span>}
-
-                        {item?.celebrity_name ? (
-                          <p>{item.celebrity_name}</p>
-                        ) : (
-                          celebritiesContext && (
-                            <p>
-                              <SelectOption
-                                options={Array.from<[number, any]>(
-                                  celebritiesContext
-                                ).map(([key, value]) => {
-                                  return {
-                                    label: value.name,
-                                    value: String(value.id),
-                                  };
-                                })}
-                                placeholder="Identity Matches"
-                                onSelect={chooseCelebrity}
-                              />
-                            </p>
-                          )
+                      <CardImgWrapper>
+                        {item.rarity === 0 && (
+                          <img
+                            src="/assets/nfts/rarity/Identity-Card-Blank-Core.png"
+                            alt="nft"
+                          />
                         )}
-                      </CraftCard>
-                      <SelectButton
-                        className="select-button"
-                        disabled={
-                          clickedCard !== item.id || selectedCard === item.id
-                          // ? "true"
-                          // : undefined
-                        }
-                        onClick={
-                          clickedCard !== item.id || selectedCard === item.id
-                            ? () => { }
-                            : () => onSelectCardIdentity(item)
-                        }
-                      >
-                        Select
-                      </SelectButton>
-                    </CraftingCardWrapper>
+                        {item.rarity === 1 && (
+                          <img
+                            src="/assets/nfts/rarity/Identity-Card-Blank-Rare.png"
+                            alt="nft"
+                          />
+                        )}
+                        {item.rarity === 2 && (
+                          <img
+                            src="/assets/nfts/rarity/Identity-Card-Blank-Uncommon.png"
+                            alt="nft"
+                          />
+                        )}
+                        <div className="info-nft info-nft-identity">
+                          {item.rarity === 0 && (
+                            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
+                          )}
+                          {item.rarity === 1 && (
+                            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
+                          )}
+                          {item.rarity === 2 && (
+                            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
+                          )}
+                          <div className="nft-info-detail">
+                            <h2 className="date">
+                              {item?.day} {item?.month} {item?.year}
+                            </h2>
+                            <h3>{item.category}</h3>
+                          </div>
+                        </div>
+                      </CardImgWrapper>
+
+                      {item.celebrity_name &&
+                        <CardBottomWrapper>{item.celebrity_name}</CardBottomWrapper>
+                      }
+
+                      {/* <CardBottomWrapper> */}
+                      {/* {identityMatches && (
+                                   options={identityMatches}
+                                   placeholder="Identity Matches"
+                                   clear={clearSelect}
+                                   onSelect={chooseCelebrity}
+                                 />
+                              )} */}
+                      {/* </CardBottomWrapper> */}
+
+
+                      <CardOverlayWrapper className="overlay" onClick={() => onCardClicked(Number(item.id), item)}>
+                        <CardButtonGroup>
+                          <CardButton onClick={() => onSelectCardIdentity(item)}>Select</CardButton>
+
+                        </CardButtonGroup>
+                      </CardOverlayWrapper>
+                    </PredictionCardWrapper>
                   ))}
                 </CardGridWrapper>
               </>
@@ -377,35 +417,31 @@ export const PredictionSelectCardSection: React.FC<{
                 </FilterWrapper>
                 <CardGridWrapper>
                   {nftCardTriggerData.map((item, key) => (
-                    <CraftingCardWrapper
-                      key={key}
-                      active={clickedCard === item.id ? "true" : undefined}
-                    >
-                      <CraftCard
-                        onClick={() => onCardClicked(Number(item.id), item)}
-                        bg="/assets/nfts/1.png"
-                      >
-                        {item.rarity === 0 && <span>Common</span>}
-                        {item.rarity === 1 && <span>Uncommon</span>}
-                        {item.rarity === 2 && <span>Rare</span>}
-                        <p>{item.trigger}</p>
-                      </CraftCard>
-                      <SelectButton
-                        className="select-button"
-                        disabled={
-                          clickedCard !== item.id || selectedCard === item.id
-                          // ? "true"
-                          // : undefined
-                        }
-                        onClick={
-                          clickedCard !== item.id || selectedCard === item.id
-                            ? () => { }
-                            : () => onSelectCardTrigger(item)
-                        }
-                      >
-                        Select
-                      </SelectButton>
-                    </CraftingCardWrapper>
+                    <DateCardWrapper isnothover="true" key={`trigger-${item.id}`}>
+                      <CardImgWrapper>
+                        {item.rarity === 0 && (
+                          <img src="/assets/nfts/rarity/Trigger-Core-No-Text.png" alt="nft" />
+                        )}
+                        {item.rarity === 1 && (
+                          <img src="/assets/nfts/rarity/Trigger-Rare-No-Text.png" alt="nft" />
+                        )}
+                        {item.rarity === 2 && (
+                          <img
+                            src="/assets/nfts/rarity/Trigger-Uncommon-No-Text.png"
+                            alt="nft"
+                          />
+                        )}
+                      </CardImgWrapper>
+                      <CardBottomWrapper>{item.trigger}</CardBottomWrapper>
+                      <CardOverlayWrapper className="overlay" onClick={() => onCardClicked(Number(item.id), item)}>
+                        <CardButtonGroup>
+
+
+                          <CardButton onClick={() => onSelectCardTrigger(item)}>Sell</CardButton>
+
+                        </CardButtonGroup>
+                      </CardOverlayWrapper>
+                    </DateCardWrapper>
                   ))}
                 </CardGridWrapper>
               </>

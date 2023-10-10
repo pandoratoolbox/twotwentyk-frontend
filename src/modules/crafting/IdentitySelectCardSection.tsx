@@ -251,37 +251,8 @@ export const IdentitySelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {myNfts.crafting.map((item, key) => (
-                    // <CraftingCardWrapper
-                    //   key={key}
-                    //   active={clickedCard === item.id ? "true" : undefined}
-                    // >
-                    //   <CraftCard
-                    //     onClick={() => onCardClicked(Number(item.id), item)}
-                    //     bg="/assets/nfts/1.png"
-                    //   >
-                    //     {item.rarity === 0 && <span>Common</span>}
-                    //     {item.rarity === 1 && <span>Uncommon</span>}
-                    //     {item.rarity === 2 && <span>Rare</span>}
-                    //     <p>Crafting</p>
-                    //   </CraftCard>
-                    //   <SelectButton
-                    //     className="select-button"
-                    //     disabled={
-                    //       clickedCard !== item.id || selectedCard === item.id
-                    //       // ? "true"
-                    //       // : undefined
-                    //     }
-                    //     onClick={
-                    //       clickedCard !== item.id || selectedCard === item.id
-                    //         ? () => { }
-                    //         : () => onSelectCardCrafting(item)
-                    //     }
-                    //   >
-                    //     Select
-                    //   </SelectButton>
-                    // </CraftingCardWrapper>
-                    <DateCardWrapper>
+                  {myNfts.crafting.map((item) => (
+                    <DateCardWrapper key={`crafting-${item.id}`}>
                       <CardImgWrapper>
                         {item.rarity === 0 && (
                           <img
@@ -373,44 +344,10 @@ export const IdentitySelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {myNfts.dayMonth.map((item, key) => {
-
-
-                    // <CraftingCardWrapper
-                    //   key={key}
-                    //   active={clickedCard === item.id ? "true" : undefined}
-                    // >
-                    //   <CraftCard
-                    //     onClick={() => onCardClicked(Number(item.id), item)}
-                    //     bg="/assets/nfts/1.png"
-                    //   >
-                    //     {item.rarity === 0 && <span>Common</span>}
-                    //     {item.rarity === 1 && <span>Uncommon</span>}
-                    //     {item.rarity === 2 && <span>Rare</span>}
-                    //     <p>
-                    //       {item.day}{" "}
-                    //       {(monthContext as Map<number, string>).get(item.month)}
-                    //     </p>
-                    //   </CraftCard>
-                    //   <SelectButton
-                    //     className="select-button"
-                    //     disabled={
-                    //       clickedCard !== item.id || selectedCard === item.id
-                    //       // ? "true"
-                    //       // : undefined
-                    //     }
-                    //     onClick={
-                    //       clickedCard !== item.id || selectedCard === item.id
-                    //         ? () => { }
-                    //         : () => onSelectCardDayMonth(item)
-                    //     }
-                    //   >
-                    //     Select
-                    //   </SelectButton>
-                    // </CraftingCardWrapper>
+                  {myNfts.dayMonth.map((item) => {
                     const imagePath = getImagePath(false, item?.rarity ?? 0, "Month-Day", false);
 
-                    return (<DateCardWrapper>
+                    return (<DateCardWrapper key={`dayMonth-${item.id}`}>
                       <CardImgWrapper>
                         <img src={imagePath} alt="nft" />
                         <div className="info-nft info-nft-day-month">
@@ -499,40 +436,11 @@ export const IdentitySelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {myNfts.year.map((item, key) => {
+                  {myNfts.year.map((item) => {
                     const imagePath = getImagePath(item.year, item?.rarity ?? 0, "Month-Day", true);
 
                     return (
-                      // <CraftingCardWrapper
-                      //   key={key}
-                      //   active={clickedCard === item.id ? "true" : undefined}
-                      // >
-                      //   <CraftCard
-                      //     onClick={() => onCardClicked(Number(item.id), item)}
-                      //     bg="/assets/nfts/1.png"
-                      //   >
-                      //     {item.rarity === 0 && <span>Common</span>}
-                      //     {item.rarity === 1 && <span>Uncommon</span>}
-                      //     {item.rarity === 2 && <span>Rare</span>}
-                      //     <p>{item.year}</p>
-                      //   </CraftCard>
-                      //   <SelectButton
-                      //     className="select-button"
-                      //     disabled={
-                      //       clickedCard !== item.id || selectedCard === item.id
-                      //       // ? "true"
-                      //       // : undefined
-                      //     }
-                      //     onClick={
-                      //       clickedCard !== item.id || selectedCard === item.id
-                      //         ? () => { }
-                      //         : () => onSelectCardYear(item)
-                      //     }
-                      //   >
-                      //     Select
-                      //   </SelectButton>
-                      // </CraftingCardWrapper>
-                      <DateCardWrapper>
+                      <DateCardWrapper key={`year-${item.id}`}>
                         <CardImgWrapper>
                           <img src={imagePath} alt="nft" />
                           <div className="info-nft info-nft-day-month">
@@ -605,36 +513,7 @@ export const IdentitySelectCardSection: React.FC<{
                   {myNfts.category.map((item, key) => {
 
                     return (
-                      // <CraftingCardWrapper
-                      //   key={key}
-                      //   active={clickedCard === item.id ? "true" : undefined}
-                      // >
-                      //   <CraftCard
-                      //     onClick={() => onCardClicked(Number(item.id), item)}
-                      //     bg="/assets/nfts/1.png"
-                      //   >
-                      //     {item.rarity === 0 && <span>Common</span>}
-                      //     {item.rarity === 1 && <span>Uncommon</span>}
-                      //     {item.rarity === 2 && <span>Rare</span>}
-                      //     <p>{item.category}</p>
-                      //   </CraftCard>
-                      //   <SelectButton
-                      //     className="select-button"
-                      //     disabled={
-                      //       clickedCard !== item.id || selectedCard === item.id
-                      //       // ? "true"
-                      //       // : undefined
-                      //     }
-                      //     onClick={
-                      //       clickedCard !== item.id || selectedCard === item.id
-                      //         ? () => { }
-                      //         : () => onSelectCardCategory(item)
-                      //     }
-                      //   >
-                      //     Select
-                      //   </SelectButton>
-                      // </CraftingCardWrapper>
-                      <DateCardWrapper>
+                      <DateCardWrapper key={`category-${item.id}`}>
                         <CardImgWrapper>
                           {item.rarity === 0 && (
                             <img src={`/assets/nfts/rarity/${formatCategory(item?.category ?? "")}-Core.png`} alt="nft" />
