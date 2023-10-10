@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AmountWrapper,
-  CardBodyWrapper,
-  CardBottomWrapper,
-  CardDateWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
-  PredictionCardWrapper,
-  CardTooltip,
-  TooltipContent,
-  TooltipItem,
-} from "./styles";
+import { CardBottomWrapper, PredictionCardWrapper } from "./styles";
 import {
   CardButton,
   CardButtonGroup,
@@ -25,6 +14,8 @@ import {
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { CardImgWrapper } from "../MarketCard/styles";
+import { checkRarity } from "../../utils/helperFunctions";
+import { Loader } from "../Loader";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -99,29 +90,33 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardImgWrapper dashbordstyle={dashbordstyle}>
-        {rarity === 0 && (
-          <img src="/assets/nfts/rarity/Prediction-Core.png" alt="nft" />
-        )}
-        {rarity === 1 && (
-          <img src="/assets/nfts/rarity/Prediction-Rare.png" alt="nft" />
-        )}
-        {rarity === 2 && (
-          <img src="/assets/nfts/rarity/Prediction-Uncommon.png" alt="nft" />
-        )}
-        <div className="info-nft info-nft-prediction">
-          <h4>{category}</h4>
+        {rarity || rarity === 0 ? (
+          <>
+            <img
+              src={`/assets/nfts/rarity/Prediction-${checkRarity(rarity)}.png`}
+              alt="nft"
+            />
+            <div className="info-nft info-nft-prediction">
+              <h4>{category}</h4>
 
-          {rarity === 0 && (
-            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
-          )}
-          {rarity === 1 && (
-            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
-          )}
-          {rarity === 2 && (
-            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
-          )}
-          <h4 className="date">03 06 1992</h4>
-        </div>
+              <img
+                src={`/assets/nfts/rarity/${checkRarity(rarity)}-Torso.gif`}
+                alt="gif"
+              />
+
+              <div className="nft-info-detail">
+                <h2 className="date">
+                  {day} {month} {year}
+                </h2>
+                <h3>{category}</h3>
+              </div>
+              <h4 className="date">03 06 1992</h4>
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
+
         {/* <StatusWrapper>
           {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
         </StatusWrapper> */}
@@ -162,7 +157,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           )}
           {item?.owner_id !== myInfoContext?.id && onBuy && (
             <CardButton onClick={() => onBuy(item)}>Buy</CardButton>
-          )}u
+          )}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

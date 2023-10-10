@@ -1,12 +1,8 @@
 import React from "react";
 import { CardGridWrapper } from "./styles";
 import { MarketCard, PredictionCard, IdentityCard } from "../../components";
-// import { cardData, packData } from "./data";
 import { CardActionTypes } from "../../types";
 import { IMarketplaceListing } from "../../models/marketplace_listing";
-// import { identitiesData } from "../../pages/app/identities/data";
-// import { predictionData } from "../../pages/app/predictions/data";
-// import { IMarketplaceListing } from "../../types/actions";
 
 export const MCardGridSection: React.FC<{
   onCardClick: (item: IMarketplaceListing, action: CardActionTypes) => void;

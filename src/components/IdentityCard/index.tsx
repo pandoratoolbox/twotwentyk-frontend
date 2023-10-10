@@ -1,31 +1,24 @@
 import React, { useState, useEffect } from "react";
-import {
-  CardBottomWrapper,
-  PredictionCardWrapper,
-} from "./styles";
+import { CardBottomWrapper, PredictionCardWrapper } from "./styles";
 import {
   CardButton,
   CardButtonGroup,
   CardOverlayWrapper,
 } from "../DateCard/styles";
 import { PredictionCardProps, SelectOptionProps } from "../../types";
-import {
-  useMonthContext,
-  useCelebritiesContext,
-  useMyInfoContext,
-} from "../../context";
+import { useCelebritiesContext, useMyInfoContext } from "../../context";
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { CardImgWrapper } from "../MarketCard/styles";
+import { checkRarity } from "../../utils/helperFunctions";
+import { Loader } from "../Loader";
 
 export const IdentityCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
   celebrity_name,
   cardType,
   item,
-  id = 0,
-  image,
   category,
   day,
   month,
@@ -44,7 +37,6 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   onBuy,
   onClaimSubmit,
 }) => {
-  const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
   const [clearSelect, setClearSelect] = useState<boolean>(true);
@@ -91,41 +83,30 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardImgWrapper dashbordstyle={dashbordstyle}>
-        {rarity === 0 && (
-          <img
-            src="/assets/nfts/rarity/Identity-Card-Blank-Core.png"
-            alt="nft"
-          />
+        {rarity || rarity === 0 ? (
+          <>
+            <img
+              src={`/assets/nfts/rarity/Identity-Card-Blank-${checkRarity(
+                rarity
+              )}.png`}
+              alt="nft"
+            />
+            <div className="info-nft info-nft-identity">
+              <img
+                src={`/assets/nfts/rarity/${checkRarity(rarity)}-Torso.gif`}
+                alt="gif"
+              />
+              <div className="nft-info-detail">
+                <h2 className="date">
+                  {day} {month} {year}
+                </h2>
+                <h3>{category}</h3>
+              </div>
+            </div>
+          </>
+        ) : (
+          <Loader />
         )}
-        {rarity === 1 && (
-          <img
-            src="/assets/nfts/rarity/Identity-Card-Blank-Rare.png"
-            alt="nft"
-          />
-        )}
-        {rarity === 2 && (
-          <img
-            src="/assets/nfts/rarity/Identity-Card-Blank-Uncommon.png"
-            alt="nft"
-          />
-        )}
-        <div className="info-nft info-nft-identity">
-          {rarity === 0 && (
-            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
-          )}
-          {rarity === 1 && (
-            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
-          )}
-          {rarity === 2 && (
-            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
-          )}
-          <div className="nft-info-detail">
-            <h2 className="date">
-              {item?.day} {item?.month} {item?.year}
-            </h2>
-            <h3>{category}</h3>
-          </div>
-        </div>
       </CardImgWrapper>
 
       {celebrity_name ? (
