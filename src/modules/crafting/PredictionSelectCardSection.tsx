@@ -9,7 +9,7 @@ import {
   SelectCardSectionContainer,
   SelectCardSectionWrapper,
 } from "./styles";
-import { Button, IconSort, SelectBox, Loader } from "../../components";
+import { Button, IconSort, SelectBox, Loader, IdentityCard } from "../../components";
 import { SortButton } from "../app/dates/styles";
 import {
   useStatusContext,
@@ -297,75 +297,17 @@ export const PredictionSelectCardSection: React.FC<{
                   </SortButton>
                 </FilterWrapper>
                 <CardGridWrapper>
-                  {nftCardIdentityData.map((item) => (
-                    <PredictionCardWrapper
-                      cardType="identity"
-                      // onClick={onClick}
-                      height={293}
-                      isnothover="true"
-                      key={`identity-${item.id}`}
-                    >
-                      <CardImgWrapper>
-                        {item.rarity === 0 && (
-                          <img
-                            src="/assets/nfts/rarity/Identity-Card-Blank-Core.png"
-                            alt="nft"
-                          />
-                        )}
-                        {item.rarity === 1 && (
-                          <img
-                            src="/assets/nfts/rarity/Identity-Card-Blank-Rare.png"
-                            alt="nft"
-                          />
-                        )}
-                        {item.rarity === 2 && (
-                          <img
-                            src="/assets/nfts/rarity/Identity-Card-Blank-Uncommon.png"
-                            alt="nft"
-                          />
-                        )}
-                        <div className="info-nft info-nft-identity">
-                          {item.rarity === 0 && (
-                            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
-                          )}
-                          {item.rarity === 1 && (
-                            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
-                          )}
-                          {item.rarity === 2 && (
-                            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
-                          )}
-                          <div className="nft-info-detail">
-                            <h2 className="date">
-                              {item?.day} {item?.month} {item?.year}
-                            </h2>
-                            <h3>{item.category}</h3>
-                          </div>
-                        </div>
-                      </CardImgWrapper>
-
-                      {item.celebrity_name &&
-                        <CardBottomWrapper>{item.celebrity_name}</CardBottomWrapper>
-                      }
-
-                      {/* <CardBottomWrapper> */}
-                      {/* {identityMatches && (
-                                   options={identityMatches}
-                                   placeholder="Identity Matches"
-                                   clear={clearSelect}
-                                   onSelect={chooseCelebrity}
-                                 />
-                              )} */}
-                      {/* </CardBottomWrapper> */}
-
-
-                      <CardOverlayWrapper className="overlay" onClick={() => onCardClicked(Number(item.id), item)}>
-                        <CardButtonGroup>
-                          <CardButton onClick={() => onSelectCardIdentity(item)}>Select</CardButton>
-
-                        </CardButtonGroup>
-                      </CardOverlayWrapper>
-                    </PredictionCardWrapper>
-                  ))}
+                  {nftCardIdentityData.map((item) => <IdentityCard
+                    cardType="identity"
+                    height={293}
+                    isNotHover={true}
+                    key={`identity-${item.id}`}
+                    item={item}
+                    {...item}
+                    forCraft={true}
+                    onCardClicked={onCardClicked}
+                    onSelectCardIdentity={onSelectCardIdentity}
+                  />)}
                 </CardGridWrapper>
               </>
             ) : !isLoadingIdentity ? (
