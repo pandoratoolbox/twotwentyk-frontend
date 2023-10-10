@@ -54,6 +54,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   const { celebritiesContext } = useCelebritiesContext();
   const { authContext } = useAuthContext()
   const navigate = useNavigate();
+  console.log({authContext})
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
