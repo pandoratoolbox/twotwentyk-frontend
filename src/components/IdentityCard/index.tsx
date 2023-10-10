@@ -36,6 +36,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   height,
   isNotHover,
   triggers,
+  forCraft,
   onClick,
   onCraft,
   onSell,
@@ -43,6 +44,8 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
   onClaimSubmit,
+  onSelectCardIdentity,
+  onCardClicked
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
@@ -86,7 +89,9 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   return (
     <PredictionCardWrapper
       cardType={cardType}
-      onClick={onClick}
+      onClick={() => {
+        !forCraft && onClick && onClick()
+      }}
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
@@ -143,8 +148,8 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
         </CardBottomWrapper>
       )}
 
-      <CardOverlayWrapper className="overlay">
-        <CardButtonGroup>
+      <CardOverlayWrapper className="overlay" onClick={() => forCraft && onCardClicked && item && onCardClicked(item.id, item)}>
+        {!forCraft && <CardButtonGroup>
           {!is_crafted && onCraft && (
             <CardButton onClick={() => onCraft(item)}>
               Craft Prediction
@@ -170,7 +175,11 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
               )}
             </>
           )}
-        </CardButtonGroup>
+        </CardButtonGroup>}
+        {forCraft && <CardButtonGroup>
+          <CardButton onClick={() => item && onSelectCardIdentity && onSelectCardIdentity(item)}>Select</CardButton>
+
+        </CardButtonGroup>}
       </CardOverlayWrapper>
     </PredictionCardWrapper>
   );

@@ -4,7 +4,9 @@ import { IMarketplaceListing } from "../models/marketplace_listing";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
 import { INftCardDayMonth } from "../models/nft_card_day_month";
+import { INftCardIdentity } from "../models/nft_card_identity";
 import { INftCardPrediction } from "../models/nft_card_prediction";
+import { INftCardTrigger } from "../models/nft_card_trigger";
 import { INftCardYear } from "../models/nft_card_year";
 import { CardActionTypes } from "./common";
 
@@ -81,6 +83,7 @@ export type PredictionCardProps = {
   icon?: React.ReactNode;
   iconText?: string;
   isNotHover?: boolean;
+  forCraft?: boolean;
   onClick?: () => void;
   onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
   onView?: (id: number) => void;
@@ -88,6 +91,12 @@ export type PredictionCardProps = {
   onSell?: (id: number) => void;
   onBuy?: (id: number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
+  onSelectCardIdentity?: (card: INftCardIdentity) => void;
+  onCardClicked?: (
+    key: number | string,
+    item: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  ) => void;
+
 } & IMarketplaceListing;
 
 export type FeedItemProps = {
