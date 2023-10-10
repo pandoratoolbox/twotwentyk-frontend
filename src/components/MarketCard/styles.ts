@@ -41,6 +41,7 @@ export const CardImgWrapper = styled.div<{
     position: absolute;
     left: 50%;
     transform: translate(-50%, -50%);
+    width: 100%;
     &.info-nft-day-month {
       top: 50%;
     }
@@ -51,12 +52,18 @@ export const CardImgWrapper = styled.div<{
       gap: 0.5rem;
       img {
         width: 4vw;
+        margin: 0 auto;
       }
       h4 {
         font-size: ${({ dashbordstyle }) =>
           dashbordstyle
             ? "clamp(0.6rem, 2vw, 0.8rem)"
             : "clamp(0.8rem, 2vw, 1rem)"};
+      }
+      @media screen and (max-width: 1024px) {
+        img {
+          width: 15vw;
+        }
       }
     }
     &.info-nft-identity {
@@ -67,19 +74,31 @@ export const CardImgWrapper = styled.div<{
       }
       .nft-info-detail {
         position: absolute;
-        transform: translate(-12%, -40%);
-        left: 14%;
         bottom: 0;
-        width: 180px;
+        width: 100%;
+        h2 {
+          font-size: clamp(1.5rem, 2vw, 2rem);
+        }
+        h3 {
+          font-size: clamp(0.8rem, 2vw, 1rem);
+        }
+      }
+      @media screen and (max-width: 1024px) {
+        img {
+          width: 30vw;
+        }
       }
     }
 
     &.info-nft-trigger {
       bottom: 15%;
       width: 75%;
-       h4 {
+      h4 {
         font-size: clamp(0.6rem, 2vw, 0.8rem);
       }
+    }
+    &.info-nft-cardPack {
+      top: 50%;
     }
   }
 `;

@@ -2,9 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   CardBottomWrapper,
   PredictionCardWrapper,
-  CardTooltip,
-  TooltipContent,
-  TooltipItem,
 } from "./styles";
 import {
   CardButton,
@@ -20,7 +17,7 @@ import {
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
-import { CardImgWrapper, Rarity, StatusWrapper } from "../MarketCard/styles";
+import { CardImgWrapper } from "../MarketCard/styles";
 
 export const IdentityCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -86,7 +83,6 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-
   return (
     <PredictionCardWrapper
       cardType={cardType}
@@ -124,7 +120,9 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
             <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
           )}
           <div className="nft-info-detail">
-            <h2 className="date">{item?.day} {item?.month} {item?.year}</h2>
+            <h2 className="date">
+              {item?.day} {item?.month} {item?.year}
+            </h2>
             <h3>{category}</h3>
           </div>
         </div>
@@ -153,14 +151,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
             </CardButton>
           )}
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {cardType === "prediction" && (
-            <CardButton onClick={() => {}}>Add Trigger</CardButton>
-          )}
-          {cardType === "prediction" && onClaimSubmit && (
-            <CardButton onClick={() => onClaimSubmit(item)}>
-              Submit Claim
-            </CardButton>
-          )}
+
           {item?.owner_id === myInfoContext?.id && onSell && (
             <CardButton onClick={() => onSell(item)}>Sell</CardButton>
           )}
@@ -178,24 +169,6 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                 </CardButton>
               )}
             </>
-          )}
-          {cardType === "prediction" && (
-            <CardTooltip>
-              <span>
-                {triggers && triggers?.length > 0
-                  ? `${triggers.length}T`
-                  : "#T"}
-              </span>
-              <TooltipContent className="tooltip-content">
-                <div>
-                  <h3>Triggers</h3>
-                  {triggers &&
-                    triggers?.map((item: string, key: number) => (
-                      <TooltipItem key={key}>{item}</TooltipItem>
-                    ))}
-                </div>
-              </TooltipContent>
-            </CardTooltip>
           )}
         </CardButtonGroup>
       </CardOverlayWrapper>

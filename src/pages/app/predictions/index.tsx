@@ -177,6 +177,47 @@ export const PredictionsPage: React.FC = () => {
     }
   };
 
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await getMyNftCardPrediction(null);
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.rarity - a.rarity);
+        setPredictionNfts(response?.data);
+        setIsLoading(false);
+      }
+    }
+  };
+
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
@@ -199,7 +240,10 @@ export const PredictionsPage: React.FC = () => {
                       Craft Prediction
                     </Button>
                   </ButtonGroup>
-                  <PredictionsFilterSection onClick={handleOptionClick} />
+                  <PredictionsFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     identityData={predictionNfts}
                     onCraft={handleCraft}
@@ -221,7 +265,10 @@ export const PredictionsPage: React.FC = () => {
                       Craft Prediction
                     </Button>
                   </ButtonGroup>
-                  <PredictionsFilterSection onClick={handleOptionClick} />
+                  <PredictionsFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     identityData={predictionNfts}
                     onCraft={handleCraft}

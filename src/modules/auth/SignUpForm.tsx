@@ -96,7 +96,7 @@ export const SignUpForm: React.FC = () => {
         />
         <span>
           {"I am at least 21 years of age and agree to the "}
-          <a href="https://google.com">Terms & Conditions</a>
+          <Link to="/term-conditions">Terms & Conditions</Link>
           {" & "}
           <Link to="/privacy-policy">Privacy Policy</Link>
           {

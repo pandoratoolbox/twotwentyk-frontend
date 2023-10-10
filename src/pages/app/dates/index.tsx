@@ -199,11 +199,83 @@ export const DatesPage: React.FC = () => {
       handleFilterAPICall();
     }
   }, [filters]);
-  console.log("setNftCardDayMonthData", nftCardDayMonthData);
 
-  console.log("filters", filters);
-  console.log("isLoading", isLoading);
-  console.log("setIsLoadingFilter", isLoadingFilter);
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    let newFilters: DateFilters = {
+      card_series_id: filters.card_series_id,
+      status: filters.status,
+      rarities: filters.rarities,
+      card_types: filters.card_types,
+    };
+    let n: (INftCardDayMonth | INftCardYear)[] = [];
+    if (filters.card_types.includes(3)) {
+      let dayMonthFilters: NftCardDayMonthFilters = {
+        rarities: newFilters.rarities,
+        card_series_id: newFilters.card_series_id,
+        status: newFilters.status,
+        day: null,
+        month: null,
+      };
+
+      let res = await getMyNftCardDayMonth(dayMonthFilters);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log("refreshed nft card day-month data", res.data);
+        n.push(...res.data);
+      } else if (res.data && res.data.length == 0) {
+        setIsLoadingFilter(true);
+      }
+    }
+    if (filters.card_types.includes(4)) {
+      let yearFilters: NftCardYearFilters = {
+        card_series_id: newFilters.card_series_id,
+        year: null,
+        rarities: newFilters.rarities,
+        status: newFilters.status,
+      };
+
+      let res = await getMyNftCardYear(yearFilters);
+      if (res?.data && Array.isArray(res.data)) {
+        console.log("refreshed nft card year data", res.data);
+        n.push(...res.data);
+      } else if (res.data && res.data.length == 0) {
+        setIsLoadingFilter(true);
+      }
+    }
+    if (n && n.length > 0) {
+      setIsLoading(false);
+    }
+
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      n.sort(
+        (a: any, b: any) =>
+          getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+      );
+      setNftCardDayMonthData(n);
+      setIsLoading(false);
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      n.sort(
+        (a: any, b: any) =>
+          getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+      );
+      setNftCardDayMonthData(n);
+      setIsLoading(false);
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      n.sort((a: any, b: any) => b.rarity - a.rarity);
+      setNftCardDayMonthData(n);
+      setIsLoading(false);
+    }
+  };
+
   return (
     <AppLayout>
       <ToastContainer
@@ -243,7 +315,10 @@ export const DatesPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <DatesFilterSection onClick={handleOptionClick} />
+                  <DatesFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     cardType="date"
                     data={nftCardDayMonthData}
@@ -288,7 +363,10 @@ export const DatesPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <DatesFilterSection onClick={handleOptionClick} />
+                  <DatesFilterSection
+                    onClick={handleOptionClick}
+                    clickSelect={clickSelect}
+                  />
                   <CardGridSection
                     cardType="date"
                     data={nftCardDayMonthData}

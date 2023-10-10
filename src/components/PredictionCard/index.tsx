@@ -22,7 +22,6 @@ import {
   useCelebritiesContext,
   useMyInfoContext,
 } from "../../context";
-import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { CardImgWrapper } from "../MarketCard/styles";
@@ -91,7 +90,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-  // console.log(item);
+  console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}
@@ -111,6 +110,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
         )}
         <div className="info-nft info-nft-prediction">
           <h4>{category}</h4>
+
           {rarity === 0 && (
             <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
           )}
@@ -126,6 +126,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
         </StatusWrapper> */}
       </CardImgWrapper>
+      <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
+
       {/* <CardTopWrapper>
         <CardDateWrapper dashbordstyle={dashbordstyle}>
           {monthContext && day && (
@@ -139,48 +141,6 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {year && <span className="year">{year}</span>}
         </CardDateWrapper>
       </CardTopWrapper> */}
-      {/* {category && (
-        <CardBodyWrapper>
-          <span></span>
-          <p>{category}</p>
-        </CardBodyWrapper>
-      )} */}
-
-      {celebrity_name ? (
-        <>
-          <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
-          {cardType === "prediction" && (
-            <CardTooltip>
-              <span className="triggerT">
-                {triggers && triggers?.length > 0
-                  ? `${triggers.length}T`
-                  : "#T"}
-              </span>
-              <TooltipContent className="tooltip-content">
-                <div>
-                  <h3>Triggers</h3>
-                  {triggers &&
-                    triggers?.map((item: string, key: number) => (
-                      <TooltipItem key={key}>{item}</TooltipItem>
-                    ))}
-                </div>
-              </TooltipContent>
-            </CardTooltip>
-          )}
-        </>
-      ) : (
-        <CardBottomWrapper>
-          {identityMatches && (
-            <SelectOption
-              options={identityMatches}
-              placeholder="Identity Matches"
-              clear={clearSelect}
-              onSelect={chooseCelebrity}
-            />
-          )}
-        </CardBottomWrapper>
-      )}
-
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {!is_crafted && onCraft && (

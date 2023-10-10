@@ -156,6 +156,47 @@ export const CraftingPage: React.FC = () => {
     setFilters(newFilters);
   };
 
+  const getTimeStemp = (date: string) => {
+    const now = new Date(date);
+    const timestamp = now.getTime();
+    return timestamp;
+  };
+
+  const clickSelect = async (sortSelectOption: string) => {
+    setIsLoading(true);
+    if (sortSelectOption == "Date-High-Low") {
+      setIsLoading(true);
+      const response = await api.get(`/me/nft_card_crafting`);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(a.created_at) - getTimeStemp(b.created_at)
+        );
+        setNftCraftingData(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Date-Low-High") {
+      setIsLoading(true);
+      const response = await api.get(`/me/nft_card_crafting`);
+      if (response?.data) {
+        response?.data.sort(
+          (a: any, b: any) =>
+            getTimeStemp(b.created_at) - getTimeStemp(a.created_at)
+        );
+        setNftCraftingData(response?.data);
+        setIsLoading(false);
+      }
+    } else if (sortSelectOption == "Rearity") {
+      setIsLoading(true);
+      const response = await api.get(`/me/nft_card_crafting`);
+      if (response?.data) {
+        response?.data.sort((a: any, b: any) => b.rarity - a.rarity);
+        setNftCraftingData(response?.data);
+        setIsLoading(false);
+      }
+    }
+  };
+
   // filter Api Call
   const handleFilterAPICall = async () => {
     let newFilters: DateFilters = {
@@ -249,9 +290,9 @@ export const CraftingPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CraftingFilterSection onClick={handleOptionClick} />
+                  <CraftingFilterSection onClick={handleOptionClick}  clickSelect={clickSelect}/>
                   <CardGridSection
-                    cardType="date"
+                    cardType="crafting"
                     buttonText={"Crafting"}
                     data={nftCraftingData}
                     onCraft={handleCraft}
@@ -277,7 +318,7 @@ export const CraftingPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CraftingFilterSection onClick={handleOptionClick} />
+                  <CraftingFilterSection onClick={handleOptionClick}  clickSelect={clickSelect}/>
                   <CardGridSection
                     cardType="date"
                     buttonText={"Crafting"}
