@@ -273,6 +273,7 @@ export const IdentitySelectCardSection: React.FC<{
                           />
                         )}
                       </CardImgWrapper>
+                      <CardBottomWrapper>Crafting</CardBottomWrapper>
 
                       <CardOverlayWrapper className="overlay" onClick={() => onCardClicked(Number(item.id), item)}>
                         <CardButtonGroup>
