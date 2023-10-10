@@ -9,7 +9,8 @@ import {
   StatusWrapper,
 } from "./styles";
 import { CardButton } from "../DateCard/styles";
-import { useMonthContext, useMyInfoContext } from "../../context";
+import { useAuthContext, useMonthContext, useMyInfoContext } from "../../context";
+import { useNavigate } from "react-router-dom";
 
 export const MarketCard: React.FC<MarketCardProps> = ({
   // id,
@@ -25,6 +26,8 @@ export const MarketCard: React.FC<MarketCardProps> = ({
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
+  const { authContext } = useAuthContext()
+  const navigate = useNavigate();
 
   // console.log(item, type);
   const image = "/assets/nfts/new3.png";
@@ -123,23 +126,23 @@ export const MarketCard: React.FC<MarketCardProps> = ({
             <CardOverlay className="overlay">
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
               {type === "Category" && item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id && (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
               )}
               {(type === "Day/Month" || type === "Year") && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
-                <CardButton onClick={() => onCard(item, "sell")}>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "sell")}>
                   Sell
                 </CardButton>
               )}
               {(type === "Crafting" || type === "Trigger") && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
-                <CardButton onClick={() => onCard(item, "offer")}>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
               )}
               {item.is_listed && item?.owner_id && myInfoContext?.id && item.owner_id !== myInfoContext.id && (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
               )}
               {!item.is_listed && item?.owner_id && myInfoContext?.id && item.owner_id === myInfoContext.id && (
-                <CardButton onClick={() => onCard(item, "offer")}>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
               )}
