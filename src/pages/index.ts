@@ -6,5 +6,6 @@ export * from "./not-found";
 export * from "./profile";
 export * from "./buy";
 export * from "./marketplace";
+export * from "./privacy-policy";
 export * from "./terms";
 export * from "./learntoplay";

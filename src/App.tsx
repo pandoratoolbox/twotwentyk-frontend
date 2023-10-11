@@ -19,6 +19,7 @@ import {
   PredictionsPage,
   CommingSoonPage,
   NotFoundPage,
+  PrivacyPolicy,
   TermConditions,
   ProfilePage,
   ClaimsPage,
@@ -141,6 +142,9 @@ const App: React.FC = () => {
               />
               {/* Profile Routes */}
 
+              {/* privacy policypage */}
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              {/* privacy policypage */}
               {/* term conditions & privacy policy */}
               <Route path="/term-conditions" element={<TermConditions />} />
               {/* End term conditions & privacy policy */}

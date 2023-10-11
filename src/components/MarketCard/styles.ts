@@ -83,7 +83,7 @@ export const CardImgWrapper = styled.div<{
       top: 50%;
 
       img {
-        width: 10vw;
+        width: 80%;
       }
       .nft-info-detail {
         position: absolute;

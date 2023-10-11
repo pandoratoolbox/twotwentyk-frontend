@@ -18,8 +18,10 @@ import {
 import { signinFormValidation } from "../../utils";
 import { signin } from "../../actions";
 import api from "../../config/api";
+import { useAuthContext } from "../../context";
 
 export const SignInForm: React.FC = () => {
+  const { setAuthContext } = useAuthContext()
   const navigate = useNavigate();
   const [error, setError] = useState({ email: "", password: "" });
   const [form, setForm] = useState({ email: "", password: "" });
@@ -41,6 +43,10 @@ export const SignInForm: React.FC = () => {
           api.defaults.headers.common[
             "Authorization"
           ] = `Bearer ${data.token}`;
+          setAuthContext({
+            isAuthenticated: true,
+            user: data.token,
+          })
           navigate("/dashboard");
         } else {
           // toast.error(data.message);

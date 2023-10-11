@@ -8,12 +8,13 @@ import {
   StatusWrapper,
 } from "./styles";
 import { CardButton } from "../DateCard/styles";
-import { useMonthContext, useMyInfoContext } from "../../context";
 import {
   checkRarity,
   formatCategory,
   checkTier,
 } from "../../utils/helperFunctions";
+import { useAuthContext, useMonthContext, useMyInfoContext } from "../../context";
+import { useNavigate } from "react-router-dom";
 
 const CardImage = ({ item }: any) => {
   const { monthContext } = useMonthContext();
@@ -106,6 +107,8 @@ export const MarketCard: React.FC<MarketCardProps> = ({
   onCard,
 }) => {
   const { myInfoContext } = useMyInfoContext();
+  const { authContext } = useAuthContext()
+  const navigate = useNavigate();
 
   const getTypeValue = () => {
     if (item?.nft_card_day_month) {

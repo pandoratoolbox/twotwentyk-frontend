@@ -21,7 +21,7 @@ import { checkRarity } from "../../utils/helperFunctions";
 
 import { ICelebrity } from "../../models/celebrity";
 
-const getImagePath = (
+export const getImagePath = (
   itemYear: any,
   rarity: number,
   category: string,

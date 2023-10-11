@@ -10,6 +10,7 @@ import { ProfileItemProps, ProfileProps } from "../../../types";
 import { DashboardTitleBG, TitleBG } from "../../../components";
 import { Button } from "../../../components";
 import { useNavigate } from "react-router-dom";
+import { useAuthContext } from "../../../context";
 
 export const Profile: React.FC<ProfileProps> = ({
   email,
@@ -20,10 +21,15 @@ export const Profile: React.FC<ProfileProps> = ({
   onEdit,
 }) => {
   const navigate = useNavigate();
+  const { setAuthContext } = useAuthContext()
 
   //for logout
   const handleLogout = () => {
     localStorage.removeItem("auth");
+    setAuthContext({
+      isAuthenticated: false,
+      user: undefined,
+    })
     navigate("/dashboard/home")
   };
 
@@ -96,7 +102,7 @@ const ProfileItem: React.FC<ProfileItemProps> = ({
         )}
       </ItemInfo>
       {!isEditable && (
-        <ItemAction onClick={onEdit ? () => onEdit(id) : () => {}}>
+        <ItemAction onClick={onEdit ? () => onEdit(id) : () => { }}>
           {value ? "Edit" : "Add"}
         </ItemAction>
       )}
