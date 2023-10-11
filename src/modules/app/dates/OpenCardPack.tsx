@@ -43,28 +43,23 @@ const OpenCardPack: React.FC<Props> = ({
 
   const [videoPlayed, setVideoPlayed] = useState(false);
 
-  // Use useEffect to play the video when the component mounts
-  useEffect(() => {
-    if (!videoPlayed) {
-      // Get the video element by its ID (replace 'your-video-id' with the actual ID)
-      const video = document.getElementById(
-        "your-video-id"
-      ) as HTMLVideoElement;
-
-      if (video) {
-        video.play().then(() => {
-          setVideoPlayed(true);
-        });
-      }
-    }
-  }, [videoPlayed]);
+  const handleVideoEnded = () => {
+    setVideoPlayed(true);
+  };
 
   return (
     <>
       {!videoPlayed ? (
-        <video id="your-video-id" width="1000" height="1000" controls>
+        <video
+          id="your-video-id"
+          width="1000"
+          height="1000"
+          controls
+          autoPlay
+          onEnded={handleVideoEnded}
+        >
           <source
-            src="/assets/nfts/Card-Pack-Opening-Final-720.mov"
+            src="https://rr5---sn-4g5lznlz.c.drive.google.com/videoplayback?expire=1697023168&ei=kFomZcyED4-G8wSA6I7wDw&ip=78.109.18.227&cp=QVROWUFfUlFUSVhPOmRpSTNzR1pQZ2hGM0VNcndmbUZzNFowRlJPbE83dGZIYXp0OWc4ZS1kajQ&id=a50f594437b29e67&itag=18&source=webdrive&requiressl=yes&xpc=EghotM6WJ3oBAQ==&mh=QA&mm=32&mn=sn-4g5lznlz&ms=su&mv=u&mvi=5&pl=24&ttl=transient&susc=dr&driveid=1Sq1WG-HMY4jIBZT_fDdizkMdM4JvpSGk&app=explorer&mime=video/mp4&vprv=1&prv=1&dur=5.085&lmt=1696957003619958&mt=1697010668&subapp=DRIVE_WEB_FILE_VIEWER&txp=0001224&sparams=expire,ei,ip,cp,id,itag,source,requiressl,xpc,ttl,susc,driveid,app,mime,vprv,prv,dur,lmt&sig=AGM4YrMwRQIgEKtWl4tYSlk1aCzL7hUOqMdNNsC_WrImS-M2a-bcA34CIQDq3wwxRRqml8nk1w9OeUsTG-w6V1bJ2aLS3J1u-e0iqQ==&lsparams=mh,mm,mn,ms,mv,mvi,pl&lsig=AK1ks_kwRQIhALOR5F8CKPNKqvj_1BfEWswHTsMqsGttrxJ-krOi-0oTAiAmDM7sMeV6U6Sm-ZGcdU7WA48dqFaiD6vEcw2t8nXzAQ==&cpn=Wqu9lNiGd-nw86s7&c=WEB_EMBEDDED_PLAYER&cver=1.20231008.00.00"
             type="video/mp4"
           />
         </video>
