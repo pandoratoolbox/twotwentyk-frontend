@@ -340,7 +340,7 @@ export type MarketCardProps = {
   type?: string;
   // id?: number | string;
   isOffer?: boolean;
-  // rarity: string;
+  rarity?: string;
   // status?: string;
   // owned?: string | number;
   // onCard?: (id?: string | number, action?: CardActionTypes) => void;

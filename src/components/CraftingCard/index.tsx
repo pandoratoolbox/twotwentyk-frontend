@@ -11,22 +11,19 @@ import {
 } from "./styles";
 import { CardBottomWrapper } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import {
-  useMonthContext,
-  useMyInfoContext,
-  useCelebritiesContext,
-} from "../../context";
+import { useMyInfoContext, useCelebritiesContext } from "../../context";
 import { CardImgWrapper } from "../MarketCard/styles";
 
 import { ICelebrity } from "../../models/celebrity";
+import { checkRarity } from "../../utils/helperFunctions";
+
+import { Loader } from "../Loader";
 
 export const CraftingCard: React.FC<DateCardProps> = ({
   item,
-  image,
   day,
   month,
   position = "",
-  id = 0,
   is_crafted,
   owner_id,
   rarity,
@@ -37,9 +34,8 @@ export const CraftingCard: React.FC<DateCardProps> = ({
   onView,
   buttonText,
 }) => {
-  console.log("buttonText====", item);
+  console.log("buttonText====", buttonText);
 
-  const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
 
@@ -61,23 +57,15 @@ export const CraftingCard: React.FC<DateCardProps> = ({
     item?.id && (
       <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
         <CardImgWrapper>
-          {rarity === 0 && (
+          {rarity || rarity === 0 ? (
             <img
-              src="/assets/nfts/rarity/Crafting-Core-copy.png"
+              src={`/assets/nfts/rarity/Crafting-${checkRarity(
+                rarity
+              )}-copy.png`}
               alt="nft"
             />
-          )}
-          {rarity === 1 && (
-            <img
-              src="/assets/nfts/rarity/Crafting-Rare-copy.png"
-              alt="nft"
-            />
-          )}
-          {rarity === 2 && (
-            <img
-              src="/assets/nfts/rarity/Crafting-Uncommon-copy.png"
-              alt="nft"
-            />
+          ) : (
+            <Loader />
           )}
         </CardImgWrapper>
 

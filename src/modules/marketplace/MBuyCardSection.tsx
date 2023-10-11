@@ -34,8 +34,7 @@ import {
 } from "../buy/styles";
 import { buyMarketplaceById } from "../../actions/marketplace_listing";
 import api from "../../config/api";
-import { toast, ToastContainer } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import { useMyInfoContext } from "../../context";
 import { getMyInfo } from "../../actions";
 
@@ -47,8 +46,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   data,
   setData,
 }) => {
-  const navigate = useNavigate();
-  const { setMyInfoContext } = useMyInfoContext()
+  console.log(selectedItem);
+  const { setMyInfoContext } = useMyInfoContext();
 
   const [step, setStep] = useState(0);
   const [useBalance, setUseBalance] = useState(false);
@@ -74,7 +73,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       let res = await api.post(`/marketplace_listing/${selectedItem.id}/buy`, {
         payment_method_id: 1,
       });
-      if (res.status === 200) {        
+      if (res.status === 200) {
         toast.success("You bought a card from the marketplace!");
         setConfirm(true);
         if (setData && data) {

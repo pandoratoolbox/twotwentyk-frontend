@@ -20,6 +20,11 @@ type RowItem = {
   cardType: string;
   rarity: string;
   probability: number;
+  triggerType?: string;
+  triggerName?: string;
+  rewType?: string;
+  rewPackRarity?: string;
+  regDefinition?: string;
 };
 
 const CollapsibleRow = ({
@@ -33,10 +38,23 @@ const CollapsibleRow = ({
   startEditing: (rowId: number | null) => void;
   updateRowData: (rowId: number, updatedData: any) => void;
 }) => {
-  const { rowId, cardType, rarity, probability } = rowData;
+  const {
+    rowId,
+    cardType,
+    rarity,
+    probability,
+    triggerType,
+    triggerName,
+    rewType,
+    rewPackRarity,
+    regDefinition,
+  } = rowData;
 
   const [formData, setFormData] = useState({
     probability: probability,
+    rewType: rewType,
+    rewPackRarity: rewPackRarity,
+    regDefinition: regDefinition,
   });
 
   const handleSelectChange = (
@@ -61,7 +79,6 @@ const CollapsibleRow = ({
     <CardTableTr className="border-bottom">
       <CardTableTd>{cardType}</CardTableTd>
       <CardTableTd>{rarity}</CardTableTd>
-
       <CardTableTd>
         {isEditing ? (
           <input
@@ -73,6 +90,49 @@ const CollapsibleRow = ({
           />
         ) : (
           `${probability}%`
+        )}
+      </CardTableTd>
+      <CardTableTd>{triggerType}</CardTableTd>
+      <CardTableTd>{triggerName}</CardTableTd>
+
+      <CardTableTd>
+        {isEditing ? (
+          <input
+            className="input-text"
+            type="text"
+            value={formData?.rewType}
+            onChange={handleSelectChange}
+            name="rewType"
+          />
+        ) : (
+          rewType
+        )}
+      </CardTableTd>
+      <CardTableTd>
+        {isEditing ? (
+          <input
+            className="input-text"
+            type="text"
+            value={formData?.rewPackRarity}
+            onChange={handleSelectChange}
+            name="rewPackRarity"
+          />
+        ) : (
+          rewPackRarity
+        )}
+      </CardTableTd>
+
+      <CardTableTd>
+        {isEditing ? (
+          <input
+            className="input-text"
+            type="text"
+            value={formData?.regDefinition}
+            onChange={handleSelectChange}
+            name="regDefinition"
+          />
+        ) : (
+          regDefinition
         )}
       </CardTableTd>
 
@@ -104,11 +164,7 @@ const CollapsibleRow = ({
   );
 };
 
-const Standard = ({
-  collection
-}: {
-  collection: ICardCollection
-}) =>  {
+const Standard = ({ collection }: { collection: ICardCollection }) => {
   const [editingRow, setEditingRow] = useState<number | null>(null);
   const [activeTab, setActiveTab] = useState("Day & Month");
 
@@ -174,25 +230,28 @@ const Standard = ({
       probability: 10,
     },
   ];
-
   const triggerData = [
     {
       rowId: 1,
       cardType: "Trigger",
       rarity: "Core",
-      probability: 10,
+      probability: 3,
+      triggerType: "Major 1",
+      triggerName: "--",
+      rewType: "Cash",
+      rewPackRarity: "",
+      regDefinition: "0.9%",
     },
     {
       rowId: 2,
       cardType: "Trigger",
-      rarity: "Uncommon",
-      probability: 10,
-    },
-    {
-      rowId: 3,
-      cardType: "Trigger",
-      rarity: "Rare",
-      probability: 10,
+      rarity: "Core",
+      probability: 8,
+      triggerType: "Major 2",
+      triggerName: "--",
+      rewType: "Card Pack",
+      rewPackRarity: "Standard",
+      regDefinition: "0",
     },
   ];
 
@@ -250,6 +309,19 @@ const Standard = ({
               <CardTableTh className="TPPool-th">Card Type</CardTableTh>
               <CardTableTh className="TPPool-th">Rarity</CardTableTh>
               <CardTableTh className="TPPool-th">Probability</CardTableTh>
+              {activeTab === "Trigger" && (
+                <>
+                  <CardTableTh className="TPPool-th">TRIGGER TYPE</CardTableTh>
+                  <CardTableTh className="TPPool-th">TRIGGER NAME</CardTableTh>
+                  <CardTableTh className="TPPool-th">rew. Type</CardTableTh>
+                  <CardTableTh className="TPPool-th">
+                    rew. Pack rarity
+                  </CardTableTh>
+                  <CardTableTh className="TPPool-th">
+                    reg. definition
+                  </CardTableTh>
+                </>
+              )}
               <CardTableTh></CardTableTh>
             </CardTableTr>
           </CardTableHead>
