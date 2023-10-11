@@ -43,55 +43,72 @@ export const CraftingPredictionsPage: React.FC = () => {
     identity: null,
     triggers: null,
   });
-  const [clickedNft, setClickedNft] = useState<INftCardCrafting | INftCardIdentity | INftCardTrigger>()
-  const [clickedCraft, setClickedCraft] = useState("crafting")
-  const inCrafting = useRef<boolean>(false)
+  const [clickedNft, setClickedNft] = useState<
+    INftCardCrafting | INftCardIdentity | INftCardTrigger
+  >();
+  const [clickedCraft, setClickedCraft] = useState("crafting");
+  const inCrafting = useRef<boolean>(false);
+
+  const [playVideo, setPlayVideo] = useState(false);
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
   }, []);
 
+  const handleVideoEnded = () => {
+    setPlayVideo(false);
+  };
+
   useEffect(() => {
     const params = new URLSearchParams(location.search);
     if (params.get("selectedCraft") && params.get("id")) {
       const getNFTCrafting = async () => {
-        const idd = params.get("id")
-        const craft = params.get("selectedCraft") as string
+        const idd = params.get("id");
+        const craft = params.get("selectedCraft") as string;
 
         if (craft === "crafting") {
           const response = await getMyNftCardCrafting(null);
           if (response.data?.length) {
-            const crafting = response.data.find((value) => value?.id?.toString() === idd)
-            setSelectedCards({ crafting } as ISelectedCards)
+            const crafting = response.data.find(
+              (value) => value?.id?.toString() === idd
+            );
+            setSelectedCards({ crafting } as ISelectedCards);
           }
         } else if (craft === "trigger") {
           const response = await getMyNftCardTrigger(null);
           if (response.data) {
-            const triggers = response.data.filter((value) => value?.id?.toString() === idd)
-            setSelectedCards({ triggers } as ISelectedCards)
+            const triggers = response.data.filter(
+              (value) => value?.id?.toString() === idd
+            );
+            setSelectedCards({ triggers } as ISelectedCards);
           }
         } else if (craft === "identity") {
           const response = await getMyNftCardIdentity(null);
           if (response.data) {
-            const identity = response.data.find((value) => value?.id?.toString() === idd)
-            setSelectedCards({ identity } as ISelectedCards)
+            const identity = response.data.find(
+              (value) => value?.id?.toString() === idd
+            );
+            setSelectedCards({ identity } as ISelectedCards);
           }
         }
-        setSelectedCraft(selectedCraft)
+        setSelectedCraft(selectedCraft);
         setClickedCard(idd);
       };
-      getNFTCrafting()
+      getNFTCrafting();
     }
   }, [location.search]);
 
-  const handleCardClick = (key: string | number | null, item: INftCardCrafting | INftCardIdentity | INftCardTrigger) => {
+  const handleCardClick = (
+    key: string | number | null,
+    item: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  ) => {
     if (key === clickedCard) {
       setClickedCard(-1);
-      setClickedNft(undefined)
+      setClickedNft(undefined);
     } else {
       setClickedCard(key);
-      setClickedNft(item)
-      setClickedCraft(selectedCraft)
+      setClickedNft(item);
+      setClickedCraft(selectedCraft);
     }
   };
 
@@ -145,7 +162,7 @@ export const CraftingPredictionsPage: React.FC = () => {
 
   const craftPrediction = async () => {
     if (inCrafting.current) {
-      return
+      return;
     }
     if (selectedCards.identity === null) {
       toast.error("Select an Identity card");
@@ -175,15 +192,17 @@ export const CraftingPredictionsPage: React.FC = () => {
       nft_card_identity_id: Number(selectedCards.identity.id),
       nft_card_crafting_id: Number(selectedCards.crafting?.id),
     };
-    inCrafting.current = true
+    inCrafting.current = true;
     const res = await craftingPrediction(newCraft);
     if (res.success) {
       toast.success("Crafted Successfully.");
       closePopup();
+
+      setPlayVideo(true);
     } else {
       toast.error(res.message);
     }
-    inCrafting.current = false
+    inCrafting.current = false;
   };
 
   const [craftPopup, setCraftPopup] = useState<boolean>(false);
@@ -211,60 +230,75 @@ export const CraftingPredictionsPage: React.FC = () => {
         onClose={closePopup}
         onBurn={craftPrediction}
       />
-      <CraftingWrapper>
-        {currentUser ? (
-          <>
-            <CraftLeftWrapper>
-              <PredictionCraftSection
-                onCraft={handleCraft}
-                onCraftChanged={setSelectedCraft}
-                selectedCards={selectedCards}
-                selectedCraft={selectedCraft}
-                selectedCard={selectedCard}
-                clickedCard={clickedCard}
-                onCardClicked={handleCardClick}
-                onSelectCardCrafting={handleSelectCardCrafting}
-                onSelectCardIdentity={handleSelectCardIdentity}
-                onSelectCardTrigger={handleSelectCardTrigger}
-              />
-              {/* <PredictionSelectCardSection
-                selectedCard={selectedCard}
-                clickedCard={clickedCard}
-                selectedCraft={selectedCraft}
-                onCardClicked={handleCardClick}
-                onSelectCardCrafting={handleSelectCardCrafting}
-                onSelectCardIdentity={handleSelectCardIdentity}
-                onSelectCardTrigger={handleSelectCardTrigger}
-              /> */}
-            </CraftLeftWrapper>
-            <CraftRightWrapper>
-              <PredictionMatchListSection selectedCards={selectedCards} />
-              <CardPreviewSection
-                page="prediction"
-                clickedCard={clickedCard}
-                selectedCraft={clickedCraft}
-                clickedNft={clickedNft}
-              />
-            </CraftRightWrapper>
-          </>
-        ) : (
-          <>
-            <div className="unAuth-display">
-              <p>
-                Identities are cards crafted by combining an Identity with at
-                least one trigger.
-              </p>
-              <h4>Log in to start playing.</h4>
-              <Button
-                className="login-button"
-                onClick={() => navigate("/signin")}
-              >
-                Login Now
-              </Button>
-            </div>
-          </>
-        )}
-      </CraftingWrapper>
+      {playVideo ? (
+        <video
+          width="1000"
+          height="1000"
+          controls
+          autoPlay
+          onEnded={handleVideoEnded}
+        >
+          <source
+            src="https://rr3---sn-4g5edndl.c.drive.google.com/videoplayback?expire=1697023942&ei=ll0mZZLZGfikpb0Pt9-FQA&ip=78.109.18.227&cp=QVROWUFfUllSQ1hPOmRpSTNhRVRQZ2hGM0VNenV6bUZzNFowRlpNZk83dGZIYXpiN2E4ZS1kajQ&id=24a54694ad3565dd&itag=18&source=webdrive&requiressl=yes&xpc=EghotM6WJ3oBAQ==&mh=yY&mm=32&mn=sn-4g5edndl&ms=su&mv=m&mvi=3&pl=24&ttl=transient&susc=dr&driveid=1RYAQzpiTfz19j75p0SESJaEv1QcO0C8H&app=explorer&mime=video/mp4&vprv=1&prv=1&dur=24.125&lmt=1696560162912228&mt=1697012720&subapp=DRIVE_WEB_FILE_VIEWER&txp=0001224&sparams=expire,ei,ip,cp,id,itag,source,requiressl,xpc,ttl,susc,driveid,app,mime,vprv,prv,dur,lmt&sig=AGM4YrMwRQIgVRMz933zsMaBrMdGB-qaLuS9DJQqsWFYMn5yoHFcC1QCIQD_osNRhic-F95_oPuRF6yielk8Svlm3wrIHfVIC-xJLw==&lsparams=mh,mm,mn,ms,mv,mvi,pl&lsig=AK1ks_kwRAIgQhNrZiGOKdqzRF5P1fXTPCNM89D4uWTQ_SAQoWU8KX4CIA2tKHChw2H7Cwcn3mtLikH1rkJSmrXyZiS6_ESpJSI4&cpn=hWxomT7dSwBlirX_&c=WEB_EMBEDDED_PLAYER&cver=1.20231008.00.00"
+            type="video/mp4"
+          />
+        </video>
+      ) : (
+        <CraftingWrapper>
+          {currentUser ? (
+            <>
+              <CraftLeftWrapper>
+                <PredictionCraftSection
+                  onCraft={handleCraft}
+                  onCraftChanged={setSelectedCraft}
+                  selectedCards={selectedCards}
+                  selectedCraft={selectedCraft}
+                  selectedCard={selectedCard}
+                  clickedCard={clickedCard}
+                  onCardClicked={handleCardClick}
+                  onSelectCardCrafting={handleSelectCardCrafting}
+                  onSelectCardIdentity={handleSelectCardIdentity}
+                  onSelectCardTrigger={handleSelectCardTrigger}
+                />
+                {/* <PredictionSelectCardSection
+              selectedCard={selectedCard}
+              clickedCard={clickedCard}
+              selectedCraft={selectedCraft}
+              onCardClicked={handleCardClick}
+              onSelectCardCrafting={handleSelectCardCrafting}
+              onSelectCardIdentity={handleSelectCardIdentity}
+              onSelectCardTrigger={handleSelectCardTrigger}
+            /> */}
+              </CraftLeftWrapper>
+              <CraftRightWrapper>
+                <PredictionMatchListSection selectedCards={selectedCards} />
+                <CardPreviewSection
+                  page="prediction"
+                  clickedCard={clickedCard}
+                  selectedCraft={clickedCraft}
+                  clickedNft={clickedNft}
+                />
+              </CraftRightWrapper>
+            </>
+          ) : (
+            <>
+              <div className="unAuth-display">
+                <p>
+                  Identities are cards crafted by combining an Identity with at
+                  least one trigger.
+                </p>
+                <h4>Log in to start playing.</h4>
+                <Button
+                  className="login-button"
+                  onClick={() => navigate("/signin")}
+                >
+                  Login Now
+                </Button>
+              </div>
+            </>
+          )}
+        </CraftingWrapper>
+      )}
     </AppLayout>
   );
 };
