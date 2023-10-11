@@ -265,8 +265,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
                 <span>{checkType(selectedItem)}</span>
               </PropertyItem>
               <PropertyItem>
-                <p>Year</p>
-                <span>{selectedItem?.nft_card_identity?.year}</span>
+                <p>{checkType(selectedItem)}</p>
+                {checkTypeValue(selectedItem)}
               </PropertyItem>
               <PropertyItem>
                 <p>Collection</p>

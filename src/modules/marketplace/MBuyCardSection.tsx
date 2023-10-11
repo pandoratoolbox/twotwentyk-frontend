@@ -11,6 +11,7 @@ import {
   PropertiesContent,
   PropertiesHeader,
   PropertiesWrapper,
+  PropertyCardPacks,
   PropertyItem,
   SetPriceWrapper,
 } from "../app/dates/styles";
@@ -19,6 +20,7 @@ import {
   Button,
   BuyPackConfirmModal,
   IconArrowDown,
+  IconArrowDown1,
   IconCardAthlete,
   IconCoins,
   IconPay,
@@ -35,8 +37,9 @@ import {
 import { buyMarketplaceById } from "../../actions/marketplace_listing";
 import api from "../../config/api";
 import { toast } from "react-toastify";
-import { useMyInfoContext } from "../../context";
+import { useCardSeriesContext, useMyInfoContext, useTiersContext } from "../../context";
 import { getMyInfo } from "../../actions";
+import { ITier } from "../../models/tier";
 
 export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   selectedItem,
@@ -48,6 +51,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
 }) => {
   console.log(selectedItem);
   const { setMyInfoContext } = useMyInfoContext();
+  const { tiersContext }: { tiersContext: Map<number, ITier> } = useTiersContext()
+  const { cardSeriesContext } = useCardSeriesContext();
 
   const [step, setStep] = useState(0);
   const [useBalance, setUseBalance] = useState(false);
@@ -166,6 +171,34 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
     return undefined;
   };
 
+  const packData = React.useMemo(() => {
+    if (page === "packs" && selectedItem?.card_pack) {
+      // let rarity = selectedItem.card_pack?.tier ? tiersContext.get(selectedItem.card_pack.tier)?.name : ""
+      let rarity = tiersContext.get(selectedItem.card_pack.tier ?? 0)?.name ?? ""
+      let collection = selectedItem.card_pack?.card_series_id ? cardSeriesContext?.find(
+        (value) => value.id === selectedItem.card_pack?.card_series_id
+      )?.card_collection?.name : "";
+      const cardsLength = !selectedItem.card_pack?.cards ? 0 : Object.values(selectedItem.card_pack?.cards).reduce((prev, value) => value && value?.length ? prev += value.length : prev, 0)
+      const packContents = []
+      if (selectedItem.card_pack?.cards?.crafting?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.crafting.length} Crafting Card`)
+      }
+      if (selectedItem.card_pack?.cards?.category?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.category.length} Category Card`)
+      }
+      if (selectedItem.card_pack?.cards?.trigger?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.trigger.length} Trigger Card`)
+      }
+      if (selectedItem.card_pack?.cards?.year?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.year.length} Year Card`)
+      }
+      if (selectedItem.card_pack?.cards?.day_month?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.day_month.length} Day/Month Card`)
+      }
+      return { rarity, collection, cardsLength, packContents }
+    } else return {}
+  }, [tiersContext, cardSeriesContext, selectedItem.id])
+
   return (
     <>
       <MSidebarWrapper open={open}>
@@ -191,7 +224,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                 />
               )}
             </ViewCardWrapper>
-            <PropertiesWrapper>
+            {page !== "packs" && <PropertiesWrapper>
               <PropertiesHeader>
                 <span>Properties</span>
                 <IconArrowDown />
@@ -214,7 +247,42 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                   <span></span>
                 </PropertyItem>
               </PropertiesContent>
-            </PropertiesWrapper>
+            </PropertiesWrapper>}
+            {page === "packs" && (
+              <>
+                <PropertiesWrapper>
+                  <PropertiesHeader>
+                    <span>Properties</span>
+                    <IconArrowDown1 />
+                  </PropertiesHeader>
+                  <PropertiesContent>
+                    <PropertyItem>
+                      <p>Pack Rarity</p>
+                      <span>{packData?.rarity}</span>
+                    </PropertyItem>
+                    <PropertyItem>
+                      <p>Collection</p>
+                      <span>{packData?.collection}</span>
+                    </PropertyItem>
+                  </PropertiesContent>
+                </PropertiesWrapper>
+                <PropertiesWrapper>
+                  <PropertiesHeader>
+                    <span>Pack Contents</span>
+                    <PropertyCardPacks>{packData?.cardsLength} Cards<IconArrowDown1 />
+                    </PropertyCardPacks>
+                  </PropertiesHeader>
+                  <PropertiesContent>
+                    {packData && packData?.packContents && packData?.packContents.length > 0 && <>
+                      {packData.packContents.map((value, key) => <PropertyItem key={key}>
+                        <p>{value}</p>
+                      </PropertyItem>)}
+                    </>}
+
+                  </PropertiesContent>
+                </PropertiesWrapper>
+              </>
+            )}
             <SetPriceWrapper>
               <div className="price">
                 <h5>Current Price</h5>
