@@ -242,6 +242,15 @@ export const PropertyItem = styled.div<{ nfttrigger?: boolean | string }>`
   }
 `;
 
+export const PropertyCardPacks = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  display: flex;
+  gap: 8px;
+  align-items: center;
+`
+
 export const PriceItem = styled.div`
   font-weight: 600;
   font-size: 12px;

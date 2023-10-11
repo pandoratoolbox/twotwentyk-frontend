@@ -26,7 +26,7 @@ export const getMarketplaceList = async (
         params.card_collection_id
       }&rarity=${params.rarity.join(",")}&offset=${
         params.offset
-      }&status=${params.status.join(",")}`
+      }&is_listed=${params.status.join(",")}`
     );
     return { success: true, data: res.data };
   } catch (error) {

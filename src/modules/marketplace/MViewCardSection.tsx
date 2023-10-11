@@ -6,14 +6,18 @@ import {
   PropertiesContent,
   PropertiesHeader,
   PropertiesWrapper,
+  PropertyCardPacks,
   PropertyItem,
 } from "../app/dates/styles";
 import {
-  IconArrowDown,
+  IconArrowDown1,
   IconCardAthlete,
   MarketCard,
   PredictionCard,
 } from "../../components";
+import { useCardSeriesContext, useTiersContext } from "../../context";
+import { ITier } from "../../models/tier";
+import { ItemContent } from "../crafting/styles";
 
 export const MViewCardSection: React.FC<CardSidebarProps> = ({
   selectedItem,
@@ -22,6 +26,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
   page,
   collection,
 }) => {
+  const { tiersContext }: { tiersContext: Map<number, ITier> } = useTiersContext()
+  const { cardSeriesContext } = useCardSeriesContext();
   // for check rarity
   const checkRarity = (selectedItem: any) => {
     if (
@@ -94,8 +100,36 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
     return undefined;
   };
 
+  const packData = React.useMemo(() => {
+    if (page === "packs" && selectedItem?.card_pack) {
+      // let rarity = selectedItem.card_pack?.tier ? tiersContext.get(selectedItem.card_pack.tier)?.name : ""
+      let rarity = tiersContext.get(selectedItem.card_pack.tier ?? 0)?.name ?? ""
+      let collection = selectedItem.card_pack?.card_series_id ? cardSeriesContext?.find(
+        (value) => value.id === selectedItem.card_pack?.card_series_id
+      )?.card_collection?.name : "";
+      const cardsLength = !selectedItem.card_pack?.cards ? 0 : Object.values(selectedItem.card_pack?.cards).reduce((prev, value) => value && value?.length ? prev += value.length : prev, 0)
+      const packContents = []
+      if (selectedItem.card_pack?.cards?.crafting?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.crafting.length} Crafting Card`)
+      }
+      if (selectedItem.card_pack?.cards?.category?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.category.length} Category Card`)
+      }
+      if (selectedItem.card_pack?.cards?.trigger?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.trigger.length} Trigger Card`)
+      }
+      if (selectedItem.card_pack?.cards?.year?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.year.length} Year Card`)
+      }
+      if (selectedItem.card_pack?.cards?.day_month?.length) {
+        packContents.push(`${selectedItem.card_pack.cards.day_month.length} Day/Month Card`)
+      }
+      return { rarity, collection, cardsLength, packContents }
+    } else return {}
+  }, [tiersContext, cardSeriesContext, selectedItem.id])
+
   return (
-    <MSidebarWrapper open={open}>
+    <MSidebarWrapper open={open} key={selectedItem.id}>
       <MSidebarContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>View Card</h2>
@@ -121,7 +155,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
           <PropertiesWrapper>
             <PropertiesHeader>
               <span>Properties</span>
-              <IconArrowDown />
+              <IconArrowDown1 />
             </PropertiesHeader>
             <PropertiesContent>
               <PropertyItem>
@@ -148,37 +182,32 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
             <PropertiesWrapper>
               <PropertiesHeader>
                 <span>Properties</span>
-                <IconArrowDown />
+                <IconArrowDown1 />
               </PropertiesHeader>
               <PropertiesContent>
                 <PropertyItem>
                   <p>Pack Rarity</p>
-                  <span>Standard</span>
+                  <span>{packData?.rarity}</span>
                 </PropertyItem>
                 <PropertyItem>
                   <p>Collection</p>
-                  <span>Conception</span>
+                  <span>{packData?.collection}</span>
                 </PropertyItem>
               </PropertiesContent>
             </PropertiesWrapper>
             <PropertiesWrapper>
               <PropertiesHeader>
                 <span>Pack Contents</span>
-                <IconArrowDown />
+                <PropertyCardPacks>{packData?.cardsLength} Cards<IconArrowDown1 />
+                </PropertyCardPacks>
               </PropertiesHeader>
               <PropertiesContent>
-                <PropertyItem>
-                  <p>6 Cards</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>3 Guaranteed Core Cards</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>2 Core cards with chance of Uncommon Card</p>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>1 Crafting Card</p>
-                </PropertyItem>
+                {packData && packData?.packContents && packData?.packContents.length > 0 && <>
+                  {packData.packContents.map((value, key) => <PropertyItem key={key}>
+                    <p>{value}</p>
+                  </PropertyItem>)}
+                </>}
+
               </PropertiesContent>
             </PropertiesWrapper>
           </>
@@ -187,7 +216,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
           <PropertiesWrapper>
             <PropertiesHeader>
               <span>Properties</span>
-              <IconArrowDown />
+              <IconArrowDown1 />
             </PropertiesHeader>
             <PropertiesContent>
               <PropertyItem>
@@ -224,7 +253,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
           <PropertiesWrapper>
             <PropertiesHeader>
               <span>Properties</span>
-              <IconArrowDown />
+              <IconArrowDown1 />
             </PropertiesHeader>
             <PropertiesContent>
               <PropertyItem>
