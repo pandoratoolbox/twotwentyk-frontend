@@ -258,11 +258,11 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
             <PropertiesContent>
               <PropertyItem>
                 <p>Rarity</p>
-                <span>{selectedItem?.nft_card_identity?.rarity}</span>
+                <span>{checkRarity(selectedItem)}</span>
               </PropertyItem>
               <PropertyItem>
                 <p>Type</p>
-                <span>Year</span>
+                <span>{checkType(selectedItem)}</span>
               </PropertyItem>
               <PropertyItem>
                 <p>Year</p>
