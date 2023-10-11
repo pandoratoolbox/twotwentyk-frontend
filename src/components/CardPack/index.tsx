@@ -1,8 +1,6 @@
 import React from "react";
 import {
   CardBottomWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
   PredictionCardWrapper,
   CardOverlayWrapper,
 } from "./styles";
@@ -10,51 +8,40 @@ import { CardButton, CardButtonGroup } from "../DateCard/styles";
 import { CardPacksCardProps } from "../../types";
 import { CardImgWrapper } from "../MarketCard/styles";
 import { useMyInfoContext } from "../../context";
+import { checkTier } from "../../utils/helperFunctions";
+import { Loader } from "../Loader";
 
 export const CardPack: React.FC<CardPacksCardProps> = ({
   item,
-  id = 0,
-  image,
-  rarity,
   tier,
-  height,
-  status,
   onSell,
   onView,
   onOpen,
   onCancel,
 }) => {
   const { myInfoContext } = useMyInfoContext();
-  console.log(item);
+  
   return (
     <PredictionCardWrapper>
       <CardImgWrapper>
-        {tier === 0 && (
-          <img
-            src="/assets/nfts/rarity/Standard-Pack-Background.png"
-            alt="nft"
-          />
+        {tier || tier === 0 ? (
+          <>
+            <img
+              src={`/assets/nfts/rarity/${checkTier(tier)}-Pack-Background.png`}
+              alt="Card Pack"
+            />
+            <div className="info-nft info-nft-cardPack">
+              <img
+                src={`/assets/nfts/rarity/${checkTier(
+                  tier
+                )}-Egg-Animation-No-Bkgnd-Small.gif`}
+                alt="gif"
+              />
+            </div>
+          </>
+        ) : (
+          <Loader />
         )}
-        {tier === 1 && (
-          <img
-            src="/assets/nfts/rarity/Premium-Pack-Background.png"
-            alt="nft"
-          />
-        )}
-        {tier === 2 && (
-          <img src="/assets/nfts/rarity/Elite-Pack-Background.png" alt="nft" />
-        )}
-        <div className="info-nft info-nft-cardPack">
-          {tier === 0 && (
-            <img src="/assets/nfts/rarity/Standard-Egg-Animation-No-Bkgnd-Small.gif" alt="gif" />
-          )}
-          {tier === 1 && (
-            <img src="/assets/nfts/rarity/Premium-Egg-Animation-No-Bkgnd-Small.gif" alt="nft" />
-          )}
-          {tier === 2 && (
-            <img src="/assets/nfts/rarity/Elite-Egg-Animation-No-Bkgnd-Small.gif" alt="nft" />
-          )}
-        </div>
       </CardImgWrapper>
 
       <CardBottomWrapper>Card Pack</CardBottomWrapper>

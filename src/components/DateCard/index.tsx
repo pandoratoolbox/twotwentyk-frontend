@@ -11,7 +11,11 @@ import {
 } from "./styles";
 import { CardBottomWrapper } from "../PredictionCard/styles";
 import { IconUser2 } from "../Icons";
-import { useMonthContext, useMyInfoContext, useCelebritiesContext } from "../../context";
+import {
+  useMonthContext,
+  useMyInfoContext,
+  useCelebritiesContext,
+} from "../../context";
 import { CardImgWrapper } from "../MarketCard/styles";
 
 import { ICelebrity } from "../../models/celebrity";
@@ -25,8 +29,9 @@ export const getImagePath = (
   const raritySuffix =
     rarity === 0 ? "Core" : rarity === 1 ? "Rare" : "Uncommon";
   const dateType = isYear ? "Year" : "Month-Day";
-  return `/assets/nfts/rarity/${itemYear ? dateType : category
-    }-${raritySuffix}-copy.png`;
+  return `/assets/nfts/rarity/${
+    itemYear ? dateType : category
+  }-${raritySuffix}-copy.png`;
 };
 
 export const DateCard: React.FC<DateCardProps> = ({
@@ -39,7 +44,6 @@ export const DateCard: React.FC<DateCardProps> = ({
   is_crafted,
   owner_id,
   rarity,
-
   isNotHover,
   onCraft,
   onSell,
@@ -69,7 +73,10 @@ export const DateCard: React.FC<DateCardProps> = ({
 
   return (
     item?.id && (
-      <DateCardWrapper isnothover={isNotHover ? "true" : undefined}>
+      <DateCardWrapper
+        key={item.id}
+        isnothover={isNotHover ? "true" : undefined}
+      >
         <CardImgWrapper>
           <img src={imagePath} alt="nft" />
           <div className="info-nft info-nft-day-month">
@@ -96,8 +103,8 @@ export const DateCard: React.FC<DateCardProps> = ({
         {item?.year && <CardBottomWrapper>{item?.year}</CardBottomWrapper>}
         <CardOverlayWrapper className="overlay">
           <CardButtonGroup>
-            {
-              buttonText !== "Crafting" && <CardTooltip>
+            {buttonText !== "Crafting" && (
+              <CardTooltip>
                 <div className="bg-black">
                   <IconUser2 />
                 </div>
@@ -111,7 +118,7 @@ export const DateCard: React.FC<DateCardProps> = ({
                   </div>
                 </TooltipContent>
               </CardTooltip>
-            }
+            )}
             {onView && (
               <CardButton onClick={() => onView(item)}>View</CardButton>
             )}

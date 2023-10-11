@@ -7,6 +7,7 @@ import { INftCardCrafting } from "../models/nft_card_crafting";
 import { INftCardDayMonth } from "../models/nft_card_day_month";
 import { INftCardIdentity } from "../models/nft_card_identity";
 import { INftCardPrediction } from "../models/nft_card_prediction";
+import { INftCardTrigger } from "../models/nft_card_trigger";
 import { INftCardYear } from "../models/nft_card_year";
 import { CardActionTypes } from "./common";
 
@@ -94,6 +95,12 @@ export type PredictionCardProps = {
   onBuy?: (id: number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
   onCancel?: (data: INftCardIdentity) => void;
+  onSelectCardIdentity?: (card: INftCardIdentity) => void;
+  onCardClicked?: (
+    key: number | string,
+    item: INftCardCrafting | INftCardIdentity | INftCardTrigger
+  ) => void;
+
 } & IMarketplaceListing;
 
 export type FeedItemProps = {
@@ -338,7 +345,7 @@ export type MarketCardProps = {
   type?: string;
   // id?: number | string;
   isOffer?: boolean;
-  // rarity: string;
+  rarity?: string;
   // status?: string;
   // owned?: string | number;
   // onCard?: (id?: string | number, action?: CardActionTypes) => void;

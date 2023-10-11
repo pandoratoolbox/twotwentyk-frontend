@@ -1,16 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  AmountWrapper,
-  CardBodyWrapper,
-  CardBottomWrapper,
-  CardDateWrapper,
-  CardTopWrapper,
-  CardTypeWrapper,
-  PredictionCardWrapper,
-  CardTooltip,
-  TooltipContent,
-  TooltipItem,
-} from "./styles";
+import { CardBottomWrapper, PredictionCardWrapper } from "./styles";
 import {
   CardButton,
   CardButtonGroup,
@@ -21,10 +10,14 @@ import {
   useMonthContext,
   useCelebritiesContext,
   useMyInfoContext,
+  useAuthContext,
 } from "../../context";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { CardImgWrapper } from "../MarketCard/styles";
+import { checkRarity } from "../../utils/helperFunctions";
+import { Loader } from "../Loader";
+import { useNavigate } from "react-router-dom";
 
 export const PredictionCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -57,6 +50,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
   const [clearSelect, setClearSelect] = useState<boolean>(true);
+  const { authContext } = useAuthContext()
+  const navigate = useNavigate();
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -101,29 +96,33 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardImgWrapper dashbordstyle={dashbordstyle}>
-        {rarity === 0 && (
-          <img src="/assets/nfts/rarity/Prediction-Core.png" alt="nft" />
-        )}
-        {rarity === 1 && (
-          <img src="/assets/nfts/rarity/Prediction-Rare.png" alt="nft" />
-        )}
-        {rarity === 2 && (
-          <img src="/assets/nfts/rarity/Prediction-Uncommon.png" alt="nft" />
-        )}
-        <div className="info-nft info-nft-prediction">
-          <h4>{category}</h4>
+        {rarity || rarity === 0 ? (
+          <>
+            <img
+              src={`/assets/nfts/rarity/Prediction-${checkRarity(rarity)}.png`}
+              alt="nft"
+            />
+            <div className="info-nft info-nft-prediction">
+              <h4>{category}</h4>
 
-          {rarity === 0 && (
-            <img src="/assets/nfts/rarity/Core-Torso.gif" alt="gif" />
-          )}
-          {rarity === 1 && (
-            <img src="/assets/nfts/rarity/Rare-Torso.gif" alt="nft" />
-          )}
-          {rarity === 2 && (
-            <img src="/assets/nfts/rarity/Uncommon-Torso.gif" alt="nft" />
-          )}
-          <h4 className="date">03 06 1992</h4>
-        </div>
+              <img
+                src={`/assets/nfts/rarity/${checkRarity(rarity)}-Torso.gif`}
+                alt="gif"
+              />
+
+              <div className="nft-info-detail">
+                <h2 className="date">
+                  {day} {month} {year}
+                </h2>
+                <h3>{category}</h3>
+              </div>
+              <h4 className="date">03 06 1992</h4>
+            </div>
+          </>
+        ) : (
+          <Loader />
+        )}
+
         {/* <StatusWrapper>
           {is_listed && <span>{is_listed ? "For Sale" : "Not For Sale"}</span>}
         </StatusWrapper> */}
@@ -145,8 +144,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       </CardTopWrapper> */}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
-          {!is_crafted && onCraft && cardType === "identity" && (
-            <CardButton onClick={() => onCraft(item)}>
+          {!is_crafted && onCraft && item?.owner_id === myInfoContext?.id && cardType === "identity" && (
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
@@ -154,29 +153,25 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {/* {cardType === "prediction" && (
             <CardButton onClick={() => {}}>Add Trigger</CardButton>
           )} */}
-          {cardType === "prediction" && onClaimSubmit && (
-            <CardButton onClick={() => onClaimSubmit(item)}>
-              Submit Claim
-            </CardButton>
+          {item?.owner_id === myInfoContext?.id && onSell && (
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onSell(item)}>Sell</CardButton>
           )}
-          {onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
-          {onBuy && <CardButton onClick={() => onBuy(item)}>Buy</CardButton>}
-          {onCancel && item?.is_listed && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
+          {item?.owner_id !== myInfoContext?.id && onBuy && (
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onBuy(item)}>Buy</CardButton>
+          )}
+          {item?.owner_id === myInfoContext?.id && onCancel && item?.is_listed && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCancel(item)}>Cancel Listing</CardButton>}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
               {item?.is_listed ? (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
               ) : (
-                <CardButton onClick={() => onCard(item, "offer")}>
+                item?.owner_id === myInfoContext?.id && <CardButton onClick={() => onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
               )}
-            </>
-          )}
-          {item?.owner_id !== myInfoContext?.id && onBuy && (
-            <CardButton onClick={() => onBuy(item)}>Buy</CardButton>
-          )}u
+            </>)
+          }
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

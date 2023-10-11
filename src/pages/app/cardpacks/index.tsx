@@ -52,6 +52,25 @@ export const CardPackPage: React.FC = () => {
   const [cancelNftCard, setCancelNftCard] = useState<ICardPack>()
   const [cancelModal, setCancelModal] = useState(true)
 
+  const [flipActive, setFlipActive] = useState({
+    crafting: Array(openCard?.cardsToAnimation.crafting?.length).fill(false),
+    category: Array(openCard?.cardsToAnimation.category?.length).fill(false),
+    year: Array(openCard?.cardsToAnimation.year?.length).fill(false),
+    day_month: Array(openCard?.cardsToAnimation.day_month?.length).fill(false),
+  });
+
+  // for flip all
+  const flipAllCards = () => {
+    // Create a new object with all flip states set to true
+    const newFlipActive = {
+      crafting: Array(openCard?.cardsToAnimation.crafting?.length).fill(true),
+      category: Array(openCard?.cardsToAnimation.category?.length).fill(true),
+      year: Array(openCard?.cardsToAnimation.year?.length).fill(true),
+      day_month: Array(openCard?.cardsToAnimation.day_month?.length).fill(true),
+    };
+    setFlipActive(newFlipActive);
+  };
+
   const getPageData = async () => {
     setIsLoading(true);
 
@@ -218,10 +237,7 @@ export const CardPackPage: React.FC = () => {
                 {openCard.open ? (
                   <>
                     <h3>OPENING CARD PACK</h3>
-                    <Button
-                      className="reveal-button"
-                      // onClick={() => navigate("/buy")}
-                    >
+                    <Button className="reveal-button" onClick={flipAllCards}>
                       Reveal All
                     </Button>
                   </>
@@ -262,6 +278,8 @@ export const CardPackPage: React.FC = () => {
                     onClose={() =>
                       setOpenCard({ open: false, cardsToAnimation: {} })
                     }
+                    flipActive={flipActive}
+                    setFlipActive={setFlipActive}
                   />
                 ) : (
                   <Loader />

@@ -63,8 +63,16 @@ export const CraftingIdentitesPage: React.FC = () => {
     year: null,
   });
 
-  const [clickedNft, setClickedNft] = useState<INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear>()
-  const [clickedCraft, setClickedCraft] = useState("crafting")
+  const [clickedNft, setClickedNft] = useState<
+    INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear
+  >();
+  const [clickedCraft, setClickedCraft] = useState("crafting");
+
+  const [playVideo, setPlayVideo] = useState(false);
+
+  const handleVideoEnded = () => {
+    setPlayVideo(false);
+  };
 
   const loadMyNfts = async () => {
     try {
@@ -111,14 +119,17 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   }, [params]);
 
-  const handleCardClick = (key: string | number | null, item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear) => {
+  const handleCardClick = (
+    key: string | number | null,
+    item: INftCardCrafting | INftCardCategory | INftCardDayMonth | INftCardYear
+  ) => {
     if (key === clickedCard) {
       setClickedCard(-1);
-      setClickedNft(undefined)
+      setClickedNft(undefined);
     } else {
       setClickedCard(key);
-      setClickedNft(item)
-      setClickedCraft(selectedCraft)
+      setClickedNft(item);
+      setClickedCraft(selectedCraft);
     }
   };
 
@@ -200,6 +211,8 @@ export const CraftingIdentitesPage: React.FC = () => {
     if (res.success) {
       toast.success("Crafted Successfully.");
       setConfirm(false);
+
+      setPlayVideo(true);
     } else {
       toast.error(res.message);
     }
@@ -226,6 +239,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         pauseOnHover
         theme="dark"
       />
+
       <CraftIdentityModal
         selectCelebrity={handleSelectCelebrity}
         open={confirm}
@@ -233,26 +247,40 @@ export const CraftingIdentitesPage: React.FC = () => {
         onCraft={craftIdentity}
         selectedCards={selectedCards}
       />
-      <CraftingWrapper>
-        {currentUser ? (
-          <>
-            <CraftLeftWrapper>
-              <IdentityCraftSection
-                onCraft={handleCraft}
-                onCraftChanged={setSelectedCraft}
-                selectedCards={selectedCards}
-                selectedCraft={selectedCraft}
-                clickedCard={clickedCard}
-                selectedCard={selectedCard}
-                onCardClicked={handleCardClick}
-                onSelectCardCrafting={handleSelectCardCrafting}
-                onSelectCardCategory={handleSelectCardCategory}
-                onSelectCardDayMonth={handleSelectCardDayMonth}
-                onSelectCardYear={handleSelectCardYear}
-                myNfts={myNfts}
-                setMyNfts={setMyNfts}
-              />
-              {/* <IdentitySelectCardSection
+      {playVideo ? (
+        <video
+          width="1000"
+          height="1000"
+          controls
+          autoPlay
+          onEnded={handleVideoEnded}
+        >
+          <source
+            src="https://rr3---sn-4g5edndl.c.drive.google.com/videoplayback?expire=1697023942&ei=ll0mZZLZGfikpb0Pt9-FQA&ip=78.109.18.227&cp=QVROWUFfUllSQ1hPOmRpSTNhRVRQZ2hGM0VNenV6bUZzNFowRlpNZk83dGZIYXpiN2E4ZS1kajQ&id=24a54694ad3565dd&itag=18&source=webdrive&requiressl=yes&xpc=EghotM6WJ3oBAQ==&mh=yY&mm=32&mn=sn-4g5edndl&ms=su&mv=m&mvi=3&pl=24&ttl=transient&susc=dr&driveid=1RYAQzpiTfz19j75p0SESJaEv1QcO0C8H&app=explorer&mime=video/mp4&vprv=1&prv=1&dur=24.125&lmt=1696560162912228&mt=1697012720&subapp=DRIVE_WEB_FILE_VIEWER&txp=0001224&sparams=expire,ei,ip,cp,id,itag,source,requiressl,xpc,ttl,susc,driveid,app,mime,vprv,prv,dur,lmt&sig=AGM4YrMwRQIgVRMz933zsMaBrMdGB-qaLuS9DJQqsWFYMn5yoHFcC1QCIQD_osNRhic-F95_oPuRF6yielk8Svlm3wrIHfVIC-xJLw==&lsparams=mh,mm,mn,ms,mv,mvi,pl&lsig=AK1ks_kwRAIgQhNrZiGOKdqzRF5P1fXTPCNM89D4uWTQ_SAQoWU8KX4CIA2tKHChw2H7Cwcn3mtLikH1rkJSmrXyZiS6_ESpJSI4&cpn=hWxomT7dSwBlirX_&c=WEB_EMBEDDED_PLAYER&cver=1.20231008.00.00"
+            type="video/mp4"
+          />
+        </video>
+      ) : (
+        <CraftingWrapper>
+          {currentUser ? (
+            <>
+              <CraftLeftWrapper>
+                <IdentityCraftSection
+                  onCraft={handleCraft}
+                  onCraftChanged={setSelectedCraft}
+                  selectedCards={selectedCards}
+                  selectedCraft={selectedCraft}
+                  clickedCard={clickedCard}
+                  selectedCard={selectedCard}
+                  onCardClicked={handleCardClick}
+                  onSelectCardCrafting={handleSelectCardCrafting}
+                  onSelectCardCategory={handleSelectCardCategory}
+                  onSelectCardDayMonth={handleSelectCardDayMonth}
+                  onSelectCardYear={handleSelectCardYear}
+                  myNfts={myNfts}
+                  setMyNfts={setMyNfts}
+                />
+                {/* <IdentitySelectCardSection
                 clickedCard={clickedCard}
                 selectedCard={selectedCard}
                 selectedCraft={selectedCraft}
@@ -264,46 +292,47 @@ export const CraftingIdentitesPage: React.FC = () => {
                 myNfts={myNfts}
                 setMyNfts={setMyNfts}
               /> */}
-            </CraftLeftWrapper>
-            <CraftRightWrapper open={isOpen ? "true" : undefined}>
-              <CloseButton
-                className="close-button"
-                onClick={() => setIsOpen(false)}
+              </CraftLeftWrapper>
+              <CraftRightWrapper open={isOpen ? "true" : undefined}>
+                <CloseButton
+                  className="close-button"
+                  onClick={() => setIsOpen(false)}
+                >
+                  &times;
+                </CloseButton>
+                <IdentityMatchListSection
+                  page="identity"
+                  selectedCards={selectedCards}
+                  myNfts={myNfts}
+                  onSelectCardDayMonth={handleSelectCardDayMonth}
+                  onSelectCardYear={handleSelectCardYear}
+                  onSelectCardCategory={handleSelectCardCategory}
+                />
+                <CardPreviewSection
+                  page="identity"
+                  clickedCard={clickedCard}
+                  selectedCraft={clickedCraft}
+                  clickedNft={clickedNft}
+                />
+              </CraftRightWrapper>
+            </>
+          ) : (
+            <div className="unAuth-display">
+              <p>
+                Identities are cards crafted by combining a Day-Month card, a
+                Year card and a Category card
+              </p>
+              <h4>Log in to start playing.</h4>
+              <Button
+                className="login-button"
+                onClick={() => navigate("/signin")}
               >
-                &times;
-              </CloseButton>
-              <IdentityMatchListSection
-                page="identity"
-                selectedCards={selectedCards}
-                myNfts={myNfts}
-                onSelectCardDayMonth={handleSelectCardDayMonth}
-                onSelectCardYear={handleSelectCardYear}
-                onSelectCardCategory={handleSelectCardCategory}
-              />
-              <CardPreviewSection
-                page="identity"
-                clickedCard={clickedCard}
-                selectedCraft={clickedCraft}
-                clickedNft={clickedNft}
-              />
-            </CraftRightWrapper>
-          </>
-        ) : (
-          <div className="unAuth-display">
-            <p>
-              Identities are cards crafted by combining a Day-Month card, a Year
-              card and a Category card
-            </p>
-            <h4>Log in to start playing.</h4>
-            <Button
-              className="login-button"
-              onClick={() => navigate("/signin")}
-            >
-              Login Now
-            </Button>
-          </div>
-        )}
-      </CraftingWrapper>
+                Login Now
+              </Button>
+            </div>
+          )}
+        </CraftingWrapper>
+      )}
     </AppLayout>
   );
 };
