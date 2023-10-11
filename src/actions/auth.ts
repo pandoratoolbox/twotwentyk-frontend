@@ -9,6 +9,7 @@ import {
     nft_card_year_data,
 } from "../data/nfts";
 import { IClaim } from "../models/claim";
+import { ITransaction } from "../models/transaction";
 import type { LoginParams, RegisterParams } from "../types/actions";
 
 export const signin = async ({ username, password }: LoginParams) => {
@@ -120,7 +121,7 @@ export const getClaim = async () => {
 
 export const getTransactions = async () => {
     try {
-        const res = await api.get("/me/transaction");
+        const res = await api.get<ITransaction[]>("/me/transaction");
         return { success: true, data: res.data };
     } catch (error) {
         return { success: false, message: "Server Error!" };
