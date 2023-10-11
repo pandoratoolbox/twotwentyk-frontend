@@ -13,11 +13,13 @@ import {
   useMonthContext,
   useCelebritiesContext,
   useMyInfoContext,
+  useAuthContext,
 } from "../../context";
 import { SelectOption } from "../SelectBox/SelectOption";
 import { ICelebrity } from "../../models/celebrity";
 import { updateMyNftCardIdentity } from "../../actions/nft_card_identity";
 import { CardImgWrapper } from "../MarketCard/styles";
+import { useNavigate } from "react-router-dom";
 
 export const IdentityCard: React.FC<PredictionCardProps> = ({
   dashbordstyle,
@@ -36,6 +38,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   height,
   isNotHover,
   triggers,
+  forCraft,
   onClick,
   onCraft,
   onSell,
@@ -43,11 +46,15 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
   onClaimSubmit,
+  onSelectCardIdentity,
+  onCardClicked
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
-  const [clearSelect, setClearSelect] = useState<boolean>(true);
+  const { authContext } = useAuthContext()
+  const navigate = useNavigate();
+  console.log({authContext})
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -86,7 +93,9 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   return (
     <PredictionCardWrapper
       cardType={cardType}
-      onClick={onClick}
+      onClick={() => {
+        !forCraft && onClick && onClick()
+      }}
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
@@ -136,41 +145,45 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
             <SelectOption
               options={identityMatches}
               placeholder="Identity Matches"
-              clear={clearSelect}
+              // clear={clearSelect}
               onSelect={chooseCelebrity}
             />
           )}
         </CardBottomWrapper>
       )}
 
-      <CardOverlayWrapper className="overlay">
-        <CardButtonGroup>
+      <CardOverlayWrapper className="overlay" onClick={() => forCraft && onCardClicked && item && onCardClicked(item.id, item)}>
+        {!forCraft && <CardButtonGroup>
           {!is_crafted && onCraft && (
-            <CardButton onClick={() => onCraft(item)}>
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
 
           {item?.owner_id === myInfoContext?.id && onSell && (
-            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onSell(item)}>Sell</CardButton>
           )}
           {item?.owner_id !== myInfoContext?.id && onBuy && (
-            <CardButton onClick={() => onBuy(item)}>Buy</CardButton>
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : authContext?.isAuthenticated ? onBuy(item) : navigate("/signin")}>Buy</CardButton>
           )}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
               {item?.is_listed ? (
-                <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
               ) : (
-                <CardButton onClick={() => onCard(item, "offer")}>
+                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
                   Make an Offer
                 </CardButton>
               )}
             </>
           )}
-        </CardButtonGroup>
+        </CardButtonGroup>}
+        {forCraft && <CardButtonGroup>
+          <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : item && onSelectCardIdentity && onSelectCardIdentity(item)}>Select</CardButton>
+
+        </CardButtonGroup>}
       </CardOverlayWrapper>
     </PredictionCardWrapper>
   );
