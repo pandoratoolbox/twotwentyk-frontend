@@ -87,6 +87,7 @@ export type PredictionCardProps = {
   iconText?: string;
   isNotHover?: boolean;
   status?: number;
+  forCraft?: boolean;
   onClick?: () => void;
   onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
   onView?: (id: number) => void;
