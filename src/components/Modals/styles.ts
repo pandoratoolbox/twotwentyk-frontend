@@ -45,6 +45,10 @@ export const ModalContainer = styled.div<{ width?: number }>`
   &.removePadding {
     padding: 0;
   }
+
+  &.smallPadding {
+    padding: 20px;
+  }
 `;
 
 export const CloseButton = styled.div`
@@ -113,12 +117,144 @@ export const ClaimModalWrapper = styled.div`
   }
 `;
 
+export const CancelListingModalWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+
+  div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    h3 {
+      // color: #0f4fba;
+      text-align: center;
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 32px;
+      margin-bottom: 20px;
+    }
+  
+    p {
+      // color: rgba(15, 79, 186, 0.7);
+      font-size: 14px;
+      font-weight: 500;
+      line-height: 24px;
+      text-align: center;
+      max-width: 299px;
+    }
+
+    p.bold {
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    svg {
+      margin-bottom: 8px;
+    }
+  }
+
+  .prediction-modal-card-wrapper {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+  }
+`;
+
+export const IdentityInfoWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 27px;
+
+  &.image-container {
+    img {
+      width: 304px;
+      height: 384px
+    }
+  }
+
+  .splitter {
+    height: 280px;
+    background-color: rgba(0,0,0, 0.15);
+    width: 0.5px;
+  }
+
+  .identity-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 12px;
+    line-height: 16px;
+    font-weight: 400;
+      
+    h3.title {
+      font-size: 24px;
+      line-height: 28px;
+      margin-bottom: 16px;
+      padding-top: 15px;
+    }
+
+    .contents-wrapper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 58px;
+
+      h4 {
+        font-size: 16px;
+        line-height: 24px;
+      }
+
+      .property {
+        display: flex;
+        justify-content: space-between;
+        padding: 5px 0;
+
+        span {
+          color: rgba(15, 79, 186, 0.75);
+        }
+        border-bottom: 1px solid rgba(0,0,0,0.15)
+      }
+
+      .contents {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+
+        .content-row {
+          display: flex;
+          justify-content: space-between;
+
+          .key {
+            font-weight: 500;
+          }
+        }
+      }
+    }
+
+    .listing-price {
+      font-size: 18px;
+      line-height: 24px;
+      font-weight: 500;
+      margin-bottom: 12px;
+
+      .current-price {
+        font-size: 12px;
+        line-height: 14px;
+        color: #0F4FBA;
+      }
+    }
+  }
+`;
+
 export const CraftIdentifyModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
   padding: 20px 35px;
-
   p {
     padding-top: 14px;
     font-weight: 600;

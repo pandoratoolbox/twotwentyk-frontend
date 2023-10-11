@@ -1,3 +1,4 @@
+import { ICardPack } from "../models/card_pack";
 import { ICardSeries } from "../models/card_series";
 import { ICelebrity } from "../models/celebrity";
 import { IMarketplaceListing } from "../models/marketplace_listing";
@@ -55,12 +56,14 @@ export type CardPacksCardProps = {
   rarity?: number;
   tier?: number;
   height?: number;
+  status?: number;
   image?: string;
   name?: string;
   isNotHover?: boolean;
   onView?: (id: number) => void;
   onSell?: (id: number) => void;
   onOpen?: (id: number) => void;
+  onCancel?: (data: ICardPack) => void;
 };
 
 export type PredictionCardProps = {
@@ -83,6 +86,7 @@ export type PredictionCardProps = {
   icon?: React.ReactNode;
   iconText?: string;
   isNotHover?: boolean;
+  status?: number;
   forCraft?: boolean;
   onClick?: () => void;
   onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
@@ -91,6 +95,7 @@ export type PredictionCardProps = {
   onSell?: (id: number) => void;
   onBuy?: (id: number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
+  onCancel?: (data: INftCardIdentity) => void;
   onSelectCardIdentity?: (card: INftCardIdentity) => void;
   onCardClicked?: (
     key: number | string,
@@ -156,6 +161,7 @@ export type DateCardGridProps = {
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
   onClaimSubmit?: (data: INftCardPrediction) => void;
+  onCancel?: (data: INftCardIdentity | INftCardPrediction | ICardPack) => void;
 };
 
 export type ViewDateCardProps = {

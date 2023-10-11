@@ -36,6 +36,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   height,
   isNotHover,
   triggers,
+  status,
   onClick,
   onCraft,
   onSell,
@@ -43,6 +44,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onView,
   onBuy,
   onClaimSubmit,
+  onCancel
 }) => {
   const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
@@ -142,23 +144,34 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       </CardTopWrapper> */}
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
-          {!is_crafted && onCraft && (
+          {!is_crafted && onCraft && item?.owner_id === myInfoContext?.id && cardType === "identity" && (
             <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCraft(item)}>
               Craft Prediction
             </CardButton>
           )}
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {cardType === "prediction" && onClaimSubmit && (
-            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onClaimSubmit(item)}>
-              Submit Claim
-            </CardButton>
-          )}
+          {/* {cardType === "prediction" && (
+            <CardButton onClick={() => {}}>Add Trigger</CardButton>
+          )} */}
           {item?.owner_id === myInfoContext?.id && onSell && (
             <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onSell(item)}>Sell</CardButton>
           )}
           {item?.owner_id !== myInfoContext?.id && onBuy && (
             <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onBuy(item)}>Buy</CardButton>
           )}
+          {item?.owner_id === myInfoContext?.id && onCancel && item?.is_listed && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCancel(item)}>Cancel Listing</CardButton>}
+          {onCard && (
+            <>
+              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
+              {item?.is_listed ? (
+                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
+              ) : (
+                item?.owner_id === myInfoContext?.id && <CardButton onClick={() => onCard(item, "offer")}>
+                  Make an Offer
+                </CardButton>
+              )}
+            </>)
+          }
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

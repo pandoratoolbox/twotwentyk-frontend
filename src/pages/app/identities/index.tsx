@@ -31,6 +31,9 @@ import {
 import { identitiesData } from "./data";
 import { NftCardIdentityFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
+import { CancelListingModal } from "../../../components/Modals/CancelListing";
+import { INftCardPrediction } from "../../../models/nft_card_prediction";
+import { ICardPack } from "../../../models/card_pack";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
@@ -40,12 +43,14 @@ export const IdentitiesPage: React.FC = () => {
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
+  const [cancelModal, setCancelModal] = useState(true)
   const [selectedItem, setSelectedItem] = useState(null);
   const [identityNfts, setIdentityNfts] = useState<INftCardIdentity[] | null>(
     null
   );
   const [isLoading, setIsLoading] = useState(true);
   const [isLoadingFilter, setIsLoadingFilter] = useState(false);
+  const [cancelIdentityNft, setCancelIdentityNft] = useState<INftCardIdentity>()
 
   useEffect(() => {
     if (params.get("id")) {
@@ -101,6 +106,11 @@ export const IdentitiesPage: React.FC = () => {
     setSelectedItem(item);
     setIsView("sell");
   };
+
+  const handleCancel = (item: INftCardIdentity | INftCardPrediction | ICardPack) => {
+    setCancelIdentityNft(item as INftCardIdentity)
+    setCancelModal(true)
+  }
 
   const [filters, setFilters] = useState<NftCardIdentityFilters>({
     card_series_id: null,
@@ -199,6 +209,7 @@ export const IdentitiesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
+      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelIdentityNft} cardType="Identity"/>}
       {currentUser ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
@@ -226,6 +237,7 @@ export const IdentitiesPage: React.FC = () => {
                     onSell={handleSell}
                     cardType="identity"
                     onView={handleView}
+                    onCancel={handleCancel}
                   />
                 </>
               ) : !isLoading && !isLoadingFilter && identityNfts ? (

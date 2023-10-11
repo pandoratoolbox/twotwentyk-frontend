@@ -10,7 +10,8 @@ import { ProfileItemProps, ProfileProps } from "../../../types";
 import { DashboardTitleBG, TitleBG } from "../../../components";
 import { Button } from "../../../components";
 import { useNavigate } from "react-router-dom";
-import { useAuthContext } from "../../../context";
+import { useAuthContext, useMyInfoContext } from "../../../context";
+import { IUser } from "../../../models/user";
 
 export const Profile: React.FC<ProfileProps> = ({
   email,
@@ -22,6 +23,7 @@ export const Profile: React.FC<ProfileProps> = ({
 }) => {
   const navigate = useNavigate();
   const { setAuthContext } = useAuthContext()
+  const { setMyInfoContext } = useMyInfoContext()
 
   //for logout
   const handleLogout = () => {
@@ -30,6 +32,7 @@ export const Profile: React.FC<ProfileProps> = ({
       isAuthenticated: false,
       user: undefined,
     })
+    setMyInfoContext({} as IUser)
     navigate("/dashboard/home")
   };
 

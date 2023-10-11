@@ -16,12 +16,13 @@ import {
   SocialButtonsGroup,
 } from "../../components";
 import { signinFormValidation } from "../../utils";
-import { signin } from "../../actions";
+import { getMyInfo, signin } from "../../actions";
 import api from "../../config/api";
-import { useAuthContext } from "../../context";
+import { useAuthContext, useMyInfoContext } from "../../context";
 
 export const SignInForm: React.FC = () => {
   const { setAuthContext } = useAuthContext()
+  const { setMyInfoContext } = useMyInfoContext()
   const navigate = useNavigate();
   const [error, setError] = useState({ email: "", password: "" });
   const [form, setForm] = useState({ email: "", password: "" });
@@ -47,6 +48,8 @@ export const SignInForm: React.FC = () => {
             isAuthenticated: true,
             user: data.token,
           })
+          const myinfo = await getMyInfo();
+          if (myinfo.data) setMyInfoContext(myinfo.data);
           navigate("/dashboard");
         } else {
           // toast.error(data.message);

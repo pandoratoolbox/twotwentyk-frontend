@@ -17,6 +17,7 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
   onSell,
   onView,
   onOpen,
+  onCancel,
 }) => {
   const { myInfoContext } = useMyInfoContext();
   
@@ -48,12 +49,9 @@ export const CardPack: React.FC<CardPacksCardProps> = ({
       <CardOverlayWrapper className="overlay">
         <CardButtonGroup>
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {onOpen && (
-            <CardButton onClick={() => onOpen(item.id)}>Open</CardButton>
-          )}
-          {item?.owner_id === myInfoContext?.id && onSell && (
-            <CardButton onClick={() => onSell(item)}>Sell</CardButton>
-          )}
+          {onOpen && <CardButton onClick={() => onOpen(item.id)}>Open</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onSell && <CardButton onClick={() => onSell(item)}>Sell</CardButton>}
+          {onCancel && item?.is_listed && <CardButton onClick={() => onCancel(item)}>Cancel Listing</CardButton>}
         </CardButtonGroup>
       </CardOverlayWrapper>
     </PredictionCardWrapper>

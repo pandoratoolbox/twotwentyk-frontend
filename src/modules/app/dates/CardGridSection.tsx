@@ -20,6 +20,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   onView,
   onClaimSubmit,
   buttonText,
+  onCancel
 }) => {
   console.log("buttonText====", buttonText);
   return (
@@ -82,6 +83,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onOpen={onCraft}
             onView={onView}
             onSell={onSell}
+            onCancel={onCancel}
           />
         ))}
       {cardType === "prediction" &&
@@ -97,6 +99,7 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
             onView={onView}
             onSell={onSell}
             onClaimSubmit={onClaimSubmit}
+            onCancel={onCancel}
           />
         ))}
 
