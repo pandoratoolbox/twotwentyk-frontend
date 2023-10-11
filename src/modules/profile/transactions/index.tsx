@@ -20,6 +20,7 @@ export const TransactionsSection: React.FC = () => {
   const [withdrawStatus, setWithdrawStatus] = useState<"success" | "failed">(
     "failed"
   );
+  
   const [tableData, setTableData] = useState([]);
   useEffect(() => {
     getData();

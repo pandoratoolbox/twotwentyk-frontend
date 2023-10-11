@@ -39,8 +39,6 @@ const CollectionDraftSections: React.FC<{collection: ICardCollection, onChange: 
           <IconArrowUp />
         </CDHead>
         <Standard collection={collection}/>
-        {/* <Premium /> */}
-        <Elite />
       </CDCollectionParameterWrapper>
       <FooterButtons>
         <button className="btn-submit" onClick={() => {}}>Submit</button>
