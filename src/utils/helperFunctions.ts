@@ -1,6 +1,6 @@
 // check rarity
 export function checkRarity(rarity: number) {
-  const rarities = ["Core", "Rare", "Uncommon"];
+  const rarities = ["Core", "Uncommon", "Rare"];
   return rarities[rarity] || "Unknown";
 }
 

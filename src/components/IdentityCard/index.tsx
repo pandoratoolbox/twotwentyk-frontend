@@ -82,7 +82,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
-      <CardImgWrapper dashbordstyle={dashbordstyle}>
+      <CardImgWrapper dashbordstyle={dashbordstyle} rarity={rarity} >
         {rarity || rarity === 0 ? (
           <>
             <img
@@ -97,10 +97,10 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                 alt="gif"
               />
               <div className="nft-info-detail">
-                <h2 className="date">
+                <h2 className={checkRarity(rarity)}>
                   {day} {month} {year}
                 </h2>
-                <h3>{category}</h3>
+                <h3 className={checkRarity(rarity)}>{category}</h3>
               </div>
             </div>
           </>

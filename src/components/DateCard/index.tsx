@@ -17,6 +17,7 @@ import {
   useCelebritiesContext,
 } from "../../context";
 import { CardImgWrapper } from "../MarketCard/styles";
+import { checkRarity } from "../../utils/helperFunctions";
 
 import { ICelebrity } from "../../models/celebrity";
 
@@ -27,7 +28,7 @@ const getImagePath = (
   isYear: boolean
 ) => {
   const raritySuffix =
-    rarity === 0 ? "Core" : rarity === 1 ? "Rare" : "Uncommon";
+    rarity === 0 ? "Core" : rarity === 1 ? "Uncommon" : "Rare";
   const dateType = isYear ? "Year" : "Month-Day";
   return `/assets/nfts/rarity/${
     itemYear ? dateType : category
@@ -36,11 +37,9 @@ const getImagePath = (
 
 export const DateCard: React.FC<DateCardProps> = ({
   item,
-  image,
   day,
   month,
   position = "",
-  id = 0,
   is_crafted,
   owner_id,
   rarity,
@@ -81,11 +80,11 @@ export const DateCard: React.FC<DateCardProps> = ({
           <img src={imagePath} alt="nft" />
           <div className="info-nft info-nft-day-month">
             {day && monthContext && (
-              <h3>
+              <h3 className={checkRarity(rarity)}>
                 {day} {(monthContext as Map<number, string>).get(month)}
               </h3>
             )}
-            {item?.year && <h3>{item?.year}</h3>}
+            {item?.year && <h3 className={checkRarity(rarity)}>{item?.year}</h3>}
           </div>
         </CardImgWrapper>
 
