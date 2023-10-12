@@ -31,7 +31,7 @@ import { DatePageContent } from "../category/styles";
 import { ICardSeries } from "../../../models/card_series";
 import { ICardPack, ICardPackCards } from "../../../models/card_pack";
 import api from "../../../config/api";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import OpenCardPack from "../../../modules/app/dates/OpenCardPack";
 
 export const CardPackPage: React.FC = () => {

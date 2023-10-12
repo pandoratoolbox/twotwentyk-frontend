@@ -18,7 +18,6 @@ import {
 } from "../../context";
 import { CardImgWrapper } from "../MarketCard/styles";
 import { checkRarity } from "../../utils/helperFunctions";
-
 import { ICelebrity } from "../../models/celebrity";
 
 export const getImagePath = (
@@ -112,7 +111,7 @@ export const DateCard: React.FC<DateCardProps> = ({
                     <h3>Identity Matches</h3>
                     {identityMatches &&
                       identityMatches.map((v) => (
-                        <TooltipItem>{v.name}</TooltipItem>
+                        <TooltipItem key={v.name}>{v.name}</TooltipItem>
                       ))}
                   </div>
                 </TooltipContent>
