@@ -87,7 +87,6 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     }
   }, [celebritiesContext]);
 
-  console.log(item);
   return (
     <PredictionCardWrapper
       cardType={cardType}

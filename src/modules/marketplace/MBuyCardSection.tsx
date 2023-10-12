@@ -48,6 +48,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   page,
   data,
   setData,
+  collection
 }) => {
   console.log(selectedItem);
   const { setMyInfoContext } = useMyInfoContext();
@@ -231,30 +232,32 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                 />
               )}
             </ViewCardWrapper>
-            {page !== "packs" && <PropertiesWrapper>
-              <PropertiesHeader>
-                <span>Properties</span>
-                <IconArrowDown />
-              </PropertiesHeader>
-              <PropertiesContent>
-                <PropertyItem>
-                  <p>Rarity</p>
-                  <span>{checkRarity(selectedItem)}</span>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>Type</p>
-                  <span>{checkType(selectedItem)}</span>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>{checkType(selectedItem)}</p>
-                  {checkTypeValue(selectedItem)}
-                </PropertyItem>
-                <PropertyItem>
-                  <p>Collection</p>
-                  <span></span>
-                </PropertyItem>
-              </PropertiesContent>
-            </PropertiesWrapper>}
+            {!page && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{checkRarity(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Type</p>
+                    <span>{checkType(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>{checkType(selectedItem)}</p>
+                    {checkTypeValue(selectedItem)}
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span></span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
+            )}
             {page === "packs" && (
               <>
                 <PropertiesWrapper>
@@ -289,6 +292,69 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                   </PropertiesContent>
                 </PropertiesWrapper>
               </>
+            )}
+            {page === "identities" && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Identity Match</p>
+                    <span>{selectedItem?.nft_card_identity?.celebrity_name}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{selectedItem?.nft_card_identity?.rarity}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Day/Month</p>
+                    <span>
+                      {selectedItem?.nft_card_identity?.day}/
+                      {selectedItem?.nft_card_identity?.month}
+                    </span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Year</p>
+                    <span>{selectedItem?.nft_card_identity?.year}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Category</p>
+                    <span>{selectedItem?.nft_card_identity?.category}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span>{collection ?? ""}</span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
+            )}
+            {page === "predictions" && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{checkRarity(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Type</p>
+                    <span>{checkType(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>{checkType(selectedItem)}</p>
+                    {checkTypeValue(selectedItem)}
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span>{collection ?? ""}</span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
             )}
             <SetPriceWrapper>
               <div className="price">
