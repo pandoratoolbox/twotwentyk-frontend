@@ -36,9 +36,11 @@ import { INftCardYear } from "../../../models/nft_card_year";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { INftCardIdentity } from "../../../models/nft_card_identity";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
+import { useAuthContext } from "../../../context";
 
 export const CategoriesPage: React.FC = () => {
   const navigate = useNavigate();
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -195,7 +197,7 @@ export const CategoriesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {currentUser ? (
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>
@@ -203,8 +205,8 @@ export const CategoriesPage: React.FC = () => {
             </DatePageTitleWrapper>
             <DatePageContent>
               {!isLoadingFilter &&
-              nftCardCategoryData &&
-              nftCardCategoryData?.length > 0 ? (
+                nftCardCategoryData &&
+                nftCardCategoryData?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
@@ -269,7 +271,7 @@ export const CategoriesPage: React.FC = () => {
                   <div className="trigeres">
                     <h3>No Category Cards</h3>
                     <p>
-                      It looks like you don’t have any category cards yet.  
+                      It looks like you don’t have any category cards yet.
                     </p>
                     <Button
                       className="buy-button"

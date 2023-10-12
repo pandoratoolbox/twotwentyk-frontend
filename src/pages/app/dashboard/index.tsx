@@ -24,6 +24,7 @@ import {
 } from "../../../components";
 import { ToastContainer, toast } from "react-toastify";
 import {
+  useAuthContext,
   // useFeedContext,
   // useMarketplaceListContext,
   useMonthContext,
@@ -47,6 +48,7 @@ export const DashboardPage: React.FC = () => {
   // const { myFeedContext } = useMyFeedContext();
   // const { myNFTsContext } = useMyNFTsContext();
   // const { myOfferContext } = useMyOfferContext();
+  const { authContext } = useAuthContext()
 
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [pageAllFeeds, setPageAllFeeds] = useState<IArticle[]>([]);
@@ -104,7 +106,7 @@ export const DashboardPage: React.FC = () => {
     const newMarketplace = {
       card_collection_id: collection_id,
       nft_id: id,
-      price: Math.round((typeof price === 'string' ? parseFloat(price) : price ) * 100),
+      price: Math.round((typeof price === 'string' ? parseFloat(price) : price) * 100),
     };
     const response = await newMarketplaceList(newMarketplace);
     console.log(response);
@@ -241,7 +243,7 @@ export const DashboardPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal" />
-      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal" />
 
       <ToastContainer
         position="top-right"
@@ -363,7 +365,7 @@ export const DashboardPage: React.FC = () => {
                         key={key}
                         onSell={handleSell}
                         cardType="prediction"
-                        onView={handleView}                        
+                        onView={handleView}
                         onClaimSubmit={() => onClickSubmitClaim(item)}
                       />
                     ))}
@@ -471,7 +473,7 @@ export const DashboardPage: React.FC = () => {
             </DashboardContainer>
           </DashboardCardWrapper>
         )}
-        {!currentUser && (
+        {!authContext?.isAuthenticated && (
           <Button className="login-button" onClick={() => navigate("/signin")}>
             Login Now
           </Button>

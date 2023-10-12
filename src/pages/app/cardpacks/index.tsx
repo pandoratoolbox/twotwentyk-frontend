@@ -35,9 +35,11 @@ import { toast, ToastContainer } from "react-toastify";
 import OpenCardPack from "../../../modules/app/dates/OpenCardPack";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { CancelListingModal } from "../../../components/Modals/CancelListing";
+import { useAuthContext } from "../../../context";
 
 export const CardPackPage: React.FC = () => {
   const navigate = useNavigate();
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -228,8 +230,8 @@ export const CardPackPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Card Pack"/>}
-      {currentUser ? (
+      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Card Pack" />}
+      {authContext?.isAuthenticated ? (
         nftCardPack && nftCardPack?.length > 0 ? (
           <DatesPageWrapper isview={isView ? "true" : undefined}>
             <DatePageContainer>

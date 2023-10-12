@@ -30,6 +30,7 @@ import { NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_YEAR } from "../../../models/nft";
 import { toast, ToastContainer } from "react-toastify";
 import { AnyComponent } from "styled-components/dist/types";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
+import { useAuthContext } from "../../../context";
 
 interface DateFilters {
   card_types: number[];
@@ -40,7 +41,7 @@ interface DateFilters {
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -288,7 +289,7 @@ export const DatesPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {currentUser ? (
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>

@@ -6,7 +6,7 @@ import { Button, CraftIdentityModal, IconArrowDown } from "../../../components";
 import { useLocation, useNavigate } from "react-router-dom";
 import { craftingIdentity, getMyNFTs } from "../../../actions";
 import { ToastContainer, toast } from "react-toastify";
-import { useMyNFTsContext } from "../../../context";
+import { useAuthContext, useMyNFTsContext } from "../../../context";
 import { ICelebrity } from "../../../models/celebrity";
 import { INftCardDayMonth } from "../../../models/nft_card_day_month";
 import { INftCardYear, NftCardYear } from "../../../models/nft_card_year";
@@ -28,6 +28,7 @@ export const CraftingIdentitesPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
+  const { authContext } = useAuthContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [selectedCraft, setSelectedCraft] = useState("crafting");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
@@ -262,7 +263,7 @@ export const CraftingIdentitesPage: React.FC = () => {
         </video>
       ) : (
         <CraftingWrapper>
-          {currentUser ? (
+          {authContext?.isAuthenticated ? (
             <>
               <CraftLeftWrapper>
                 <IdentityCraftSection
