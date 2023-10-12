@@ -64,7 +64,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
     }
   }, [triggersContext, item]);
   return (
-    <ViewDateCardWrapper isview={isView ? "true" : undefined}>
+    <ViewDateCardWrapper isview={isView ? "true" : undefined} key={`view-date-card-${item?.id}`}>
       <ViewDateCardContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>
@@ -116,7 +116,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               position=""
             />
           ) : cardType === "cardPacks" ? (
-            <CardPack item={item} rarity={item?.rarity} image={item?.image} />
+            <CardPack item={item} rarity={item?.rarity} image={item?.image} tier={item?.tier}/>
           ) : (
             <DateCard
               item={item}

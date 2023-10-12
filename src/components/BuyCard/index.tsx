@@ -6,16 +6,25 @@ import { CardImgWrapper, Rarity } from "../MarketCard/styles";
 
 export const BuyCard: React.FC<BuyPackProps> = ({
   cardType,
-  preview,
+  preview,  
   price,
   onCardClick,
   cardSeries,
   rarity
 }) => {
+  const imageUrl = React.useMemo(() => {
+    if (!cardSeries?.card_collection)  return "/assets/nfts/StandardPack.png"
+    else {
+      // if (cardSeries?.tier === 1) return  "/assets/nfts/StandardPack.png"
+      // if (cardSeries?.tier === 2) return  "/assets/nfts/StandardPack.png"
+    }
+    return "/assets/nfts/StandardPack.png"
+  }, [cardSeries])
+
   return (
     <BuyCardWrapper onClick={() => onCardClick(cardSeries)}>
       <CardImgWrapper>
-        <img src="/assets/nfts/new3.png" alt="" />
+        <img src={imageUrl} alt="" />
         <Rarity>{cardType}</Rarity>
       </CardImgWrapper>
       {!preview && (

@@ -30,6 +30,7 @@ import { NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_YEAR } from "../../../models/nft";
 import { toast, ToastContainer } from "react-toastify";
 import { AnyComponent } from "styled-components/dist/types";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
+import { useAuthContext } from "../../../context";
 
 interface DateFilters {
   card_types: number[];
@@ -40,7 +41,7 @@ interface DateFilters {
 
 export const DatesPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -166,7 +167,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card day-month data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -182,7 +182,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardYear(yearFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card year data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -226,7 +225,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card day-month data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -291,7 +289,7 @@ export const DatesPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {currentUser ? (
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>
@@ -378,24 +376,28 @@ export const DatesPage: React.FC = () => {
               ) : (
                 <Loader />
               )}
-              {isLoadingFilter ? (
-                <>
-                  <ViewDateCardSection
-                    cardType="date"
-                    isView={isView === "view"}
-                    item={selectedItem}
-                    onClose={() => setIsView("")}
-                  />
-                  <SellDateCardSection
-                    cardType="date"
-                    onSellConfirm={handleSellConfirm}
-                    isView={isView === "sell"}
-                    item={selectedItem}
-                    onClose={() => setIsView("")}
-                  />
-                </>
-              ) : null}
             </DatePageContent>
+            {nftCardDayMonthData && nftCardDayMonthData?.length > 0 ? (
+              <>
+                <ViewDateCardSection
+                  cardType="date"
+                  isView={isView === "view"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+                <SellDateCardSection
+                  cardType="date"
+                  onSellConfirm={handleSellConfirm}
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
           </DatePageContainer>
         </DatesPageWrapper>
       ) : (

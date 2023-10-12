@@ -36,7 +36,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 0 ||
       selectedItem?.nft_card_identity?.rarity === 0 ||
       selectedItem?.nft_card_prediction?.rarity === 0 ||
-      selectedItem?.nft_card_year?.rarity === 0
+      selectedItem?.nft_card_year?.rarity === 0 ||
+      selectedItem?.nft_card_category?.rarity === 0
     ) {
       return "Common";
     } else if (
@@ -45,7 +46,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 1 ||
       selectedItem?.nft_card_identity?.rarity === 1 ||
       selectedItem?.nft_card_prediction?.rarity === 1 ||
-      selectedItem?.nft_card_year?.rarity === 1
+      selectedItem?.nft_card_year?.rarity === 1 ||
+      selectedItem?.nft_card_category?.rarity === 1
     ) {
       return "Uncommon";
     } else if (
@@ -54,7 +56,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 2 ||
       selectedItem?.nft_card_identity?.rarity === 2 ||
       selectedItem?.nft_card_prediction?.rarity === 2 ||
-      selectedItem?.nft_card_year?.rarity === 2
+      selectedItem?.nft_card_year?.rarity === 2 ||
+      selectedItem?.nft_card_category?.rarity === 2
     ) {
       return "Rare";
     }
@@ -76,6 +79,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
       return "Prediction";
     } else if (selectedItem?.nft_card_year) {
       return "Year";
+    } else if (selectedItem?.nft_card_category) {
+      return "Category"
     }
 
     return undefined;
@@ -95,6 +100,8 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
       return selectedItem?.nft_card_prediction?.celebrity_name;
     } else if (selectedItem?.nft_card_year) {
       return selectedItem?.nft_card_year?.year;
+    } else if (selectedItem?.nft_card_category) {
+      return selectedItem?.nft_card_category?.category
     }
 
     return undefined;
@@ -129,7 +136,7 @@ export const MViewCardSection: React.FC<CardSidebarProps> = ({
   }, [tiersContext, cardSeriesContext, selectedItem.id])
 
   return (
-    <MSidebarWrapper open={open} key={selectedItem.id}>
+    <MSidebarWrapper open={open} key={`view-card-section-${selectedItem.id}`}>
       <MSidebarContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>View Card</h2>

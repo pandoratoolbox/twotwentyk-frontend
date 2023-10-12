@@ -30,6 +30,7 @@ import { NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_YEAR } from "../../../models/nft";
 import { toast, ToastContainer } from "react-toastify";
 import { AnyComponent } from "styled-components/dist/types";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
+import { useAuthContext } from "../../../context";
 
 interface DateFilters {
   //card_types: number[];
@@ -40,7 +41,7 @@ interface DateFilters {
 
 export const CraftingPage: React.FC = () => {
   const navigate = useNavigate();
-
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -265,7 +266,7 @@ export const CraftingPage: React.FC = () => {
         theme="dark"
       />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {currentUser ? (
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>
@@ -273,8 +274,8 @@ export const CraftingPage: React.FC = () => {
             </DatePageTitleWrapper>
             <DatePageContent>
               {!isLoadingFilter &&
-              nftCraftingData &&
-              nftCraftingData?.length > 0 ? (
+                nftCraftingData &&
+                nftCraftingData?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
@@ -290,7 +291,7 @@ export const CraftingPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CraftingFilterSection onClick={handleOptionClick}  clickSelect={clickSelect}/>
+                  <CraftingFilterSection onClick={handleOptionClick} clickSelect={clickSelect} />
                   <CardGridSection
                     cardType="crafting"
                     buttonText={"Crafting"}
@@ -318,7 +319,7 @@ export const CraftingPage: React.FC = () => {
                       Buy Packs
                     </Button>
                   </ButtonGroup>
-                  <CraftingFilterSection onClick={handleOptionClick}  clickSelect={clickSelect}/>
+                  <CraftingFilterSection onClick={handleOptionClick} clickSelect={clickSelect} />
                   <CardGridSection
                     cardType="date"
                     buttonText={"Crafting"}
