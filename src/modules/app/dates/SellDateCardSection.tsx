@@ -130,7 +130,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   }
 
   return (
-    <ViewDateCardWrapper isview={isView ? "true" : undefined}>
+    <ViewDateCardWrapper isview={isView ? "true" : undefined} key={`sell-date-card-${item.id}`}>
       <ViewDateCardContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>
