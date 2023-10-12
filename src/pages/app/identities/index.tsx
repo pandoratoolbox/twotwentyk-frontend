@@ -34,12 +34,14 @@ import { DatePageContent } from "../category/styles";
 import { CancelListingModal } from "../../../components/Modals/CancelListing";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { ICardPack } from "../../../models/card_pack";
+import { useAuthContext } from "../../../context";
 
 export const IdentitiesPage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
 
   const navigate = useNavigate();
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [modal, setModal] = useState(false);
@@ -209,8 +211,8 @@ export const IdentitiesPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelIdentityNft} cardType="Identity"/>}
-      {currentUser ? (
+      {cancelIdentityNft && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelIdentityNft} cardType="Identity" />}
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>

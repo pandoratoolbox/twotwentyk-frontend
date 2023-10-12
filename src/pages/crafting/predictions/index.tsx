@@ -24,6 +24,7 @@ import { PredictionSelectCardSection } from "../../../modules/crafting/Predictio
 import { getMyNftCardCrafting } from "../../../actions/nft_card_crafting";
 import { getMyNftCardTrigger } from "../../../actions/nft_card_trigger";
 import { getMyNftCardIdentity } from "../../../actions/nft_card_identity";
+import { useAuthContext } from "../../../context";
 
 interface ISelectedCards {
   crafting: INftCardCrafting | null;
@@ -34,6 +35,7 @@ interface ISelectedCards {
 export const CraftingPredictionsPage: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const { authContext } = useAuthContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [selectedCraft, setSelectedCraft] = useState("crafting");
   const [clickedCard, setClickedCard] = useState<number | string | null>(-1);
@@ -245,7 +247,7 @@ export const CraftingPredictionsPage: React.FC = () => {
         </video>
       ) : (
         <CraftingWrapper>
-          {currentUser ? (
+          {authContext?.isAuthenticated ? (
             <>
               <CraftLeftWrapper>
                 <PredictionCraftSection

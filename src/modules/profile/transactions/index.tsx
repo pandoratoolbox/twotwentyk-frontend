@@ -30,9 +30,7 @@ export const TransactionsSection: React.FC = () => {
   const getData = async () => {
     const resData = await getTransactions();
     if (resData.success) {
-      if (resData.data) {
-        setTableData(resData.data);
-      }
+      setTableData(resData.data as never[]);
     } else {
       setTableData([]);
     }

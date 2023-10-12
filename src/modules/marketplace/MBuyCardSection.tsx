@@ -48,8 +48,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   page,
   data,
   setData,
+  collection
 }) => {
-  console.log(selectedItem);
   const { setMyInfoContext } = useMyInfoContext();
   const { tiersContext }: { tiersContext: Map<number, ITier> } = useTiersContext()
   const { cardSeriesContext } = useCardSeriesContext();
@@ -107,7 +107,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 0 ||
       selectedItem?.nft_card_identity?.rarity === 0 ||
       selectedItem?.nft_card_prediction?.rarity === 0 ||
-      selectedItem?.nft_card_year?.rarity === 0
+      selectedItem?.nft_card_year?.rarity === 0 ||
+      selectedItem?.nft_card_category?.rarity === 0
     ) {
       return "Common";
     } else if (
@@ -116,7 +117,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 1 ||
       selectedItem?.nft_card_identity?.rarity === 1 ||
       selectedItem?.nft_card_prediction?.rarity === 1 ||
-      selectedItem?.nft_card_year?.rarity === 1
+      selectedItem?.nft_card_year?.rarity === 1 ||
+      selectedItem?.nft_card_category?.rarity === 1
     ) {
       return "Uncommon";
     } else if (
@@ -125,7 +127,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       selectedItem?.nft_card_crafting?.rarity === 2 ||
       selectedItem?.nft_card_identity?.rarity === 2 ||
       selectedItem?.nft_card_prediction?.rarity === 2 ||
-      selectedItem?.nft_card_year?.rarity === 2
+      selectedItem?.nft_card_year?.rarity === 2 ||
+      selectedItem?.nft_card_category?.rarity === 2
     ) {
       return "Rare";
     }
@@ -147,6 +150,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       return "Prediction";
     } else if (selectedItem?.nft_card_year) {
       return "Year";
+    } else if (selectedItem?.nft_card_category) {
+      return "Category"
     }
 
     return undefined;
@@ -166,6 +171,8 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
       return selectedItem?.nft_card_prediction?.celebrity_name;
     } else if (selectedItem?.nft_card_year) {
       return selectedItem?.nft_card_year?.year;
+    } else if (selectedItem?.nft_card_category) {
+      return selectedItem?.nft_card_category?.category
     }
 
     return undefined;
@@ -201,7 +208,7 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
 
   return (
     <>
-      <MSidebarWrapper open={open}>
+      <MSidebarWrapper open={open} key={`buy-card-sectoin-${selectedItem.id}`}>
         {step === 0 && (
           <MSidebarContainer>
             <CloseButton onClick={onClose}>&times;</CloseButton>
@@ -224,30 +231,32 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                 />
               )}
             </ViewCardWrapper>
-            {page !== "packs" && <PropertiesWrapper>
-              <PropertiesHeader>
-                <span>Properties</span>
-                <IconArrowDown />
-              </PropertiesHeader>
-              <PropertiesContent>
-                <PropertyItem>
-                  <p>Rarity</p>
-                  <span>{checkRarity(selectedItem)}</span>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>Type</p>
-                  <span>{checkType(selectedItem)}</span>
-                </PropertyItem>
-                <PropertyItem>
-                  <p>{checkType(selectedItem)}</p>
-                  {checkTypeValue(selectedItem)}
-                </PropertyItem>
-                <PropertyItem>
-                  <p>Collection</p>
-                  <span></span>
-                </PropertyItem>
-              </PropertiesContent>
-            </PropertiesWrapper>}
+            {!page && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{checkRarity(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Type</p>
+                    <span>{checkType(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>{checkType(selectedItem)}</p>
+                    {checkTypeValue(selectedItem)}
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span></span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
+            )}
             {page === "packs" && (
               <>
                 <PropertiesWrapper>
@@ -282,6 +291,69 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
                   </PropertiesContent>
                 </PropertiesWrapper>
               </>
+            )}
+            {page === "identities" && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Identity Match</p>
+                    <span>{selectedItem?.nft_card_identity?.celebrity_name}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{selectedItem?.nft_card_identity?.rarity}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Day/Month</p>
+                    <span>
+                      {selectedItem?.nft_card_identity?.day}/
+                      {selectedItem?.nft_card_identity?.month}
+                    </span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Year</p>
+                    <span>{selectedItem?.nft_card_identity?.year}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Category</p>
+                    <span>{selectedItem?.nft_card_identity?.category}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span>{collection ?? ""}</span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
+            )}
+            {page === "predictions" && (
+              <PropertiesWrapper>
+                <PropertiesHeader>
+                  <span>Properties</span>
+                  <IconArrowDown1 />
+                </PropertiesHeader>
+                <PropertiesContent>
+                  <PropertyItem>
+                    <p>Rarity</p>
+                    <span>{checkRarity(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Type</p>
+                    <span>{checkType(selectedItem)}</span>
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>{checkType(selectedItem)}</p>
+                    {checkTypeValue(selectedItem)}
+                  </PropertyItem>
+                  <PropertyItem>
+                    <p>Collection</p>
+                    <span>{collection ?? ""}</span>
+                  </PropertyItem>
+                </PropertiesContent>
+              </PropertiesWrapper>
             )}
             <SetPriceWrapper>
               <div className="price">

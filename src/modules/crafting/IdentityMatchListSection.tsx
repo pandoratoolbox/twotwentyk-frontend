@@ -220,7 +220,7 @@ export const IdentityMatchListSection: React.FC<{
           selectedCards.dayMonth) &&
           celebrityMatches.map((v) => {
             return (
-              <div>
+              <div key={v.celebrity.id}>
                 <MatchListItem
                   onSelectCelebrityMatch={selectCelebrityMatch}
                   celebrity={v}

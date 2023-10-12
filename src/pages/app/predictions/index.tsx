@@ -35,11 +35,13 @@ import { toast } from "react-toastify";
 import { submitClaim } from "../../../actions";
 import { CancelListingModal } from "../../../components/Modals/CancelListing";
 import { ICardPack } from "../../../models/card_pack";
+import { useAuthContext } from "../../../context";
 
 export const PredictionsPage: React.FC = () => {
   const location = useLocation();
   const params = new URLSearchParams(location.search);
   const navigate = useNavigate();
+  const { authContext } = useAuthContext()
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [predictionNfts, setPredictionNfts] = useState<
@@ -229,10 +231,10 @@ export const PredictionsPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal"/>
-      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal"/>
-      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Prediction"/>}
-      {currentUser ? (
+      <SellConfirmModal open={modal} onClose={() => setModal(false)} key="sell-confirm-modal" />
+      <ClaimSubmitModal open={openClaimModal} onClose={() => setOpenClaimModal(false)} cardPrediction={cardPrediction} key="claim-submit-modal" />
+      {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Prediction" />}
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>
@@ -240,8 +242,8 @@ export const PredictionsPage: React.FC = () => {
             </DatePageTitleWrapper>
             <DatePageContent>
               {!isLoadingFilter &&
-              predictionNfts &&
-              predictionNfts?.length > 0 ? (
+                predictionNfts &&
+                predictionNfts?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button

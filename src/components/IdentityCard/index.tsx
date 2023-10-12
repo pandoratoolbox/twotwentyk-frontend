@@ -50,7 +50,6 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   const { celebritiesContext } = useCelebritiesContext();
   const { authContext } = useAuthContext();
   const navigate = useNavigate();
-  console.log({ authContext });
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -125,7 +124,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
       {celebrity_name ? (
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
       ) : (
-        <CardBottomWrapper>
+        <CardBottomWrapper isSelect="true">
           {identityMatches && (
             <SelectOption
               options={identityMatches}

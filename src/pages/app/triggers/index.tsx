@@ -20,8 +20,10 @@ import { newMarketplaceList } from "../../../actions/marketplace_listing";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { NftCardTriggerFilters } from "../../../models/filters";
 import { DatePageContent } from "../category/styles";
+import { useAuthContext } from "../../../context";
 export const TriggersPage: React.FC = () => {
   const navigate = useNavigate();
+  const { authContext } = useAuthContext();
   const [currentUser, setCurrentUser] = useState<string | null>("");
   const [isView, setIsView] = useState<"view" | "sell" | "">("");
   const [selectedItem, setSelectedItem] = useState(null);
@@ -191,7 +193,7 @@ export const TriggersPage: React.FC = () => {
   return (
     <AppLayout>
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
-      {currentUser ? (
+      {authContext?.isAuthenticated ? (
         <DatesPageWrapper isview={isView ? "true" : undefined}>
           <DatePageContainer>
             <DatePageTitleWrapper>
@@ -199,8 +201,8 @@ export const TriggersPage: React.FC = () => {
             </DatePageTitleWrapper>
             <DatePageContent>
               {!isLoadingFilter &&
-              nftCardTriggerData &&
-              nftCardTriggerData?.length > 0 ? (
+                nftCardTriggerData &&
+                nftCardTriggerData?.length > 0 ? (
                 <>
                   <ButtonGroup>
                     <Button
