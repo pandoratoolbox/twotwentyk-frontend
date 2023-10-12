@@ -22,7 +22,6 @@ export const CardGridSection: React.FC<DateCardGridProps> = ({
   buttonText,
   onCancel
 }) => {
-  console.log("buttonText====", buttonText);
   return (
     <CardGridWrapper>
       {cardType === "category" &&

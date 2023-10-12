@@ -166,7 +166,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card day-month data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -182,7 +181,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardYear(yearFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card year data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -226,7 +224,6 @@ export const DatesPage: React.FC = () => {
 
       let res = await getMyNftCardDayMonth(dayMonthFilters);
       if (res?.data && Array.isArray(res.data)) {
-        console.log("refreshed nft card day-month data", res.data);
         n.push(...res.data);
       } else if (res.data && res.data.length == 0) {
         setIsLoadingFilter(true);
@@ -378,24 +375,28 @@ export const DatesPage: React.FC = () => {
               ) : (
                 <Loader />
               )}
-              {isLoadingFilter ? (
-                <>
-                  <ViewDateCardSection
-                    cardType="date"
-                    isView={isView === "view"}
-                    item={selectedItem}
-                    onClose={() => setIsView("")}
-                  />
-                  <SellDateCardSection
-                    cardType="date"
-                    onSellConfirm={handleSellConfirm}
-                    isView={isView === "sell"}
-                    item={selectedItem}
-                    onClose={() => setIsView("")}
-                  />
-                </>
-              ) : null}
             </DatePageContent>
+            {nftCardDayMonthData && nftCardDayMonthData?.length > 0 ? (
+              <>
+                <ViewDateCardSection
+                  cardType="date"
+                  isView={isView === "view"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+                <SellDateCardSection
+                  cardType="date"
+                  onSellConfirm={handleSellConfirm}
+                  isView={isView === "sell"}
+                  item={selectedItem}
+                  onClose={() => setIsView("")}
+                />
+              </>
+            ) : isLoadingFilter ? (
+              <h1 className="setText" hidden>
+                No Records Found
+              </h1>
+            ) : null}
           </DatePageContainer>
         </DatesPageWrapper>
       ) : (

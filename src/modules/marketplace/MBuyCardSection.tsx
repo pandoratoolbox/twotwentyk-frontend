@@ -50,7 +50,6 @@ export const MBuyCardSection: React.FC<CardSidebarProps> = ({
   setData,
   collection
 }) => {
-  console.log(selectedItem);
   const { setMyInfoContext } = useMyInfoContext();
   const { tiersContext }: { tiersContext: Map<number, ITier> } = useTiersContext()
   const { cardSeriesContext } = useCardSeriesContext();
