@@ -129,18 +129,6 @@ export const PredictionSelectCardSection: React.FC<{
       getNFTCrafting();
     }, [filter]);
 
-    const chooseCelebrity = async (v: SelectOptionProps) => {
-      let c = (celebritiesContext as Map<number, ICelebrity>).get(
-        Number(v.value)
-      );
-
-      if (c) {
-        let res = await updateMyNftCardIdentity(c?.id, c?.name);
-        if (res?.data && Array.isArray(res.data)) {
-          console.log(res?.data);
-        }
-      }
-    };
 
     const [optionsStatus, setOptionsStatus] = useState<SelectOptionProps[]>([]);
     const [optionsRarities, setOptionsRarities] = useState<SelectOptionProps[]>([]);
