@@ -9,6 +9,7 @@ import {
   MBuyCardSection,
   MCardGridSection,
   MFilterSection,
+  MOfferCardSection,
   MSellCardSection,
   MViewCardSection,
 } from "../../../modules";
@@ -21,6 +22,8 @@ import {
   RequestSearchMarketplaceListingParams,
   getMarketplaceList,
 } from "../../../actions/marketplace_listing";
+import { useMyOfferContext } from "../../../context";
+import { toast } from "react-toastify";
 
 export const MarketplacePacksPage: React.FC = () => {
   const navigate = useNavigate();
@@ -36,6 +39,7 @@ export const MarketplacePacksPage: React.FC = () => {
     useState<number>(1);
   const [selectedRarity, setSelectedRarity] = useState<number[]>([]);
   const [selectedStatus, setSelectedStatus] = useState<number[]>([]);
+  const { myOfferContext, setMyOfferContext } = useMyOfferContext();
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
     setSide(action);
@@ -67,6 +71,20 @@ export const MarketplacePacksPage: React.FC = () => {
       status: selectedStatus,
     });
   }, []);
+
+  const handleOfferConfirm = () => {
+    if (selectedItem) {
+      const offerCard = nftMarketplaceData?.filter(
+        (f) => f.id === Number(selectedItem.id)
+      )[0];
+      if (offerCard) {
+        setMyOfferContext([...myOfferContext, offerCard]);
+        handleSideClose();
+      } else {
+        toast.error("Something went wrong!!!");
+      }
+    }
+  };
 
   return (
     <AppLayout>
@@ -146,6 +164,13 @@ export const MarketplacePacksPage: React.FC = () => {
             onClose={handleSideClose}
             page="packs"
             selectedItem={selectedItem}
+          />
+          <MOfferCardSection
+            open={side === "offer"}
+            onClose={handleSideClose}
+            onConfirm={handleOfferConfirm}
+            selectedItem={selectedItem}
+            page="packs"
           />
         </div>
       )}

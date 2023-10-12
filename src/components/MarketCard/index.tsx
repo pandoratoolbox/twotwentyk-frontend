@@ -128,13 +128,17 @@ export const MarketCard: React.FC<MarketCardProps> = ({
     }
   };
 
+  const is_listed = React.useMemo(() => {
+    return item?.nft_card_category?.marketplace_listing || item?.nft_card_crafting?.marketplace_listing || item?.nft_card_day_month?.marketplace_listing || item?.nft_card_trigger?.marketplace_listing || item?.nft_card_year?.marketplace_listing || item?.card_pack?.marketplace_listing
+  }, [])
+
   return (
     <CardWrapper>
       <CardImgWrapper>
         <CardImage item={item} />
         <StatusWrapper>
-          {item.is_listed && (
-            <span>{item.is_listed ? "For Sale" : "Not For Sale"}</span>
+          {is_listed && (
+            <span>{is_listed ? "For Sale" : "Not For Sale"}</span>
           )}
         </StatusWrapper>
       </CardImgWrapper>
@@ -143,25 +147,25 @@ export const MarketCard: React.FC<MarketCardProps> = ({
       </CardBottomSection>
       {!isOffer
         ? onCard && (
-            <CardOverlay className="overlay">
-              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {type === "Category" &&
-                item?.owner_id &&
-                myInfoContext?.id &&
-                item.owner_id !== myInfoContext.id && (
-                  <CardButton onClick={() => onCard(item, "buy")}>
-                    Buy
-                  </CardButton>
-                )}
-              {(type === "Day/Month" || type === "Year") &&
-                item?.owner_id &&
-                myInfoContext?.id &&
-                item.owner_id === myInfoContext.id && (
-                  <CardButton onClick={() => onCard(item, "sell")}>
-                    Sell
-                  </CardButton>
-                )}
-              {/* {(type === "Crafting" || type === "Trigger") &&
+          <CardOverlay className="overlay">
+            <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
+            {type === "Category" &&
+              item?.owner_id &&
+              myInfoContext?.id &&
+              item.owner_id !== myInfoContext.id && (
+                <CardButton onClick={() => onCard(item, "buy")}>
+                  Buy
+                </CardButton>
+              )}
+            {(type === "Day/Month" || type === "Year") &&
+              item?.owner_id &&
+              myInfoContext?.id &&
+              item.owner_id === myInfoContext.id && (
+                <CardButton onClick={() => onCard(item, "sell")}>
+                  Sell
+                </CardButton>
+              )}
+            {/* {(type === "Crafting" || type === "Trigger") &&
                 item?.owner_id &&
                 myInfoContext?.id &&
                 item.owner_id !== myInfoContext.id && (
@@ -169,29 +173,29 @@ export const MarketCard: React.FC<MarketCardProps> = ({
                     Make an Offer
                   </CardButton>
                 )} */}
-              {item.is_listed &&
-                item?.owner_id &&
-                myInfoContext?.id &&
-                item.owner_id !== myInfoContext.id && (
-                  <CardButton onClick={() => onCard(item, "buy")}>
-                    Buy
-                  </CardButton>
-                )}
-              {!item.is_listed &&
-                item?.owner_id &&
-                myInfoContext?.id &&
-                item.owner_id !== myInfoContext.id && (
-                  <CardButton onClick={() => onCard(item, "offer")}>
-                    Make an Offer
-                  </CardButton>
-                )}
-            </CardOverlay>
-          )
+            {is_listed &&
+              item?.owner_id &&
+              myInfoContext?.id &&
+              item.owner_id !== myInfoContext.id && (
+                <CardButton onClick={() => onCard(item, "buy")}>
+                  Buy
+                </CardButton>
+              )}
+            {!is_listed &&
+              item?.owner_id &&
+              myInfoContext?.id &&
+              item.owner_id !== myInfoContext.id && (
+                <CardButton onClick={() => onCard(item, "offer")}>
+                  Make an Offer
+                </CardButton>
+              )}
+          </CardOverlay>
+        )
         : onCard && (
-            <CardOverlay className="overlay">
-              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-            </CardOverlay>
-          )}
+          <CardOverlay className="overlay">
+            <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
+          </CardOverlay>
+        )}
     </CardWrapper>
   );
 };

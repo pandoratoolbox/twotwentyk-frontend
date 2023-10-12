@@ -188,7 +188,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                 <CardButton onClick={() => onCard(item, "view")}>
                   View
                 </CardButton>
-                {item.is_listed &&
+                {item?.nft_card_identity?.marketplace_listing &&
                   item?.owner_id &&
                   myInfoContext?.id &&
                   item.owner_id !== myInfoContext.id && (
@@ -196,7 +196,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                       Buy
                     </CardButton>
                   )}
-                {!item.is_listed &&
+                {!item?.nft_card_identity?.marketplace_listing &&
                   item?.owner_id &&
                   myInfoContext?.id &&
                   item.owner_id !== myInfoContext.id && (
