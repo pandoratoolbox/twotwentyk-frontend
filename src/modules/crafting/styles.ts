@@ -233,6 +233,18 @@ export const CraftCard = styled.div<{ bg?: string }>`
     border: 1.61734px solid rgba(0, 0, 0, 0.25);
     box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.17);
     border-radius: 5px;
+    h2, h3, h4 {
+      text-shadow: 1px 1px 2px black;
+      &.Rare {
+        color: #2911a4;
+      }
+      &.Core {
+        color: white;
+      }
+      &.Uncommon {
+        color: #e6b964;
+      }
+    }
     .info-nft {
       position: relative;
       text-align: center;

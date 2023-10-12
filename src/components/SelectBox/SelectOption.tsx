@@ -22,7 +22,6 @@ import {
   getFilterPackType,
   getFilterTriggerType,
 } from "../../actions/filtering";
-import { ToastContainer, toast } from "react-toastify";
 import { useInventoryNFTsContext } from "../../context";
 
 export const SelectOption: React.FC<SelectBoxProps> = ({
@@ -72,18 +71,6 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
   }, []);
   return (
     <SelectBoxWrapper ref={optionRef} className={placeholder === "Identity Matches" ? "IMSelect" : undefined}>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       {label && <p>{label}</p>}
       <SelectBoxContainer
         border={border ? "true" : undefined}

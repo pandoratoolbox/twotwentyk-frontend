@@ -10,12 +10,13 @@ import {
   CraftSectionContainer,
   EmptyCraftCardWrapper,
 } from "./styles";
-import { Button } from "../../components";
+import { Button, Loader } from "../../components";
 
 import { INftCardCrafting } from "../../models/nft_card_crafting";
 import { INftCardIdentity } from "../../models/nft_card_identity";
 import { INftCardTrigger } from "../../models/nft_card_trigger";
 import { PredictionSelectCardSection } from "./PredictionSelectCardSection";
+import { checkRarity } from "../../utils/helperFunctions";
 
 // Reusable CraftCard component
 const CraftCardComponent = ({
@@ -29,16 +30,6 @@ const CraftCardComponent = ({
   selectedCard: any;
   onCraftChanged: (key: string) => void;
 }) => {
-  function checkRarity(rarity: number) {
-    if (rarity === 0) {
-      return "Core";
-    } else if (rarity === 1) {
-      return "Rare";
-    } else if (rarity === 2) {
-      return "Uncommon";
-    }
-  }
-
   return (
     <CraftCardWrapper key={cardType}>
       <h6>{heading}</h6>
@@ -62,7 +53,7 @@ const CraftCardComponent = ({
               alt="nft"
             />
           )}
-          <div className="info-nft info-nft-identity" style={{height: "56%"}}>
+          <div className="info-nft info-nft-identity" style={{ height: "56%" }}>
             {cardType === "identity" && (
               <div className="nft-info-detail">
                 <img
@@ -71,10 +62,12 @@ const CraftCardComponent = ({
                   )}-Torso.gif`}
                   alt="gif"
                 />
-                <h4 className="date">
+                <h4 className={checkRarity(selectedCard.rarity)}>
                   {selectedCard?.day} {selectedCard?.month} {selectedCard?.year}
                 </h4>
-                <h4>{selectedCard?.category}</h4>
+                <h4 className={checkRarity(selectedCard.rarity)}>
+                  {selectedCard?.category}
+                </h4>
               </div>
             )}
           </div>
@@ -167,24 +160,17 @@ export const PredictionCraftSection: React.FC<{
                   onClick={() => onCraftChanged("trigger")}
                   className="crafting-card"
                 >
-                  {tItem.rarity === 0 && (
+                  {tItem.rarity || tItem.rarity === 0 ? (
                     <img
-                      src={`/assets/nfts/rarity/Trigger-Core-No-Text.png`}
+                      src={`/assets/nfts/rarity/Trigger-${checkRarity(
+                        tItem?.rarity
+                      )}-No-Text.png`}
                       alt="nft"
                     />
+                  ) : (
+                    <Loader />
                   )}
-                  {tItem.rarity === 1 && (
-                    <img
-                      src={`/assets/nfts/rarity/Trigger-Rare-No-Text.png`}
-                      alt="nft"
-                    />
-                  )}
-                  {tItem.rarity === 2 && (
-                    <img
-                      src={`/assets/nfts/rarity/Trigger-Uncommon-No-Text.png`}
-                      alt="nft"
-                    />
-                  )}
+
                   <p>{tItem.trigger}</p>
                 </CraftCard>
               </CraftCardWrapper>
