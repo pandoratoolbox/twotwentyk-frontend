@@ -176,8 +176,8 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                   !authContext?.isAuthenticated
                     ? navigate("/signin")
                     : authContext?.isAuthenticated
-                    ? onBuy(item)
-                    : navigate("/signin")
+                      ? onBuy(item)
+                      : navigate("/signin")
                 }
               >
                 Buy
@@ -188,27 +188,22 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
                 <CardButton onClick={() => onCard(item, "view")}>
                   View
                 </CardButton>
-                {item?.is_listed ? (
-                  <CardButton
-                    onClick={() =>
-                      !authContext?.isAuthenticated
-                        ? navigate("/signin")
-                        : onCard(item, "buy")
-                    }
-                  >
-                    Buy
-                  </CardButton>
-                ) : (
-                  <CardButton
-                    onClick={() =>
-                      !authContext?.isAuthenticated
-                        ? navigate("/signin")
-                        : onCard(item, "offer")
-                    }
-                  >
-                    Make an Offer
-                  </CardButton>
-                )}
+                {item.is_listed &&
+                  item?.owner_id &&
+                  myInfoContext?.id &&
+                  item.owner_id !== myInfoContext.id && (
+                    <CardButton onClick={() => onCard(item, "buy")}>
+                      Buy
+                    </CardButton>
+                  )}
+                {!item.is_listed &&
+                  item?.owner_id &&
+                  myInfoContext?.id &&
+                  item.owner_id !== myInfoContext.id && (
+                    <CardButton onClick={() => onCard(item, "offer")}>
+                      Make an Offer
+                    </CardButton>
+                  )}
               </>
             )}
           </CardButtonGroup>

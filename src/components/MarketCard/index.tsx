@@ -161,14 +161,14 @@ export const MarketCard: React.FC<MarketCardProps> = ({
                     Sell
                   </CardButton>
                 )}
-              {(type === "Crafting" || type === "Trigger") &&
+              {/* {(type === "Crafting" || type === "Trigger") &&
                 item?.owner_id &&
                 myInfoContext?.id &&
-                item.owner_id === myInfoContext.id && (
+                item.owner_id !== myInfoContext.id && (
                   <CardButton onClick={() => onCard(item, "offer")}>
                     Make an Offer
                   </CardButton>
-                )}
+                )} */}
               {item.is_listed &&
                 item?.owner_id &&
                 myInfoContext?.id &&
@@ -180,7 +180,7 @@ export const MarketCard: React.FC<MarketCardProps> = ({
               {!item.is_listed &&
                 item?.owner_id &&
                 myInfoContext?.id &&
-                item.owner_id === myInfoContext.id && (
+                item.owner_id !== myInfoContext.id && (
                   <CardButton onClick={() => onCard(item, "offer")}>
                     Make an Offer
                   </CardButton>

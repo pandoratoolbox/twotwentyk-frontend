@@ -162,13 +162,13 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {item?.is_listed ? (
-                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
-              ) : (
-                item?.owner_id === myInfoContext?.id && <CardButton onClick={() => onCard(item, "offer")}>
-                  Make an Offer
-                </CardButton>
-              )}
+              {item?.is_listed &&
+                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
+              }
+              {!item?.is_listed && item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
+                Make an Offer
+              </CardButton>
+              }
             </>)
           }
         </CardButtonGroup>
