@@ -11,6 +11,7 @@ import {
 import { getTransactions } from "../../../actions";
 import { EmptyCards } from "../../../pages/app/dates/styles";
 import { useNavigate } from "react-router-dom";
+import { ITransaction } from "../../../models/transaction";
 
 export const TransactionsSection: React.FC = () => {
   const navigate = useNavigate();
@@ -21,7 +22,7 @@ export const TransactionsSection: React.FC = () => {
     "failed"
   );
   
-  const [tableData, setTableData] = useState([]);
+  const [tableData, setTableData] = useState<ITransaction[]>([]);
   useEffect(() => {
     getData();
   }, []);
@@ -29,7 +30,9 @@ export const TransactionsSection: React.FC = () => {
   const getData = async () => {
     const resData = await getTransactions();
     if (resData.success) {
-      setTableData(resData.data);
+      if (resData.data) {
+        setTableData(resData.data);
+      }
     } else {
       setTableData([]);
     }
