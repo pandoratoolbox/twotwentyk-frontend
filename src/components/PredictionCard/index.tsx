@@ -111,12 +111,12 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
               />
 
               <div className="nft-info-detail">
-                <h2 className="date">
+                <h2 className={checkRarity(rarity)}>
                   {day} {month} {year}
                 </h2>
                 <h3>{category}</h3>
               </div>
-              <h4 className="date">03 06 1992</h4>
+              <h4 className={checkRarity(rarity)}>03 06 1992</h4>
             </div>
           </>
         ) : (

@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 
 const CardImage = ({ item }: any) => {
   const { monthContext } = useMonthContext();
-  
+
   return (
     <>
       {item?.nft_card_day_month && (
@@ -31,7 +31,7 @@ const CardImage = ({ item }: any) => {
           />
           <div className="info-nft info-nft-day-month">
             {item?.nft_card_day_month?.day && monthContext && (
-              <h3>
+              <h3 className={checkRarity(item?.nft_card_day_month?.rarity)}>
                 {item?.nft_card_day_month?.day}{" "}
                 {(monthContext as Map<number, string>).get(
                   item?.nft_card_day_month?.month
@@ -50,7 +50,11 @@ const CardImage = ({ item }: any) => {
             alt=""
           />
           <div className="info-nft info-nft-day-month">
-            {item?.nft_card_year?.year && <h3>{item?.nft_card_year?.year}</h3>}
+            {item?.nft_card_year?.year && (
+              <h3 className={checkRarity(item?.nft_card_year?.rarity)}>
+                {item?.nft_card_year?.year}
+              </h3>
+            )}
           </div>
         </>
       )}
