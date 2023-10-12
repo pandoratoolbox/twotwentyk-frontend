@@ -57,6 +57,12 @@ export const CardImgWrapper = styled.div<{
     }
     &.info-nft-day-month {
       top: 50%;
+      h2 {
+        font-size: clamp(1.3rem, 2vw, 1.6rem);
+      }
+      h3 {
+        font-size: clamp(0.7em, 2vw, 0.8rem);
+      }
     }
     &.info-nft-prediction {
       top: 43%;

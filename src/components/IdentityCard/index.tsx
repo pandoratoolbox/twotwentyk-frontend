@@ -44,13 +44,13 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
   onBuy,
   onClaimSubmit,
   onSelectCardIdentity,
-  onCardClicked
+  onCardClicked,
 }) => {
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
-  const { authContext } = useAuthContext()
+  const { authContext } = useAuthContext();
   const navigate = useNavigate();
-  console.log({authContext})
+  console.log({ authContext });
 
   const chooseCelebrity = async (v: SelectOptionProps) => {
     let c = (celebritiesContext as Map<number, ICelebrity>).get(
@@ -90,12 +90,12 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
     <PredictionCardWrapper
       cardType={cardType}
       onClick={() => {
-        !forCraft && onClick && onClick()
+        !forCraft && onClick && onClick();
       }}
       height={height}
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
-      <CardImgWrapper dashbordstyle={dashbordstyle} rarity={rarity} >
+      <CardImgWrapper dashbordstyle={dashbordstyle} rarity={rarity}>
         {rarity || rarity === 0 ? (
           <>
             <img
@@ -137,38 +137,96 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
         </CardBottomWrapper>
       )}
 
-      <CardOverlayWrapper className="overlay" onClick={() => forCraft && onCardClicked && item && onCardClicked(item.id, item)}>
-        {!forCraft && <CardButtonGroup>
-          {!is_crafted && onCraft && (
-            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCraft(item)}>
-              Craft Prediction
-            </CardButton>
-          )}
-          {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
+      <CardOverlayWrapper
+        className="overlay"
+        onClick={() =>
+          forCraft && onCardClicked && item && onCardClicked(item.id, item)
+        }
+      >
+        {!forCraft && (
+          <CardButtonGroup>
+            {!is_crafted && onCraft && (
+              <CardButton
+                onClick={() =>
+                  !authContext?.isAuthenticated
+                    ? navigate("/signin")
+                    : onCraft(item)
+                }
+              >
+                Craft Prediction
+              </CardButton>
+            )}
+            {onView && (
+              <CardButton onClick={() => onView(item)}>View</CardButton>
+            )}
 
-          {item?.owner_id === myInfoContext?.id && onSell && (
-            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onSell(item)}>Sell</CardButton>
-          )}
-          {item?.owner_id !== myInfoContext?.id && onBuy && (
-            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : authContext?.isAuthenticated ? onBuy(item) : navigate("/signin")}>Buy</CardButton>
-          )}
-          {onCard && (
-            <>
-              <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {item?.is_listed ? (
-                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
-              ) : (
-                <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
-                  Make an Offer
+            {item?.owner_id === myInfoContext?.id && onSell && (
+              <CardButton
+                onClick={() =>
+                  !authContext?.isAuthenticated
+                    ? navigate("/signin")
+                    : onSell(item)
+                }
+              >
+                Sell
+              </CardButton>
+            )}
+            {item?.owner_id !== myInfoContext?.id && onBuy && (
+              <CardButton
+                onClick={() =>
+                  !authContext?.isAuthenticated
+                    ? navigate("/signin")
+                    : authContext?.isAuthenticated
+                    ? onBuy(item)
+                    : navigate("/signin")
+                }
+              >
+                Buy
+              </CardButton>
+            )}
+            {onCard && (
+              <>
+                <CardButton onClick={() => onCard(item, "view")}>
+                  View
                 </CardButton>
-              )}
-            </>
-          )}
-        </CardButtonGroup>}
-        {forCraft && <CardButtonGroup>
-          <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : item && onSelectCardIdentity && onSelectCardIdentity(item)}>Select</CardButton>
-
-        </CardButtonGroup>}
+                {item?.is_listed ? (
+                  <CardButton
+                    onClick={() =>
+                      !authContext?.isAuthenticated
+                        ? navigate("/signin")
+                        : onCard(item, "buy")
+                    }
+                  >
+                    Buy
+                  </CardButton>
+                ) : (
+                  <CardButton
+                    onClick={() =>
+                      !authContext?.isAuthenticated
+                        ? navigate("/signin")
+                        : onCard(item, "offer")
+                    }
+                  >
+                    Make an Offer
+                  </CardButton>
+                )}
+              </>
+            )}
+          </CardButtonGroup>
+        )}
+        {forCraft && (
+          <CardButtonGroup>
+            <CardButton
+              onClick={() =>
+                !authContext?.isAuthenticated
+                  ? navigate("/signin")
+                  : item && onSelectCardIdentity && onSelectCardIdentity(item)
+              }
+            >
+              Select
+            </CardButton>
+          </CardButtonGroup>
+        )}
       </CardOverlayWrapper>
     </PredictionCardWrapper>
   );

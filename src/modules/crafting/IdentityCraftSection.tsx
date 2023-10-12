@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import {
   EmptyCraftCard,
   CraftCardGroup,
@@ -6,8 +6,6 @@ import {
   CraftSectionWrapper,
   TitleWrapper,
   CraftCard,
-  AddTrigger,
-  EmptyCraftCardWrapper,
   CraftSectionContainer,
 } from "./styles";
 import { Button } from "../../components";
@@ -16,11 +14,8 @@ import { INftCardCrafting } from "../../models/nft_card_crafting";
 import { INftCardCategory } from "../../models/nft_card_category";
 import { INftCardDayMonth } from "../../models/nft_card_day_month";
 import { INftCardYear } from "../../models/nft_card_year";
-import { INftCardIdentity } from "../../models/nft_card_identity";
-import { INftCardPrediction } from "../../models/nft_card_prediction";
-import { INftCardTrigger } from "../../models/nft_card_trigger";
-import { useMonthContext } from "../../context";
 import { IdentitySelectCardSection } from "./IdentitySelectCardSection";
+import { checkRarity, formatCategory } from "../../utils/helperFunctions";
 
 // Reusable CraftCard component
 const CraftCardComponent = ({
@@ -34,27 +29,6 @@ const CraftCardComponent = ({
   selectedCard: any;
   onCraftChanged: (key: string) => void;
 }) => {
-
-  function formatCategory(category: string) {
-    const words = category.split(" ");
-
-    const formattedCategory = words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("-");
-
-    return formattedCategory;
-  }
-
-  function checkRarity(rarity: number) {
-    if (rarity === 0) {
-      return "Core";
-    } else if (rarity === 1) {
-      return "Rare";
-    } else if (rarity === 2) {
-      return "Uncommon";
-    }
-  }
-
   return (
     <CraftCardWrapper key={cardType}>
       <h6>{heading}</h6>
@@ -86,12 +60,18 @@ const CraftCardComponent = ({
             />
           )}
           <div className="info-nft info-nft-day-month">
-            {cardType === "dayMonth" && selectedCard.day && selectedCard.month && (
-              <h3>
-                {selectedCard.day} {selectedCard.month}
+            {cardType === "dayMonth" &&
+              selectedCard.day &&
+              selectedCard.month && (
+                <h3 className={checkRarity(selectedCard.rarity)}>
+                  {selectedCard.day} {selectedCard.month}
+                </h3>
+              )}
+            {cardType === "year" && selectedCard.year && (
+              <h3 className={checkRarity(selectedCard.rarity)}>
+                {selectedCard.year}
               </h3>
             )}
-            {cardType === "year" && selectedCard.year && <h3>{selectedCard.year}</h3>}
           </div>
         </CraftCard>
       ) : (
@@ -137,18 +117,6 @@ export const IdentityCraftSection: React.FC<{
   myNfts,
   setMyNfts,
 }) => {
-  const { monthContext } = useMonthContext();
-
-  function formatCategory(category: string) {
-    const words = category.split(" ");
-
-    const formattedCategory = words
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join("-");
-
-    return formattedCategory;
-  }
-
   return (
     <CraftSectionWrapper>
       <TitleWrapper>

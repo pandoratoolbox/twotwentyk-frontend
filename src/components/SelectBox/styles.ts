@@ -85,6 +85,7 @@ export const OptionItem = styled.div`
   div {
     display: flex;
     align-items: center;
+    color: initial;
     img {
       margin-right: 10px;
     }
