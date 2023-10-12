@@ -82,6 +82,7 @@ export const OptionItem = styled.div`
   padding: 12px 0;
   cursor: pointer;
   text-transform: capitalize;
+  color: #2660c3;
   div {
     display: flex;
     align-items: center;
