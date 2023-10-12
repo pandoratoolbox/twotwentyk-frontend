@@ -116,7 +116,7 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               position=""
             />
           ) : cardType === "cardPacks" ? (
-            <CardPack item={item} rarity={item?.rarity} image={item?.image} />
+            <CardPack item={item} rarity={item?.rarity} image={item?.image} tier={item?.tier}/>
           ) : (
             <DateCard
               item={item}
