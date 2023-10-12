@@ -207,18 +207,6 @@ export const CardPackPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {currentUser ? (
         nftCardPack && nftCardPack?.length > 0 ? (

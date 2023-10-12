@@ -47,6 +47,20 @@ const OpenCardPack: React.FC<Props> = ({
     setVideoPlayed(true);
   };
 
+  
+  useEffect(() => {
+    if (!videoPlayed) {
+      const timeout = setTimeout(() => {
+        setVideoPlayed(true);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [videoPlayed]);
+  
+
   return (
     <>
       {!videoPlayed ? (
@@ -154,7 +168,7 @@ const OpenCardPack: React.FC<Props> = ({
                         />
                         <div className="gif">
                           {monthContext && (
-                            <h3>
+                            <h3 className={checkRarity(item?.rarity)}>
                               {item?.day}{" "}
                               {(monthContext as Map<number, string>).get(
                                 item.month
@@ -195,7 +209,7 @@ const OpenCardPack: React.FC<Props> = ({
                           alt="nft"
                         />
                         <div className="gif">
-                          <h3>{item?.year}</h3>
+                          <h3 className={checkRarity(item?.rarity)}>{item?.year}</h3>
                         </div>
                       </FrontBackCard>
                     </>

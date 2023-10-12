@@ -17,7 +17,6 @@ import {
   TriggersPage,
   IdentitiesPage,
   PredictionsPage,
-  CommingSoonPage,
   NotFoundPage,
   PrivacyPolicy,
   TermConditions,
