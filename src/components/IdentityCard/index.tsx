@@ -124,7 +124,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
       {celebrity_name ? (
         <CardBottomWrapper>{celebrity_name}</CardBottomWrapper>
       ) : (
-        <CardBottomWrapper>
+        <CardBottomWrapper isSelect="true">
           {identityMatches && (
             <SelectOption
               options={identityMatches}

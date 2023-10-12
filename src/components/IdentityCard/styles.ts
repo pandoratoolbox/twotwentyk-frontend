@@ -34,9 +34,11 @@ export const PredictionCardWrapper = styled.div<{
   }
 `;
 
-export const CardBottomWrapper = styled.div`
+export const CardBottomWrapper = styled.div<{
+  isSelect?: string;
+}>`
   text-transform: capitalize;
-  background-color: #000;
+  background-color: ${({ isSelect }) => isSelect ? 'white' : '#000'};
   position: relative;
   border-radius: 4px;
   margin-top: 12px;

@@ -10,7 +10,7 @@ import {
   SelectBoxWrapper,
   SelectOptionsWrapper,
 } from "./styles";
-import { IconArrowDown } from "../Icons";
+import { IconArrowDown1 } from "../Icons";
 import { SelectBoxProps, SelectOptionProps } from "../../types";
 import { Button } from "../Button";
 import {
@@ -109,7 +109,7 @@ export const SelectOption: React.FC<SelectBoxProps> = ({
             <span>{placeholder}</span>
           )}
         </SelectBoxTextWrapper>
-        <IconArrowDown />
+        <IconArrowDown1 />
       </SelectBoxContainer>
       <SelectOptionsWrapper open={isOption} className={placeholder === "Identity Matches" ? "IMSelect" : undefined}>
         <OptionGroup>
