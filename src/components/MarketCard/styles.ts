@@ -27,6 +27,7 @@ export const CardWrapper = styled.div`
 
 export const CardImgWrapper = styled.div<{
   dashbordstyle?: boolean;
+  rarity?: number;
 }>`
   position: relative;
   display: flex;
@@ -42,6 +43,18 @@ export const CardImgWrapper = styled.div<{
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
+    h2, h3, h4 {
+      text-shadow: 1px 1px 2px black;
+      &.Rare {
+        color: #2911a4;
+      }
+      &.Core {
+        color: white;
+      }
+      &.Uncommon {
+        color: #e6b964;
+      }
+    }
     &.info-nft-day-month {
       top: 50%;
     }

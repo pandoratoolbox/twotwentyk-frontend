@@ -17,7 +17,6 @@ import {
   TriggersPage,
   IdentitiesPage,
   PredictionsPage,
-  CommingSoonPage,
   NotFoundPage,
   PrivacyPolicy,
   TermConditions,
@@ -40,6 +39,7 @@ import {
   CollectionMetaData,
   ClaimManagementPage,
   UserManagementPage,
+  LearnToPlay
 } from "./pages";
 import { AppWrapper } from "./context";
 import { GoogleOAuthProvider } from "@react-oauth/google";
@@ -131,7 +131,7 @@ const App: React.FC = () => {
               />
               {/* Marketplace Routes */}
               <Route path="/buy" element={<BuyPackPage />} />
-              <Route path="/learn" element={<CommingSoonPage />} />
+              <Route path="/learn" element={<LearnToPlay />} />
               {/* Profile Routes */}
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/profile/claims" element={<ClaimsPage />} />
