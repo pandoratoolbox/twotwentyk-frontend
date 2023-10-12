@@ -31,7 +31,7 @@ import { DatePageContent } from "../category/styles";
 import { ICardSeries } from "../../../models/card_series";
 import { ICardPack, ICardPackCards } from "../../../models/card_pack";
 import api from "../../../config/api";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import OpenCardPack from "../../../modules/app/dates/OpenCardPack";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
 import { CancelListingModal } from "../../../components/Modals/CancelListing";
@@ -215,18 +215,6 @@ export const CardPackPage: React.FC = () => {
 
   return (
     <AppLayout>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <SellConfirmModal open={modal} onClose={() => setModal(false)} />
       {cancelNftCard && <CancelListingModal open={cancelModal} onClose={() => setCancelModal(false)} nftCard={cancelNftCard} cardType="Card Pack"/>}
       {currentUser ? (
