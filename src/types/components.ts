@@ -292,7 +292,7 @@ export type NotifyProps = {
 
 export type BuyPackProps = {
   onCardClick: (cardSeries: ICardSeries) => void;
-  cardType: string;
+  cardType?: string;
   preview?: boolean;
   price: number;
   cardSeries: ICardSeries;

@@ -79,7 +79,7 @@ export const BuyDetailsSection: React.FC<BuyDetailsProps> = ({
         <BuyDetailsContainer>
           <CloseButton onClick={onClose}>&times;</CloseButton>
           <BuyCard
-            cardType="standard"
+            cardType={cardSeries.name}
             price={50}
             preview={true}
             onCardClick={() => {}}
