@@ -211,10 +211,12 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
         {forCraft && (
           <CardButtonGroup>
             <CardButton
-              onClick={() =>
+              onClick={(e) => {
+                e.stopPropagation()
                 !authContext?.isAuthenticated
                   ? navigate("/signin")
                   : item && onSelectCardIdentity && onSelectCardIdentity(item)
+              }
               }
             >
               Select

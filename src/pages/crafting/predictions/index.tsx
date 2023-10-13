@@ -143,6 +143,7 @@ export const CraftingPredictionsPage: React.FC = () => {
 
   const handleSelectCardTrigger = (card: INftCardTrigger) => {
     let tr = selectedCards.triggers;
+    if (tr && tr.length > 0 && tr.findIndex((value) => value.id === card.id) !== -1) return;
     if (tr) {
       tr.push(card);
     } else {
