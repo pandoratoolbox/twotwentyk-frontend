@@ -83,10 +83,10 @@ export const BuyPackSection: React.FC = () => {
     payment_method_id: number
   ) => {
     switch (payment_method_id) {
-      case 1:
+      case 2:
         // showMoonpay();
         break;
-      case 0:
+      case 1:
         try {
           let res = await api.post<ICardPack>(`/card_series/${cardSeries.id}/buy`, {
             quantity,
