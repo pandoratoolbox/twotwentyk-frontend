@@ -16,6 +16,7 @@ import {
   PredictionCard,
   CardPack,
   IdentityCard,
+  CraftingCard,
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
@@ -144,6 +145,17 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               rarity={item?.rarity}
               image={item?.image}
               tier={item?.tier}
+            />
+          ) : cardType === "crafting" ? (
+            <CraftingCard
+              item={item}
+              day={item?.day}
+              month={item?.month}
+              image={item?.image}
+              category={item?.category}
+              rarity={item?.rarity}
+              isNotHover={true}
+              position=""
             />
           ) : (
             <DateCard

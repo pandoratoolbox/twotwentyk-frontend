@@ -220,10 +220,10 @@ export const CraftingIdentitesPage: React.FC = () => {
   };
 
   useEffect(() => {
-    if (!playVideo) {
+    if (playVideo) {
       const timeout = setTimeout(() => {
         setPlayVideo(false);
-      }, 5000);
+      }, 3000);
 
       return () => {
         clearTimeout(timeout);
@@ -235,25 +235,12 @@ export const CraftingIdentitesPage: React.FC = () => {
     setSelectedCelebrity(c);
   };
 
-  console.log(playVideo);
 
   return (
     <AppLayout noFooter>
       <OpenPreview onClick={() => setIsOpen(true)}>
         <IconArrowDown />
       </OpenPreview>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
 
       <CraftIdentityModal
         selectCelebrity={handleSelectCelebrity}
