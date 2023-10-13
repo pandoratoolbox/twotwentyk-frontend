@@ -15,10 +15,15 @@ import {
   IconArrowDown,
   PredictionCard,
   CardPack,
+  IdentityCard,
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
-import { useMonthContext, useTriggersContext, useTriggersByNameContext } from "../../../context";
+import {
+  useMonthContext,
+  useTriggersContext,
+  useTriggersByNameContext,
+} from "../../../context";
 import { ITrigger } from "../../../models/trigger";
 import { INftCardTrigger } from "../../../models/nft_card_trigger";
 import { INftCardPrediction } from "../../../models/nft_card_prediction";
@@ -35,9 +40,10 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
 
   let triggerCategories: any = null;
   if (item && triggersByNameContext && item.trigger) {
-    triggerCategories = (triggersByNameContext as Map<any, any>).get(item?.trigger);
+    triggerCategories = (triggersByNameContext as Map<any, any>).get(
+      item?.trigger
+    );
   }
-
 
   const [filteredTriggers, setFilteredTriggers] = useState<ITrigger[] | null>(
     null
@@ -64,7 +70,10 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
     }
   }, [triggersContext, item]);
   return (
-    <ViewDateCardWrapper isview={isView ? "true" : undefined} key={`view-date-card-${item?.id}`}>
+    <ViewDateCardWrapper
+      isview={isView ? "true" : undefined}
+      key={`view-date-card-${item?.id}`}
+    >
       <ViewDateCardContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>
@@ -72,16 +81,16 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
           {cardType === "trigger"
             ? "Trigger"
             : cardType === "identity"
-              ? "Identity"
-              : cardType === "prediction"
-                ? "Prediction"
-                : cardType === "category"
-                  ? "Category"
-                  : cardType === "cardPacks"
-                    ? "Card Pack" 
-                    : cardType === "crafting"
-                    ? "Crafting"
-                    : "Date Card"}
+            ? "Identity"
+            : cardType === "prediction"
+            ? "Prediction"
+            : cardType === "category"
+            ? "Category"
+            : cardType === "cardPacks"
+            ? "Card Pack"
+            : cardType === "crafting"
+            ? "Crafting"
+            : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
@@ -92,8 +101,22 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               rarity={item?.rarity}
               isNotHover={true}
             />
-          ) : cardType === "identity" || cardType === "prediction" ? (
+          ) : cardType === "identity" ? (
+            <IdentityCard
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
+              year={item?.year}
+              icon={item?.icon}
+              iconText={item?.iconText}
+              celebrity_name={item?.celebrity_name}
+              image={item?.image}
+              cardType={cardType}
+            />
+          ) : cardType === "prediction" ? (
             <PredictionCard
+              item={item}
               day={item?.day}
               month={item?.month}
               category={item?.category}
@@ -116,7 +139,12 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               position=""
             />
           ) : cardType === "cardPacks" ? (
-            <CardPack item={item} rarity={item?.rarity} image={item?.image} tier={item?.tier}/>
+            <CardPack
+              item={item}
+              rarity={item?.rarity}
+              image={item?.image}
+              tier={item?.tier}
+            />
           ) : (
             <DateCard
               item={item}
@@ -146,7 +174,9 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
               <PropertyItem>
                 <p>Category</p>
                 <span>
-                  {triggerCategories && triggerCategories.eligible_categories ? triggerCategories.eligible_categories.join(",") : "Any"}
+                  {triggerCategories && triggerCategories.eligible_categories
+                    ? triggerCategories.eligible_categories.join(",")
+                    : "Any"}
                 </span>
               </PropertyItem>
             ) : null}
@@ -163,9 +193,10 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
             {cardType === "identity" ? (
               <PropertyItem>
                 <p>Day/Month</p>
-                <span>{`${item?.day} ${monthContext &&
+                <span>{`${item?.day} ${
+                  monthContext &&
                   (monthContext as Map<number, string>).get(item?.month)
-                  }`}</span>
+                }`}</span>
               </PropertyItem>
             ) : cardType === "date" ? (
               <PropertyItem>
@@ -189,9 +220,10 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                 <p>{item?.day ? "Day/Month" : "Year"}</p>
                 <span>
                   {item?.day
-                    ? `${item?.day} ${monthContext &&
-                    (monthContext as Map<number, string>).get(item?.month)
-                    }`
+                    ? `${item?.day} ${
+                        monthContext &&
+                        (monthContext as Map<number, string>).get(item?.month)
+                      }`
                     : item?.year}
                 </span>
               </PropertyItem>
@@ -207,19 +239,19 @@ export const ViewDateCardSection: React.FC<ViewDateCardProps> = ({
                 {cardType === "trigger"
                   ? "Trigger"
                   : cardType === "identity"
-                    ? "Category"
-                    : cardType === "cardPacks"
-                      ? "Collection"
-                      : null}
+                  ? "Category"
+                  : cardType === "cardPacks"
+                  ? "Collection"
+                  : null}
               </p>
               <span>
                 {cardType === "trigger"
                   ? item?.trigger
                   : cardType === "identity"
-                    ? item?.category
-                    : cardType === "cardPacks"
-                      ? item?.collection
-                      : ""}
+                  ? item?.category
+                  : cardType === "cardPacks"
+                  ? item?.collection
+                  : ""}
               </span>
             </PropertyItem>
 
