@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { ClaimModalProps } from "../../types";
 import { Modal as ModalWrapper } from "./Modal";
-import { ButtonGroup, ClaimModalWrapper } from "./styles";
+import { ButtonGroup, ClaimModalWrapper, ClaimSwiper } from "./styles";
 import { Button } from "../Button";
 import { PredictionModalCard } from "../PredictionCard/PredictionModalCard";
 import { submitClaim } from "../../actions";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Navigation } from "swiper";
 
 export const ClaimSubmitModal: React.FC<ClaimModalProps> = ({
   open,
@@ -56,10 +58,37 @@ export const ClaimSubmitModal: React.FC<ClaimModalProps> = ({
               Your identity has multiple Triggers. Pick the one you would like to claim.
             </p>
           </div>
-          {cardPrediction.nft_card_triggers?.length > 1 && <div className="prediction-modal-card-wrapper">
-            {cardPrediction.nft_card_triggers?.map((nftCardTrigger, key) =>
-              <PredictionModalCard nftCardTrigger={nftCardTrigger} triggerId={triggerId} key={`${nftCardTrigger.id}`} setTriggerId={setTriggerId} index={key + 1} />)}
-          </div>}
+          {cardPrediction.nft_card_triggers?.length > 1 &&
+            <ClaimSwiper>
+              <Swiper
+                slidesPerView={2}
+                spaceBetween={5}
+                navigation={true}
+                modules={[Navigation]}
+                // breakpoints={{
+                //   640: {
+                //     slidesPerView: 2,
+                //     spaceBetween: 20,
+                //   },
+                //   768: {
+                //     slidesPerView: 2,
+                //     spaceBetween: 30,
+                //   },
+                //   1024: {
+                //     slidesPerView: 2,
+                //     spaceBetween: 42,
+                //   },
+                // }}
+                className="claimSwiper"
+              >
+                {cardPrediction.nft_card_triggers?.map((nftCardTrigger, key) =>
+                  <SwiperSlide key={key}>
+                    <PredictionModalCard nftCardTrigger={nftCardTrigger} triggerId={triggerId} key={`${nftCardTrigger.id}`} setTriggerId={setTriggerId} index={key + 1} />
+                  </SwiperSlide>
+                )}
+              </Swiper>
+            </ClaimSwiper>
+          }
           <div>
 
           </div>

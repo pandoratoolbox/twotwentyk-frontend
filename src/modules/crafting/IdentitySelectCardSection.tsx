@@ -291,7 +291,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {myNfts.crafting.map((item) => (
+                {myNfts.crafting.filter(v => !v.is_crafted).map((item) => (
                   <DateCardWrapper key={`crafting-${item.id}`}>
                     <CardImgWrapper>
                       {item.rarity || item.rarity === 0 ? (
@@ -372,7 +372,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {myNfts.dayMonth.map((item) => {
+                {myNfts.dayMonth.filter(v => !v.is_crafted).map((item) => {
                   const imagePath = getImagePath(
                     false,
                     item?.rarity ?? 0,
@@ -472,7 +472,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {myNfts.year.map((item) => {
+                {myNfts.year.filter(v => !v.is_crafted).map((item) => {
                   const imagePath = getImagePath(
                     item.year,
                     item?.rarity ?? 0,
@@ -559,7 +559,7 @@ export const IdentitySelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {myNfts.category.map((item, key) => {
+                {myNfts.category.filter(v => !v.is_crafted).map((item, key) => {
                   return (
                     <DateCardWrapper key={`category-${item.id}`}>
                       <CardImgWrapper>
