@@ -6,6 +6,7 @@ import { Button } from "../../../components";
 import { useNavigate } from "react-router-dom";
 import { EmptyCards } from "../../../pages/app/dates/styles";
 import { getClaim } from "../../../actions";
+import { IClaim } from "../../../models/claim";
 
 export const ClaimsSection: React.FC = () => {
   const navigate = useNavigate();
@@ -18,14 +19,14 @@ export const ClaimsSection: React.FC = () => {
   const getData = async () => {
     const resData = await getClaim();
     if (resData.success) {
-      const tempData = resData.data.map((item: any) => {
+      const tempData = resData.data.map((item: IClaim) => {
         return {
           id: item.id,
-          created: item.nft_card_prediction.created_at,
+          created: item.created_at,
           event: item.event_date,
           submitted: item.created_at,
-          identity: item.nft_card_prediction.celebrity_name,
-          trigger: item.trigger,
+          identity: item.nft_prediction?.nft_identity?.celebrity_name,
+          trigger: item.nft_trigger ?  item.nft_trigger.trigger : "",
           status: item.status,
         };
       });
