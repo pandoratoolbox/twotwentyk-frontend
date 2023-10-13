@@ -1,6 +1,7 @@
 import { ICardPack } from "../models/card_pack";
 import { ICardSeries } from "../models/card_series";
 import { ICelebrity } from "../models/celebrity";
+import { INotification } from "../models/claim";
 import { IMarketplaceListing } from "../models/marketplace_listing";
 import { INftCardCategory } from "../models/nft_card_category";
 import { INftCardCrafting } from "../models/nft_card_crafting";
@@ -90,7 +91,10 @@ export type PredictionCardProps = {
   status?: number;
   forCraft?: boolean;
   onClick?: () => void;
-  onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
+  onCard?: (
+    item: IMarketplaceListing | undefined,
+    action: CardActionTypes
+  ) => void;
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
@@ -102,7 +106,6 @@ export type PredictionCardProps = {
     key: number | string,
     item: INftCardCrafting | INftCardIdentity | INftCardTrigger
   ) => void;
-
 } & IMarketplaceListing;
 
 export type FeedItemProps = {
@@ -129,13 +132,13 @@ export type DateCardProps = {
   rarity: number;
   is_crafted?: boolean;
   image: string;
-  position:string;
+  position: string;
   isNotHover?: boolean;
   onView?: (id: number) => void;
   onCraft?: (id: number) => void;
   onSell?: (id: number) => void;
   item?: any;
-  buttonText?:any;
+  buttonText?: any;
 };
 
 export type TriggerCardProps = {
@@ -157,7 +160,7 @@ export type DateCardGridProps = {
   data?: Array<any>;
   identityData?: Array<any>;
   cardType?: string;
-  buttonText?:any;
+  buttonText?: any;
   onView?: (id: string | number) => void;
   onCraft?: (id: string | number) => void;
   onSell?: (id: string | number) => void;
@@ -304,7 +307,11 @@ export type BuyDetailsProps = {
   id: string | number;
   onClose: () => void;
   isView: boolean;
-  onBuyClick: (cardSeries: ICardSeries, quantity: number, payment_method_id: number) => void;
+  onBuyClick: (
+    cardSeries: ICardSeries,
+    quantity: number,
+    payment_method_id: number
+  ) => void;
   cardSeries: ICardSeries;
   rarity: number;
 };
@@ -312,6 +319,8 @@ export type BuyDetailsProps = {
 export type NotificationProps = {
   open: boolean;
   onClose: () => void;
+  data: Array<INotification>;
+  onClear: () => void;
 };
 
 // export type forItem = {
@@ -353,35 +362,52 @@ export type MarketCardProps = {
   // onCard?: (id?: string | number, action?: CardActionTypes) => void;
   // is_listed?: string;
   // owner_id?: string | number;
-  onCard?: (item: IMarketplaceListing | undefined, action: CardActionTypes) => void;
+  onCard?: (
+    item: IMarketplaceListing | undefined,
+    action: CardActionTypes
+  ) => void;
 } & IMarketplaceListing;
 
 export type CraftPredictionModalProps = {
   onBurn?: () => void;
 } & ModalProps;
 
-
-export const cardTypeOption = new Map<number, {name: string, id: number}>([
-  [3, {
-    name: "Day/Month",
-    id: 1
-  }],
-  [4, {
-    name: "Year",
-    id: 4
-  }],
-  [2,{
-    name: "Category",
-    id: 2
-  }],
-  [5,{
-    name: "Trigger",
-    id: 5
-  }],
-  [1,{
-    name: "Crafting",
-    id: 1
-  }]
+export const cardTypeOption = new Map<number, { name: string; id: number }>([
+  [
+    3,
+    {
+      name: "Day/Month",
+      id: 1,
+    },
+  ],
+  [
+    4,
+    {
+      name: "Year",
+      id: 4,
+    },
+  ],
+  [
+    2,
+    {
+      name: "Category",
+      id: 2,
+    },
+  ],
+  [
+    5,
+    {
+      name: "Trigger",
+      id: 5,
+    },
+  ],
+  [
+    1,
+    {
+      name: "Crafting",
+      id: 1,
+    },
+  ],
 ]);
 
 export const triggerTypeOption = new Map<number, { id: number; name: string }>([
