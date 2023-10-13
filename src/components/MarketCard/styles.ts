@@ -43,7 +43,9 @@ export const CardImgWrapper = styled.div<{
     left: 50%;
     transform: translate(-50%, -50%);
     width: 100%;
-    h2, h3, h4 {
+    h2,
+    h3,
+    h4 {
       text-shadow: 1px 1px 2px black;
       &.Rare {
         color: #2911a4;
@@ -57,11 +59,13 @@ export const CardImgWrapper = styled.div<{
     }
     &.info-nft-day-month {
       top: 50%;
-      h2 {
-        font-size: clamp(1.3rem, 2vw, 1.6rem);
-      }
-      h3 {
-        font-size: clamp(0.7em, 2vw, 0.8rem);
+      &.crafting {
+        h2 {
+          font-size: clamp(1.3rem, 2vw, 1.6rem);
+        }
+        h3 {
+          font-size: clamp(0.7em, 2vw, 0.8rem);
+        }
       }
     }
     &.info-nft-prediction {

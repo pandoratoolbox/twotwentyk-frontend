@@ -219,9 +219,23 @@ export const CraftingIdentitesPage: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    if (!playVideo) {
+      const timeout = setTimeout(() => {
+        setPlayVideo(false);
+      }, 5000);
+
+      return () => {
+        clearTimeout(timeout);
+      };
+    }
+  }, [playVideo]);
+
   const handleSelectCelebrity = (c: ICelebrity | null) => {
     setSelectedCelebrity(c);
   };
+
+  console.log(playVideo);
 
   return (
     <AppLayout noFooter>

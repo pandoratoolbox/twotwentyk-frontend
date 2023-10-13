@@ -393,8 +393,21 @@ export const FrontBackCard = styled.div`
     justify-content: center;
     position: absolute;
     width: 100%;
-    h3{
+    h2,
+    h3,
+    h4 {
+      text-shadow: 1px 1px 2px black;
       margin: 0;
+
+      &.Rare {
+        color: #2911a4;
+      }
+      &.Core {
+        color: white;
+      }
+      &.Uncommon {
+        color: #e6b964;
+      }
     }
     img {
       width: 80%;

@@ -13,11 +13,13 @@ import { BuyDetailsSection } from "./BuyDetailsSection";
 import { useNavigate } from "react-router-dom";
 import api from "../../config/api";
 import { ICardSeries } from "../../models/card_series";
-import { toast, ToastContainer } from "react-toastify";
+import { toast } from "react-toastify";
 import { ICardPack } from "../../models/card_pack";
 import { ICardCollection } from "../../models/card_collection";
 import { getMyInfo } from "../../actions";
 import { useMyInfoContext } from "../../context";
+
+import { loadMoonPay } from "@moonpay/moonpay-js";
 
 export const BuyPackSection: React.FC = () => {
   const navigate = useNavigate();
@@ -30,30 +32,84 @@ export const BuyPackSection: React.FC = () => {
   const [cardCollectionList, setCardCollectionList] = useState<
     ICardCollection[]
   >([]);
-  const { setMyInfoContext } = useMyInfoContext()
+  const { setMyInfoContext } = useMyInfoContext();
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
+    // showMoonpay();
   }, []);
+
+  const showMoonpay = async () => {
+    let moonPay = await loadMoonPay();
+    if (moonPay) {
+      const moonPaySdk = moonPay({
+        flow: "nft",
+        environment: "sandbox",
+        variant: "overlay",
+        params: {
+          apiKey: "pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj",
+          // baseCurrencyCode: "USDC",
+          signature: "test",
+          tokenId: "__1",
+          contractAddress: "0",
+        },
+        debug: true,
+      });
+
+      if (moonPaySdk) {
+        const urlForSignature = moonPaySdk.generateUrlForSigning();
+        api
+          .post("/webhook/moonpay/sign", { url: urlForSignature })
+          .then((res) => {
+            console.log(res);
+            moonPaySdk.updateSignature(res.data.signature);
+            moonPaySdk.show();
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      } else {
+        console.log("error showing moonpay");
+      }
+    }
+  };
 
   const handleBuyCardSeries = async (
     cardSeries: ICardSeries,
     quantity: number,
     payment_method_id: number
   ) => {
-    try {
-      let res = await api.post<ICardPack>(`/card_series/${cardSeries.id}/buy`, {
-        quantity,
-        payment_method_id,
-      });
-      if (res.data) {
-        const myinfo = await getMyInfo();
-        if (myinfo.data) setMyInfoContext(myinfo.data);
-        toast.success(`You bought a ${cardSeries.card_collection ? cardSeries.card_collection.name : ""} ${cardSeries.name || "new"} card pack!`);
-        setDetailsView(false);
-      }
-    } catch (e: any) {
-      console.log(e);
+    switch (payment_method_id) {
+      case 2:
+        // showMoonpay();
+        break;
+      case 1:
+        try {
+          let res = await api.post<ICardPack>(
+            `/card_series/${cardSeries.id}/buy`,
+            {
+              quantity,
+              payment_method_id,
+            }
+          );
+          if (res.data) {
+            const myinfo = await getMyInfo();
+            if (myinfo.data) setMyInfoContext(myinfo.data);
+            toast.success(
+              `You bought a ${
+                cardSeries.card_collection
+                  ? cardSeries.card_collection.name
+                  : ""
+              } ${cardSeries.name || "new"} card pack!`
+            );
+            setDetailsView(false);
+          }
+        } catch (e: any) {
+          toast.error(e);
+        }
+        break;
+      default:
+        break;
     }
   };
 
@@ -74,7 +130,7 @@ export const BuyPackSection: React.FC = () => {
         let m = new Map<number, ICardCollection>();
         let l: ICardCollection[] = [];
         res.data.forEach((v) => {
-          let s = v
+          let s = v;
           // s.card_collection = undefined;
           let o = m.get(v.card_collection_id);
           if (o && o.card_series) {
@@ -83,19 +139,19 @@ export const BuyPackSection: React.FC = () => {
           } else {
             if (v.card_collection) {
               let n = v.card_collection;
-              n.card_series = [s]
+              n.card_series = [s];
               m.set(s.card_collection_id, n);
             }
           }
         });
 
-        m.forEach(v => {
-          l.push(v)
-        })
+        m.forEach((v) => {
+          l.push(v);
+        });
 
         setCardCollectionList(l);
-        console.log(res.data)
-        console.log(l)
+        console.log(res.data);
+        console.log(l);
       }
     } catch (e) {
       console.log(e);
@@ -106,20 +162,9 @@ export const BuyPackSection: React.FC = () => {
     listCardSeries();
   }, []);
 
+  console.log(cardCollectionList);
   return (
     <BuyPackSectionWrapper isview={detailsView ? "true" : undefined}>
-      <ToastContainer
-        position="top-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
       <BuyPackWrapper>
         <h2>Buy Card Packs</h2>
         {cardCollectionList.map((item, key) => (
@@ -155,17 +200,18 @@ export const BuyPackSection: React.FC = () => {
                 }}
                 className="mySwiper"
               >
-                {item.card_series && item.card_series.map((item, key) => (
-                  <SwiperSlide key={key}>
-                    <BuyCard
-                      cardSeries={item}
-                      rarity={1}
-                      cardType="standard"
-                      price={50}
-                      onCardClick={handleCardClick}
-                    />
-                  </SwiperSlide>
-                ))}
+                {item.card_series &&
+                  item.card_series.map((item, key) => (
+                    <SwiperSlide key={key}>
+                      <BuyCard
+                        cardSeries={item}
+                        rarity={1}
+                        cardType={item?.name}
+                        price={50}
+                        onCardClick={handleCardClick}
+                      />
+                    </SwiperSlide>
+                  ))}
               </Swiper>
             </BuyPackSlider>
           </BuyPackCollectionWrapper>
@@ -184,4 +230,3 @@ export const BuyPackSection: React.FC = () => {
     </BuyPackSectionWrapper>
   );
 };
-

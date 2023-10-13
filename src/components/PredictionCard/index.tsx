@@ -7,7 +7,6 @@ import {
 } from "../DateCard/styles";
 import { PredictionCardProps, SelectOptionProps } from "../../types";
 import {
-  useMonthContext,
   useCelebritiesContext,
   useMyInfoContext,
   useAuthContext,
@@ -47,10 +46,8 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   onClaimSubmit,
   onCancel
 }) => {
-  const { monthContext } = useMonthContext();
   const { myInfoContext } = useMyInfoContext();
   const { celebritiesContext } = useCelebritiesContext();
-  const [clearSelect, setClearSelect] = useState<boolean>(true);
   const { authContext } = useAuthContext()
   const navigate = useNavigate();
 
@@ -60,7 +57,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
     );
 
     if (c) {
-      let res = await updateMyNftCardIdentity(c?.id, c?.name);
+      let res = await updateMyNftCardIdentity(item?.id, c?.id);
       if (res.success) {
         console.log("identity updated");
       }
@@ -96,27 +93,20 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
       isnothover={isNotHover && celebrity_name ? "true" : undefined}
     >
       <CardImgWrapper dashbordstyle={dashbordstyle}>
-        {rarity || rarity === 0 ? (
+        {(rarity || rarity === 0) && item ? (
           <>
             <img
               src={`/assets/nfts/rarity/Prediction-${checkRarity(rarity)}.png`}
               alt="nft"
             />
             <div className="info-nft info-nft-prediction">
-              <h4>{category}</h4>
+              <h4 className={checkRarity(rarity)}>{item?.nft_identity?.category}</h4>
 
               <img
                 src={`/assets/nfts/rarity/${checkRarity(rarity)}-Torso.gif`}
                 alt="gif"
               />
-
-              <div className="nft-info-detail">
-                <h2 className={checkRarity(rarity)}>
-                  {day} {month} {year}
-                </h2>
-                <h3>{category}</h3>
-              </div>
-              <h4 className={checkRarity(rarity)}>03 06 1992</h4>
+              <h4 className={checkRarity(rarity)}>{item?.nft_identity?.day} {item?.nft_identity?.month} {item?.nft_identity?.year}</h4>
             </div>
           </>
         ) : (

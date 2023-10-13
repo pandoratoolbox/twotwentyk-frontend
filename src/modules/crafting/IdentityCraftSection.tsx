@@ -16,6 +16,8 @@ import { INftCardDayMonth } from "../../models/nft_card_day_month";
 import { INftCardYear } from "../../models/nft_card_year";
 import { IdentitySelectCardSection } from "./IdentitySelectCardSection";
 import { checkRarity, formatCategory } from "../../utils/helperFunctions";
+import { useMonthContext } from "../../context";
+
 
 // Reusable CraftCard component
 const CraftCardComponent = ({
@@ -29,6 +31,8 @@ const CraftCardComponent = ({
   selectedCard: any;
   onCraftChanged: (key: string) => void;
 }) => {
+  const { monthContext } = useMonthContext();
+
   return (
     <CraftCardWrapper key={cardType}>
       <h6>{heading}</h6>
@@ -59,12 +63,14 @@ const CraftCardComponent = ({
               alt="nft"
             />
           )}
-          <div className="info-nft info-nft-day-month">
+          <div className="info-nft info-nft-day-month crafting">
             {cardType === "dayMonth" &&
               selectedCard.day &&
-              selectedCard.month && (
+              selectedCard.month &&
+              monthContext && (
                 <h3 className={checkRarity(selectedCard.rarity)}>
-                  {selectedCard.day} {selectedCard.month}
+                  {selectedCard.day}{" "}
+                  {(monthContext as Map<number, string>).get(selectedCard.month)}
                 </h3>
               )}
             {cardType === "year" && selectedCard.year && (

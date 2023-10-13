@@ -36,10 +36,10 @@ export const getMyNftCardIdentity = async (filters: NftCardIdentityFilters | nul
 };
 
 
-export const updateMyNftCardIdentity = async (id: number, cName: string) => {
+export const updateMyNftCardIdentity = async (id: number, celebrity_id: number) => {
   try {
   
-    const res = await api.put(`/nft_card_identity/${id}`, {celebrity_name:cName});
+    const res = await api.put(`/nft_card_identity/${id}`, {celebrity_id});
     return { success: true, data: res.data };
   } catch (error) {
     return { success: false, message: error };

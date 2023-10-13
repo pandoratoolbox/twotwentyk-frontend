@@ -154,8 +154,8 @@ export const PredictionSelectCardSection: React.FC<{
         Number(v.value)
       );
 
-      if (c) {
-        let res = await updateMyNftCardIdentity(c?.id, c?.name);
+      if (c && selectedCard) {
+        let res = await updateMyNftCardIdentity(Number(selectedCard), c?.id);
         if (res?.data && Array.isArray(res.data)) {
           console.log(res?.data);
         }
