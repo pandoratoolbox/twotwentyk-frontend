@@ -14,6 +14,7 @@ export const Input: React.FC<InputProps> = ({
   desc,
   error,
   code,
+  currency
 }) => {
   const [inputType, setInputType] = useState(type);
   return (
@@ -26,7 +27,7 @@ export const Input: React.FC<InputProps> = ({
           id={id}
           placeholder={placeholder}
           onChange={onChange}
-          value={value}
+          value={currency ? `$${value}` : value}
         />
         {type === "password" && (
           <div
@@ -38,6 +39,7 @@ export const Input: React.FC<InputProps> = ({
           </div>
         )}
         {code && <div className="code">{code}</div>}
+        {currency && <div className="currency">{currency}</div>}
       </InputWrapper>
       {error && <span>{error}</span>}
       {desc && <InputDescWrapper>{desc}</InputDescWrapper>}

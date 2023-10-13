@@ -10,7 +10,7 @@ import {
   MFilterSection,
   MBuyCardSection,
   MCardGridSection,
-  // MOfferCardSection,
+  MOfferCardSection,
   MSellCardSection,
   MViewCardSection,
 } from "../../../modules";
@@ -19,20 +19,20 @@ import { EmptyCards } from "../../app/category/styles";
 import { Button, Loader } from "../../../components";
 import { getMarketplaceList } from "../../../actions/marketplace_listing";
 import { IMarketplaceListing } from "../../../models/marketplace_listing";
-// import { useMyOfferContext } from "../../../context";
-// import { ToastContainer, toast } from "react-toastify";
+import { useMyOfferContext } from "../../../context";
+import { ToastContainer, toast } from "react-toastify";
 
 export const MarketplaceIdentitiesPage: React.FC = () => {
   const navigate = useNavigate();
   const [side, setSide] = useState<CardActionTypes>("");
   const [isLoading, setIsLoading] = useState(true);
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [selectedItem, setSelectedItem] = useState<IMarketplaceListing>();
   const [nftMarketplaceData, setNftMarketplaceData] = useState<
     IMarketplaceListing[] | null
   >(null);
-  // const { myOfferContext, setMyOfferContext } = useMyOfferContext();
+  const { myOfferContext, setMyOfferContext } = useMyOfferContext();
 
-  // const [selectedId, setSelectedId] = useState<number | string>("");
+  const [selectedId, setSelectedId] = useState<number | string>("");
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
     setSelectedItem(item);
@@ -47,25 +47,25 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
   const getPageData = async () => {
     setIsLoading(true);
     const token = localStorage.auth;
-    const response = await getMarketplaceList({card_collection_id: 1, nft_type_ids: [6]});
+    const response = await getMarketplaceList({ card_collection_id: 1, nft_type_ids: [6] });
 
     if (response?.data) {
-      setNftMarketplaceData(response?.data); 
+      setNftMarketplaceData(response?.data);
     }
     setIsLoading(false);
   };
 
-  // const handleOfferConfirm = () => {
-  //   const offerCard = nftMarketplaceData?.filter(
-  //     (f) => f.id === Number(selectedId)
-  //   )[0];
-  //   if (offerCard) {
-  //     setMyOfferContext([...myOfferContext, offerCard]);
-  //     handleSideClose();
-  //   } else {
-  //     toast.error("Something went wrong!!!");
-  //   }
-  // };
+  const handleOfferConfirm = () => {
+    const offerCard = nftMarketplaceData?.filter(
+      (f) => f.id === Number(selectedId)
+    )[0];
+    if (offerCard) {
+      setMyOfferContext([...myOfferContext, offerCard]);
+      handleSideClose();
+    } else {
+      toast.error("Something went wrong!!!");
+    }
+  };
 
   useEffect(() => {
     getPageData();
@@ -89,7 +89,7 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
       ) : !isLoading ? (
         <EmptyCards>
           <p style={{ maxWidth: "253px" }}>
-            Wow, can you believe no one wants to sell even a single card? 
+            Wow, can you believe no one wants to sell even a single card?
           </p>
           <Button
             className="buy-button"
@@ -107,23 +107,26 @@ export const MarketplaceIdentitiesPage: React.FC = () => {
         onClose={handleSideClose}
         page="identities"
       />
-      <MBuyCardSection
-        selectedItem={selectedItem}
-        open={side === "buy"}
-        onClose={handleSideClose}
-        page="identities"
-      />
-      <MSellCardSection
-      selectedItem={selectedItem}
-        open={side === "sell"}
-        onClose={handleSideClose}
-        page="identities"
-      /></div>}
-      {/* <MOfferCardSection
-        open={side === "offer"}
-        onClose={handleSideClose}
-        onConfirm={handleOfferConfirm}
-      /> */}
+        <MBuyCardSection
+          selectedItem={selectedItem}
+          open={side === "buy"}
+          onClose={handleSideClose}
+          page="identities"
+        />
+        <MSellCardSection
+          selectedItem={selectedItem}
+          open={side === "sell"}
+          onClose={handleSideClose}
+          page="identities"
+        />
+        <MOfferCardSection
+          open={side === "offer"}
+          onClose={handleSideClose}
+          onConfirm={handleOfferConfirm}
+          selectedItem={selectedItem}
+          page="identities"
+        />
+      </div>}
     </AppLayout>
   );
 };

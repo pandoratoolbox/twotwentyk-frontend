@@ -148,17 +148,17 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
           {item?.owner_id !== myInfoContext?.id && onBuy && (
             <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onBuy(item)}>Buy</CardButton>
           )}
-          {item?.owner_id === myInfoContext?.id && onCancel && item?.is_listed && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCancel(item)}>Cancel Listing</CardButton>}
+          {item?.owner_id === myInfoContext?.id && onCancel && item?.nft_card_prediction?.marketplace_listing && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCancel(item)}>Cancel Listing</CardButton>}
           {onCard && (
             <>
               <CardButton onClick={() => onCard(item, "view")}>View</CardButton>
-              {item?.is_listed ? (
-                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => onCard(item, "buy")}>Buy</CardButton>
-              ) : (
-                item?.owner_id === myInfoContext?.id && <CardButton onClick={() => onCard(item, "offer")}>
-                  Make an Offer
-                </CardButton>
-              )}
+              {item?.nft_card_prediction?.marketplace_listing &&
+                item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "buy")}>Buy</CardButton>
+              }
+              {!item?.nft_card_prediction?.marketplace_listing && item?.owner_id !== myInfoContext?.id && <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onCard(item, "offer")}>
+                Make an Offer
+              </CardButton>
+              }
             </>)
           }
         </CardButtonGroup>

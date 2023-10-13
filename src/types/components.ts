@@ -25,6 +25,7 @@ export type InputProps = {
   error?: string;
   desc?: string;
   code?: string;
+  currency?: string;
 } & React.InputHTMLAttributes<HTMLInputElement>;
 
 export type ButtonProps = {
