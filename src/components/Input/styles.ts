@@ -2,6 +2,10 @@ import { styled } from "styled-components";
 
 export const FormWrapper = styled.div`
   width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
   p {
     color: #0e4fbc;
     font-size: 14px;
@@ -11,8 +15,8 @@ export const FormWrapper = styled.div`
 
   span {
     font-weight: 400;
-    font-size: 10px;
-    line-height: 24px;
+    font-size: 12px;
+    line-height: 16px;
     color: #ff0000;
   }
 `;
@@ -38,7 +42,7 @@ export const InputWrapper = styled.div<{ iserror?: string; suffix?: string }>`
   input {
     height: 40px;
     width: 100%;
-    color: #0e4fbc;
+    color: ${({ iserror }) => (iserror ? "#ff0000" : "#0e4fbc")};
     outline: none;
     padding: 0 16px;
     padding-right: ${({ suffix }) =>
@@ -70,6 +74,13 @@ export const InputWrapper = styled.div<{ iserror?: string; suffix?: string }>`
       line-height: 150%;
       color: #0c092a;
       opacity: 0.2;
+    }
+
+    &.currency {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 24px;
+      color: ${({ iserror }) => (iserror ? "#ff0000" : "#0e4fbc")};
     }
   }
 `;

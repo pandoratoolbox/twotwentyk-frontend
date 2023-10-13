@@ -303,6 +303,7 @@ export const SetPriceWrapper = styled.div`
     width: 100%;
     font-size: 14px;
     line-height: 24px;
+    margin-bottom: 12px;
   }
   &::after {
     content: "";
