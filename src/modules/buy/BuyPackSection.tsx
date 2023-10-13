@@ -19,6 +19,9 @@ import { ICardCollection } from "../../models/card_collection";
 import { getMyInfo } from "../../actions";
 import { useMyInfoContext } from "../../context";
 
+import { loadMoonPay } from "@moonpay/moonpay-js";
+
+
 export const BuyPackSection: React.FC = () => {
   const navigate = useNavigate();
   const [detailsView, setDetailsView] = useState(false);
@@ -34,26 +37,73 @@ export const BuyPackSection: React.FC = () => {
 
   useEffect(() => {
     setCurrentUser(localStorage.getItem("auth"));
+    // showMoonpay();
   }, []);
+
+  const showMoonpay = async () => {
+    let moonPay = await loadMoonPay();
+    if (moonPay) {
+      
+      const moonPaySdk = moonPay({
+        flow: 'nft',
+        environment: 'sandbox',
+        variant: 'overlay',  
+        params: {  
+          apiKey: 'pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj',
+          // baseCurrencyCode: "USDC",
+          signature: "test",
+          tokenId: "__1",
+          contractAddress: "0",
+        },
+        debug: true
+      });
+      
+  
+      if (moonPaySdk) {
+        const urlForSignature = moonPaySdk.generateUrlForSigning();
+        api.post("/webhook/moonpay/sign", {url: urlForSignature}).then((res) => {
+          console.log(res);
+          moonPaySdk.updateSignature(res.data.signature);
+          moonPaySdk.show();
+        }).catch((err) => {
+          console.log(err);
+        }
+        )
+
+       
+      } else {
+        console.log("error showing moonpay")
+      }
+  }
+}
 
   const handleBuyCardSeries = async (
     cardSeries: ICardSeries,
     quantity: number,
     payment_method_id: number
   ) => {
-    try {
-      let res = await api.post<ICardPack>(`/card_series/${cardSeries.id}/buy`, {
-        quantity,
-        payment_method_id,
-      });
-      if (res.data) {
-        const myinfo = await getMyInfo();
-        if (myinfo.data) setMyInfoContext(myinfo.data);
-        toast.success(`You bought a ${cardSeries.card_collection ? cardSeries.card_collection.name : ""} ${cardSeries.name || "new"} card pack!`);
-        setDetailsView(false);
-      }
-    } catch (e: any) {
-      console.log(e);
+    switch (payment_method_id) {
+      case 2:
+        // showMoonpay();
+        break;
+      case 1:
+        try {
+          let res = await api.post<ICardPack>(`/card_series/${cardSeries.id}/buy`, {
+            quantity,
+            payment_method_id,
+          });
+          if (res.data) {
+            const myinfo = await getMyInfo();
+            if (myinfo.data) setMyInfoContext(myinfo.data);
+            toast.success(`You bought a ${cardSeries.card_collection ? cardSeries.card_collection.name : ""} ${cardSeries.name || "new"} card pack!`);
+            setDetailsView(false);
+          }
+        } catch (e: any) {
+          toast.error(e);
+        }
+        break;
+      default:
+        break;
     }
   };
 

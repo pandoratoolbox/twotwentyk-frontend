@@ -25,6 +25,10 @@ import {
 } from "../../../actions/marketplace_listing";
 import { useMyInfoContext, useMyOfferContext } from "../../../context";
 import { ToastContainer, toast } from "react-toastify";
+import { loadMoonPay } from "@moonpay/moonpay-js";
+import api from "../../../config/api";
+
+
 
 export const MarketplacePage: React.FC = () => {
   const nftCollections = new Map<number, string>([[1, ""]]);
@@ -46,6 +50,49 @@ export const MarketplacePage: React.FC = () => {
   ]);
   const [selectedStatus, setSelectedStatus] = useState<number[]>([0]);
 
+
+  const showMoonpay = async () => {
+    let moonPay = await loadMoonPay();
+    if (moonPay) {
+      
+      const moonPaySdk = moonPay({
+        flow: 'nft',
+        environment: 'sandbox',
+        variant: 'overlay',  
+        params: {  
+          apiKey: 'pk_test_PaUTi3HVAHvclaZTMJS0TNTfMIrpPj',
+          contractAddress: "6",
+          tokenId: "109",
+          walletAddress: "test",
+          signature: "",
+        },
+        debug: true
+      });
+      
+  
+      if (moonPaySdk) {
+        const urlForSignature = moonPaySdk.generateUrlForSigning();
+        api.post("/webhook/moonpay/sign", {url: urlForSignature}).then((res) => {
+          console.log(res);
+          moonPaySdk.updateSignature(res.data.signature);
+          moonPaySdk.show();
+        }).catch((err) => {
+          console.log(err);
+        }
+        )
+
+       
+      } else {
+        console.log("error showing moonpay")
+      }
+  }
+}
+
+useEffect(() => {
+  // showMoonpay()
+}, []);
+
+
   useEffect(() => {
     getPageData({
       card_collection_id: selectedNftCollectionId,
@@ -54,6 +101,7 @@ export const MarketplacePage: React.FC = () => {
     });
     getCollection();
   }, []);
+
 
   const handleCardClick = (item: any, action: CardActionTypes) => {
     setSelectedId(item.id);
