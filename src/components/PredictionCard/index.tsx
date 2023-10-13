@@ -36,6 +36,7 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
   isNotHover,
   triggers,
   status,
+  is_claimed,
   onClick,
   onCraft,
   onSell,
@@ -139,9 +140,9 @@ export const PredictionCard: React.FC<PredictionCardProps> = ({
             </CardButton>
           )}
           {onView && <CardButton onClick={() => onView(item)}>View</CardButton>}
-          {/* {cardType === "prediction" && (
-            <CardButton onClick={() => {}}>Add Trigger</CardButton>
-          )} */}
+          {item?.owner_id === myInfoContext?.id && !is_claimed && onClaimSubmit && (
+            <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onClaimSubmit(item)}>Submit Claim</CardButton>
+          )}
           {item?.owner_id === myInfoContext?.id && onSell && (
             <CardButton onClick={() => !authContext?.isAuthenticated ? navigate("/signin") : onSell(item)}>Sell</CardButton>
           )}
