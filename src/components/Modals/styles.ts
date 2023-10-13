@@ -117,6 +117,41 @@ export const ClaimModalWrapper = styled.div`
   }
 `;
 
+export const ClaimSwiper = styled.div`
+  .claimSwiper {
+    width: 397px;
+  }
+  // .swiper-button-prev,
+  // .swiper-button-next {
+  //   color: #676161;
+  //   height: 100%;
+  //   background-color: #f2f5ff;
+  //   top: 0;
+
+  //   margin-top: 0;
+  //   width: 50px;
+  //   &::after {
+  //     font-size: 20px;
+  //     font-weight: 900;
+  //   }
+  // }
+  // .swiper-button-prev {
+  //   left: 0;
+  // }
+  // .swiper-button-next {
+  //   right: 0;
+  // }
+  // @media screen and (max-width: 768px) {
+  //   .mySwiper {
+  //     padding: 0 30px;
+  //   }
+  //   .swiper-button-prev,
+  //   .swiper-button-next {
+  //     width: 20px;
+  //   }
+  // }
+`;
+
 export const CancelListingModalWrapper = styled.div`
   display: flex;
   flex-direction: column;
