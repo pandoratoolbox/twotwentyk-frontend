@@ -228,7 +228,7 @@ export const PredictionSelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {nftCardCraftingData.map((item) => (
+                {nftCardCraftingData.filter(v => !v.is_crafted).map((item) => (
                   <DateCardWrapper key={`craft-${item.id}`}>
                     <CardImgWrapper>
                       {item.rarity || item.rarity === 0 ? (
@@ -308,7 +308,7 @@ export const PredictionSelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {nftCardIdentityData.map((item) => (
+                {nftCardIdentityData.filter(v => !v.is_crafted).map((item) => (
                   <IdentityCard
                     cardType="identity"
                     height={293}
@@ -372,7 +372,7 @@ export const PredictionSelectCardSection: React.FC<{
                 </SortButton>
               </FilterWrapper>
               <CardGridWrapper>
-                {nftCardTriggerData.map((item, key) => (
+                {nftCardTriggerData.filter(v => !v.is_crafted).map((item, key) => (
                   <DateCardWrapper key={`trigger-${item.id}`}>
                     <CardImgWrapper>
                       {item.rarity || item.rarity === 0 ? (

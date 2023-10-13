@@ -23,7 +23,7 @@ export const ClaimsSection: React.FC = () => {
         return {
           id: item.id,
           created: item.created_at,
-          event: item.event_date,
+          event: item.article ? item.article.created_at as String :"",
           submitted: item.created_at,
           identity: item.nft_prediction?.nft_identity?.celebrity_name,
           trigger: item.nft_trigger ?  item.nft_trigger.trigger : "",
