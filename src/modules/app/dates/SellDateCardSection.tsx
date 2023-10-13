@@ -20,13 +20,22 @@ import {
   Input,
   PredictionCard,
   CardPack,
+  IdentityCard
 } from "../../../components";
 import { TriggerCard } from "../../../components/TriggerCard";
 import { CategoryCard } from "../../../components/CategoryCard";
 import { ITrigger } from "../../../models/trigger";
 
 import { useMonthContext, useTriggersContext } from "../../../context";
-import { NFT_TYPE_ID_CATEGORY, NFT_TYPE_ID_CRAFTING, NFT_TYPE_ID_DAY_MONTH, NFT_TYPE_ID_IDENTITY, NFT_TYPE_ID_PREDICTION, NFT_TYPE_ID_TRIGGER, NFT_TYPE_ID_YEAR } from "../../../models/nft";
+import {
+  NFT_TYPE_ID_CATEGORY,
+  NFT_TYPE_ID_CRAFTING,
+  NFT_TYPE_ID_DAY_MONTH,
+  NFT_TYPE_ID_IDENTITY,
+  NFT_TYPE_ID_PREDICTION,
+  NFT_TYPE_ID_TRIGGER,
+  NFT_TYPE_ID_YEAR,
+} from "../../../models/nft";
 
 export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   item,
@@ -48,19 +57,22 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
   const [showHideSummary, setShowHideSummary] = useState<boolean>(true);
 
   const calculateMarketplaceFee = (priceValue: string) => {
-    const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
+    const amountWithoutDollarSign = priceValue
+      .replace("$", "")
+      .replace(",", "");
     const priceNumber = parseFloat(amountWithoutDollarSign);
     const fee = (priceNumber * marketplaceFee).toFixed(2);
     return fee;
   };
 
   const calculatePrizePoolFee = (priceValue: string) => {
-    const amountWithoutDollarSign = priceValue.replace("$", "").replace(",", "");
+    const amountWithoutDollarSign = priceValue
+      .replace("$", "")
+      .replace(",", "");
     const priceNumber = parseFloat(amountWithoutDollarSign);
     const fee = (priceNumber * prizePoolFee).toFixed(2);
     return fee;
   };
-
 
   const handlePriceChange = (price: string) => {
     setPriceValue(price);
@@ -72,7 +84,8 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
     const prizePoolFee = calculatePrizePoolFee(priceValue);
     const totalPrice =
       parseFloat(priceValue.replace("$", "").replace(",", "")) -
-      parseFloat(marketplaceFee) - parseFloat(prizePoolFee);
+      parseFloat(marketplaceFee) -
+      parseFloat(prizePoolFee);
     setTotalPrice(Number(totalPrice.toFixed(2)));
   }, [priceValue]);
 
@@ -120,17 +133,19 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
     }
   }, [triggersContext, item]);
 
-
   const showHidePropFC = () => {
-    setShowHideProp(!showHideProp)
-  }
+    setShowHideProp(!showHideProp);
+  };
 
   const showHideSummaryFC = () => {
-    setShowHideSummary(!showHideSummary)
-  }
+    setShowHideSummary(!showHideSummary);
+  };
 
   return (
-    <ViewDateCardWrapper isview={isView ? "true" : undefined} key={`sell-date-card-${item?.id}`}>
+    <ViewDateCardWrapper
+      isview={isView ? "true" : undefined}
+      key={`sell-date-card-${item?.id}`}
+    >
       <ViewDateCardContainer>
         <CloseButton onClick={onClose}>&times;</CloseButton>
         <h2>
@@ -138,16 +153,16 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
           {cardType === "trigger"
             ? "Trigger"
             : cardType === "identity"
-              ? "Identity"
-              : cardType === "prediction"
-                ? "Prediction"
-                : cardType === "category"
-                  ? "Category"
-                  : cardType === "cardPacks"
-                    ? "Card Pack"
-                    : cardType === "crafting"
-                      ? "Crafting"
-                      : "Date Card"}
+            ? "Identity"
+            : cardType === "prediction"
+            ? "Prediction"
+            : cardType === "category"
+            ? "Category"
+            : cardType === "cardPacks"
+            ? "Card Pack"
+            : cardType === "crafting"
+            ? "Crafting"
+            : "Date Card"}
         </h2>
         <PreviewCardWrapper>
           {cardType === "trigger" ? (
@@ -158,16 +173,30 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               rarity={item?.rarity}
               isNotHover={true}
             />
-          ) : cardType === "identity" || cardType === "prediction" ? (
-            <PredictionCard
-              item={item}
+          ) : cardType === "identity" ? (
+            <IdentityCard
               day={item?.day}
               month={item?.month}
               category={item?.category}
               rarity={item?.rarity}
               year={item?.year}
               icon={item?.icon}
+              iconText={item?.iconText}
               celebrity_name={item?.celebrity_name}
+              image={item?.image}
+              cardType={cardType}
+            />
+          ) : cardType === "prediction" ? (
+            <PredictionCard
+              day={item?.day}
+              month={item?.month}
+              category={item?.category}
+              rarity={item?.rarity}
+              year={item?.year}
+              icon={item?.icon}
+              iconText={item?.iconText}
+              celebrity_name={item?.celebrity_name}
+              image={item?.image}
               cardType={cardType}
             />
           ) : cardType === "category" ? (
@@ -181,7 +210,12 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               position=""
             />
           ) : cardType === "cardPacks" ? (
-            <CardPack item={item} rarity={item?.rarity} image={item?.image} tier={item?.tier}/>
+            <CardPack
+              item={item}
+              rarity={item?.rarity}
+              image={item?.image}
+              tier={item?.tier}
+            />
           ) : (
             <DateCard
               item={item}
@@ -198,11 +232,10 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
         <PropertiesWrapper>
           <PropertiesHeader onClick={() => showHidePropFC()}>
             <span>Properties</span>
-            { showHideProp ? <IconArrowDown /> : <IconArrowUp /> }
+            {showHideProp ? <IconArrowDown /> : <IconArrowUp />}
           </PropertiesHeader>
-          {
-            showHideProp &&
-            <PropertiesContent >
+          {showHideProp && (
+            <PropertiesContent>
               {cardType === "identity" || cardType === "prediction" ? (
                 <PropertyItem>
                   <p>Celebrity</p>
@@ -221,9 +254,10 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
               {cardType === "identity" ? (
                 <PropertyItem>
                   <p>Day/Month</p>
-                  <span>{`${item?.day} ${monthContext &&
+                  <span>{`${item?.day} ${
+                    monthContext &&
                     (monthContext as Map<number, string>).get(item?.month)
-                    }`}</span>
+                  }`}</span>
                 </PropertyItem>
               ) : cardType === "date" ? (
                 <PropertyItem>
@@ -246,9 +280,10 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   <p>{item?.day ? "Day/Month" : "Year"}</p>
                   <span>
                     {item?.day
-                      ? `${item?.day} ${monthContext &&
-                      (monthContext as Map<number, string>).get(item?.month)
-                      }`
+                      ? `${item?.day} ${
+                          monthContext &&
+                          (monthContext as Map<number, string>).get(item?.month)
+                        }`
                       : item?.year}
                   </span>
                 </PropertyItem>
@@ -264,19 +299,19 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                   {cardType === "trigger"
                     ? "Trigger"
                     : cardType === "identity"
-                      ? "Category"
-                      : cardType === "cardPacks"
-                        ? "Collection"
-                        : null}
+                    ? "Category"
+                    : cardType === "cardPacks"
+                    ? "Collection"
+                    : null}
                 </p>
                 <span>
                   {cardType === "trigger"
                     ? item?.trigger
                     : cardType === "identity"
-                      ? item?.category
-                      : cardType === "cardPacks"
-                        ? item?.collection
-                        : null}
+                    ? item?.category
+                    : cardType === "cardPacks"
+                    ? item?.collection
+                    : null}
                 </span>
               </PropertyItem>
               {cardType === "identity" && (
@@ -323,30 +358,30 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 </>
               )}
             </PropertiesContent>
-          }
+          )}
         </PropertiesWrapper>
         <SetPriceWrapper>
           <p>Enter the listing price for your card</p>
           <Input
             value={priceValue}
             onChange={(e) => {
-              let result = e.target.value.replace(/[a-z]/gi, '');
-              if (result == '') {
-                handlePriceChange('$1')
-              } else handlePriceChange(result)
+              let result = e.target.value.replace(/[a-z]/gi, "");
+              if (result == "") {
+                handlePriceChange("$1");
+              } else handlePriceChange(result);
             }}
           />
         </SetPriceWrapper>
         <PropertiesWrapper>
           <PropertiesHeader onClick={() => showHideSummaryFC()}>
             <span>Price Summary</span>
-            { showHideSummary ? <IconArrowDown /> : <IconArrowUp /> }
+            {showHideSummary ? <IconArrowDown /> : <IconArrowUp />}
           </PropertiesHeader>
-          {
-            showHideSummary && <PropertiesContent>
+          {showHideSummary && (
+            <PropertiesContent>
               <PriceItem>
                 <p>Asking price</p>
-                <p className='hello' >{priceValue} USD</p>
+                <p className="hello">{priceValue} USD</p>
               </PriceItem>
               <PriceItem>
                 <p>Marketplace fee (5%)</p>
@@ -361,7 +396,7 @@ export const SellDateCardSection: React.FC<SellDateCardProps> = ({
                 )} USD`}</span>
               </PriceItem>
             </PropertiesContent>
-          }
+          )}
           <PropertiesContent>
             <PriceItem>
               <p>Net amount to seller</p>

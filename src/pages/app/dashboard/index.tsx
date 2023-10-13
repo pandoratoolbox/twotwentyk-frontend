@@ -400,7 +400,6 @@ export const DashboardPage: React.FC = () => {
                 </div>
                 <span>My Offers</span>
               </CardTitle>
-              {/* */}
               <DashboardContainer>
                 <SeeMoreButton onClick={() => navigate("/dashboard/myoffer")}>
                   See More
