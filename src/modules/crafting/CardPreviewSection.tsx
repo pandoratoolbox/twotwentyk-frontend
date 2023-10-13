@@ -128,7 +128,7 @@ export const CardPreviewSection: React.FC<{
             </p>
           </CraftCard>
           <PropertiesWrapper>
-            <PropertiesHeader noborder>
+            <PropertiesHeader noborder="true">
               <span>Properties</span>
               {/* <IconArrowDown /> */}
             </PropertiesHeader>

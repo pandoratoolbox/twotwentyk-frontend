@@ -384,7 +384,7 @@ export const IdentitySelectCardSection: React.FC<{
                     <DateCardWrapper key={`dayMonth-${item.id}`}>
                       <CardImgWrapper>
                         <img src={imagePath} alt="nft" />
-                        <div className="info-nft info-nft-day-month">
+                        <div className="info-nft info-nft-day-month crafting">
                           {(item?.rarity || item?.rarity === 0) &&
                           item.day &&
                           monthContext ? (
@@ -484,7 +484,7 @@ export const IdentitySelectCardSection: React.FC<{
                     <DateCardWrapper key={`year-${item.id}`}>
                       <CardImgWrapper>
                         <img src={imagePath} alt="nft" />
-                        <div className="info-nft info-nft-day-month">
+                        <div className="info-nft info-nft-day-month crafting">
                           {(item?.rarity || item?.rarity === 0) && item?.year ? (
                             <h3 className={checkRarity(item?.rarity)}>
                               {item?.year}
