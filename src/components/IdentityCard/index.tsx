@@ -211,7 +211,7 @@ export const IdentityCard: React.FC<PredictionCardProps> = ({
         {forCraft && (
           <CardButtonGroup>
             <CardButton
-              onClick={(e) => {
+              onClick={(e: any) => {
                 e.stopPropagation()
                 !authContext?.isAuthenticated
                   ? navigate("/signin")

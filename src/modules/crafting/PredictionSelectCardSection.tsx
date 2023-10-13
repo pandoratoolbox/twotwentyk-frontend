@@ -261,7 +261,7 @@ export const PredictionSelectCardSection: React.FC<{
                         onClick={() => onCardClicked(Number(item.id), item)}
                       >
                         <CardButtonGroup>
-                          <CardButton onClick={(e) => {
+                          <CardButton onClick={(e: any) => {
                             e.stopPropagation()
                             onSelectCardCrafting(item)
                           }}>
@@ -407,7 +407,7 @@ export const PredictionSelectCardSection: React.FC<{
                         onClick={() => onCardClicked(Number(item.id), item)}
                       >
                         <CardButtonGroup>
-                          <CardButton onClick={(e) => {
+                          <CardButton onClick={(e: any) => {
                             e.stopPropagation()
                             onSelectCardTrigger(item)
                           }}>
