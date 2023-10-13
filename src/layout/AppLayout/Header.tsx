@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Badge,
   HeaderButton,
@@ -33,6 +33,10 @@ import { Notification } from "./Notification";
 import { useMyInfoContext } from "../../context";
 import { MobileMenu } from "./MobileMenu";
 
+import { socket } from "../../socket/socket";
+import api from "../../config/api";
+import { INotification } from "../../models/claim";
+
 export const Header: React.FC = () => {
   const { myInfoContext } = useMyInfoContext();
   const navigate = useNavigate();
@@ -47,6 +51,8 @@ export const Header: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPath, setCurrentPath] = useState<AppHeaderMenuItemProps>();
   // const [currentUser, setCurrentUser] = useState<string | null>("");
+
+  const [notifications, setNotifications] = useState<Array<INotification>>([]);
 
   useEffect(() => {
     setCurrentPath(
@@ -71,6 +77,37 @@ export const Header: React.FC = () => {
     // setWithdrawModal(false);
     setConfirmModal(true);
   };
+
+  const getData = async () => {
+    const response = await api.get("/me/notification");
+
+    setNotifications(response.data);
+  };
+
+  useEffect(() => {
+    getData();
+  }, []);
+
+  useEffect(() => {
+    const handler = async (event: MessageEvent) => {
+      const data = JSON.parse(event.data);
+
+      getData();
+    };
+
+    socket.addEventListener("message", handler);
+
+    return () => {
+      socket.removeEventListener("message", handler);
+    };
+  }, []);
+
+  const newNotification = useMemo(() => {
+    return notifications.reduce(
+      (count, notification) => (!notification.is_read ? count + 1 : count),
+      0
+    );
+  }, [notifications]);
 
   return (
     <>
@@ -116,11 +153,13 @@ export const Header: React.FC = () => {
                 <NotificationButtonWrapper>
                   <HeaderButton onClick={() => setNotification(true)}>
                     <IconAlarm />
-                    <Badge>5</Badge>
+                    {newNotification > 0 && <Badge>{newNotification}</Badge>}
                   </HeaderButton>
                   <Notification
                     open={notification}
+                    data={notifications}
                     onClose={() => setNotification(false)}
+                    onClear={() => getData()}
                   />
                 </NotificationButtonWrapper>
               </HeaderButtonGroup>

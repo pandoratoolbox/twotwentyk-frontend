@@ -3,6 +3,15 @@ import { IArticle, Article } from "./article";
 import { INftCardTrigger } from "./nft_card_trigger";
 import { INftCardPrediction } from "./nft_card_prediction";
 
+export interface INotification {
+  id?: number;
+  created_at: number | string | Date;
+  recipient_id?: number;
+  payload: IClaim;
+  is_read: boolean;
+  recipient?: IUser;
+}
+
 export interface IClaim {
   nft_prediction_id?: number;
   created_at?: number | string | Date;
