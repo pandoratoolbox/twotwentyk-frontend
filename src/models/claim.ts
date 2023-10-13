@@ -1,17 +1,21 @@
 import { IUser, User } from "./user";
 import { IArticle, Article } from "./article";
+import { INftCardTrigger } from "./nft_card_trigger";
+import { INftCardPrediction } from "./nft_card_prediction";
 
 export interface IClaim {
   nft_prediction_id?: number;
-  article_id?: number;
-  claimer?: IUser;
+  created_at?: number | string | Date;
+  nft_trigger_id?: number;
   article?: IArticle;
+  nft_trigger?: INftCardTrigger;
+  nft_prediction?: INftCardPrediction;
   id?: number;
   status?: number;
-  created_at?: number | string | Date;
   claimer_id?: number;
+  article_id?: number;
+  claimer?: IUser;
 }
-
 export class Claim {
   nft_prediction_id?: number;
   article_id?: number;
